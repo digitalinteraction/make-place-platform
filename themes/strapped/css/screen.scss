@@ -5,7 +5,7 @@
 // Variables
 $actionColour: #28ab6c;
 $actionAltColour: #0F5937;
-$borderColour: #eee;
+$borderColour: #dfdfdf;
 $textColour: black;
 
 
@@ -84,13 +84,18 @@ header.top {
         
         .nav-item {
             
+            &.current a {
+                background-color: #eee;
+            }
+            
+            &.section a {
+                background: #fafafa;
+                box-shadow: 0 0 0 1px #ddd;
+            }
+            
             a {
                 border-bottom-left-radius: 10px;
                 border-bottom-right-radius: 10px;
-            }
-            
-            &.active a {
-                background-color: #eee;
             }
         }
     }

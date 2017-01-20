@@ -2,7 +2,9 @@
 
 <article class="post-summary">
     
-    <h2> <a href="$Link" title="$MenuTitle.XML"> $MenuTitle </a> </h2>
+    <h2> <a href="$Link" title="$MenuTitle.XML">
+        $MenuTitle
+    </a> </h2>
     <p class="lead"> $PublishDate.Day, $PublishDate.Long $PublishDate.Time </p>
     
     <% if $FeaturedImage %>
@@ -18,7 +20,10 @@
     <% end_if %>
     
     <p class="text-right">
-        <a href="$Link" title="$MenuTitle.XML"> Keep Reading ... </a>
+        <a href="$Link" title="$MenuTitle.XML">
+            Keep Reading
+            <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+        </a>
     </p>
     
     

@@ -7,7 +7,7 @@
             <div class="row">
                 
                 <%-- The brand & strapline --%>
-                <div class="col-sm-3 col-xs-10">
+                <div class="col-sm-3 col-xs-8">
                     <a href="home/">
                         <img class="brand" alt="Brand" src="$ThemeDir/images/mock-brand.png" style="width: 100%;">
                         <p>$SiteConfig.Tagline</p>
@@ -15,7 +15,7 @@
                 </div>
                 
                 <%-- The menu which collapses for mobile --%>
-                <div class="col-sm-9 col-xs-2">
+                <div class="col-sm-9">
                     
                     <%-- Hamburger menu only for mobile --%>
                     <div class="navbar-header">
@@ -32,7 +32,7 @@
                         <ul class="nav navbar-nav">
                             
                             <% loop $Menu(1) %>
-                                <li class="nav-item <% if $LinkingMode = 'current' %>active<%end_if%>">
+                                <li class="nav-item $LinkingMode">
                                 <a class="nav-link" href="$Link" title="$Title.XML">$MenuTitle.XML</a>
                                 </li>
                             <% end_loop %>
