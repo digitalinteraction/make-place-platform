@@ -1,0 +1,13 @@
+---
+Name: mysiteroutes
+After: framework/routes#coreroutes
+---
+
+#
+#   Custom routing for the applications
+#   Connects routes with Controllers
+#
+
+# Director:
+#   rules:
+#     'some_url': 'MyFancyController'

@@ -1,0 +1,21 @@
+
+# Used by silverstripe
+/assets
+/silverstripe-cache
+silverstripe.log
+
+
+# Used by Composer
+/vendor
+
+
+# Composer Packages
+/cms
+/framework
+/lumberjack
+/siteconfig
+/tagfield
+/blog
+/reports
+/monolog
+/sortablegridfield
