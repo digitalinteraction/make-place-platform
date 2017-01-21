@@ -9,13 +9,6 @@ variables:
     CONTAINER_RELEASE_IMAGE: $CI_REGISTRY_IMAGE:$VERSION_NUMBER
     DOCKER_DRIVER: overlay
     GITLAB_USER: gitlab-ci-token
-    DB_HOST: none
-    DB_USER: none
-    DB_PASS: none
-    DB_NAME: db.sqlite
-    DB_PATH: ':memory:'
-    DB_TYPE: SQLite3Database
-    SITE_ENV: testing
     
 
 before_script:
@@ -34,17 +27,7 @@ testing:
     stage: test
     script:
         - docker build --pull -t $CONTAINER_TEST_IMAGE .
-        - >
-            docker run
-            -e "DB_HOST=$DB_HOST"
-            -e "DB_USER=$DB_USER"
-            -e "DB_PASS=$DB_PASS"
-            -e "DB_NAME=$DB_NAME"
-            -e "DB_PATH=$DB_PATH"
-            -e "DB_TYPE=$DB_TYPE"
-            -e "SITE_ENV=$SITE_ENV"
-            $CONTAINER_TEST_IMAGE
-            bash run.sh && bash scripts/test
+        - docker run $CONTAINER_TEST_IMAGE bash scripts/test
         # - docker push $CONTAINER_TEST_IMAGE
 
 coverage:
@@ -53,17 +36,7 @@ coverage:
     when: manual
     script:
         - docker pull $CONTAINER_TEST_IMAGE
-        - >
-            docker run
-            -e "DB_HOST=$DB_HOST"
-            -e "DB_USER=$DB_USER"
-            -e "DB_PASS=$DB_PASS"
-            -e "DB_NAME=$DB_NAME"
-            -e "DB_PATH=$DB_PATH"
-            -e "DB_TYPE=$DB_TYPE"
-            -e "SITE_ENV=$SITE_ENV"
-            $CONTAINER_TEST_IMAGE
-            bash run.sh && bash scripts/coverage
+        - docker run $CONTAINER_TEST_IMAGE bash scripts/coverage
 
 
 deploy_image:
