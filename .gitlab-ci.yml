@@ -35,7 +35,7 @@ testing:
     script:
         - docker build --pull -t $CONTAINER_TEST_IMAGE .
         - >
-            docker run $CONTAINER_TEST_IMAGE
+            docker run
             -e "DB_HOST=$DB_HOST"
             -e "DB_USER=$DB_USER"
             -e "DB_PASS=$DB_PASS"
@@ -43,7 +43,8 @@ testing:
             -e "DB_PATH=$DB_PATH"
             -e "DB_TYPE=$DB_TYPE"
             -e "SITE_ENV=$SITE_ENV"
-            /bin/bash /app/run.sh && /bin/bash /app/scripts/test
+            $CONTAINER_TEST_IMAGE
+            bash run.sh && bash scripts/test
         # - docker push $CONTAINER_TEST_IMAGE
 
 coverage:
@@ -53,7 +54,7 @@ coverage:
     script:
         - docker pull $CONTAINER_TEST_IMAGE
         - >
-            docker run $CONTAINER_TEST_IMAGE
+            docker run
             -e "DB_HOST=$DB_HOST"
             -e "DB_USER=$DB_USER"
             -e "DB_PASS=$DB_PASS"
@@ -61,6 +62,7 @@ coverage:
             -e "DB_PATH=$DB_PATH"
             -e "DB_TYPE=$DB_TYPE"
             -e "SITE_ENV=$SITE_ENV"
+            $CONTAINER_TEST_IMAGE
             bash run.sh && bash scripts/coverage
 
 
