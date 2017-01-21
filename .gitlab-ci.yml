@@ -35,7 +35,7 @@ coverage:
     stage: test
     when: manual
     script:
-        - docker pull $CONTAINER_TEST_IMAGE
+        - docker build --pull -t $CONTAINER_TEST_IMAGE .
         - docker run $CONTAINER_TEST_IMAGE bash scripts/coverage
 
 
