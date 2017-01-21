@@ -6,8 +6,5 @@ export DB_HOST=none DB_USER=none DB_PASS=none DB_NAME=db.sqlite DB_PATH=:memory:
 # Disable xdebug for quicker composer & tests
 php5dismod xdebug
 
-# Run composer
-/composer.phar install
-
 # Run our tests
 vendor/bin/phpunit mysite/tests

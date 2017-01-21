@@ -1,11 +1,8 @@
  # ...
 
 variables:
-    # MYSQL_DATABASE: ss_test_db
-    # MYSQL_ROOT_PASSWORD: ss_test_db_password
-    # MYSQL_USER: ss_test_db_user
-    # MYSQL_PASSWORD: ss_test_db_password
-    CONTAINER_TEST_IMAGE: $CI_REGISTRY_IMAGE:$CI_BUILD_REF_NAME
+    CONTAINER_TEST_IMAGE: $CI_REGISTRY_IMAGE:testing
+    CONTAINER_BRANCH_IMAGE: $CI_REGISTRY_IMAGE:$CI_BUILD_REF_NAME
     CONTAINER_RELEASE_IMAGE: $CI_REGISTRY_IMAGE:$VERSION_NUMBER
     DOCKER_DRIVER: overlay
     GITLAB_USER: gitlab-ci-token
@@ -19,31 +16,28 @@ before_script:
 
 stages:
     - test
-    - deploy
     
 
-testing:
+build_test_image:
     image: docker:latest
-    stage: test
-    script:
-        - docker build --pull -t $CONTAINER_TEST_IMAGE .
-        - docker run $CONTAINER_TEST_IMAGE bash scripts/test
-        # - docker push $CONTAINER_TEST_IMAGE
-
-coverage:
-    image: docker:latest
-    stage: test
     when: manual
     script:
         - docker build --pull -t $CONTAINER_TEST_IMAGE .
-        - docker run $CONTAINER_TEST_IMAGE bash scripts/coverage
+        - docker push $CONTAINER_TEST_IMAGE
 
-
-deploy_image:
+test:
     image: docker:latest
-    stage: deploy
-    when: manual
+    stage: test
     script:
         - docker pull $CONTAINER_TEST_IMAGE
+        - docker run $CONTAINER_TEST_IMAGE bash scripts/coverage
+        # - docker push $CONTAINER_BRANCH_IMAGE
+
+
+publish_image:
+    image: docker:latest
+    when: manual
+    script:
+        - docker pull $CONTAINER_BRANCH_IMAGE
         - docker tag $CONTAINER_TEST_IMAGE $CONTAINER_RELEASE_IMAGE
         - docker push $CONTAINER_RELEASE_IMAGE

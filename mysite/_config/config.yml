@@ -6,6 +6,11 @@ After:
 ---
 
 
+# Set the default theme
+SSViewer:
+  theme: 'strapped'
+
+
 # Custom configuration for PHP Classes
 Page:
   extensions:

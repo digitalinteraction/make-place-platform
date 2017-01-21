@@ -6,9 +6,6 @@ export DB_HOST=none DB_USER=none DB_PASS=none DB_NAME=db.sqlite DB_PATH=:memory:
 # Disable xdebug for quicker composer
 php5dismod xdebug
 
-# Run composer
-/composer.phar install
-
 # Enable xdebug for coverage generation
 php5enmod xdebug
 

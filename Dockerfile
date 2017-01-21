@@ -17,6 +17,14 @@ RUN apt-get -y update \
         && rm -rf /var/lib/apt/lists/*
 
 
+# Add composer & cronjobs files
+COPY ["composer.json", "/app/"]
+
+
+# Run Composer to install packages
+RUN /composer.phar install
+
+
 # Expose port 80 to serve html on
 EXPOSE 80
 
@@ -41,13 +49,8 @@ RUN mkdir -p /app/silverstripe-cache \
 VOLUME ["/app/assets", "/backup"]
 
 
-# Add my code to the build
-COPY mysite /app/mysite
-COPY themes /app/themes
-
-
 # Add composer & cronjobs files
-COPY ["phpunit.xml", "composer.json", "cronjobs", "bootstrap.sh", "/app/"]
+COPY ["phpunit.xml", "cronjobs", "bootstrap.sh", "/app/"]
 
 
 # Add our scripts for testing
@@ -56,3 +59,8 @@ COPY scripts /app/scripts
 
 # Start cron jobs
 RUN crontab -u root cronjobs && rm cronjobs
+
+
+# Add my code to the build
+COPY mysite /app/mysite
+COPY themes /app/themes
