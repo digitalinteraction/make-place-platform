@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# Enable xdebug for coverage generation
+php5enmod xdebug
+
+# Run our tests, generating a coverage report
+vendor/bin/phpunit --coverage-text=mysite/coverage.txt mysite/tests
+
+# Export the coverage for CI
+cat mysite/coverage.txt

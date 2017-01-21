@@ -20,6 +20,7 @@ DB_USER                 | **yes**   | The user Silverstripe will use to access t
 DB_PASS                 | **yes**   | The password of the above user
 DB_NAME                 | **yes**   | The database to store site data in, the user **must** have access to it and be able to edit the schema
 DB_TYPE                 | no        | The type of database to connect to, default is `MySQLDatabase`
+DB_PATH                 | no        | The directory a file-based database will be store, e.g. `/app/testdb/`
 SITE_ENV                | no        | The mode of the site, `live`, `testing`, `dev`; defaults to `live`
 LOCALE                  | no        | The local of the site, used for date formatting & translations, defaults to `en_GB`
 LOG_FILE                | no        | Where to store the log file, relative to this `mysite/_config.php`
@@ -40,4 +41,5 @@ FB_SECRET               | no        | Your [Facebook](https://facebook.com) Secr
 
 
 ## Todo
-- Setup an automated ci build like to run unit tests & build images
+- Finish CI to publish images to the gitlab registry
+- Export CI coverage straight to stdout rather than an intermediate file

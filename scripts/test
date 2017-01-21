@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# Disable xdebug for quick tests
+php5dismod xdebug
+
+# Run our tests
+vendor/bin/phpunit mysite/tests

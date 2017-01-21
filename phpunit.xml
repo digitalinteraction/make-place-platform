@@ -1,0 +1,18 @@
+<phpunit bootstrap="framework/tests/bootstrap.php">
+    
+    <testsuites>
+        <testsuite>
+            
+            <!-- The module(s) to test -->
+            <directory>mysite/tests</directory>
+            
+        </testsuite>
+    </testsuites>
+    
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">mysite/tests</directory>
+        </whitelist>
+    </filter>
+    
+</phpunit>

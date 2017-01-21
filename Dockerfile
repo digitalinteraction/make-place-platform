@@ -5,7 +5,16 @@
 
 
 # Use my compose image
-FROM openlab.ncl.ac.uk:4567/b30282237/composer-image:1.0.2
+FROM openlab.ncl.ac.uk:4567/b30282237/composer-image:1.0.3
+
+
+# Add Sqlite3
+RUN apt-get -y update \
+ && apt-get -y upgrade -y \
+ && DEBIAN_FRONTEND=noninteractive apt-get -y install \
+        sqlite3 \
+        php5-sqlite \
+        && rm -rf /var/lib/apt/lists/*
 
 
 # Expose port 80 to serve html on
@@ -38,7 +47,11 @@ COPY themes /app/themes
 
 
 # Add composer & cronjobs files
-COPY ["composer.json", "cronjobs", "bootstrap.sh", "/app/"]
+COPY ["phpunit.xml", "composer.json", "cronjobs", "bootstrap.sh", "/app/"]
+
+
+# Add our scripts for testing
+COPY scripts /app/scripts
 
 
 # Start cron jobs

@@ -19,3 +19,4 @@ silverstripe.log
 /reports
 /monolog
 /sortablegridfield
+/sqlite3

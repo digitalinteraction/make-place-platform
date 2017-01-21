@@ -1,0 +1,6 @@
+Page:
+  SomePage:
+    URLSegment: 'test/'
+    Title: 'Test Page'
+    MenuTitle: 'Test Page'
+    Content: '<p> Hello, World! </p>'

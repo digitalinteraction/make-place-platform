@@ -1,0 +1,55 @@
+ # ...
+
+variables:
+    # MYSQL_DATABASE: ss_test_db
+    # MYSQL_ROOT_PASSWORD: ss_test_db_password
+    # MYSQL_USER: ss_test_db_user
+    # MYSQL_PASSWORD: ss_test_db_password
+    CONTAINER_TEST_IMAGE: $CI_REGISTRY_IMAGE:$CI_BUILD_REF_NAME
+    CONTAINER_RELEASE_IMAGE: $CI_REGISTRY_IMAGE:$VERSION_NUMBER
+    DOCKER_DRIVER: overlay
+    GITLAB_USER: gitlab-ci-token
+    DB_HOST: none
+    DB_USER: none
+    DB_PASS: none
+    DB_NAME: db.sqlite
+    DB_PATH: ':memory:'
+    DB_TYPE: SQLite3Database
+    SITE_ENV: testing
+    
+
+before_script:
+    - docker login -u $GITLAB_USER -p $CI_BUILD_TOKEN $CI_REGISTRY
+
+
+
+
+stages:
+    - test
+    - deploy
+
+testing:
+    image: docker:latest
+    stage: test
+    script:
+        - docker build --pull -t $CONTAINER_TEST_IMAGE .
+        - docker run $CONTAINER_TEST_IMAGE /bin/bash /app/scripts/test
+        # - docker push $CONTAINER_TEST_IMAGE
+
+coverage:
+    image: docker:latest
+    stage: test
+    when: manual
+    script:
+        - docker build --pull -t $CONTAINER_TEST_IMAGE .
+        - docker run $CONTAINER_TEST_IMAGE /bin/bash /app/scripts/coverage
+
+
+deploy_image:
+    image: docker:latest
+    stage: deploy
+    when: manual
+    script:
+        - docker pull $CONTAINER_TEST_IMAGE
+        - docker tag $CONTAINER_TEST_IMAGE $CONTAINER_RELEASE_IMAGE
+        - docker push $CONTAINER_RELEASE_IMAGE

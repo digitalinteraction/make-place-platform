@@ -5,7 +5,7 @@ php _check_env.php DB_HOST DB_USER DB_PASS DB_NAME
 
 
 # Build the database
-# framework/sake dev/build "flush=1"
+framework/sake dev/build "flush=1"
 
 
 # Seed the database?

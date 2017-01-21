@@ -20,7 +20,7 @@ $databaseConfig = array(
     'username' => _envVar('DB_USER'),
     'password' => _envVar('DB_PASS'),
     'database' => _envVar('DB_NAME'),
-    'path' => '',
+    'path' => _envVar('DB_PATH', ''),
 );
 
 
