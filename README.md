@@ -43,3 +43,4 @@ FB_SECRET               | no        | Your [Facebook](https://facebook.com) Secr
 ## Todo
 - Finish CI to publish images to the gitlab registry
 - Export CI coverage straight to stdout rather than an intermediate file
+- Create cached Docker image for CI, you shouldn't have to `composer install` every push

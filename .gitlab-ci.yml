@@ -25,7 +25,6 @@ before_script:
 
 
 stages:
-    - build
     - test
     - deploy
     
@@ -35,7 +34,16 @@ testing:
     stage: test
     script:
         - docker build --pull -t $CONTAINER_TEST_IMAGE .
-        - docker run $CONTAINER_TEST_IMAGE bash run.sh && bash scripts/test
+        - >
+            docker run $CONTAINER_TEST_IMAGE
+            -e "DB_HOST=$DB_HOST"
+            -e "DB_USER=$DB_USER"
+            -e "DB_PASS=$DB_PASS"
+            -e "DB_NAME=$DB_NAME"
+            -e "DB_PATH=$DB_PATH"
+            -e "DB_TYPE=$DB_TYPE"
+            -e "SITE_ENV=$SITE_ENV"
+            bash run.sh && bash scripts/test
         # - docker push $CONTAINER_TEST_IMAGE
 
 coverage:
@@ -43,8 +51,17 @@ coverage:
     stage: test
     when: manual
     script:
-        - docker build --pull -t $CONTAINER_TEST_IMAGE .
-        - docker run $CONTAINER_TEST_IMAGE /bin/bash /app/scripts/coverage
+        - docker pull $CONTAINER_TEST_IMAGE
+        - >
+            docker run $CONTAINER_TEST_IMAGE
+            -e "DB_HOST=$DB_HOST"
+            -e "DB_USER=$DB_USER"
+            -e "DB_PASS=$DB_PASS"
+            -e "DB_NAME=$DB_NAME"
+            -e "DB_PATH=$DB_PATH"
+            -e "DB_TYPE=$DB_TYPE"
+            -e "SITE_ENV=$SITE_ENV"
+            bash run.sh && bash scripts/coverage
 
 
 deploy_image:
