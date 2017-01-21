@@ -43,7 +43,7 @@ testing:
             -e "DB_PATH=$DB_PATH"
             -e "DB_TYPE=$DB_TYPE"
             -e "SITE_ENV=$SITE_ENV"
-            bash run.sh && bash scripts/test
+            /bin/bash /app/run.sh && /bin/bash /app/scripts/test
         # - docker push $CONTAINER_TEST_IMAGE
 
 coverage:
