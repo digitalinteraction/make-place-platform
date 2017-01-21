@@ -25,15 +25,17 @@ before_script:
 
 
 stages:
+    - build
     - test
     - deploy
+    
 
 testing:
     image: docker:latest
     stage: test
     script:
         - docker build --pull -t $CONTAINER_TEST_IMAGE .
-        - docker run $CONTAINER_TEST_IMAGE /bin/bash /app/scripts/test
+        - docker run $CONTAINER_TEST_IMAGE bash run.sh && bash scripts/test
         # - docker push $CONTAINER_TEST_IMAGE
 
 coverage:
