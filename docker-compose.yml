@@ -17,11 +17,12 @@ services:
             - ./mysite:/app/mysite
             - ./themes:/app/themes
             - ./assets:/app/assets
+            - ./scripts:/app/scripts
         environment:
             DB_HOST: mysql
             DB_USER: user
-            DB_PASS: password
-            DB_NAME: ss-sample
+            DB_PASS: secret
+            DB_NAME: make-place
             SITE_ENV: dev
             DEFAULT_USER: rob@veodesign.co.uk
             DEFAULT_PASS: password
@@ -34,6 +35,6 @@ services:
             - database_data:/var/lib/mysql
         environment:
             MYSQL_ROOT_PASSWORD: secret
-            MYSQL_DATABASE: ss-sample
+            MYSQL_DATABASE: make-place
             MYSQL_USER: user
-            MYSQL_PASSWORD: password
+            MYSQL_PASSWORD: secret

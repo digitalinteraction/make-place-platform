@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# Setup in-memory SQLite database
+export DB_HOST=none DB_USER=none DB_PASS=none DB_NAME=db.sqlite DB_PATH=:memory: DB_TYPE=SQLite3Database SITE_ENV=dev
+
+# Disable xdebug for quicker composer & tests
+php5dismod xdebug
+
+# if flush passed, flush the cache
+[[ " flush " == *" $1 "* ]] && framework/sake dev/tests flush=1 >> /dev/null
+
+# Run our tests
+vendor/bin/phpunit --colors mysite/tests

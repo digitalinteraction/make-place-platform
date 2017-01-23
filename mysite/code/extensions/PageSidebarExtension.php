@@ -18,10 +18,12 @@ class PageSidebarExtension extends DataExtension {
 class PageControllerSidebarExtension extends Extension {
     
     public function MainContentColumns() {
-        return $this->ShowSidebar ? "col-sm-9" : "col-xs-12";
+        return "col-xs-12";
+        // return $this->ShowSidebar ? "col-sm-9" : "col-xs-12";
     }
     
     public function SidebarColumns() {
-        return $this->ShowSidebar ? "col-sm-3" : "hidden";
+        return "hidden";
+        // return $this->ShowSidebar ? "col-sm-3" : "hidden";
     }
 }

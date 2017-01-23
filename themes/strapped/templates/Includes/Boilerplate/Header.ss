@@ -10,7 +10,9 @@
                 <div class="col-sm-3 col-xs-8">
                     <a href="home/">
                         <img class="brand" alt="Brand" src="$ThemeDir/images/mock-brand.png" style="width: 100%;">
-                        <p>$SiteConfig.Tagline</p>
+                        <% if $SiteConfig.Tagline %>
+                            <p>$SiteConfig.Tagline</p>
+                        <% end_if %>
                     </a>
                 </div>
                 
@@ -32,7 +34,7 @@
                         <ul class="nav navbar-nav">
                             
                             <% loop $Menu(1) %>
-                                <li class="nav-item $LinkingMode">
+                                <li class="nav-item $LinkingMode $FirstLast">
                                 <a class="nav-link" href="$Link" title="$Title.XML">$MenuTitle.XML</a>
                                 </li>
                             <% end_loop %>

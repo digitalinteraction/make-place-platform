@@ -15,6 +15,7 @@ SSViewer:
 Page:
   extensions:
     - PageSidebarExtension
+    - JsonFieldExtension
 
 Page_Controller:
   extensions:

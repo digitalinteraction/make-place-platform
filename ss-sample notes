@@ -1,0 +1,21 @@
+_config.php:
+
+// Define the environment type, defaulting to live
+Director::set_environment_type(_envVar('SITE_ENV', 'live'));
+
+&&
+
+// Turn on errors if in dev mode
+if (Director::isDev()) { ini_set('display_errors', 1); }
+
+
+
+scripts/test & scripts/coverage:
+SITE_ENV=dev
+
+added scripts/test-dev
+
+
+
+screen.scss
+-> copy relevant screen.scss back

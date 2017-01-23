@@ -39,9 +39,13 @@ SS_Log::add_writer(new SS_LogFileWriter(_envVar('LOG_FILE', '../silverstripe.log
 Security::setDefaultAdmin(_envVar('DEFAULT_USER', 'admin'), _envVar('DEFAULT_PASS', '37g!6sS0YW8E'));
 
 
-
 // Define the environment type, defaulting to live
-define('SS_ENVIRONMENT_TYPE', _envVar('SITE_ENV', 'live'));
+Director::set_environment_type(_envVar('SITE_ENV', 'live'));
+
+
+
+
+
 
 // Define the recaptcha keys, defaulting to localhost ones
 define('G_RECAPTCHA_PUBLIC', _envVar('G_RECAPTCHA_PUBLIC', '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI'));
@@ -73,7 +77,6 @@ else if (isset($_SERVER["CUSTOM_DOMAIN"])) {
 }
 
 
-
 // Set where to store the session
 ini_set('session.save_path', "/app/silverstripe-cache");
 
@@ -89,7 +92,5 @@ if (_envVar("SITE_BASE")) {
 	Director::setBaseURL(SITE_BASE);
 }
 
-// Turn on errors if not in dev mode
-if (SS_ENVIRONMENT_TYPE != 'live') {
-    ini_set('display_errors', 1);
-}
+// Turn on errors if in dev mode
+if (Director::isDev()) { ini_set('display_errors', 1); }

@@ -5,8 +5,29 @@
 // Variables
 $actionColour: #28ab6c;
 $actionAltColour: #0F5937;
+
+
+// Dark Theme
+// $actionColour: #3385cb;
+// $actionAltColour: #255885;
+// $bgColour: #333333;
+// $bodyColour: #222222;
+// $bodyAltColour: #555555;
+// $borderColour: #555555;
+// $textColour: #dddddd;
+// $textAltColour: #fff;
+// $bodyShadow: 0 0 15px rgba(255,255,255, 0.02);
+
+// Light Theme
+$actionColour: #3385cb;
+$actionAltColour: #255885;
+$bgColour: #f8f8f8;
+$bodyColour: #fff;
+$bodyAltColour: #eee;
 $borderColour: #dfdfdf;
-$textColour: black;
+$textColour: #333;
+$textAltColour: #000;
+$bodyShadow: 0 0 15px rgba(0,0,0,0.05);
 
 
 // Mixins
@@ -19,7 +40,7 @@ $textColour: black;
 }
 
 .default-shadow {
-    box-shadow: 0 0 15px rgba(0,0,0,0.05);
+    box-shadow: $bodyShadow;
 }
 
 
@@ -35,11 +56,18 @@ html {
 body {
     min-height: 100%;
     position: relative;
-    background: #f8f8f8;
+    
+    background: $bgColour;
+    color: $textColour;
     
     p, li, td {
         font-family: -apple-system, system-ui, BlinkMacSystemFont, sans-serif;
         font-size: 16px;
+    }
+    
+    hr {
+        border-color: $borderColour;
+        margin: 30px 0px;
     }
     
     .main {
@@ -47,12 +75,16 @@ body {
         
         .container {
             padding: 25px;
+            background: $bodyColour;
             
-            background: #fff;
             border-radius: 10px;
             border: 1px solid $borderColour;
             
             @extend .default-shadow;
+            
+            .jumbotron {
+                background: $bodyAltColour;
+            }
         }
     }
 }
@@ -67,12 +99,13 @@ header.top {
     @extend .default-shadow;
     
     .navbar {
-        background: white;
+        background: $bodyColour;
         margin-bottom: 0px;
         border-color: $borderColour;
+        border-bottom: 5px solid $actionColour;
         
         .navbar-collapse.collapsing, .navbar-collapse.in {
-            background-color: #f8f8f8;
+            background-color: $bgColour;
             border-left: 1px solid $borderColour;
             border-right: 1px solid $borderColour;
         }
@@ -84,8 +117,13 @@ header.top {
         
         .nav-item {
             
+            &.first a {
+                padding-left: 0px;
+            }
+            
             &.current a {
-                background-color: #eee;
+                background-color: $bodyAltColour;
+                color: $textAltColour;
             }
             
             &.section a {
@@ -96,6 +134,11 @@ header.top {
             a {
                 border-bottom-left-radius: 10px;
                 border-bottom-right-radius: 10px;
+                
+                &:hover {
+                    text-decoration: underline;
+                    color: $actionColour;
+                }
             }
         }
     }
@@ -107,7 +150,7 @@ footer {
     text-align: right;
     padding-top: 30px;
     margin-top: 20px;
-    background: white;
+    background: $bodyColour;
     
     position: absolute;
     left: 0;
@@ -137,140 +180,13 @@ footer {
 }
 
 
-#Form_FilterForm {
-    
-    #Form_FilterForm_action_clearFilterForm {
-        background: #5bc0de;
-    }
-}
 
 
 
 
-.CalendarPage {
-    
-    .current-month {
-        margin-top: 40px;
-        margin-bottom: 20px;
-        a { margin: 0px 10px; }
-    }
-    
-    table.calendar {
-        width: 100%;
-        table-layout: fixed;
-        
-        tr td {
-            border: 1px solid $borderColour;
-            height: 120px;
-            position: relative;
-            padding-top: 20px;
-            
-            &.today {
-                background: #f4f4f4;
-                
-                .day {
-                    text-decoration: underline;
-                    font-weight: 400;
-                }
-            }
-            
-            p {
-                padding: 3px;
-                margin-bottom: 0px;
-            }
-            
-            hr {
-                margin: 5px 0px;
-                border-top-color: #A0DBA6;
-            }
-            
-            .day {
-                text-align: right;
-                position: absolute;
-                top: 0px;
-                right: 0px;
-            }
-            
-            &.not-current p { color: #ccc; }
-            
-            &.has-event {
-                background: #d5edcd;
-                color: #008b45;
-                border-top: 3px solid #008b45;
-                
-                .event {
-                    font-weight: 600;
-                    padding: 6px;
-                    cursor: pointer;
-                    color: $actionColour;
-                }
-            }
-        }
-    }
-    
-    .event-list .event .name {
-        font-size: 16px;
-        margin-left: 30px;
-    }
-}
 
 
-.voting-section {
-    
-    .vote {
-        padding: 10px;
-        margin: 0px 10px;
-        border: 1px dashed $borderColour;
-        border-radius: 5px;
-        font-weight: bold;
-        
-        &.chosen {
-            font-weight: 400;
-            background-color: #f4f4f4;
-            border-style: solid;
-            
-            &:hover { text-decoration: line-through; }
-        }
-        
-        &.agree { color: green; }
-        &.disagree { color: red; }
-    }
-}
 
-
-.page-list {
-    
-    .page-item {
-        
-        border: 1px solid $borderColour;
-        border-radius: 5px;
-        padding: 10px;
-        margin: 10px;
-        overflow: hidden;
-        
-        .image-holder {
-            margin: -10px;
-            margin-bottom: 10px;
-            
-            .page-image {
-                width: 100%;
-                height: 180px;
-                background-position: center;
-                background-size: cover;
-            }
-        }
-        
-        .page-summary {
-            height: 170px;
-            p { color: #888; }
-        }
-        
-        .page-info {
-            // h4 { color: $textColour; }
-            p { color: #888; }
-        }
-    }
-}
 
 
 
@@ -283,18 +199,37 @@ footer {
     
     html body .main {
         
-        padding: 0px;
+        padding: 20px 0px 40px;
         
         .container {
             border-radius: 0px;
+            border-left: none;
+            border-right: none;
         }
     }
     
     html body header.top .navbar {
-        border: none;
+        
+        div[class^=col-] {
+            padding: 0px;
+        }
+        
+        .brand {
+            padding-left: 10px;
+        }
+        
+        .navbar-nav {
+            margin: 0px;
+        }
+        // border: none;
         
         .nav-item a {
             border-radius: 0px;
+            text-align: center;
+        }
+        
+        .nav-item.first a {
+            padding-left: 15px;
         }
         
         .brand {
