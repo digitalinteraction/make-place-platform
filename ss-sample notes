@@ -15,6 +15,9 @@ SITE_ENV=dev
 
 added scripts/test-dev
 
+.gitlab-ci.yml
+- docker tag $CONTAINER_TEST_IMAGE $CONTAINER_BRANCH_IMAGE
+
 
 
 screen.scss
