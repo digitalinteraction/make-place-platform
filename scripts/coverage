@@ -11,6 +11,3 @@ php5enmod xdebug
 
 # Run our tests, generating a coverage report
 vendor/bin/phpunit --coverage-text
-
-# Export the coverage for CI
-cat mysite/coverage.txt
