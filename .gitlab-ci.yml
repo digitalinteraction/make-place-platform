@@ -33,6 +33,7 @@ test:
     script:
         - docker pull $CONTAINER_TEST_IMAGE
         - docker run $CONTAINER_TEST_IMAGE bash scripts/coverage
+        - docker tag $CONTAINER_TEST_IMAGE $CONTAINER_BRANCH_IMAGE
         - docker push $CONTAINER_BRANCH_IMAGE
 
 
