@@ -1,0 +1,18 @@
+---
+Name: surveys
+After:
+  - 'framework/*'
+  - 'cms/*'
+---
+
+
+
+SiteConfig:
+  extensions:
+    - SurveySiteConfigExtension
+
+
+
+Director:
+  rules:
+    's/$Survey': 'SurveyController'

@@ -19,21 +19,21 @@ stages:
     - deploy
     
 
-build_test_image:
-    image: docker:latest
-    when: manual
-    stage: deploy
-    script:
-        - docker build --pull -t $CONTAINER_TEST_IMAGE .
-        - docker push $CONTAINER_TEST_IMAGE
+# build_test_image:
+#     image: docker:latest
+#     when: manual
+#     stage: deploy
+#     script:
+#         - docker build --pull -t $CONTAINER_TEST_IMAGE .
+#         - docker push $CONTAINER_TEST_IMAGE
 
 test:
     image: docker:latest
     stage: test
     script:
-        - docker pull $CONTAINER_TEST_IMAGE
-        - docker run $CONTAINER_TEST_IMAGE bash scripts/coverage
-        - docker tag $CONTAINER_TEST_IMAGE $CONTAINER_BRANCH_IMAGE
+        - docker build --pull -t $CONTAINER_BRANCH_IMAGE
+        - docker run $CONTAINER_BRANCH_IMAGE bash scripts/coverage
+        # - docker tag $CONTAINER_TEST_IMAGE $CONTAINER_BRANCH_IMAGE
         - docker push $CONTAINER_BRANCH_IMAGE
 
 

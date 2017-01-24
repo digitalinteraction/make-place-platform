@@ -27,4 +27,15 @@ class SurveyTest extends SapphireTest {
         
         $this->assertEquals("my-fancy-survey", $survey->Handle);
     }
+    
+    public function testUniqueHandle() {
+        
+        $s1 = Survey::create(["Name" => "My Survey"]);
+        $s2 = Survey::create(["Name" => "My Survey"]);
+        
+        $s1->write();
+        $s2->write();
+        
+        $this->assertNotEquals($s1->Handle, $s2->Handle, "Survey's handle aren't unique");
+    }
 }

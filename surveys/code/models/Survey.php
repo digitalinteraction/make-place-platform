@@ -19,18 +19,32 @@ class Survey extends DataObject {
     public function onBeforeWrite() {
         parent::onBeforeWrite();
         
+        $otherHandles = Survey::get()->column('Handle');
+        
+        $extra = "";
+        $count = 1;
         $filter = URLSegmentFilter::create();
-		$this->Handle = $filter->filter($this->Name);
+        
+        do {
+            
+            $this->Handle = $filter->filter($this->Name . $extra);
+            $count++;
+            $extra = "-$count";
+            
+        }
+        while (in_array($this->Handle, $otherHandles));
+        
+        // More checks ...
     }
     
-    
+    /** Generate the fields to edit a Survey */
     public function getCMSFields() {
         
         // Get our parents fields
         $fields = parent::getCMSFields();
         
         
-        // Remove the default
+        // Remove the default values
         $fields->removeByName(['Name', 'Handle', 'Questions']);
         
         
@@ -50,5 +64,22 @@ class Survey extends DataObject {
         
         
         return $fields;
+    }
+    
+    
+    
+    
+    public function surveyUrl() {
+        
+        return "/s/$ID/submit";
+    }
+    
+    
+    
+    
+    
+    public function forTemplate() {
+        
+        return $this->renderWith("Survey");
     }
 }

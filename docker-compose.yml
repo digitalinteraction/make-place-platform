@@ -18,6 +18,8 @@ services:
             - ./themes:/app/themes
             - ./assets:/app/assets
             - ./scripts:/app/scripts
+            - ./surveys:/app/surveys
+            - ./phpunit.xml:/app/phpunit.xml
         environment:
             DB_HOST: mysql
             DB_USER: user
@@ -26,6 +28,7 @@ services:
             SITE_ENV: dev
             DEFAULT_USER: rob@veodesign.co.uk
             DEFAULT_PASS: password
+            PATH: '$PATH:/app/scripts'
     
     mysql:
         image: mysql:latest

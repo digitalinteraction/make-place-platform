@@ -1,0 +1,41 @@
+#!/bin/bash
+
+# No longer uses input params
+# PARAMS="${@:1}"
+
+
+# Setup in-memory SQLite database
+export DB_HOST=none DB_USER=none DB_PASS=none DB_NAME=db.sqlite DB_PATH=:memory: DB_TYPE=SQLite3Database SITE_ENV=dev HTTP_HOST=http://localhost REQUEST_METHOD=GET
+
+
+# Disable xdebug for quicker composer & tests
+php5dismod xdebug
+
+
+while true;
+do
+    
+    # Wait for a return & pass params to phpunit
+    read -p "Run Tests [enter]: " PARAMS
+    echo
+    echo -e "\e[33m[========= Starting Tests =========]\e[39m"
+    
+    # If q entered, do exit
+    [[ " q " == *" $PARAMS "* ]] && echo "Finished testing" && exit 0
+    
+    
+    # If flush passed, flush the cache
+    [[ " flush " == *" $PARAMS "* ]] && framework/sake dev/tests flush=1 >> /dev/null
+    
+    
+    # If 'coverage' is passed,  run the coverage
+    if [[ " coverage " == *" $PARAMS "* ]]; then
+        php5enmod xdebug
+        vendor/bin/phpunit --coverage-text
+        php5dismod xdebug
+    else
+        # Otherwise, just run unit tests
+        vendor/bin/phpunit --colors
+    fi
+    
+done

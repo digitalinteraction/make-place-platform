@@ -3,6 +3,7 @@ Name: mysite
 After:
   - 'framework/*'
   - 'cms/*'
+  - 'surveys/*'
 ---
 
 

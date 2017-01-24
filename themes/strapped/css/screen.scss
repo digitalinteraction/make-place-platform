@@ -117,10 +117,6 @@ header.top {
         
         .nav-item {
             
-            &.first a {
-                padding-left: 0px;
-            }
-            
             &.current a {
                 background-color: $bodyAltColour;
                 color: $textAltColour;

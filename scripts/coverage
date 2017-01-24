@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Setup in-memory SQLite database
-export DB_HOST=none DB_USER=none DB_PASS=none DB_NAME=db.sqlite DB_PATH=:memory: DB_TYPE=SQLite3Database SITE_ENV=dev
+export DB_HOST=none DB_USER=none DB_PASS=none DB_NAME=db.sqlite DB_PATH=:memory: DB_TYPE=SQLite3Database SITE_ENV=dev HTTP_HOST=http://localhost REQUEST_METHOD=GET
 
 # Disable xdebug for quicker composer
 php5dismod xdebug
@@ -10,7 +10,7 @@ php5dismod xdebug
 php5enmod xdebug
 
 # Run our tests, generating a coverage report
-vendor/bin/phpunit --coverage-text=mysite/coverage.txt mysite/tests
+vendor/bin/phpunit --coverage-text
 
 # Export the coverage for CI
 cat mysite/coverage.txt

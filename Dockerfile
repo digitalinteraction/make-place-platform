@@ -64,3 +64,4 @@ RUN crontab -u root cronjobs && rm cronjobs
 # Add my code to the build
 COPY mysite /app/mysite
 COPY themes /app/themes
+COPY surveys /app/surveys

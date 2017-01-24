@@ -64,5 +64,9 @@ class Page_Controller extends ContentController {
         
         // Custom code called whenever a page is rendered
         // ...
+        
+        
+        $this->Survey = Survey::get()->byID(1);
+        
     }
 }
