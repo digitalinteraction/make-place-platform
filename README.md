@@ -1,5 +1,5 @@
 [![build status](https://openlab.ncl.ac.uk/gitlab/b30282237/make-place/badges/master/build.svg)](https://openlab.ncl.ac.uk/gitlab/b30282237/make-place/commits/master)
-[![coverage report](https://openlab.ncl.ac.uk/gitlab/b30282237/ss-sample/badges/master/coverage.svg)](https://openlab.ncl.ac.uk/gitlab/b30282237/make-place/commits/master)
+[![coverage report](https://openlab.ncl.ac.uk/gitlab/b30282237/make-place/badges/master/coverage.svg)](https://openlab.ncl.ac.uk/gitlab/b30282237/make-place/commits/master)
 # Silverstripe Sample Project
 A skeleton project to bootstrap a [Silverstripe](https://www.silverstripe.org/) server to be deployed through `docker`/`dokku`
 
