@@ -22,7 +22,8 @@ class JsonText extends StringField {
     protected $jsonValue;
     
     
-    /** The function Silverstripe uses to setup the field */
+    /** The function Silverstripe uses to setup the field
+        @codeCoverageIgnore */
     public function requireField() {
         
         $parts = [

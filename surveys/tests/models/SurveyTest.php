@@ -23,7 +23,7 @@ class SurveyTest extends SapphireTest {
             "Name" => "My Fancy Survey"
         ]);
         
-        $survey->write();
+        $survey->onBeforeWrite();
         
         $this->assertEquals("my-fancy-survey", $survey->Handle);
     }
@@ -37,5 +37,14 @@ class SurveyTest extends SapphireTest {
         $s2->write();
         
         $this->assertNotEquals($s1->Handle, $s2->Handle, "Survey's handle aren't unique");
+    }
+    
+    public function testCmsFields() {
+        
+        $s1 = Survey::create(["Name" => "My Survey"]);
+        
+        $fields = $s1->getCMSFields();
+        
+        $this->assertTrue($fields->count() > 0);
     }
 }

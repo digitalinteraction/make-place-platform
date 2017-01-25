@@ -1,7 +1,5 @@
 <?php
-/*
- *  Tests JsonText field type
- */
+/* Tests JsonText field type */
 class JsonTextTest extends SapphireTest {
     
     protected $field = null;
