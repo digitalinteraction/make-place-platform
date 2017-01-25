@@ -7,11 +7,18 @@ class Survey extends DataObject {
     
     private static $db = [
         "Name" => "Varchar(255)",
-        "Handle" => "Varchar(255)"
+        "Handle" => "Varchar(255)",
+        "SubmitTitle" => "Varchar(255)",
+        "ClearTitle" => "Varchar(255)"
     ];
     
     private static $has_many = [
         "Questions" => "Question"
+    ];
+    
+    private static $defaults = [
+        "SubmitTitle" => "Submit",
+        "ClearTitle" => "Clear"
     ];
     
     
@@ -31,20 +38,20 @@ class Survey extends DataObject {
     public function onBeforeWrite() {
         parent::onBeforeWrite();
         
-        $otherHandles = Survey::get()->column('Handle');
-        
-        $extra = "";
-        $count = 1;
-        $filter = URLSegmentFilter::create();
-        
-        do {
+        if ($this->Handle == null) {
+            $otherHandles = Survey::get()->column('Handle');
             
-            $this->Handle = $filter->filter($this->Name . $extra);
-            $count++;
-            $extra = "-$count";
+            $extra = "";
+            $count = 1;
+            $filter = URLSegmentFilter::create();
             
+            do {
+                $this->Handle = $filter->filter($this->Name . $extra);
+                $count++;
+                $extra = "-$count";
+            }
+            while (in_array($this->Handle, $otherHandles));
         }
-        while (in_array($this->Handle, $otherHandles));
         
         // More checks ...
     }
@@ -52,19 +59,18 @@ class Survey extends DataObject {
     /** Generate the fields to edit a Survey */
     public function getCMSFields() {
         
-        // Get our parents fields
-        $fields = parent::getCMSFields();
+        // Create a list of fields
+        $fields = FieldList::create([
+            TabSet::create('Root', Tab::create('Main'))
+        ]);
         
         
-        // Remove the default values
-        $fields->removeByName(['Name', 'Handle', 'Questions']);
-        
-        
-        
-        // Add our fields in a better order
+        // Add our fields
         $fields->addFieldsToTab('Root.Main', [
             TextField::create('Name','Name'),
             ReadonlyField::create('Handle', 'Handle'),
+            TextField::create('SubmitTitle','Submit Title'),
+            TextField::create('ClearTitle','Clear Title'),
             GridField::create(
                 'Questions',
                 'Questions',
@@ -92,9 +98,8 @@ class Survey extends DataObject {
     
     
     
-    public function surveyUrl() {
-        
-        return "/s/$ID/submit";
+    public function getSurveyUrl() {
+        return "/s/{$this->ID}/submit";
     }
     
     
@@ -115,5 +120,17 @@ class Survey extends DataObject {
     public function forTemplate() {
         
         return $this->renderWith("Survey");
+    }
+    
+    
+    
+    
+    
+    public function getSecurityTokenName() {
+        return $this->getSecurityToken()->getName();
+    }
+    
+    public function getSecurityTokenValue() {
+        return $this->getSecurityToken()->getValue();
     }
 }

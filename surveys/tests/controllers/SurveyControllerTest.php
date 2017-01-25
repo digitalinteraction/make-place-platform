@@ -1,12 +1,17 @@
 <?php
 
-/***/
+/** ... */
 class SurveyControllerTest extends FunctionalTest {
     
     protected static $fixture_file = "surveys/tests/fixtures/survey.yml";
     
     protected $survey = null;
     
+    
+    
+    /*
+     *  Test Lifecycle
+     */
     public function setUp() {
         
         parent::setUp();
@@ -29,7 +34,12 @@ class SurveyControllerTest extends FunctionalTest {
         $this->assertEquals(2, $this->survey->Questions()->count());
     }
     
-    public function testSubmitRoute() {
+    
+    
+    /*
+     *  Basic Submission tests
+     */
+    public function testSubmitRouter() {
         
         // Create a response to the survey
         $data = $this->survey->generateData([
@@ -37,9 +47,12 @@ class SurveyControllerTest extends FunctionalTest {
             'question-b' => 'answer-b'
         ]);
         
+        
         $res = $this->post('s/1/submit', $data);
         
         $this->assertEquals(200, $res->getStatusCode());
+        
+        
     }
     
     public function testSubmitSurvey() {
@@ -71,11 +84,16 @@ class SurveyControllerTest extends FunctionalTest {
         // See if a surveyResponse was created
         $response = SurveyResponse::get()->first();
         
-        // $json = $response->jsonField('Responses');
+        $json = $response->jsonField('Responses');
         
-        // $this->assertEquals($data['Fields'], $json);
+        $this->assertEquals($data['Fields'], $json);
     }
     
+    
+    
+    /*
+     *  Submission edge cases
+     */
     public function testSubmitRequiresLogin() {
         
         $this->member->logOut();
@@ -121,6 +139,20 @@ class SurveyControllerTest extends FunctionalTest {
         
         $res = $this->post('s/1/submit', $data);
         
+        $this->assertEquals(404, $res->getStatusCode());
+    }
+    
+    public function testSubmitFailsOnGet() {
+    
+        $data = $this->survey->generateData([
+            'question-a' => 'answer-a',
+            'question-b' => 'answer-b'
+        ]);
+        
+        $url = 's/1/submit' . http_build_query($data, '?');
+    
+        $res = $this->get($url);
+    
         $this->assertEquals(404, $res->getStatusCode());
     }
 }

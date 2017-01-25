@@ -15,7 +15,11 @@
                     
                     <hr>
                     
-                    $Survey
+                    <div class="row">
+                        <div class="col-sm-6">
+                            $Survey
+                        </div>
+                    </div>
                     
                 </div>
                 

@@ -38,7 +38,7 @@ class SurveyController extends Controller {
         
         // Get parameters from the request
         $surveyId = $this->postVar('SurveyID', $errors);
-        $userId = Member::currentUserId();
+        $userId = Member::currentUserID();
         $fields = $this->postVar('Fields', $errors);
         $token = $this->postVar('SecurityID', $errors);
         
@@ -70,11 +70,18 @@ class SurveyController extends Controller {
         // Generate a SurveyResponse & save it
         $response = SurveyResponse::create([
             'SurveyID' => $surveyId,
+            'MemberID' => $userId,
             'UserID' => $userId,
             'Responses' => $fields,
         ]);
         
         $response->write();
+        
+        
+        // If not ajax or command-line, redirect back
+        if (isset($_SERVER['X_HTTP_REQUEST']) == false && Director::is_cli() == false) {
+            return $this->redirectBack();
+        }
     }
     
     

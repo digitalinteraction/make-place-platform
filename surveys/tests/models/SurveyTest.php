@@ -57,4 +57,73 @@ class SurveyTest extends SapphireTest {
         
         $this->assertNotNull($survey->getSecurityToken());
     }
+    
+    public function testHandleWhenItsSet() {
+        
+        $survey = new Survey([
+            "Name" => "My Fancy Survey"
+        ]);
+        
+        // Write the survey to generate a handle
+        $survey->write();
+        $first = $survey->Handle;
+        
+        
+        // Write the survey again
+        $survey->write();
+        $second = $survey->Handle;
+        
+        // Test the handle didn't change
+        $this->assertEquals($first, $second);
+    }
+    
+    public function testToggleSecurity() {
+        
+        $survey = Survey::create([
+            "Name" => "My Fancy Survey"
+        ]);
+        
+        $survey->toggleSecurity(false);
+        
+        $this->assertTrue(is_a($survey->getSecurityToken(), 'NullSecurityToken'));
+    }
+    
+    public function testSurveyUrl() {
+        
+        $survey = Survey::create([
+            "Name" => "My Fancy Survey"
+        ]);
+        $survey->write();
+        
+        $this->assertEquals("/s/{$survey->ID}/submit", $survey->getSurveyUrl());
+    }
+    
+    public function testGenerateData() {
+        
+        $survey = Survey::create([
+            "Name" => "My Fancy Survey"
+        ]);
+        
+        $fields = [
+            'field' => 'value'
+        ];
+        
+        $data = $survey->generateData($fields);
+        
+        $this->assertEquals($fields, $data['Fields']);
+    }
+    
+    
+    
+    /*
+     *  Test rendering
+     */
+    public function testRender() {
+        
+        $survey = Survey::create([
+            "Name" => "My Fancy Survey"
+        ]);
+        
+        $this->assertNotNull($survey->forTemplate());
+    }
 }

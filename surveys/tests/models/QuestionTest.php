@@ -10,6 +10,8 @@ class MockQuestion extends Question {
             TextField::create('TestField', 'TestField')
         ];
     }
+    
+    protected $extraClasses = ['new-class'];
 }
 
 class SomeComplexMockQuestion extends Question {
@@ -19,18 +21,24 @@ class SomeComplexMockQuestion extends Question {
 class QuestionTest extends SapphireTest {
     
     
+    protected $question = null;
+    
+    
+    /*
+     *  Testing lifecycle
+     */
     public function setUp() {
         
         parent::setUp();
         
-        // ...
+        $this->question = MockQuestion::create(["Name", "Question"]);
     }
     
-    public function testInit() {
-        
-        $this->assertTrue(true);
-    }
     
+    
+    /*
+     *  Test Handle
+     */
     public function testHandleGeneration() {
         
         $question = Question::create([
@@ -42,23 +50,33 @@ class QuestionTest extends SapphireTest {
         $this->assertEquals("my-fancy-question", $question->Handle);
     }
     
-    public function testTypeField() {
+    public function testHandleWhenItsAlreadySet() {
         
-        $question = Question::create([
-            "Name" => "Test Question"
-        ]);
+        $question = MockQuestion::create(["Name" => "Question"]);
         
-        $types = $question->availableTypes();
+        $survey = Survey::create(["Name" => "Survey"]);
+        $survey->write();
         
-        $this->assertTrue(count($types) > 0);
+        
+        $question->SurveyID = $survey->ID;
+        
+        $question->write();
+        $first = $question->Handle;
+        
+        $question->write();
+        $second = $question->Handle;
+        
+        
+        // Test the handle didn't change
+        $this->assertEquals($first, $second);
     }
     
-    public function testHandleCheck() {
+    public function testHandleIsUnique() {
         
-        $q1 = Question::create(array("Name" => "Question"));
-        $q2 = Question::create(array("Name" => "Question"));
+        $q1 = Question::create(["Name" => "Question"]);
+        $q2 = Question::create(["Name" => "Question"]);
         
-        $survey = Survey::create(array("Name" => "Survey"));
+        $survey = Survey::create(["Name" => "Survey"]);
         $survey->write();
         
         $q1->SurveyID = $survey->ID;
@@ -70,16 +88,52 @@ class QuestionTest extends SapphireTest {
         $this->assertNotEquals($q1->Handle, $q2->Handle);
     }
     
+    
+    
+    /*
+     *  Test types field
+     */
+    public function testTypeField() {
+        
+        $question = Question::create(["Name" => "Question"]);
+        
+        $types = $question->availableTypes();
+        
+        $this->assertTrue(count($types) > 0);
+    }
+    
+    public function testFriendlyNames() {
+        
+        $types = $this->question->availableTypes();
+        
+        $this->assertTrue(in_array("Mock", $types), "Question didn't format the ClassName");
+    }
+    
+    public function testFriendlyNamesSpaces() {
+        
+        $types = $this->question->availableTypes();
+        
+        $this->assertTrue(in_array("Some Complex Mock", $types), "Question didn't add spaces to ClassName");
+    }
+    
+    
+    
+    /*
+     *  Test extra fields
+     */
+    public function testExtraFieldsDefault() {
+        
+        $question = Question::create(["Name", "Question"]);
+        $this->assertEquals(0, count($question->extraFields()));
+    }
+    
     public function testExtraFields() {
         
-        // Create a test question
-        $q1 = MockQuestion::create(array("Name", "Question"));
-        
         // Set the id to mock an init
-        $q1->ID = 1;
+        $this->question->ID = 1;
         
         // Get the fields
-        $fields = $q1->getCMSFields();
+        $fields = $this->question->getCMSFields();
         
         // Find the field that should have been added
         $extraField = $fields->fieldByName('Root.Main.TestField');
@@ -90,11 +144,8 @@ class QuestionTest extends SapphireTest {
     
     public function testExtraFieldsWithoutInit() {
         
-        // Create a test question
-        $q1 = MockQuestion::create(array("Name", "Question"));
-        
         // Get the fields
-        $fields = $q1->getCMSFields();
+        $fields = $this->question->getCMSFields();
         
         // Find if the field was added
         $extraField = $fields->fieldByName('Root.Main.TestField');
@@ -103,22 +154,40 @@ class QuestionTest extends SapphireTest {
         $this->assertNull($extraField, "Extrafields was added");
     }
     
-    public function testFriendlyNames() {
+    
+    
+    /*
+     *  Test render
+     */
+    public function testRendering() {
         
-        $q1 = Question::create(array("Name", "Question"));
-        
-        $types = $q1->availableTypes();
-        
-        $this->assertTrue(in_array("Mock", $types), "Question didn't format the ClassName");
+        $this->assertNotNull($this->question->forTemplate());
     }
     
-    public function testFriendlyNamesSpaces() {
+    public function testRenderField() {
         
-        $q1 = Question::create(array("Name", "Question"));
-        
-        $types = $q1->availableTypes();
-        
-        $this->assertTrue(in_array("Some Complex Mock", $types), "Question didn't add spaces to ClassName");
+        $this->assertNotNull($this->question->renderField());
     }
     
+    
+    
+    /*
+     *  Test Properties
+     */
+    public function testDefaultType() {
+        
+        $this->assertEquals("text", $this->question->getType());
+    }
+    
+    public function testFieldName() {
+        
+        $this->question->Handle = "test";
+        
+        $this->assertEquals("Fields[test]", $this->question->getFieldName());
+    }
+    
+    public function testClasses() {
+        
+        $this->assertEquals('control new-class', $this->question->getClasses());
+    }
 }
