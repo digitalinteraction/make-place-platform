@@ -1,7 +1,7 @@
  # ...
 
 variables:
-    CONTAINER_TEST_IMAGE: $CI_REGISTRY_IMAGE:testing
+    CONTAINER_BASE_IMAGE: $CI_REGISTRY_IMAGE:base
     CONTAINER_BRANCH_IMAGE: $CI_REGISTRY_IMAGE:$CI_BUILD_REF_NAME
     CONTAINER_RELEASE_IMAGE: $CI_REGISTRY_IMAGE:$VERSION_NUMBER
     DOCKER_DRIVER: overlay
@@ -19,13 +19,13 @@ stages:
     - deploy
     
 
-# build_test_image:
-#     image: docker:latest
-#     when: manual
-#     stage: deploy
-#     script:
-#         - docker build --pull $CONTAINER_TEST_IMAGE .
-#         - docker push $CONTAINER_TEST_IMAGE
+build_base_image:
+    image: docker:latest
+    when: manual
+    stage: deploy
+    script:
+        - docker build --pull $CONTAINER_TEST_IMAGE -f base.Dockerfile .
+        - docker push $CONTAINER_TEST_IMAGE
 
 test:
     image: docker:latest
@@ -33,7 +33,6 @@ test:
     script:
         - docker build --pull -t $CONTAINER_BRANCH_IMAGE .
         - docker run $CONTAINER_BRANCH_IMAGE bash scripts/coverage
-        # - docker tag $CONTAINER_TEST_IMAGE $CONTAINER_BRANCH_IMAGE
         - docker push $CONTAINER_BRANCH_IMAGE
 
 
