@@ -75,7 +75,9 @@ if (isset($_SERVER['HTTP_HOST'])) {
 else if (isset($_SERVER["CUSTOM_DOMAIN"])) {
     $_FILE_TO_URL_MAPPING['/app'] = $_SERVER["CUSTOM_DOMAIN"];
 }
-
+else {
+    $_FILE_TO_URL_MAPPING['/app'] = 'http://localhost';
+}
 
 // Set where to store the session
 ini_set('session.save_path', "/app/silverstripe-cache");

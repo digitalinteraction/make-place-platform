@@ -25,7 +25,11 @@ do
     
     
     # If flush passed, flush the cache
-    [[ " flush " == *" $PARAMS "* ]] && framework/sake dev/tests flush=1 >> /dev/null
+    [[ " flush " == *" $PARAMS "* ]] && {
+        unset HTTP_HOST
+        framework/sake dev/tests flush=1 >> /dev/null
+        export HTTP_HOST=http://localhost
+    }
     
     
     # If 'coverage' is passed,  run the coverage

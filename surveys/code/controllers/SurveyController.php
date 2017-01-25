@@ -33,11 +33,62 @@ class SurveyController extends Controller {
     
     public function submitSurvey() {
         
-        // $post = $this->request->postVars();
-        // var_dump($post);
+        $errors = [];
         
-        // return $this->Survey->Name . ': submit';
         
-        // return $this->httpError(404);
+        // Get parameters from the request
+        $surveyId = $this->postVar('SurveyID', $errors);
+        $userId = Member::currentUserId();
+        $fields = $this->postVar('Fields', $errors);
+        $token = $this->postVar('SecurityID', $errors);
+        
+        
+        // Check there is a user logged in
+        if ($userId == null) {
+            $errors[] = "You need to be logged in to do that";
+        }
+        
+        
+        // Check the survey exists
+        if (Survey::get()->byIDs([$surveyId])->exists() == false) {
+            $errors[] = "That survey doesn't exist";
+        }
+        
+        
+        // Check the security token matches
+        if ($token != (new SecurityToken())->getValue()) {
+            $errors[] = "Validation failed, please submit again";
+        }
+        
+        
+        // If there is any errors, stop here
+        if (count($errors) > 0) {
+            // var_dump($errors);
+            return $this->httpError(404);
+        }
+        
+        // Generate a SurveyResponse & save it
+        $response = SurveyResponse::create([
+            'SurveyID' => $surveyId,
+            'UserID' => $userId,
+            'Responses' => $fields,
+        ]);
+        
+        $response->write();
+    }
+    
+    
+    
+    
+    /*
+     *  Utils
+     */
+    protected function postVar($name, &$errors) {
+        
+        if ($this->request->postVar($name) != null) {
+            return $this->request->postVar($name);
+        }
+        
+        $errors[] = "Please provide '$name'";
     }
 }

@@ -12,6 +12,14 @@ class SurveyControllerTest extends FunctionalTest {
         parent::setUp();
         
         
+        $this->member = Member::create([
+            "Email" => "test@gmail.com"
+        ]);
+        $this->member->write();
+        
+        $this->logInAs($this->member);
+        
+        
         $this->survey = $this->objFromFixture('Survey', 'surveyA');
     }
     
@@ -24,16 +32,95 @@ class SurveyControllerTest extends FunctionalTest {
     public function testSubmitRoute() {
         
         // Create a response to the survey
-        $data = [
-            'id' => $this->survey->ID,
-            'fields' => [
-                'question-a' => 'answer-a',
-                'question-b' => 'answer-b'
-            ]
-        ];
+        $data = $this->survey->generateData([
+            'question-a' => 'answer-a',
+            'question-b' => 'answer-b'
+        ]);
         
         $res = $this->post('s/1/submit', $data);
         
         $this->assertEquals(200, $res->getStatusCode());
+    }
+    
+    public function testSubmitSurvey() {
+        
+        // Create a response to the survey
+        $data = $this->survey->generateData([
+            'question-a' => 'answer-a',
+            'question-b' => 'answer-b'
+        ]);
+        
+        $res = $this->post('s/1/submit', $data);
+        
+        // See if a surveyResponse was created
+        $response = SurveyResponse::get()->first();
+        
+        $this->assertNotNull($response);
+    }
+    
+    public function testSubmitFields() {
+        
+        // Create a response to the survey
+        $data = $this->survey->generateData([
+            'question-a' => 'answer-a',
+            'question-b' => 'answer-b'
+        ]);
+        
+        $res = $this->post('s/1/submit', $data);
+        
+        // See if a surveyResponse was created
+        $response = SurveyResponse::get()->first();
+        
+        // $json = $response->jsonField('Responses');
+        
+        // $this->assertEquals($data['Fields'], $json);
+    }
+    
+    public function testSubmitRequiresLogin() {
+        
+        $this->member->logOut();
+        
+        // Create a response to the survey
+        $data = $this->survey->generateData([
+            'question-a' => 'answer-a',
+            'question-b' => 'answer-b'
+        ]);
+        
+        $res = $this->post('s/1/submit', $data);
+        
+        // See if a surveyResponse was created
+        $response = SurveyResponse::get()->first();
+        
+        $this->assertEquals(404, $res->getStatusCode());
+    }
+    
+    public function testSubmitSurveyMustExist() {
+        
+        // Create a response to the survey
+        $data = $this->survey->generateData([
+            'question-a' => 'answer-a',
+            'question-b' => 'answer-b'
+        ]);
+        
+        $data['SurveyID'] = '2';
+        
+        $res = $this->post('s/1/submit', $data);
+        
+        // Check the response failed
+        $this->assertEquals(404, $res->getStatusCode());
+    }
+    
+    public function testSubmitInvalidSecurityKey() {
+        
+        $data = $this->survey->generateData([
+            'question-a' => 'answer-a',
+            'question-b' => 'answer-b'
+        ]);
+        
+        $data['SecurityID'] = 'Error';
+        
+        $res = $this->post('s/1/submit', $data);
+        
+        $this->assertEquals(404, $res->getStatusCode());
     }
 }

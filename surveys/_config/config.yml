@@ -16,3 +16,9 @@ SiteConfig:
 Director:
   rules:
     's/$Survey': 'SurveyController'
+
+
+
+SurveyResponse:
+  extensions:
+    - JsonFieldExtension

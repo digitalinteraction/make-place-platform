@@ -47,4 +47,14 @@ class SurveyTest extends SapphireTest {
         
         $this->assertTrue($fields->count() > 0);
     }
+    
+    
+    public function testSecurityToken() {
+        
+        $survey = Survey::create([
+            "Name" => "My Fancy Survey"
+        ]);
+        
+        $this->assertNotNull($survey->getSecurityToken());
+    }
 }

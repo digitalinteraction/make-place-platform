@@ -15,6 +15,18 @@ class Survey extends DataObject {
     ];
     
     
+    protected $securityToken = null;
+    
+    
+    
+    function __construct($record = null, $isSingleton = false, $model = null) {
+        
+        parent::__construct($record, $isSingleton, $model);
+        
+        $this->toggleSecurity(true);
+    }
+    
+    
     /** Event handler called before writing to the database */
     public function onBeforeWrite() {
         parent::onBeforeWrite();
@@ -69,9 +81,31 @@ class Survey extends DataObject {
     
     
     
+    public function toggleSecurity($secure) {
+        $this->securityToken = ($secure) ? new SecurityToken() : new NullSecurityToken();
+    }
+    
+    public function getSecurityToken() {
+        return $this->securityToken;
+    }
+    
+    
+    
+    
     public function surveyUrl() {
         
         return "/s/$ID/submit";
+    }
+    
+    
+    
+    public function generateData($fields) {
+        
+        return [
+            'SurveyID' => $this->ID,
+            $this->getSecurityToken()->getName() => $this->getSecurityToken()->getValue(),
+            'Fields' => $fields
+        ];
     }
     
     
