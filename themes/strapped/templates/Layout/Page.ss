@@ -12,13 +12,11 @@
                 
                 <div class="content">
                     $Content
-                    
-                    <hr>
-                    
-                    <div class="row">
-                        <div class="col-sm-6">
-                            $Survey
-                        </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-xs-6">
+                        $Survey
                     </div>
                     
                 </div>

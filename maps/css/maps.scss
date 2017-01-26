@@ -1,0 +1,58 @@
+
+// Variables
+// ...
+
+
+// Styles
+
+.MapPage {
+    
+    header.top {
+        // ...
+    }
+    
+    .main {
+        
+        padding: 0px;
+        
+        #map-app {
+            
+            background: #fafafa;
+            position: relative;
+            
+            .add-button {
+                position: absolute;
+                top: 20px;
+                right: 20px;
+                z-index: 1;
+                
+                background: #5cb85c;
+                border-radius: 5px;
+                color: white;
+                padding: 8px 18px;
+                cursor: pointer;
+                
+                border: 1px solid #4cae4c;
+                
+                font-size: 16px;
+                
+                box-shadow: 1px 1px 1px #666;
+                
+                &:hover {
+                    background-color: #449d44;
+                    border-color: #398439;
+                }
+            }
+            
+            #map {
+                width: 100%;
+                height: 100%;
+                // padding-bottom: percentage(9/16);
+            }
+        }
+    }
+    
+    footer.bottom {
+        // ...
+    }
+}

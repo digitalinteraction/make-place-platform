@@ -1,0 +1,12 @@
+---
+Name: maps
+After:
+  - 'framework/*'
+  - 'cms/*'
+---
+
+
+
+SiteConfig:
+  extensions:
+    - MapsSiteConfigExtension

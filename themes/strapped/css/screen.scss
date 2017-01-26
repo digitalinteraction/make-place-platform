@@ -73,18 +73,21 @@ body {
     .main {
         padding: 40px 0px;
         
+        .container, .fluid-container {
+            background: $bodyColour;
+            
+            .jumbotron {
+                background: $bodyAltColour;
+            }
+        }
+        
         .container {
             padding: 25px;
-            background: $bodyColour;
             
             border-radius: 10px;
             border: 1px solid $borderColour;
             
             @extend .default-shadow;
-            
-            .jumbotron {
-                background: $bodyAltColour;
-            }
         }
     }
 }

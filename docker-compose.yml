@@ -19,6 +19,7 @@ services:
             - ./assets:/app/assets
             - ./scripts:/app/scripts
             - ./surveys:/app/surveys
+            - ./maps:/app/maps
             - ./phpunit.xml:/app/phpunit.xml
         environment:
             DB_HOST: mysql

@@ -5,6 +5,7 @@
         <testsuite name="mysite">
             <directory>mysite</directory>
             <directory>surveys</directory>
+            <directory>maps</directory>
         </testsuite>
         
     </testsuites>
@@ -13,6 +14,7 @@
         <whitelist processUncoveredFilesFromWhitelist="true">
             <directory suffix=".php">mysite/code</directory>
             <directory suffix=".php">surveys/code</directory>
+            <directory suffix=".php">maps/code</directory>
         </whitelist>
     </filter>
 
