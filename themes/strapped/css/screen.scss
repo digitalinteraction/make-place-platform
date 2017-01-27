@@ -101,6 +101,9 @@ header.top {
     
     @extend .default-shadow;
     
+    position: absolute;
+    top: 0px; left: 0px; right: 0px;
+    
     .navbar {
         background: $bodyColour;
         margin-bottom: 0px;
@@ -148,7 +151,6 @@ footer {
     
     text-align: right;
     padding-top: 30px;
-    margin-top: 20px;
     background: $bodyColour;
     
     position: absolute;

@@ -5,10 +5,23 @@
 var setupMap;
 
 
-(function(Vue) {
+(function($, Vue) {
     'use strict';
     
     // ...
+    
+    
+    $(document).ready(function() {
+        
+        $(window).resize(function() {
+            
+            $(".MapPage .main").height(
+                $(window).height() - $("header").outerHeight() - $("footer").outerHeight()
+            );
+        }).resize();
+    });
+    
+    
     
     var myMap = document.getElementById('map-app');
     
@@ -36,4 +49,4 @@ var setupMap;
     };
     
     
-})(Vue);
+})($, Vue);

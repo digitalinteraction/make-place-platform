@@ -14,8 +14,11 @@
                     $Content
                 </div>
                 
-                $Form
-                $CommentsForm
+                <div class="row">
+                    <div class="col-sm-6">
+                        $Survey
+                    </div>
+                </div>
                 
             </article>
             

@@ -7,39 +7,21 @@
 <%-- TODO: Get working with themedCSS --%>
 <% require css('maps/css/maps.css') %>
 
-<div class="fluid-container">
-    
-    <div class="row">
-        
-        <div class="$MainContentColumns">
-            
-            <article>
+
                 
-                <div class="page-top">
-                    <% include PageTitle %>
-                    <div class="content"> $Content </div>
-                </div>
-                
-                <div id="map-app" data-center-lat="$StartLat" data-center-lng="$StartLng" data-center-zoom="$StartZoom">
-                    <% if AddButton %>
-                        <div class="add-button">
-                            <i class="fa fa-plus" aria-hidden="true"></i>
-                            $AddButton
-                        </div>
-                    <% end_if %>
-                    <div id="map"></div>
-                </div>
-                
-            </article>
-            
+<%-- <div class="page-top">
+    <% include PageTitle %>
+    <div class="content"> $Content </div>
+</div> --%>
+
+<div id="map-app" data-center-lat="$StartLat" data-center-lng="$StartLng" data-center-zoom="$StartZoom">
+    <% if AddButton %>
+        <div class="add-button">
+            <i class="fa fa-plus" aria-hidden="true"></i>
+            $AddButton
         </div>
-        
-        <div class="$SidebarColumns">
-            <% include Sidebar %>
-        </div>
-        
-    </div>
-    
+    <% end_if %>
+    <div id="map"></div>
 </div>
 
 
