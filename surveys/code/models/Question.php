@@ -93,10 +93,6 @@ class Question extends DataObject {
         
         
         // If the subclass does add fields, add a header and the fields
-        // $fields->addFieldsToTab('Root.Main', array_merge([
-        //     HeaderField::create('Extra', 'Question Properties', 2)
-        // ], $extraFields));
-        
         $fields->addFieldsToTab('Root.Main', array_merge(
             [HeaderField::create('PropertiesLabel', 'Question Properties', 2)],
             $extraFields
@@ -111,25 +107,7 @@ class Question extends DataObject {
     
     public function availableTypes() {
         
-        // Get our subclasses
-        $subclasses = ClassInfo::subclassesFor(get_class());
-        
-        // For some reason it includes question too
-        // Remove that
-        unset($subclasses['Question']);
-        
-        // Give them readable names
-        // -> removes 'Question' from the end
-        // -> adds spaces between words
-        //    ref: http://stackoverflow.com/questions/1089613/php-put-a-space-in-front-of-capitals-in-a-string-regex
-        foreach ($subclasses as $key => $value) {
-            
-            $nameName = str_replace("Question", "", $key);
-            $subclasses[$key] = trim(preg_replace('/(?<!\ )[A-Z]/', ' $0', $nameName));
-        }
-        
-        // Return just the values
-        return $subclasses;
+        return ClassUtils::getSubclasses('Question', 'Question');
     }
     
     public function extraFields() {

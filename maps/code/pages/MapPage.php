@@ -12,6 +12,10 @@ class MapPage extends Page {
         'StartZoom' => 'Int'
     ];
     
+    private static $has_many = [
+        'MapComponents' => 'MapComponent'
+    ];
+    
     private static $defaults = [
         'StartLat' => 54.978042,
         'StartLng' => -1.6136365,
@@ -30,6 +34,15 @@ class MapPage extends Page {
                 NumericField::create('StartLng', 'Longitude'),
                 NumericField::create('StartZoom', 'Zoom')
             ])
+        ]);
+        
+        $fields->addFieldsToTab('Root.Components', [
+            GridField::create(
+                'MapComponents',
+                'Components',
+                $this->MapComponents(),
+                GridFieldConfig_RelationEditor::create()
+            )
         ]);
     
         return $fields;

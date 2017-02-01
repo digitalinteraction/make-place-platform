@@ -1,10 +1,13 @@
 <?php
 
 
-// NOTE: Not worth getting the dynamic routing working now
 
-
-/** Adds survey properties to the SiteConfig */
+/**
+ * Adds survey properties to the SiteConfig
+ * NOTE: Not worth getting the dynamic routing working now
+ *
+ * @codeCoverageIgnore
+ */
 class SurveySiteConfigExtension extends DataExtension {
     
     private static $db = [

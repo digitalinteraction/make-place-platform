@@ -111,7 +111,7 @@ class QuestionTest extends SapphireTest {
     
     public function testFriendlyNamesSpaces() {
         
-        $types = $this->question->availableTypes();
+        $types = Question::create()->availableTypes();
         
         $this->assertTrue(in_array("Some Complex Mock", $types), "Question didn't add spaces to ClassName");
     }

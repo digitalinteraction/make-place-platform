@@ -1,7 +1,7 @@
 <?php
 
 
-class MockSiteConfig extends DataObject {
+class MockSurveySiteConfig extends DataObject {
 
 
 }
@@ -12,18 +12,18 @@ class SurveySiteConfigExtensionTest extends SapphireTest {
     public function setUpOnce() {
         parent::setUpOnce();
         
-        MockSiteConfig::add_extension('SurveySiteConfigExtension');
+        MockSurveySiteConfig::add_extension('SurveySiteConfigExtension');
     }
     
     
     public function testExtensionAdded() {
         
-        $this->assertTrue(MockSiteConfig::has_extension('SurveySiteConfigExtension'));
+        $this->assertTrue(MockSurveySiteConfig::has_extension('SurveySiteConfigExtension'));
     }
     
     public function testSegment() {
         
-        $config = MockSiteConfig::create(array(
+        $config = MockSurveySiteConfig::create(array(
             "SurveySegment" => "Something unacceptable"
         ));
         $config->onBeforeWrite();
@@ -33,15 +33,13 @@ class SurveySiteConfigExtensionTest extends SapphireTest {
     
     public function testDefaults() {
         
-        $config = MockSiteConfig::create();
+        $config = MockSurveySiteConfig::create();
         $this->assertEquals('surveys', $config->SurveySegment);
     }
     
     // public function testAddRules() {
     //
-    //     // echo "Inbound";
-    //
-    //     $config = MockSiteConfig::create([
+    //     $config = MockSurveySiteConfig::create([
     //         "SurveySegment" => "Surveys"
     //     ]);
     //
