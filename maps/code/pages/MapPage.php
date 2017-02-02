@@ -53,5 +53,34 @@ class MapPage extends Page {
 /** ... */
 class MapPage_Controller extends Page_Controller {
     
-    // ...
+    private static $allowed_actions = [
+        'mapConfig'
+    ];
+    
+    
+    
+    public function mapConfig() {
+        
+        // Add our base values
+        $json = [
+            'page' => [
+                'title' => $this->Title,
+                'startLat' => $this->StartLat,
+                'startLng' => $this->StartLng,
+                'startZoom' => $this->StartZoom,
+            ],
+            'components' => []
+        ];
+        
+        // Add values for each component
+        foreach ($this->MapComponents() as $component) {
+            $json['components'][] = $component->configData();
+        }
+        
+        
+        $this->getResponse()->addHeader("Content-Type", "application/json");
+        $this->getResponse()->setBody(json_encode($json));
+        
+        return $this->response;
+    }
 }

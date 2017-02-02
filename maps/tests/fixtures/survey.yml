@@ -1,0 +1,17 @@
+Question:
+    question1:
+        Name: 'Question A'
+        Handle: 'question-a'
+    question2:
+        Name: 'Question B'
+        Handle: 'question-b'
+
+Survey:
+    surveyA:
+        Name: 'Some Survey'
+        Handle: 'some-survey'
+        Questions: =>Question.question1,=>Question.question2
+
+SurveyMapComponent:
+    componentA:
+        Survey: =>Survey.surveyA

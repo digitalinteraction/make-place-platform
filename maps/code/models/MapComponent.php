@@ -50,17 +50,9 @@ class MapComponent extends DataObject {
             return $fields;
         }
         
-        // If the subclass doesn't add extra fields, don't add any more fields
-        $extraFields = $this->extraFields();
-        if (count($extraFields) == 0) {
-            return $fields;
-        }
+        // Let the sub-types add their own fields
+        $this->addExtraFields($fields);
         
-        // If the subclass does add fields, add a header and the fields
-        $fields->addFieldsToTab('Root.Main', array_merge(
-            [HeaderField::create('PropertiesLabel', 'Question Properties', 2)],
-            $extraFields
-        ));
         
         return $fields;
     }
@@ -73,7 +65,14 @@ class MapComponent extends DataObject {
         return ClassUtils::getSubclasses('MapComponent', 'MapComponent');
     }
     
-    public function extraFields() {
-        return [];
+    public function addExtraFields(FieldList $fields) {
+        // Override in subclasses
+    }
+    
+    
+    public function configData() {
+        return [
+            'type' => $this->ClassName
+        ];
     }
 }

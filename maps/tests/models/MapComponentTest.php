@@ -2,8 +2,11 @@
 
 class MockMapComponent extends MapComponent {
     
-    public function extraFields() {
-        return [ TextField::create('TestField', 'TestField') ];
+    public function addExtraFields(FieldList $fields) {
+        
+        $fields->addFieldsToTab('Root.Main', [
+            TextField::create('TestField', 'TestField')
+        ]);
     }
 }
 
@@ -46,11 +49,6 @@ class MapComponentTest extends SapphireTest {
         $this->assertTrue(count($types) > 0);
     }
     
-    public function testDefaultExtraFields() {
-        
-        $this->assertEquals(0, count($this->component->extraFields()));
-    }
-    
     public function testAddsExtraFields() {
         
         $mockComp = MockMapComponent::create();
@@ -83,4 +81,14 @@ class MapComponentTest extends SapphireTest {
     }
     
     
+    
+    
+    public function testDefaultConfigData() {
+        
+        $expected = [
+            'type' => 'MapComponent'
+        ];
+        
+        $this->assertEquals($expected, $this->component->configData());
+    }
 }

@@ -15,7 +15,7 @@
         "silverstripe/sqlite3": "1.4.0"
     },
     "require-dev": {
-        "phpunit/PHPUnit": "~3.7@stable"
+        "phpunit/PHPUnit": "~4.4@stable"
     },
     "extra": {
         "branch-alias": {

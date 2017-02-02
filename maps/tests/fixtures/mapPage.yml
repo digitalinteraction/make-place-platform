@@ -1,0 +1,12 @@
+SurveyMapComponent:
+    surveyComp:
+        Name: 'Survey'
+
+MapPage:
+    map:
+        Title: 'Map'
+        URLSegment: 'map'
+        StartLat: 10
+        StartLng: 20
+        StartZoom: 15
+        MapComponents: =>SurveyMapComponent.surveyComp

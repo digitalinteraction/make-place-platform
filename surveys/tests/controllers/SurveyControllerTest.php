@@ -82,7 +82,7 @@ class SurveyControllerTest extends FunctionalTest {
         $res = $this->post('s/1/submit', $data);
         
         // See if a surveyResponse was created
-        $response = SurveyResponse::get()->first();
+        $response = SurveyResponse::get()->last();
         
         $json = $response->jsonField('Responses');
         
@@ -128,7 +128,7 @@ class SurveyControllerTest extends FunctionalTest {
         $this->assertEquals(404, $res->getStatusCode());
     }
     
-    public function testSubmitInvalidSecurityKey() {
+    public function testSubmitWithInvalidSecurityKey() {
         
         $data = $this->survey->generateData([
             'question-a' => 'answer-a',
@@ -154,5 +154,60 @@ class SurveyControllerTest extends FunctionalTest {
         $res = $this->get($url);
     
         $this->assertEquals(404, $res->getStatusCode());
+    }
+    
+    public function testSubmitWithIncorrectSurveyID() {
+        
+        // Make another survey
+        Survey::create()->write();
+        
+        $data = $this->survey->generateData([
+            'question-a' => 'answer-a',
+            'question-b' => 'answer-b'
+        ]);
+        
+        $res = $this->post('s/2/submit', $data);
+        
+        $this->assertEquals(404, $res->getStatusCode());
+    }
+    
+    
+    
+    /*
+     *  Responses test
+     */
+    public function testGetResponses() {
+        
+        $res = $this->get('s/1/responses');
+        $json = json_decode($res->getBody(), true);
+        
+        $this->assertEquals(2, count($json));
+        
+        $expected = [
+            'surveyId' => 1,
+            'memberId' => 1,
+            'lat' => 10.0,
+            'lng' => 20.0,
+            'responses' => [
+                'question-a' => 'abc',
+                'question-b' => '123'
+            ]
+        ];
+        
+        $this->assertEquals($expected, $json[0]);
+    }
+    
+    public function testGetResponseWithGeo() {
+        
+        SurveyResponse::create([
+            "SurveyID" => 1,
+            "MemberID" => 2,
+            "Responses" => '{"a": "b"}'
+        ])->write();
+        
+        $res = $this->get('s/1/responses?onlygeo');
+        $json = json_decode($res->getBody(), true);
+        
+        $this->assertEquals(2, count($json));
     }
 }

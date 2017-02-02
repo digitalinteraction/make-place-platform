@@ -11,3 +11,17 @@ Survey:
         Name: 'Some Survey'
         Handle: 'some-survey'
         Questions: =>Question.question1,=>Question.question2
+
+SurveyResponse:
+    responseA:
+        Survey: =>Survey.surveyA
+        Responses: '{"question-a":"abc","question-b":"123"}'
+        MemberID: 1
+        Latitude: 10.0
+        Longitude: 20.0
+    responseB:
+        Survey: =>Survey.surveyA
+        Responses: '{"question-a":"xyz","question-b":"789"}'
+        MemberID: 2
+        Latitude: 15.0
+        Longitude: 5.0

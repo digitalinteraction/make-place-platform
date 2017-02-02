@@ -15,10 +15,15 @@ SiteConfig:
 
 Director:
   rules:
-    's/$Survey': 'SurveyController'
+    's/$SurveyID': 'SurveyController'
 
 
 
 SurveyResponse:
   extensions:
     - JsonFieldExtension
+
+
+SurveyController:
+  extensions:
+    - JsonApiExtension
