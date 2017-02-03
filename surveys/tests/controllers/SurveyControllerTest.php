@@ -184,6 +184,7 @@ class SurveyControllerTest extends FunctionalTest {
         $this->assertEquals(2, count($json));
         
         $expected = [
+            'id' => 1,
             'surveyId' => 1,
             'memberId' => 1,
             'lat' => 10.0,

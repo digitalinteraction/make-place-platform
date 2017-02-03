@@ -114,8 +114,8 @@ class SurveyController extends Controller {
         
         foreach ($responses as $r) {
             
-            
             $data[] = [
+                'id' => $r->ID,
                 'surveyId' => $r->SurveyID,
                 'memberId' => $r->MemberID,
                 'lat' => floatval($r->Latitude),

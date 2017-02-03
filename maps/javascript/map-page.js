@@ -6,7 +6,6 @@ var setupMap;
 
 
 (function($, Vue) {
-    'use strict';
     
     // ...
     
@@ -19,35 +18,52 @@ var setupMap;
     const componentSetup = {
         SurveyMapComponent: function(page, comp, map) {
             
-            // console.log('Survey Comp Setup!');
-            
+            // Get the survey id
             var surveyID = comp.surveyID;
             
-            console.log(surveyID);
             
             // Fetch responses
-            
             var base = window.location.origin;
-            
-            
-            console.log(base.origin);
-            
             $.ajax({
                 url: base + '/s/' + surveyID + '/responses?onlygeo',
                 success: function(data) {
                     
                     console.log(data);
                     
+                    var textColour = 'white';
+                    var resBase = 'maps/images/';
+                    var imgBase = resBase + 'cluster/m';
+                    
+                    var icons = {
+                        response: {
+                            name: 'Response',
+                            icon: resBase + 'pin.png'
+                        }
+                    };
                     
                     var markers = data.map(function(response, i) {
-                        return new google.maps.Marker({
+                        var marker = new google.maps.Marker({
                             position: { lat: response.lat, lng: response.lng },
-                            label: ' '
+                            icon: icons.response.icon
                         });
+                        
+                        marker.response = response;
+                        marker.addListener('click', pinClickHandler);
+                        
+                        return marker;
                     });
                     
-                    var markerCluster = new MarkerClusterer(map, markers,{
-                        imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
+                    var markerCluster = new MarkerClusterer(map, markers, {
+                        // imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m',
+                        // imagePath: 'maps/images/cluster/m',
+                        averageCenter: true,
+                        styles: [
+                            { textColor: textColour, textSize: 24, url: imgBase + '1.png', height: 72, width: 72, },
+                            { textColor: textColour, textSize: 20, url: imgBase + '2.png', height: 84, width: 84 },
+                            { textColor: textColour, textSize: 18, url: imgBase + '3.png', height: 96, width: 96 },
+                            { textColor: textColour, textSize: 16, url: imgBase + '4.png', height: 108, width: 108 },
+                            { textColor: textColour, textSize: 14, url: imgBase + '5.png', height: 132, width: 132 }
+                        ]
                     });
                 
                     
@@ -87,6 +103,18 @@ var setupMap;
         });
     }
     
+    function pinClickHandler(marker) {
+        
+        var response = this.response;
+        
+        console.log('display: '+ response.id);
+    }
+    
+    function addPopover() {
+        
+        
+    }
+    
     
     
     
@@ -105,18 +133,16 @@ var setupMap;
     var myMap = document.getElementById('map-app');
     
     
-    var map = new Vue({
-        el: '#map-app',
-        data: myMap.dataset
-    });
+    // var map = new Vue({
+    //     el: '#map-app',
+    //     data: myMap.dataset
+    // });
     
     
     
     setupMap = function() {
         
         var myMap = document.getElementById('map-app');
-        
-        // console.log(myMap.dataset);
         
         var map = new google.maps.Map(document.getElementById('map'), {
             zoom: parseFloat(myMap.dataset.centerZoom),
