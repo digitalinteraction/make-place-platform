@@ -118,8 +118,8 @@ class SurveyController extends Controller {
             $data[] = [
                 'surveyId' => $r->SurveyID,
                 'memberId' => $r->MemberID,
-                'lat' => $r->Latitude,
-                'lng' => $r->Longitude,
+                'lat' => floatval($r->Latitude),
+                'lng' => floatval($r->Longitude),
                 'responses' => $r->jsonField('Responses')
             ];
         }

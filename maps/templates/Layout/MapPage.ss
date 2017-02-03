@@ -25,6 +25,7 @@
 </div>
 
 
+<% require javascript('https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js') %>
 <script async defer
     src="https://maps.googleapis.com/maps/api/js?key={$SiteConfig.MapApiKey}&amp;callback=setupMap">
 </script>

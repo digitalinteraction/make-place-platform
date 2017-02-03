@@ -10,8 +10,14 @@ var setupMap;
     
     // ...
     
+    
+    // Properties
+    // ...
+    
+    
+    
     const componentSetup = {
-        SurveyMapComponent: function(page, comp) {
+        SurveyMapComponent: function(page, comp, map) {
             
             // console.log('Survey Comp Setup!');
             
@@ -21,14 +27,43 @@ var setupMap;
             
             // Fetch responses
             
-            // $.ajax({ ... });
+            var base = window.location.origin;
+            
+            
+            console.log(base.origin);
+            
+            $.ajax({
+                url: base + '/s/' + surveyID + '/responses?onlygeo',
+                success: function(data) {
+                    
+                    console.log(data);
+                    
+                    
+                    var markers = data.map(function(response, i) {
+                        return new google.maps.Marker({
+                            position: { lat: response.lat, lng: response.lng },
+                            label: ' '
+                        });
+                    });
+                    
+                    var markerCluster = new MarkerClusterer(map, markers,{
+                        imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
+                    });
+                
+                    
+                },
+                error: function(error) {
+                    
+                    console.log(error);
+                }
+            });
             
             
         }
     };
     
     
-    function setupComponents() {
+    function setupComponents(map) {
         
         var url = window.location.href;
         
@@ -41,7 +76,7 @@ var setupMap;
                 for (var i in data.components) {
                     
                     var comp = data.components[i];
-                    componentSetup[comp.type](data.page, comp);
+                    componentSetup[comp.type](data.page, comp, map);
                 }
                 
             },
@@ -92,7 +127,7 @@ var setupMap;
         });
         
         
-        setupComponents();
+        setupComponents(map);
     };
     
     
