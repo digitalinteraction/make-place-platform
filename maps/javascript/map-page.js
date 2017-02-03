@@ -2,16 +2,35 @@
 
 
 // The map callback, assigned to later (in scope)
-var setupMap;
+var setupMap = null;
 
 
 (function($, Vue) {
     
-    // ...
+    // Entrypoint
+    setupMap = function() {
+        
+        var myMap = document.getElementById('map-app');
+        
+        _map = new google.maps.Map(document.getElementById('map'), {
+            zoom: parseFloat(myMap.dataset.centerZoom),
+            center: {
+                lat: parseFloat(myMap.dataset.centerLat),
+                lng: parseFloat(myMap.dataset.centerLng)
+            }
+        });
+        
+        _infoWindow = new google.maps.InfoWindow({map: _map});
+        _infoWindow.close();
+        
+        setupComponents();
+    };
     
     
     // Properties
-    // ...
+    var _map = null;
+    var _infoWindow = null;
+    
     
     
     
@@ -27,8 +46,6 @@ var setupMap;
             $.ajax({
                 url: base + '/s/' + surveyID + '/responses?onlygeo',
                 success: function(data) {
-                    
-                    console.log(data);
                     
                     var textColour = 'white';
                     var resBase = 'maps/images/';
@@ -53,9 +70,7 @@ var setupMap;
                         return marker;
                     });
                     
-                    var markerCluster = new MarkerClusterer(map, markers, {
-                        // imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m',
-                        // imagePath: 'maps/images/cluster/m',
+                    var markerCluster = new MarkerClusterer(_map, markers, {
                         averageCenter: true,
                         styles: [
                             { textColor: textColour, textSize: 24, url: imgBase + '1.png', height: 72, width: 72, },
@@ -79,7 +94,7 @@ var setupMap;
     };
     
     
-    function setupComponents(map) {
+    function setupComponents() {
         
         var url = window.location.href;
         
@@ -92,7 +107,7 @@ var setupMap;
                 for (var i in data.components) {
                     
                     var comp = data.components[i];
-                    componentSetup[comp.type](data.page, comp, map);
+                    componentSetup[comp.type](data.page, comp);
                 }
                 
             },
@@ -107,12 +122,25 @@ var setupMap;
         
         var response = this.response;
         
-        console.log('display: '+ response.id);
+        var pos = {
+            lat: marker.latLng.lat(),
+            lng: marker.latLng.lng()
+        };
+        
+        _infoWindow.setPosition(pos);
+        _infoWindow.setContent('Response, id: ' + response.id);
+        
+        _infoWindow.open(_map);
+        
+        // _map.setCenter(pos);
+        
+        // console.log(marker.latLng);
+        // console.log('display: '+ response.id);
     }
     
     function addPopover() {
         
-        
+        // ...
     }
     
     
@@ -127,34 +155,6 @@ var setupMap;
             );
         }).resize();
     });
-    
-    
-    
-    var myMap = document.getElementById('map-app');
-    
-    
-    // var map = new Vue({
-    //     el: '#map-app',
-    //     data: myMap.dataset
-    // });
-    
-    
-    
-    setupMap = function() {
-        
-        var myMap = document.getElementById('map-app');
-        
-        var map = new google.maps.Map(document.getElementById('map'), {
-            zoom: parseFloat(myMap.dataset.centerZoom),
-            center: {
-                lat: parseFloat(myMap.dataset.centerLat),
-                lng: parseFloat(myMap.dataset.centerLng)
-            }
-        });
-        
-        
-        setupComponents(map);
-    };
     
     
 })($, Vue);
