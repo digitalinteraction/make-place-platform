@@ -1,16 +1,17 @@
 <?php
 
 /** ... */
-class SurveyController extends Controller {
+class SurveyApiController extends Controller {
     
     private static $allowed_actions = [
-        'index', 'submitSurvey', 'getResponses'
+        'index', 'submitSurvey', 'getResponses', 'viewResponse'
     ];
     
     private static $url_handlers = [
         'index' => 'index',
         'submit' => 'submitSurvey',
-        'responses' => 'getResponses'
+        'responses' => 'getResponses',
+        'r/$ResponseID/view' => 'viewResponse'
     ];
     
     public function init() {
@@ -127,13 +128,38 @@ class SurveyController extends Controller {
         return $this->jsonResponse($data);
     }
     
+    public function viewResponse() {
+        
+        if ($this->Survey == null) {
+            return $this->httpError(404);
+        }
+        
+        $response = SurveyResponse::get()
+            ->filter('ID', $this->request->param('ResponseID'))
+            ->filter('SurveyID', $this->Survey->ID)
+            ->first();
+        
+        if ($response == null) {
+            return $this->httpError(404);
+        }
+        
+        
+        $rendered = $this->renderWith("SurveyResponse", [
+            "Response" => $response
+        ]);
+        
+        return $this->jsonResponse([
+            'title' => $response->getTitle(),
+            'content' => $rendered->forTemplate()
+        ]);
+    }
     
     
     
     /*
      *  Utils
      */
-    protected function postVar($name, &$errors) {
+    public function postVar($name, &$errors) {
         
         if ($this->request->postVar($name) != null) {
             return $this->request->postVar($name);

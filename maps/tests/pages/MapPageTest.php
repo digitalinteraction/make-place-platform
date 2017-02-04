@@ -66,4 +66,9 @@ class MapPageTest extends FunctionalTest {
         
         $this->assertArraySubset($expected, $config);
     }
+    
+    public function testGetActions() {
+        
+        $this->assertEquals(1, $this->controller->getActions()->count());
+    }
 }

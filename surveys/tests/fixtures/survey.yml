@@ -1,3 +1,9 @@
+Member:
+    geoff:
+        FirstName: 'Geoff'
+        Surname: 'Testington'
+        Email: 'geoff@gmail.com'
+
 Question:
     question1:
         Name: 'Question A'

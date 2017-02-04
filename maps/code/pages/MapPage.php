@@ -83,4 +83,22 @@ class MapPage_Controller extends Page_Controller {
         
         return $this->response;
     }
+    
+    public function getActions() {
+        
+        return ArrayList::create([
+            [
+                'Name' => 'Add Pin',
+                'Icon' => 'fa-plus',
+                'Handle' => 'pin-button',
+                'Colour' => 'green'
+            ],
+            // [
+            //     'Name' => 'Something',
+            //     'Icon' => 'fa-meh-o',
+            //     'Handle' => 'meh-ooooo',
+            //     'Colour' => 'red'
+            // ]
+        ]);
+    }
 }

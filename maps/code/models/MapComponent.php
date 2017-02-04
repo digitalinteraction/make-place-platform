@@ -65,6 +65,7 @@ class MapComponent extends DataObject {
         return ClassUtils::getSubclasses('MapComponent', 'MapComponent');
     }
     
+    /** @codeCoverageIgnore */
     public function addExtraFields(FieldList $fields) {
         // Override in subclasses
     }

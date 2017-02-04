@@ -3,6 +3,9 @@
 // ...
 
 
+
+
+
 // Styles
 
 .MapPage {
@@ -12,44 +15,102 @@
     }
     
     .main {
-        
         padding: 0px;
+    }
         
-        #map-app {
+    #map-app {
+        background: #fafafa;
+        position: relative;
+        height: 100%;
+        
+        
+        .map-actions {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
             
-            background: #fafafa;
-            position: relative;
-            height: 100%;
-            
-            .add-button {
-                position: absolute;
-                top: 20px;
-                right: 20px;
-                z-index: 1;
-                
-                background: #5cb85c;
+            .action {
+                cursor: pointer;
+                box-shadow: 1px 1px 1px #666;
+                font-size: 16px;
                 border-radius: 5px;
                 color: white;
                 padding: 8px 18px;
-                cursor: pointer;
+                text-align: center;
                 
-                border: 1px solid #4cae4c;
+                border: 1px solid white;
+            
+                &.green {
+                    background: #5cb85c;
+                    border-color: #52A352;
+                    
+                    &:hover { background-color: #52A352; }
+                }
                 
-                font-size: 16px;
+                &.blue {
+                    background: #3c87c7;
+                    border-color: #306da1;
+                    
+                    &:hover { background-color: #306da1; }
+                }
                 
-                box-shadow: 1px 1px 1px #666;
-                
-                &:hover {
-                    background-color: #449d44;
-                    border-color: #398439;
+                &.red {
+                    background: #c94b4d;
+                    border-color: #99393b;
+                    
+                    &:hover { background-color: #99393b; }
                 }
             }
+        }
+        
+        .popover-container {
             
-            #map {
-                width: 100%;
-                height: 100%;
-                // padding-bottom: percentage(9/16);
+            .popover-bg {
+                position: absolute;
+                left: 0; right: 0;
+                top: 0; bottom: 0;
+                background: rgba(0,0,0,0.3);
+                z-index: 200;
             }
+            
+            .popover-inner {
+                position: absolute;
+                left: 0; right: 0;
+                top: 0; bottom: 0;
+                margin: 100px;
+                background: white;
+                border-radius: 10px;
+                overflow: hidden;
+                box-shadow: 0 0 15px rgba(0,0,0,0.5);
+                z-index: 201;
+                
+                .title {
+                    background: #fafafa;
+                    border-bottom: 1px solid #d4d4d4;
+                    padding: 20px;
+                    margin: 0px;
+                    
+                    .close-button {
+                        float: right;
+                        
+                        &:hover {
+                            color: #888;
+                            cursor: pointer;
+                        }
+                    }
+                }
+                
+                .content {
+                    padding: 20px;
+                }
+            }
+        }
+        
+        #map {
+            width: 100%;
+            height: 100%;
+            // padding-bottom: percentage(9/16);
         }
     }
     

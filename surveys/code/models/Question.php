@@ -134,6 +134,9 @@ class Question extends DataObject {
         }
     }
     
+    public function renderResponse($value) {
+        return $value;
+    }
     
     
     public function getType() {

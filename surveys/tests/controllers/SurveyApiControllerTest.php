@@ -1,7 +1,7 @@
 <?php
 
 /** ... */
-class SurveyControllerTest extends FunctionalTest {
+class SurveyApiControllerTest extends FunctionalTest {
     
     protected static $fixture_file = "surveys/tests/fixtures/survey.yml";
     
@@ -39,7 +39,7 @@ class SurveyControllerTest extends FunctionalTest {
     /*
      *  Basic Submission tests
      */
-    public function testSubmitRouter() {
+    public function testSubmitRoute() {
         
         // Create a response to the survey
         $data = $this->survey->generateData([
@@ -210,5 +210,58 @@ class SurveyControllerTest extends FunctionalTest {
         $json = json_decode($res->getBody(), true);
         
         $this->assertEquals(2, count($json));
+    }
+    
+    
+    
+    
+    /*
+     *  Test viewing responses
+     */
+    public function testViewResponseRoute() {
+        
+        $res = $this->get('s/1/r/1/view');
+        
+        $this->assertEquals(200, $res->getStatusCode());
+    }
+    
+    public function testViewResponse() {
+        
+        $res = $this->get('s/1/r/1/view');
+        $json = json_decode($res->getBody(), true);
+        
+        $expected = [
+            'title',
+            'content'
+        ];
+        
+        $this->assertEquals($expected, array_keys($json));
+    }
+    
+    
+    
+    /*
+     *  Test Misc
+     */
+    /** @expectedException SS_HTTPResponse_Exception */
+    public function testInit() {
+        
+        $controller = SurveyApiController::create();
+        
+        $response = $controller->init();
+        
+        $this->assertEquals(404, $response->getStatusCode());
+    }
+    
+    public function testPostVar() {
+        
+        $controller = SurveyApiController::create();
+        
+        $errors = [];
+        
+        $value = $controller->postVar('something', $errors);
+        
+        $this->assertNull($value);
+        $this->assertEquals(["Please provide 'something'"], $errors);
     }
 }

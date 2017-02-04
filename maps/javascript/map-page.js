@@ -20,76 +20,106 @@ var setupMap = null;
             }
         });
         
-        _infoWindow = new google.maps.InfoWindow({map: _map});
-        _infoWindow.close();
-        
         setupComponents();
     };
     
     
-    // Properties
+    // Variables
     var _map = null;
-    var _infoWindow = null;
     
     
-    
+    // Constants
+    const resourceBase = 'maps/images/';
+    const clusterBase = resourceBase + 'cluster/m';
+    const clusterStyles = [
+        { textColor: 'white', textSize: 24, url: clusterBase+'1.png', height: 72, width: 72, },
+        { textColor: 'white', textSize: 20, url: clusterBase+'2.png', height: 84, width: 84 },
+        { textColor: 'white', textSize: 18, url: clusterBase+'3.png', height: 96, width: 96 },
+        { textColor: 'white', textSize: 16, url: clusterBase+'4.png', height: 108, width: 108 },
+        { textColor: 'white', textSize: 14, url: clusterBase+'5.png', height: 132, width: 132 }
+    ];
     
     const componentSetup = {
-        SurveyMapComponent: function(page, comp, map) {
+        SurveyMapComponent: function(page, comp) {
             
-            // Get the survey id
-            var surveyID = comp.surveyID;
+            // Component's state
+            var isAddingPin = false;
+            
+            function toggleAddButton(value) {
+                
+                if (value) {
+                    console.log('Adding pin ...');
+                }
+                else {
+                    console.log('Stopped adding pin');
+                }
+                
+                var button = $('.pin-button');
+                    
+                    
+                button.toggleClass('red', value);
+                button.toggleClass('green', !value);
+                button.find('.text').html(value ? 'Cancel' : 'Add Pin');
+                
+                isAddingPin = value;
+                
+            }
             
             
-            // Fetch responses
-            var base = window.location.origin;
+            // Fetch responses to render them
             $.ajax({
-                url: base + '/s/' + surveyID + '/responses?onlygeo',
+                url: `${window.location.origin}/s/${comp.surveyID}/responses?onlygeo`,
                 success: function(data) {
                     
-                    var textColour = 'white';
-                    var resBase = 'maps/images/';
-                    var imgBase = resBase + 'cluster/m';
-                    
-                    var icons = {
-                        response: {
-                            name: 'Response',
-                            icon: resBase + 'pin.png'
-                        }
-                    };
-                    
+                    // Map each response to a map marker
                     var markers = data.map(function(response, i) {
+                        
+                        // Create a marker from its position
                         var marker = new google.maps.Marker({
                             position: { lat: response.lat, lng: response.lng },
-                            icon: icons.response.icon
+                            icon: resourceBase + 'pin.png'
                         });
                         
+                        // Store the response on the marker
                         marker.response = response;
+                        
+                        // Add a click handler to the marker
                         marker.addListener('click', pinClickHandler);
                         
+                        // Return the marker into our map
                         return marker;
                     });
                     
+                    
+                    // Create a clusterer to cluster nearby markers
                     var markerCluster = new MarkerClusterer(_map, markers, {
                         averageCenter: true,
-                        styles: [
-                            { textColor: textColour, textSize: 24, url: imgBase + '1.png', height: 72, width: 72, },
-                            { textColor: textColour, textSize: 20, url: imgBase + '2.png', height: 84, width: 84 },
-                            { textColor: textColour, textSize: 18, url: imgBase + '3.png', height: 96, width: 96 },
-                            { textColor: textColour, textSize: 16, url: imgBase + '4.png', height: 108, width: 108 },
-                            { textColor: textColour, textSize: 14, url: imgBase + '5.png', height: 132, width: 132 }
-                        ]
+                        styles: clusterStyles
                     });
-                
-                    
                 },
                 error: function(error) {
-                    
                     console.log(error);
                 }
             });
             
             
+            
+            $('.action.pin-button').on('click', function(e) {
+                
+                toggleAddButton(!isAddingPin);
+            });
+            
+            _map.addListener('click', function(e) {
+                
+                if (!isAddingPin) { return; }
+                
+                var pos = {
+                    lat: e.latLng.lat(),
+                    lng: e.latLng.lng()
+                };
+                
+                console.log(pos);
+            });
         }
     };
     
@@ -127,20 +157,51 @@ var setupMap = null;
             lng: marker.latLng.lng()
         };
         
-        _infoWindow.setPosition(pos);
-        _infoWindow.setContent('Response, id: ' + response.id);
+        var base = window.location.origin;
         
-        _infoWindow.open(_map);
+        $.ajax(`${base}/s/${response.surveyId}/r/${response.id}/view`)
+            .then(function(data) {
+                addPopover(data.title, data.content, 'survey-response');
+            })
+            .catch(function(error) {
+                
+                console.log(error);
+            });
         
-        // _map.setCenter(pos);
-        
-        // console.log(marker.latLng);
-        // console.log('display: '+ response.id);
     }
     
-    function addPopover() {
+    function addPopover(title, content, classes = '') {
         
-        // ...
+        removePopover();
+        
+        
+        var popover = `
+            <div class="popover-bg"></div>
+            <div class="popover-inner ${classes}">
+                <h2 class="title">
+                    ${title}
+                    <i class="close-button fa fa-times" aria-hidden="true"></i>
+                </h2>
+                <div class="content"> ${content} </div>
+            </div>`;
+        
+        $('.popover-container').html(popover);
+        
+        $('.popover-inner .close-button').on('click', function() {
+            removePopover();
+        });
+    }
+    
+    function removePopover() {
+        
+        
+        
+        // Remove previous popovers
+        $('.popover-container').html('');
+        
+        // Unregister listeners
+        // $('.popover-inner .close-button')
+        // ?
     }
     
     
