@@ -4,12 +4,13 @@
 class SurveyApiController extends Controller {
     
     private static $allowed_actions = [
-        'index', 'submitSurvey', 'getResponses', 'viewResponse'
+        'index', 'submitSurvey', 'getResponses', 'viewResponse', 'viewSurvey'
     ];
     
     private static $url_handlers = [
         'index' => 'index',
         'submit' => 'submitSurvey',
+        'view' => 'viewSurvey',
         'responses' => 'getResponses',
         'r/$ResponseID/view' => 'viewResponse'
     ];
@@ -44,6 +45,10 @@ class SurveyApiController extends Controller {
         $fields = $this->postVar('Fields', $errors);
         $token = $this->postVar('SecurityID', $errors);
         
+        $lat = $this->postVar('ResponseLat');
+        $lng = $this->postVar('ResponseLng');
+        
+        $redirectBack = $this->postVar('RedirectBack') != null;
         
         // Check there is a user logged in
         if ($userId == null) {
@@ -69,10 +74,16 @@ class SurveyApiController extends Controller {
         }
         
         
+        // Make sure if lat or lng are set, that they are both set
+        if (($lat == null && $lng != null) || ($lng == null && $lat != null)) {
+            $errors[] = "Please provide both 'ResponseLat' and 'ResponseLng'";
+        }
+        
+        
         // If there is any errors, stop here
         if (count($errors) > 0) {
-            // var_dump($errors);
-            return $this->httpError(404);
+            
+            return $this->jsonResponse($errors, 404);
         }
         
         // Generate a SurveyResponse & save it
@@ -81,22 +92,42 @@ class SurveyApiController extends Controller {
             'MemberID' => $userId,
             'UserID' => $userId,
             'Responses' => $fields,
+            'Latitude' => $lat,
+            'Longitude' => $lng
         ]);
         
         $response->write();
         
         
         // If not ajax or command-line, redirect back
-        if (isset($_SERVER['X_HTTP_REQUEST']) == false && Director::is_cli() == false) {
+        // IDEA: refactor to a parameter? e.g. RedirectURL? + check if on site
+        if ($redirectBack != null) {
             return $this->redirectBack();
         }
+        
+        
+        return $this->jsonResponse($response->toJson());
+    }
+    
+    public function viewSurvey() {
+        
+        $lat = $this->getVar('lat');
+        $lng = $this->getVar('lng');
+        
+        if ($lat != null && $lng != null) {
+            $this->Survey->ResponseLat = $lat;
+            $this->Survey->ResponseLng = $lng;
+        }
+        
+        // TODO: report an error if only 1 is passed?
+        
+        return $this->jsonResponse([
+            'title' => $this->Survey->Name,
+            'content' => $this->Survey->forTemplate()->getValue()
+        ]);
     }
     
     public function getResponses() {
-        
-        if ($this->Survey == null) {
-            return $this->httpError(404);
-        }
         
         $responses = SurveyResponse::get()->filter("SurveyID", $this->Survey->ID);
         
@@ -114,25 +145,13 @@ class SurveyApiController extends Controller {
         $data = [];
         
         foreach ($responses as $r) {
-            
-            $data[] = [
-                'id' => $r->ID,
-                'surveyId' => $r->SurveyID,
-                'memberId' => $r->MemberID,
-                'lat' => floatval($r->Latitude),
-                'lng' => floatval($r->Longitude),
-                'responses' => $r->jsonField('Responses')
-            ];
+            $data[] = $r->toJson();
         }
         
         return $this->jsonResponse($data);
     }
     
     public function viewResponse() {
-        
-        if ($this->Survey == null) {
-            return $this->httpError(404);
-        }
         
         $response = SurveyResponse::get()
             ->filter('ID', $this->request->param('ResponseID'))
@@ -150,7 +169,7 @@ class SurveyApiController extends Controller {
         
         return $this->jsonResponse([
             'title' => $response->getTitle(),
-            'content' => $rendered->forTemplate()
+            'content' => $rendered->getValue()
         ]);
     }
     
@@ -159,12 +178,23 @@ class SurveyApiController extends Controller {
     /*
      *  Utils
      */
-    public function postVar($name, &$errors) {
+    public function postVar($name, &$errors = []) {
         
         if ($this->request->postVar($name) != null) {
             return $this->request->postVar($name);
         }
         
         $errors[] = "Please provide '$name'";
+        return null;
+    }
+    
+    public function getVar($name, &$errors = []) {
+        
+        if ($this->request->getVar($name) != null) {
+            return $this->request->getVar($name);
+        }
+        
+        $errors[] = "Please provide '$name'";
+        return null;
     }
 }

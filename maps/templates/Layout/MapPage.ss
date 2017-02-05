@@ -2,6 +2,8 @@
 <% require javascript('maps/javascript/jquery-3.1.1.min.js') %>
 <% require javascript('maps/javascript/map-page.js') %>
 
+<% require themedCSS('survey') %>
+
 
 
 <%-- TODO: Get working with themedCSS --%>

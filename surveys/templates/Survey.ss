@@ -8,6 +8,18 @@
             $Me
         <% end_loop %>
         
+        <% if ResponseLat %>
+            <input type="hidden" name="ResponseLat" value="$ResponseLat">
+        <% end_if %>
+        
+        <% if ResponseLng %>
+            <input type="hidden" name="ResponseLng" value="$ResponseLng">
+        <% end_if %>
+        
+        <% if RedirectBack %>
+            <input type="hidden" name="RedirectBack" value="1">
+        <% end_if %>
+        
         <input type="hidden" name="$SecurityTokenName" value="$SecurityTokenValue">
         <input type="hidden" name="SurveyID" value="$ID">
         

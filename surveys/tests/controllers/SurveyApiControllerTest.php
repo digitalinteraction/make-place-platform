@@ -51,8 +51,6 @@ class SurveyApiControllerTest extends FunctionalTest {
         $res = $this->post('s/1/submit', $data);
         
         $this->assertEquals(200, $res->getStatusCode());
-        
-        
     }
     
     public function testSubmitSurvey() {
@@ -66,9 +64,26 @@ class SurveyApiControllerTest extends FunctionalTest {
         $res = $this->post('s/1/submit', $data);
         
         // See if a surveyResponse was created
-        $response = SurveyResponse::get()->first();
+        $response = SurveyResponse::get()->last();
         
         $this->assertNotNull($response);
+    }
+    
+    public function testSubmitSurveyResponse() {
+        
+        // Create a response to the survey
+        $data = $this->survey->generateData([
+            'question-a' => 'answer-a',
+            'question-b' => 'answer-b'
+        ]);
+        
+        $res = $this->post('s/1/submit', $data);
+        $json = json_decode($res->getBody(), true);
+        
+        // See if a surveyResponse was created
+        $response = SurveyResponse::get()->last();
+        
+        $this->assertEquals($response->toJson(), $json);
     }
     
     public function testSubmitFields() {
@@ -87,6 +102,43 @@ class SurveyApiControllerTest extends FunctionalTest {
         $json = $response->jsonField('Responses');
         
         $this->assertEquals($data['Fields'], $json);
+    }
+    
+    public function testSubmitWithLatAndLng() {
+        
+        $data = $this->survey->generateData([
+            'question-a' => 'answer-a',
+            'question-b' => 'answer-b',
+        ]);
+        
+        $data['ResponseLat'] = '10';
+        $data['ResponseLng'] = '20';
+        
+        $res = $this->post('s/1/submit', $data);
+        $json = json_decode($res->getBody(), true);
+        
+        
+        // Check the lat and long were set & returned
+        $this->assertEquals(10.0, $json['lat']);
+        $this->assertEquals(20.0, $json['lng']);
+    }
+    
+    public function testSubmitRedirectBack() {
+        
+        // Create a response to the survey
+        $data = $this->survey->generateData([
+            'question-a' => 'answer-a',
+            'question-b' => 'answer-b'
+        ]);
+        
+        $data['RedirectBack'] = '1';
+        
+        $res = $this->post('s/1/submit', $data);
+        
+        
+        // Test a non-success code is thrown
+        // Can't test 301 because redirectback doesn't work with tests!
+        $this->assertNotEquals(200, $res->getStatusCode());
     }
     
     
@@ -167,6 +219,64 @@ class SurveyApiControllerTest extends FunctionalTest {
         ]);
         
         $res = $this->post('s/2/submit', $data);
+        
+        $this->assertEquals(404, $res->getStatusCode());
+    }
+    
+    public function testSubmitWithIncorectLatLng() {
+        
+        $data = $this->survey->generateData([
+            'question-a' => 'answer-a',
+            'question-b' => 'answer-b',
+        ]);
+        
+        $data['ResponseLat'] = '10';
+        
+        // Don't set the lng
+        
+        $res = $this->post('s/1/submit', $data);
+        
+        $this->assertEquals(404, $res->getStatusCode());
+    }
+    
+    
+    
+    /*
+     *  Viewing surveys
+     */
+    public function testViewSurveyRoute() {
+        
+        $res = $this->get('s/1/view');
+        
+        $this->assertEquals(200, $res->getStatusCode());
+    }
+    
+    public function testViewSurvey() {
+        
+        $res = $this->get('s/1/view');
+        $json = json_decode($res->getBody(), true);
+        
+        $this->assertArrayHasKey('title', $json);
+        $this->assertArrayHasKey('content', $json);
+    }
+    
+    public function testViewSurveyWithLatLng() {
+        
+        $params = 'lat=54.980759337802&lng=-1.614518165588379';
+        
+        $res = $this->get("s/1/view?$params");
+        $json = json_decode($res->getBody(), true);
+        
+        $content = $json['content'];
+        
+        // Assert 2 hidden fields were added to the form
+        $this->assertRegExp('/ResponseLat.*54.980759337802/', $content);
+        $this->assertRegExp('/ResponseLng.*-1.614518165588379/', $content);
+    }
+    
+    public function testViewNullResponse() {
+        
+        $res = $this->get('s/0/view');
         
         $this->assertEquals(404, $res->getStatusCode());
     }
@@ -253,6 +363,13 @@ class SurveyApiControllerTest extends FunctionalTest {
         $this->assertEquals(404, $response->getStatusCode());
     }
     
+    public function testIndex() {
+        
+        $res = $this->get('s/1');
+        
+        $this->assertEquals(200, $res->getStatusCode());
+    }
+    
     public function testPostVar() {
         
         $controller = SurveyApiController::create();
@@ -260,6 +377,18 @@ class SurveyApiControllerTest extends FunctionalTest {
         $errors = [];
         
         $value = $controller->postVar('something', $errors);
+        
+        $this->assertNull($value);
+        $this->assertEquals(["Please provide 'something'"], $errors);
+    }
+    
+    public function testGetVar() {
+        
+        $controller = SurveyApiController::create();
+        
+        $errors = [];
+        
+        $value = $controller->getVar('something', $errors);
         
         $this->assertNull($value);
         $this->assertEquals(["Please provide 'something'"], $errors);

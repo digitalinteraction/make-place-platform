@@ -48,4 +48,16 @@ class SurveyResponse extends DataObject {
         
         return $this->Member()->getName() . "'s Response";
     }
+    
+    public function toJson() {
+        
+        return [
+            'id' => $this->ID,
+            'surveyId' => $this->SurveyID,
+            'memberId' => $this->MemberID,
+            'lat' => floatval($this->Latitude),
+            'lng' => floatval($this->Longitude),
+            'responses' => $this->jsonField('Responses')
+        ];
+    }
 }

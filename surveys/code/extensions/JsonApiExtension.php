@@ -3,12 +3,13 @@
 /** ... */
 class JsonApiExtension extends Extension {
     
-    public function jsonResponse($json = []) {
+    public function jsonResponse($json = [], $statusCode = 200) {
         
         $response = $this->owner->getResponse();
         
         $response->addHeader("Content-Type", "application/json");
         $response->setBody(json_encode($json));
+        $response->setStatusCode($statusCode);
         
         return $response;
     }
@@ -19,12 +20,14 @@ class JsonApiExtension extends Extension {
             $messages = [$messages];
         }
         
+        $status = $success ? 200 : 404;
+        
         return $this->jsonResponse([
             'meta' => [
                 'success' => $success,
                 'messages' => $messages
             ],
             'data' => $data
-        ]);
+        ], $status);
     }
 }

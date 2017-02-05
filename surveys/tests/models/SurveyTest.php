@@ -1,10 +1,9 @@
 <?php
-/*
- *
- */
+
+/* ...  */
 class SurveyTest extends SapphireTest {
     
-    // ...
+    /* Testing lifecycle */
     public function setUp() {
         
         parent::setUp();
@@ -17,6 +16,8 @@ class SurveyTest extends SapphireTest {
         $this->assertTrue(true);
     }
     
+    
+    /* Handle Tests */
     public function testHandleGeneration() {
         
         $survey = Survey::create([
@@ -39,25 +40,6 @@ class SurveyTest extends SapphireTest {
         $this->assertNotEquals($s1->Handle, $s2->Handle, "Survey's handle aren't unique");
     }
     
-    public function testCmsFields() {
-        
-        $s1 = Survey::create(["Name" => "My Survey"]);
-        
-        $fields = $s1->getCMSFields();
-        
-        $this->assertTrue($fields->count() > 0);
-    }
-    
-    
-    public function testSecurityToken() {
-        
-        $survey = Survey::create([
-            "Name" => "My Fancy Survey"
-        ]);
-        
-        $this->assertNotNull($survey->getSecurityToken());
-    }
-    
     public function testHandleWhenItsSet() {
         
         $survey = new Survey([
@@ -77,6 +59,30 @@ class SurveyTest extends SapphireTest {
         $this->assertEquals($first, $second);
     }
     
+    
+    
+    /* CMS Fields Tests */
+    public function testCmsFields() {
+        
+        $s1 = Survey::create(["Name" => "My Survey"]);
+        
+        $fields = $s1->getCMSFields();
+        
+        $this->assertTrue($fields->count() > 0);
+    }
+    
+    
+    
+    /* Security Token Tests */
+    public function testSecurityToken() {
+        
+        $survey = Survey::create([
+            "Name" => "My Fancy Survey"
+        ]);
+        
+        $this->assertNotNull($survey->getSecurityToken());
+    }
+    
     public function testToggleSecurity() {
         
         $survey = Survey::create([
@@ -88,6 +94,9 @@ class SurveyTest extends SapphireTest {
         $this->assertTrue(is_a($survey->getSecurityToken(), 'NullSecurityToken'));
     }
     
+    
+    
+    /* Misc Tests */
     public function testSurveyUrl() {
         
         $survey = Survey::create([
@@ -113,11 +122,20 @@ class SurveyTest extends SapphireTest {
         $this->assertEquals($fields, $data['Fields']);
     }
     
+    public function testWithRedirect() {
+        
+        $survey = Survey::create([
+            "Name" => "My Fancy Survey"
+        ]);
+        
+        $survey->WithRedirect();
+        
+        $this->assertTrue($survey->RedirectBack);
+    }
     
     
-    /*
-     *  Test rendering
-     */
+    
+    /* Rendering Tests */
     public function testRender() {
         
         $survey = Survey::create([

@@ -33,9 +33,13 @@ do
     
     
     # If 'coverage' is passed,  run the coverage
-    if [[ " coverage " == *" $PARAMS "* ]]; then
+    if [[ " coverage-html " == *" $PARAMS "* ]]; then
         php5enmod xdebug
-        vendor/bin/phpunit --coverage-text
+        vendor/bin/phpunit --coverage-html assets/coverage
+        php5dismod xdebug
+    elif [[ " coverage " == *" $PARAMS "* ]]; then
+        php5enmod xdebug
+        vendor/bin/phpunit --coverage
         php5dismod xdebug
     else
         # Otherwise, just run unit tests

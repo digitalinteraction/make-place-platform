@@ -39,60 +39,85 @@ var setupMap = null;
         { textColor: 'white', textSize: 14, url: clusterBase+'5.png', height: 132, width: 132 }
     ];
     
+    // Setup for each component
+    // IDEA: refactor to seperate files?
     const componentSetup = {
         SurveyMapComponent: function(page, comp) {
             
             // Component's state
             var isAddingPin = false;
+            var markerCluster = null;
+            
             
             function toggleAddButton(value) {
                 
-                if (value) {
-                    console.log('Adding pin ...');
-                }
-                else {
-                    console.log('Stopped adding pin');
-                }
-                
+                // Get the button
                 var button = $('.pin-button');
-                    
-                    
+                
+                // Toggle the button's state
                 button.toggleClass('red', value);
                 button.toggleClass('green', !value);
                 button.find('.text').html(value ? 'Cancel' : 'Add Pin');
                 
+                // Update the property
                 isAddingPin = value;
+            }
+            
+            function onSubmitSurvey(e) {
                 
+                // Stop the normal form submission
+                e.preventDefault();
+                
+                // Serialize the form's values
+                var url = this.action;
+                
+                // Post the form
+                $.post(this.action, $(this).serialize())
+                    .then(function(data) {
+                        
+                        // Add a pin with the data
+                        var marker = addResponseMarker(data);
+                        markerCluster.addMarkers([marker]);
+                        
+                        // Remove the popover
+                        removePopover();
+                        
+                    })
+                    .catch(function(error) {
+                        console.log(error);
+                    });
+            }
+            
+            function addResponseMarker(response) {
+                
+                // Create a marker from its position
+                var marker = new google.maps.Marker({
+                    position: { lat: response.lat, lng: response.lng },
+                    icon: resourceBase + 'pin.png'
+                });
+                
+                // Store the response on the marker
+                marker.response = response;
+                
+                // Add a click handler to the marker
+                marker.addListener('click', pinClickHandler);
+                
+                // Return the marker into our map
+                return marker;
             }
             
             
-            // Fetch responses to render them
+            // Fetch responses & render them
             $.ajax({
                 url: `${window.location.origin}/s/${comp.surveyID}/responses?onlygeo`,
                 success: function(data) {
                     
                     // Map each response to a map marker
-                    var markers = data.map(function(response, i) {
-                        
-                        // Create a marker from its position
-                        var marker = new google.maps.Marker({
-                            position: { lat: response.lat, lng: response.lng },
-                            icon: resourceBase + 'pin.png'
-                        });
-                        
-                        // Store the response on the marker
-                        marker.response = response;
-                        
-                        // Add a click handler to the marker
-                        marker.addListener('click', pinClickHandler);
-                        
-                        // Return the marker into our map
-                        return marker;
-                    });
+                    var markers = data.map(addResponseMarker);
                     
                     
                     // Create a clusterer to cluster nearby markers
-                    var markerCluster = new MarkerClusterer(_map, markers, {
+                    markerCluster = new MarkerClusterer(_map, markers, {
                         averageCenter: true,
                         styles: clusterStyles
                     });
@@ -104,22 +129,41 @@ var setupMap = null;
             
             
             
+            // Add click handler to the add button
             $('.action.pin-button').on('click', function(e) {
                 
+                // Simply toggle the buttons state
                 toggleAddButton(!isAddingPin);
             });
             
+            
+            // Add a click listener to the map
             _map.addListener('click', function(e) {
                 
+                // If not in 'add' mode, dont do anything
                 if (!isAddingPin) { return; }
                 
+                // Get the lat/lng of where was clicked
                 var pos = {
                     lat: e.latLng.lat(),
                     lng: e.latLng.lng()
                 };
                 
-                console.log(pos);
+                $.ajax(`${window.location.origin}/s/${comp.surveyID}/view?${$.param(pos)}`)
+                    .then(function(data) {
+                        
+                        addPopover(data.title, data.content, 'survey-form');
+                        
+                        $('.survey-form form').on('submit', onSubmitSurvey);
+                        
+                        toggleAddButton(false);
+                    });
+                
             });
+            
+            
+            
+            
         }
     };
     

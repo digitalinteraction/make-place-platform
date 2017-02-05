@@ -56,14 +56,13 @@ class Page_Controller extends ContentController {
 
 
     /** Called when an instance is created */
-    public function init() {
-        
-        
-        // Call super
-        parent::init();
-        
-        // Custom code called whenever a page is rendered
-        // ...
-        
-    }
+    // public function init() {
+    //
+    //     // Call super
+    //     parent::init();
+    //
+    //     // Custom code called whenever a page is rendered
+    //     // ...
+    //
+    // }
 }

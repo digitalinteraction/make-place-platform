@@ -12,8 +12,6 @@ class SurveyPage extends Page {
         
         $fields = parent::getCMSFields();
         
-        // var_dump(Survey::get()->map());
-        
         $fields->addFieldsToTab('Root.Survey', [
             DropdownField::create(
                 'SurveyID',

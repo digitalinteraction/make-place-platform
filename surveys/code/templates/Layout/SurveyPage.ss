@@ -16,7 +16,7 @@
                 
                 <div class="row">
                     <div class="col-sm-6">
-                        $Survey
+                        $Survey.WithRedirect
                     </div>
                 </div>
                 

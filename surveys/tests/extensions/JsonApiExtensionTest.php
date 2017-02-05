@@ -26,6 +26,16 @@ class JsonApiExtensionTest extends SapphireTest {
         
         $this->assertEquals(["Content-Type" => "application/json"], $response->getHeaders());
         $this->assertEquals("[\"Hello\"]", $response->getBody());
+        $this->assertEquals(200, $response->getStatusCode());
+    }
+    
+    public function testJsonResponseStatusCode() {
+        
+        $object = MockApiController::create();
+        
+        $response = $object->jsonResponse(['Hello'], 404);
+        
+        $this->assertEquals(404, $response->getStatusCode());
     }
     
     public function testFormattedJsonResponse() {

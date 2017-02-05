@@ -23,6 +23,7 @@ class Survey extends DataObject {
     
     
     protected $securityToken = null;
+    public $RedirectBack = false;
     
     
     
@@ -120,6 +121,11 @@ class Survey extends DataObject {
     public function forTemplate() {
         
         return $this->renderWith("Survey");
+    }
+    
+    public function WithRedirect() {
+        $this->RedirectBack = true;
+        return $this;
     }
     
     
