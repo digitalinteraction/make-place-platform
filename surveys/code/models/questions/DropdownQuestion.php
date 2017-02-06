@@ -19,6 +19,10 @@ class DropdownQuestion extends Question {
     }
     
     
+    public function getRawOptions() {
+    
+        return array_map('trim', explode(",", $this->Options));
+    }
     
     public function getOptionsArray() {
         
@@ -38,5 +42,27 @@ class DropdownQuestion extends Question {
         }
         
         return $options;
+    }
+    
+    public function renderResponse($value) {
+        
+        // Get the options array (as values)
+        $options = $this->getRawOptions();
+        
+        // Create a filter-er to map each option to a value
+        $filter = URLSegmentFilter::create();
+        
+        
+        // Loop through the options
+        foreach ($options as $option) {
+            
+            // Handle-ify the option to check it against the passed value
+            if ($filter->filter($option) == $value) {
+                return $option;
+            }
+        }
+        
+        // If we reached here it wasn't found
+        return null;
     }
 }
