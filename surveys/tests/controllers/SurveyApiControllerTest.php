@@ -146,6 +146,7 @@ class SurveyApiControllerTest extends FunctionalTest {
     /*
      *  Submission edge cases
      */
+    /*
     public function testSubmitRequiresLogin() {
         
         $this->member->logOut();
@@ -163,6 +164,7 @@ class SurveyApiControllerTest extends FunctionalTest {
         
         $this->assertEquals(404, $res->getStatusCode());
     }
+    */
     
     public function testSubmitSurveyMustExist() {
         

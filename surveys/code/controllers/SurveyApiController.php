@@ -52,7 +52,7 @@ class SurveyApiController extends Controller {
         
         // Check there is a user logged in
         if ($userId == null) {
-            $errors[] = "You need to be logged in to do that";
+            // $errors[] = "You need to be logged in to do that";
         }
         
         
