@@ -40,7 +40,7 @@ var setupMap = null;
     ];
     
     // Setup for each component
-    // IDEA: refactor to seperate files?
+    // IDEA: refactor to seperate files? ~ requirejs?
     const componentSetup = {
         SurveyMapComponent: function(page, comp) {
             
@@ -160,8 +160,6 @@ var setupMap = null;
                     });
                 
             });
-            
-            
             
             
         }

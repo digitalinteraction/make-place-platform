@@ -25,3 +25,8 @@ bootstrap.sh
 
 screen.scss
 -> copy relevant screen.scss back
+
+
+
+
+ADMIN_EMAIL env variable

@@ -6,7 +6,7 @@ class SurveyModelAdmin extends ModelAdmin {
         'Survey'
     ];
     
-    private static $menu_icon = 'mysite/images/survey.png';
+    private static $menu_icon = 'surveys/images/survey.png';
     
     private static $url_segment = 'survey';
     

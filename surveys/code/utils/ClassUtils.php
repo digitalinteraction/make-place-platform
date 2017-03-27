@@ -28,7 +28,7 @@ class ClassUtils extends Object {
     public static function formatClass($class, $base = null) {
         
         // Give them readable names
-        // -> removes 'Question' from the end
+        // -> removes '$base' from the end
         // -> adds spaces between words
         //    ref: http://stackoverflow.com/questions/1089613/php-put-a-space-in-front-of-capitals-in-a-string-regex
         
