@@ -28,6 +28,13 @@ class ClassUtilsTest extends SapphireTest {
         
         $classes = ClassUtils::getSubclasses($this->object, 'MockClass');
         
+        $this->assertEquals(4, count($classes));
+    }
+    
+    public function testSubclassesWithoutBase() {
+        
+        $classes = ClassUtils::getSubclasses($this->object, 'MockClass', true);
+        
         $this->assertEquals(3, count($classes));
     }
     

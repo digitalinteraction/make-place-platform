@@ -19,6 +19,7 @@ services:
             - ./assets:/app/assets
             - ./scripts:/app/scripts
             - ./surveys:/app/surveys
+            - ./auth:/app/auth
             - ./maps:/app/maps
             - ./phpunit.xml:/app/phpunit.xml
         environment:

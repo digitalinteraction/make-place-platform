@@ -1,0 +1,73 @@
+
+
+
+.LoginPage {
+    
+    .oauth {
+        padding-top: 20px;
+        margin: 0px;
+        text-align: center;
+        
+        .facebook-auth {
+            display: inline-block;
+            color: white;
+            background: #3d5a97;
+            padding: 20px 30px;
+            font-size: 20px;
+            border-radius: 5px;
+            font-family: 'Open Sans';
+            margin-bottom: 0px;
+        }
+    }
+    
+    .or-section {
+        position: relative;
+        font-size: 18px;
+        font-weight: 300;
+        z-index: 1;
+        overflow: hidden;
+        text-align: center;
+        color: #888;
+        margin: 20px 0px;
+        
+        &:before, &:after { content: '~'; }
+    }
+    
+    .form-tabs {
+        
+        max-width: 550px;
+        margin: 0px auto;
+        
+        ul.nav {
+            text-align: center;
+            
+            li {
+                float: none;
+                display: inline-block;
+                font-size: 18px;
+                
+                a { color: #888; }
+                
+                &.active a {
+                    color: #333;
+                }
+            }
+        }
+        
+        .tab-pane {
+            padding-top: 20px;
+            
+            .message {
+                text-align: center;
+            }
+            
+            form {
+                
+                input.text, textarea, select {
+                    font-size: 18px;
+                    padding: 10px 15px;
+                }
+            }
+        }
+    }
+}

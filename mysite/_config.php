@@ -36,7 +36,9 @@ SS_Log::add_writer(new SS_LogFileWriter(_envVar('LOG_FILE', '../silverstripe.log
 
 
 // Define the default user
-Security::setDefaultAdmin(_envVar('DEFAULT_USER', 'admin'), _envVar('DEFAULT_PASS', '37g!6sS0YW8E'));
+if (isset($_SERVER['DEFAULT_USER']) && isset($_SERVER['DEFAULT_PASS'])) {
+    Security::setDefaultAdmin(_envVar('DEFAULT_USER'), _envVar('DEFAULT_PASS'));
+}
 
 
 // Define the environment type, defaulting to live
@@ -70,7 +72,7 @@ define('FB_SECRET', _envVar('FB_SECRET', 'NO_FB_SECRET_ID_PROVIDED'));
 // Define file-url mapping for using framework/sake
 global $_FILE_TO_URL_MAPPING;
 if (isset($_SERVER['HTTP_HOST'])) {
-    $_FILE_TO_URL_MAPPING['/app'] = 'http://'.$_SERVER['HTTP_HOST'];
+    $_FILE_TO_URL_MAPPING['/app'] = $_SERVER['HTTP_HOST'];
 }
 else if (isset($_SERVER["CUSTOM_DOMAIN"])) {
     $_FILE_TO_URL_MAPPING['/app'] = $_SERVER["CUSTOM_DOMAIN"];
@@ -86,12 +88,12 @@ ini_set('session.save_path', "/app/silverstripe-cache");
 
 // If a log email is available, add a logger
 if (_envVar("LOG_EMAIL")) {
-	SS_Log::add_writer(new SS_LogEmailWriter(LOG_EMAIL), SS_Log::WARN, '<=');
+	SS_Log::add_writer(new SS_LogEmailWriter(_envVar("LOG_EMAIL")), SS_Log::WARN, '<=');
 }
 
 // If the sitebase is set, apply it to the Director
 if (_envVar("SITE_BASE")) {
-	Director::setBaseURL(SITE_BASE);
+	Director::setBaseURL(_envVar("SITE_BASE"));
 }
 
 // Turn on errors if in dev mode

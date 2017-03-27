@@ -24,7 +24,7 @@ metro-futures. A custom silverstripe theme
 	
 	$MetaTags(false)
 	
-	<% require themedCSS('screen') %>
+	<% require themedCSS('strapped') %>
 	
 	
 	<!-- Fonts -->

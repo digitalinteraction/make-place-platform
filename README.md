@@ -26,8 +26,8 @@ DB_PATH                 | no        | The directory a file-based database will b
 SITE_ENV                | no        | The mode of the site, `live`, `testing`, `dev`; defaults to `live`
 LOCALE                  | no        | The local of the site, used for date formatting & translations, defaults to `en_GB`
 LOG_FILE                | no        | Where to store the log file, relative to this `mysite/_config.php`
-DEFAULT_USER            | no        | The username of the default admin to create, defaults to `admin`
-DEFAULT_PASS            | no        | The password of the default admin to create, defaults to `37g!6sS0YW8E`
+DEFAULT_USER            | no        | The username of the default admin to create, must also have `DEFAULT_PASS` set
+DEFAULT_PASS            | no        | The password of the default admin to create, must also have `DEFAULT_USER` set
 LOG_EMAIL               | no        | An email to send server errors to
 SITE_BASE               | no        | If the server is being run on a subdirectory e.g. `openlab.ncl.ac.uk/dokku/my-site`, setting this will fix Silverstripe's URLs. For this example set to `/dokku/my-site/`
 G_RECAPTCHA_PUBLIC      | no        | Your [Google Recaptcha](https://www.google.com/recaptcha) public key

@@ -166,7 +166,7 @@ footer {
         padding-left: 10px;
         margin-left: 10px;
         
-        &:not(.first) {
+        &:not(:first-child) {
             border-left: 1px solid $actionAltColour;
         }
     }
@@ -181,6 +181,61 @@ footer {
 }
 
 
+
+
+
+/* Forms */
+form {
+    
+    input:not([type=submit]), select {
+        display: block;
+        width: 100%;
+        padding: 8px 16px;
+        border-radius: 5px;
+        border: 1px solid $borderColour;
+        font-size: 16px;
+    }
+    
+    input[type=checkbox] {
+        margin-left: 0px !important;
+        padding-right: 10px;
+    }
+    
+    select {
+        height: 40px;
+        background: #fff;
+    }
+    
+    label {
+        display: block;
+        font-size: 14px;
+        margin-top: 10px;
+    }
+    
+    input[type=submit] {
+        font-size: 18px;
+        border: 1px solid #ccc;
+        background: none;
+        padding: 8px 18px;
+        margin-left: 12px;
+        border-radius: 5px;
+        
+        background-color: $actionColour;
+        border: none;
+        color: white;
+        
+        &:hover {
+            color: white;
+            text-decoration: underline;
+        }
+        
+    }
+    
+    .Actions, .action-list {
+        text-align: right;
+        margin-bottom: 15px;
+    }
+}
 
 
 

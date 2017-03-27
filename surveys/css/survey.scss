@@ -11,10 +11,9 @@ $clearBackground: #337ab7;
 $clearBorder: #2e6da4;
 $clearHover: #286090;
 
+
+
 form.survey {
-    
-    
-    
     
     .question-list {
         
@@ -23,32 +22,12 @@ form.survey {
             
             margin-bottom: 15px;
             
-            label {
-                display: block;
-                font-size: 14px;
-            }
-            
-            .control {
-                display: block;
-                width: 100%;
-                padding: 8px 16px;
-                border-radius: 5px;
-                border: 1px solid $borderColour;
-                font-size: 16px;
-            }
-            
-            select {
-                height: 40px;
-                background: #fff;
-            }
-            
             .description {
                 color: $textAltColour;
                 font-size: 14px;
                 margin: 3px 0px 10px;
             }
         }
-        
         
     }
     
@@ -58,14 +37,8 @@ form.survey {
         margin-bottom: 15px;
         
         input[type="submit"] {
-            font-size: 18px;
-            border: 1px solid #ccc;
-            background: none;
-            padding: 8px 18px;
-            margin-left: 12px;
-            border-radius: 5px;
             
-            &[name="submit"] {
+            &[name=submit] {
                 background-color: $submitBackground;
                 border-color: $submitBorder;
                 color: white;
@@ -73,13 +46,14 @@ form.survey {
                 &:hover { background-color: $submitHover; }
             }
             
-            &[name="clear"] {
+            &[name=clear] {
                 background-color: $clearBackground;
                 border-color: $clearBorder;
                 color: white;
                 
                 &:hover { background-color: $clearHover; }
             }
+            
         }
     }
 }

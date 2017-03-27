@@ -1,0 +1,17 @@
+---
+Name: mysite
+After:
+  - 'framework/*'
+  - 'cms/*'
+---
+
+
+LoginController:
+  extensions:
+    - RecaptchaExtension
+
+
+Member:
+  extensions:
+    - MemberOAuthExtension
+    - MemberRegisterExtension
