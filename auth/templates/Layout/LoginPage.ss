@@ -45,23 +45,26 @@
                 
                 <ul class="nav nav-tabs" role="tablist">
                     
-                    <% loop TabContent %>
-                        <li role="presentation" class="$Active">
-                            <a href="#$ID" aria-controls="$ID" role="tab" data-toggle="tab"> $Title </a>
-                        </li>
-                    <% end_loop %>
+                    <li role="presentation" class="<% if LoginMode = Login %>active<% end_if %>">
+                        <a href="#login" aria-controls="login" role="tab" data-toggle="tab"> Login </a>
+                    </li>
+                    
+                    <li role="presentation" class="<% if LoginMode = Register %>active<% end_if %>">
+                        <a href="#register" aria-controls="register" role="tab" data-toggle="tab"> Register </a>
+                    </li>
                     
                 </ul>
                 
                 <!-- Tab panes -->
                 <div class="tab-content">
                     
-                    <% loop TabContent %>
-                        <div role="tabpanel" class="tab-pane $Active" id="$ID">
-                            <%-- <p class="message"> $Message </p> --%>
-                            $Tab
-                        </div>
-                    <% end_loop %>
+                    <div role="tabpanel" class="tab-pane <% if LoginMode = Login %>active<% end_if %>" id="login">
+                        $LoginForm
+                    </div>
+                    
+                    <div role="tabpanel" class="tab-pane <% if LoginMode = Register %>active<% end_if %>" id="register">
+                        $RegisterForm
+                    </div>
                     
                 </div>
                 

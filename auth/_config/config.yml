@@ -6,11 +6,6 @@ After:
 ---
 
 
-LoginController:
-  extensions:
-    - RecaptchaExtension
-
-
 Member:
   extensions:
     - MemberOAuthExtension

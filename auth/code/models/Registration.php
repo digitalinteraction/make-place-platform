@@ -6,7 +6,7 @@ class Registration extends DataObject implements PermissionProvider {
     
     private static $db = array(
         "Key" => "Varchar(255)",
-        "Used" => "Boolean"
+        "Active" => "Boolean",
     );
     
     private static $has_one = array(

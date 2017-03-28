@@ -67,6 +67,9 @@ define('AWS_USERNAME', _envVar('AWS_USERNAME', 'NO_AWS_USER_PROVIDED'));
 define('FB_APP_ID', _envVar('FB_APP_ID', 'NO_FB_APP_ID_PROVIDED'));
 define('FB_SECRET', _envVar('FB_SECRET', 'NO_FB_SECRET_ID_PROVIDED'));
 
+// Setup the admin email
+define("ADMIN_EMAIL", _envVar("ADMIN_EMAIL", "noreply@openlab.ncl.ac.uk"));
+Email::setAdminEmail(ADMIN_EMAIL);
 
 
 // Define file-url mapping for using framework/sake

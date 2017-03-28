@@ -25,13 +25,15 @@ class LoginController extends ContentController {
         
         $user = Member::currentUser();
         
-        $this->addRecaptchaJs();
-        
-        if ($user != null) {
+        if ($user != null && $user->getCanInteract()) {
             return $this->redirect($this->getBackURL());
         }
         
         $this->LoginMode = Session::get('LoginMode');
+        
+        if ($this->LoginMode == null) {
+            $this->LoginMode = 'Login';
+        }
         
         return $this;
     }
@@ -49,31 +51,6 @@ class LoginController extends ContentController {
         
         $url = $this->request->getVar("BackURL");
         return ($url != null)? $url : "home/";
-    }
-    
-    public function getTabContent() {
-        
-        $mode = Session::get('LoginMode');
-        if ($mode == null) {
-            $mode = 'Login';
-        }
-        
-        return ArrayList::create(array(
-            array(
-                "Title" => "Login",
-                "Active" => $mode == 'Login' ? 'active' : '',
-                "ID" => 'login',
-                'Tab' => $this->LoginForm(),
-                'Message' => 'Log in with Metro Futures'
-            ),
-            array(
-                "Title" => "Register",
-                "Active" => $mode == 'Register' ? 'active' : '',
-                "ID" => 'register',
-                'Tab' => $this->RegisterForm(),
-                'Message' => 'Create a Metro Futures account'
-            )
-        ));
     }
     
     
@@ -127,7 +104,7 @@ class LoginController extends ContentController {
         
         // Get a matching registration for those parameters
         $register = Registration::get()->filter(array(
-            "Key" => $key, "Member.Email" => $email, "Used" => false
+            "Key" => $key, "Member.Email" => $email, "Active" => true
         ))->first();
         
         
@@ -140,7 +117,7 @@ class LoginController extends ContentController {
         // If we've got to here then the parameters passed are correct
         
         // Mark this registration as used so it can't be used again
-        $register->Used = true;
+        $register->Active = false;
         $register->write();
         
         
@@ -178,7 +155,7 @@ class LoginController extends ContentController {
         $registerMessage = "<label> By registering you agree to our <a href='/terms' target='_blank'>Terms & Conditions</a>.</label>";
         
         // The fields of the form
-        $fields = FieldList::create(array(
+        $fields = FieldList::create([
             TextField::create("FirstName", "First Name")
                 ->setAttribute('placeholder', 'John'),
             TextField::create("Surname", "Surname")
@@ -187,27 +164,22 @@ class LoginController extends ContentController {
                 ->setAttribute('placeholder', 'me@example.com'),
             PasswordField::create("Password", "Password")
                 ->setAttribute('placeholder', '••••••••'),
-            TextField::create("Postcode", "Postcode")
-                ->setAttribute('placeholder', 'NE1'),
+            RecaptchaField::create('Captcha'),
             LiteralField::create("TsAndCs", $registerMessage)
-        ));
+        ]);
         
         // The submit action
-        $actions = FieldList::create(array(
+        $actions = FieldList::create([
             FormAction::create("submitRegister")->setTitle("Register")
-        ));
+        ]);
         
         // The required fields
-        $required = RequiredFields::create(array(
+        $required = RequiredFields::create([
             "FirstName", "LastName", "Email"
-        ));
+        ]);
         
         // Create the form
         $form = Form::create($this, "RegisterForm", $fields, $actions, $required);
-        
-        // Use the captcha template & set the captcha key (defined in _ss_environment.php)
-        $form->setTemplate("Forms/CaptchaForm");
-        $form->CaptchaPublicKey = G_RECAPTCHA_PUBLIC;
         
         // Return the form for rendering
         return $form;
@@ -217,11 +189,6 @@ class LoginController extends ContentController {
         
         Session::set('LoginMode', 'Register');
         
-        // Check the captcha passed
-        $captchaResponse = $this->processRecaptcha($data, $form);
-        if ($captchaResponse != null) {
-            return $captchaResponse;
-        }
         
         // Get the fields from the request
         $firstName = $data["FirstName"];
@@ -230,38 +197,58 @@ class LoginController extends ContentController {
         $password = $data["Password"];
         $encodedEmail = urlencode($email);
         
+        $member = null;
         
-        // Check if a member exists with that email
+        
+        // Check if a signed up member exists with that email
         $existing = Member::get()->filter("Email", $email)->first();
-        if ($existing != null) {
+        if ($existing != null && $existing->getCanInteract()) {
             
             // If they do, pretend we sent an email to that address
             // TODO: what if they created an account before but didn't verify it?
             return $this->redirect("login/emailsent/?email=$encodedEmail");
         }
+        else if ($existing && !$existing->getCanInteract()){
+            
+            $member = $existing;
+        }
+        else {
+            
+            // Create a new member with *no* permissions
+            $member = Member::create();
+        }
         
-        
-        
-        // Create a new member with *no* permissions
-        $member = Member::create();
+        // Update the member
+        $member->Email = $email;
         $member->FirstName = $firstName;
         $member->Surname = $lastName;
-        $member->Email = $email;
         $member->changePassword($password);
         
-        // If set, add the postcode too
-        if (isset($data["Postcode"])) {
-            $member->Location = $data["Postcode"];
-        }
         
         // Save the new member
         $member->write();
         
         
+        // Disable previous registration attempts
+        $previousAttempts = Registration::get()->filter([
+            "MemberID" => $member->ID,
+            "Active" => true
+        ]);
+        foreach ($previousAttempts as $attempt) {
+            $attempt->Active = false;
+            $attempt->write();
+        }
+        
+        
+        
+        
+        
+        
+        
         // Create a registration object, generating a unique key for it
         $register = Registration::create();
         $register->MemberID = $member->ID;
-        $register->Used = false;
+        $register->Active = true;
         $register->Key = $register->generateUniqueKey($member, "Registration", "Key");
         $register->write();
         
@@ -279,7 +266,7 @@ class LoginController extends ContentController {
         // Create an email with the registration key in it
         $email = Email::create()
             ->setTo($email)
-            ->setSubject("$title account activation")
+            ->setSubject("$title Account Activation")
             ->setTemplate("ActivationEmail")
             ->populateTemplate(array(
                 "FirstName" => $firstName,

@@ -20,3 +20,7 @@ Page:
 Page_Controller:
   extensions:
     - PageControllerSidebarExtension
+
+Registration:
+  extensions:
+    - SecureGeneratorExtension

@@ -29,6 +29,7 @@ LOG_FILE                | no        | Where to store the log file, relative to t
 DEFAULT_USER            | no        | The username of the default admin to create, must also have `DEFAULT_PASS` set
 DEFAULT_PASS            | no        | The password of the default admin to create, must also have `DEFAULT_USER` set
 LOG_EMAIL               | no        | An email to send server errors to
+ADMIN_EMAIL             | no        | The email adress emails will come from
 SITE_BASE               | no        | If the server is being run on a subdirectory e.g. `openlab.ncl.ac.uk/dokku/my-site`, setting this will fix Silverstripe's URLs. For this example set to `/dokku/my-site/`
 G_RECAPTCHA_PUBLIC      | no        | Your [Google Recaptcha](https://www.google.com/recaptcha) public key
 G_RECAPTCHA_SECRET      | no        | Your [Google Recaptcha](https://www.google.com/recaptcha) secret key

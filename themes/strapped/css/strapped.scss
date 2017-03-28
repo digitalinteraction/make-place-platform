@@ -212,6 +212,10 @@ form {
         margin-top: 10px;
     }
     
+    .g-recaptcha {
+        margin-top: 10px;
+    }
+    
     input[type=submit] {
         font-size: 18px;
         border: 1px solid #ccc;
@@ -228,7 +232,21 @@ form {
             color: white;
             text-decoration: underline;
         }
-        
+    }
+    
+    .message.warn {
+        font-size: 14;
+        font-weight: 400;
+        color: white;
+        background: #c94c4d;
+        padding: 6px 12px;
+        margin: 8px 0px;
+        border-radius: 20px;
+        box-shadow: 1px 1px 1px #999;
+    }
+    
+    span.message.warn {
+        display: block;
     }
     
     .Actions, .action-list {
