@@ -1,0 +1,16 @@
+{
+    "name": "robb-j/generic-theme",
+    "description": "A parameterised bootstrap 3 Silverstripe theme",
+    "type": "silverstripe-theme",
+    "keywords": ["silverstripe", "theme"],
+    "authors": [
+        {
+            "name": "Rob Anderson",
+            "homepage": "http://andrsn.uk"
+        }
+    ],
+    "require": {
+        "composer/installers": "*",
+        "silverstripe/framework": ">=3.0"
+    }
+}

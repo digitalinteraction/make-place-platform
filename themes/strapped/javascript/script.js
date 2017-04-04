@@ -7,8 +7,6 @@ $(document).ready(function() {
     }).resize();
     
     // Add google fonts asnychronoulsy so they don't slow down page load times
-    $('head').append(
-        '<link href="https://fonts.googleapis.com/css?family=Overpass" rel="stylesheet">'
-    );
+    $('head').append('<link href="https://fonts.googleapis.com/css?family=Overpass" rel="stylesheet">');
 });
  

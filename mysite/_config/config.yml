@@ -24,3 +24,7 @@ Page_Controller:
 Registration:
   extensions:
     - SecureGeneratorExtension
+
+SiteConfig:
+  extensions:
+    - BrandSiteConfigExtension

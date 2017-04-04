@@ -20,6 +20,34 @@ class Page extends SiteTree {
     
     
     
+    /** Whether the rendered page should fill the screen */
+	public static $page_fills_screen = true;
+    
+    public function getShouldFillScreen() {
+		$class = get_class($this);
+		return ($class::$page_fills_screen) ? "fill" : "";
+	}
+    
+    
+    /** Get the pages in the breadcrums */
+    public function getSitetree() {
+		
+		$page = $this->data();
+		
+		$list = ArrayList::create(array($page));
+		
+		while ($page->ParentID != null) {
+			$page = $page->Parent();
+			$list->push($page);
+		}
+		
+		$list = $list->reverse();
+		
+		return $list->renderWith("Breadcrumbs");
+	}
+    
+    
+    
     /** Customise CMS fields */
     public function getCMSFields() {
         $fields = parent::getCMSFields();

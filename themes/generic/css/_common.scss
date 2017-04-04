@@ -1,0 +1,23 @@
+/*
+ *      Reusable Styles
+ */
+
+.text-style {
+  font-family: $baseFont;
+  font-size: 16px;
+  font-weight: 600;
+  font-style: oblique;
+  color: $bodyTextColour;
+}
+
+.heading-style {
+  font-family: $titleFont;
+  font-style: oblique;
+  font-weight: 600;
+}
+
+.light-text {
+  color: $lightTextColour;
+}
+
+html { height: 100%; }

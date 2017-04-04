@@ -254,7 +254,7 @@ var setupMap = null;
     $(document).ready(function() {
         $(window).resize(function() {
             $(".MapPage .main").height(
-                $(window).height() - $("header").outerHeight() - $("footer").outerHeight()
+                $(window).height() - $("header nav").outerHeight() - $("footer").outerHeight()
             );
         }).resize();
     });

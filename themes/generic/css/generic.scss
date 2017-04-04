@@ -1,0 +1,151 @@
+// Imports
+@import 'bootstrap.min';
+@import 'font-awesome.min';
+
+@import 'config';
+@import 'common';
+
+
+
+/* Base Styles */
+body {
+  background: #f8f8f8;
+  padding-top: 75px;
+  position: relative;
+  
+  &.fill {
+    min-height: 100%;
+    footer {
+      position: absolute;
+      left: 0; right: 0;bottom: 0;
+    }
+  }
+  
+  
+  p, li, td, label { font-family: $baseFont; }
+  
+  p { @extend .text-style; }
+  h1, h2, h3, h4, h5, h6 { @extend .heading-style; }
+  
+  h1 { font-size: 42px; }
+  
+  .content-card {
+    border: 1px solid $cardBorder;
+    background: $cardBackground;
+    padding: $cardPadding;
+    margin-bottom: $cardPadding;
+    border-radius: 2px;
+    
+    .title { margin-top: 0px; }
+    &:first-child { margin-top: $cardPadding; }
+  }
+  
+  .breadcrumbs {
+    .crumb { color: $actionColour; }
+    .crumb.last { color: $lightTextColour; }
+    .seperator { padding: 0px 5px; }
+  }
+  
+  .content {
+    img { max-width: 100%; }
+  }
+}
+
+
+
+/* Header */
+header {
+  
+  .navbar {
+    background: $headerBackground;
+    border: none;
+    border-bottom: 5px solid $themeColour;
+    border-radius: 0px;
+    margin-bottom: 0px;
+    
+    .navbar-header {
+      
+      .navbar-brand {
+        padding: 4px;
+        height: 70px;
+        
+        img {
+          max-height: 100%;
+        }
+      }
+    }
+    
+    
+    .menu-item a {
+      margin-top: 20px;
+      padding-top: 15px;
+      padding-bottom: 15px;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 400;
+      
+      border-top-left-radius: 8px;
+      border-top-right-radius: 8px;
+      
+      color: $headerInactive;
+      
+      &:hover {
+        background: $headerActiveBackground;
+      }
+      
+      &.active {
+        color: $headerActive;
+        font-weight: 600;
+        
+        border-bottom: 5px solid $themeColour;
+        padding-bottom: 10px;
+      }
+    }
+  }
+  
+}
+
+
+
+/* Footer */
+footer {
+  background: #fff;
+  border-top: 2px solid $themeColour;
+  
+  .links {
+    font-style: normal;
+    font-weight: 400;
+    
+    margin: 0px;
+    padding: 12px 0px;
+    
+    .copyright {
+      margin-right: 20px;
+      color: $lightTextColour;
+    }
+    
+    .link {
+      padding-right: 10px;
+      margin-bottom: 10px;
+      margin-left: 10px;
+      color: $lightTextColour;
+      font-size: 12px;
+    }
+  }
+}
+
+
+
+/* Blog */
+.Blog {
+  .post-title { margin-top: 0px; }
+}
+
+
+
+/* Blog Post */
+.BlogPost {
+  .post-date {
+    margin-top: 0px;
+  }
+}

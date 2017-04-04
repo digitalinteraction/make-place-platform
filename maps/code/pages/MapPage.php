@@ -22,6 +22,8 @@ class MapPage extends Page {
         'StartZoom' => 15
     ];
     
+    public static $page_fills_screen = false;
+    
     
     public function getCMSFields() {
     

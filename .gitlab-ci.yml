@@ -24,7 +24,7 @@ build_base_image:
     when: manual
     stage: deploy
     script:
-        - docker build --pull $CONTAINER_BASE_IMAGE -f base.Dockerfile .
+        - docker build -t $CONTAINER_BASE_IMAGE -f base.Dockerfile .
         - docker push $CONTAINER_BASE_IMAGE
 
 test:

@@ -74,14 +74,13 @@ Email::setAdminEmail(ADMIN_EMAIL);
 
 // Define file-url mapping for using framework/sake
 global $_FILE_TO_URL_MAPPING;
-if (isset($_SERVER['HTTP_HOST'])) {
-    $_FILE_TO_URL_MAPPING['/app'] = $_SERVER['HTTP_HOST'];
-}
-else if (isset($_SERVER["CUSTOM_DOMAIN"])) {
+if (isset($_SERVER["CUSTOM_DOMAIN"])) {
     $_FILE_TO_URL_MAPPING['/app'] = $_SERVER["CUSTOM_DOMAIN"];
+    $_FILE_TO_URL_MAPPING['/var/www/html'] = $_SERVER["CUSTOM_DOMAIN"];
 }
 else {
     $_FILE_TO_URL_MAPPING['/app'] = 'http://localhost';
+    $_FILE_TO_URL_MAPPING['/var/www/html'] = 'http://localhost';
 }
 
 // Set where to store the session
