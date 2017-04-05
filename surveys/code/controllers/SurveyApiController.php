@@ -172,7 +172,14 @@ class SurveyApiController extends Controller {
         //     'content' => $rendered->getValue()
         // ]);
         
-        return $this->jsonResponse($response->toJson());
+        $member = $response->Member();
+        
+        return $this->jsonResponse([
+            "response" => $response->toJson(),
+            "member" => [
+                "name" => $member->getName()
+            ]
+        ]);
     }
     
     

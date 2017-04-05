@@ -20,8 +20,6 @@ requirejs([
 ], function($, Vue, _, L, LG, LC, Utils, SurveyComponent) {
     "use strict";
     
-    console.log(L.markerClusterGroup);
-    
     var componentMap = {
         "SurveyMapComponent": SurveyComponent
     };
@@ -37,12 +35,47 @@ requirejs([
         },
         map: null,
         methods: {
-            addControl: function(id, html) { },
-            removeControl: function(id) { },
-            addAction: function(id, options) { },
-            removeAction: function(id) { },
-            showPopup: function(html, onClose) { return false; },
-            selectPosition: function(callback) { return [0, 0]; }
+            addControl: function(id, html) {
+                
+            },
+            removeControl: function(id) {
+                
+            },
+            addAction: function(id, options) {
+                
+            },
+            removeAction: function(id) {
+                
+            },
+            showDetail: function(title, html, onClose) {
+                
+                var detail = $('#map-detail');
+                
+                if (detail.hasClass('active')) {
+                    // return false;
+                }
+                
+                detail.find('.title .text').text(title);
+                detail.find('.inner').html(html);
+                detail.toggleClass('active', true);
+                
+                detail.off('click');
+                detail.on('click', function(e) {
+                    
+                    if (onClose && onClose(e) === false) {
+                        return;
+                    }
+                    
+                    detail.find('.title .text').html('');
+                    detail.find('.inner').html('');
+                    detail.toggleClass('active', false);
+                });
+                
+                return false;
+            },
+            selectPosition: function(callback) {
+                return [0, 0];
+            }
         }
     };
     
@@ -59,7 +92,13 @@ requirejs([
             }
         });
         
-        state.map = L.map('map').setView([config.page.startLat, config.page.startLng], config.page.startZoom);
+        var mapConfig = {
+            // zoomControl: false
+        };
+        
+        state.map = L.map('map', mapConfig).setView([config.page.startLat, config.page.startLng], config.page.startZoom);
+        
+        state.map.zoomControl.setPosition('bottomright')
         
         
         if (config.page.tileset === "Google") {

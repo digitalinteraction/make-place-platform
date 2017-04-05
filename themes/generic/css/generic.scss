@@ -2,8 +2,8 @@
 @import 'bootstrap.min';
 @import 'font-awesome.min';
 
-@import 'config';
-@import 'common';
+@import '../../../config';
+@import '../../../common';
 
 
 
@@ -30,11 +30,7 @@ body {
   
   
   .content-card {
-    border: 1px solid $cardBorder;
-    background: $cardBackground;
-    padding: $cardPadding;
-    margin-bottom: $cardPadding;
-    border-radius: 2px;
+    @extend .card-style;
     
     .title { margin: 0px; }
     &:first-child { margin-top: $cardPadding; }

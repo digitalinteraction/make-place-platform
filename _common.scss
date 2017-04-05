@@ -22,6 +22,14 @@
   font-weight: 400;
 }
 
+.card-style {
+  border: 1px solid $cardBorder;
+  background: $cardBackground;
+  padding: $cardPadding;
+  margin-bottom: $cardPadding;
+  border-radius: 2px;
+}
+
 .light-text {
   color: $lightTextColour;
 }

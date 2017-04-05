@@ -2,7 +2,7 @@ define(["jquery", "vue", "lodash", "utils"], function($, Vue, _, Utils) {
     "use strict";
     
     
-    function createResponseMarker(response, type) {
+    function createResponseMarker(response, type, state) {
         
         var marker = L.marker([response.lat, response.lng], {
             icon: type
@@ -18,6 +18,13 @@ define(["jquery", "vue", "lodash", "utils"], function($, Vue, _, Utils) {
             $.ajax(Utils.apiUrl("/s/" + response.surveyId + "/r/" + response.id))
             .then(function(data) {
                 console.log(data);
+                
+                var title = data.member.name || 'Unknown';
+                
+                var body = JSON.stringify(data.response);
+                
+                state.methods.showDetail(title, body, null);
+                
             })
             .catch(function(error) {
                 console.log(error);
@@ -43,7 +50,7 @@ define(["jquery", "vue", "lodash", "utils"], function($, Vue, _, Utils) {
                 
                 
                 var markers = _.each(responses, function(response) {
-                    var m = createResponseMarker(response, state.pins.blue);
+                    var m = createResponseMarker(response, state.pins.blue, state);
                     cluster.addLayer(m);
                 });
                 
