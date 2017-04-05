@@ -16,13 +16,11 @@
                 <ul class="nav navbar-nav navbar-right">
                     
                     <% loop Menu(1) %>
-                        <% if $URLSegment != 'home' %>
-                            <li class="menu-item">
-                                <a href="$Link" class="<% if $LinkingMode != 'link' %> active <% end_if %>">
-                                    $MenuTitle
-                                </a>
-                            </li>
-                        <% end_if %>
+                        <li class="menu-item">
+                            <a href="$Link" class="<% if $LinkingMode != 'link' %> active <% end_if %>">
+                                $MenuTitle
+                            </a>
+                        </li>
                     <% end_loop %>
                     
                 </ul>

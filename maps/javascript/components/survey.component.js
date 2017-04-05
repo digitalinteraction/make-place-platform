@@ -16,17 +16,18 @@ define(["jquery", "vue", "lodash", "utils"], function($, Vue, _, Utils) {
             
             var response = this.response;
             
+            console.log(e);
+            
+            state.map.panTo(e.latlng);
+            
+            // e
+            
             $.ajax(Utils.apiUrl("/s/" + response.surveyId + "/r/" + response.id))
             .then(function(data) {
                 
                 var title = data.member.name || "Unknown";
                 
-                console.log(data);
-                
-                var html = Utils.tpl.surveyResponse(data);
-                
-                state.methods.showDetail(title, html, null);
-                
+                state.methods.showDetail(title, Utils.tpl.surveyResponse(data), null);
             })
             .catch(function(error) {
                 console.log(error);
