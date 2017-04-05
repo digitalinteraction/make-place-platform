@@ -1,0 +1,61 @@
+/*
+ *      Styles for specific screens
+ */
+
+
+/* Large Devices: Wide Screens */
+@media only screen and (max-width : 1200px) {
+  
+}
+
+
+
+/* Most Devices: Desktops */
+@media only screen and (max-width : 992px) {
+  
+}
+
+
+
+/* Smaller Devices: Tablets */
+@media only screen and (max-width : 767px) {
+  html, body {
+    
+    header .navbar {
+      
+      .navbar-header .navbar-toggle {
+        margin-top: 12.5px;
+      }
+      
+      .navbar-nav .menu-item {
+        
+        &:not(:last-child) {
+          border-bottom: 1px solid #eee;
+        }
+        
+        a {
+          padding-top: 10px;
+          padding-bottom: 10px;
+          margin-top: 0px;
+          text-align: center;
+          
+          &.active {
+            border-bottom: 0px;
+            background: $headerActiveBackground;
+            border-radius: 0px;
+          }
+        }
+      }
+    }
+    
+  }
+}
+
+
+
+/* Small Devices: Phones */
+@media only screen and (max-width : 480px) {
+  html, body {
+    
+  }
+}

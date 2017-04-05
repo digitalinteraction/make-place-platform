@@ -2,7 +2,11 @@
     
     <h2 class="post-title"><a href="$Link" title="$MenuTitle.XML"> $MenuTitle </a></h2>
     
-    <p class="light-text"> $PublishDate.Day, $PublishDate.Long $PublishDate.Time </p>
+    <p class="light-text post-date">
+        <time datetime="$PublishDate">
+            $PublishDate.Day, $PublishDate.Long $PublishDate.Time
+        </time>
+    </p>
     
     <% if FeaturedImage %>
         <div class="content">

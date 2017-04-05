@@ -25,9 +25,9 @@ body {
   p, li, td, label { font-family: $baseFont; }
   
   p { @extend .text-style; }
-  h1, h2, h3, h4, h5, h6 { @extend .heading-style; }
+  h1 { @extend .title-style; }
+  h2, h3, h4, h5, h6 { @extend .heading-style; }
   
-  h1 { font-size: 42px; }
   
   .content-card {
     border: 1px solid $cardBorder;
@@ -36,7 +36,7 @@ body {
     margin-bottom: $cardPadding;
     border-radius: 2px;
     
-    .title { margin-top: 0px; }
+    .title { margin: 0px; }
     &:first-child { margin-top: $cardPadding; }
   }
   
@@ -88,6 +88,7 @@ header {
       border-top-right-radius: 8px;
       
       color: $headerInactive;
+      position: relative;
       
       &:hover {
         background: $headerActiveBackground;
@@ -138,7 +139,8 @@ footer {
 
 /* Blog */
 .Blog {
-  .post-title { margin-top: 0px; }
+  .post-title { margin: 0px; }
+  .post-date { font-size: 18px; font-weight: 400; }
 }
 
 
@@ -149,3 +151,7 @@ footer {
     margin-top: 0px;
   }
 }
+
+
+
+@import 'responsive';
