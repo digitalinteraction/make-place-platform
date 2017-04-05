@@ -5,7 +5,7 @@
             
             <% cached 'FooterLinks' %>
             
-            <span class="copyright"> $SiteConfig.Title $Date('Y') &copy; </span>
+            <span class="copyright"> $SiteConfig.Title $Now.Format(Y) &copy; </span>
             
             
             <% with $Page(terms) %>

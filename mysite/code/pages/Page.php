@@ -80,7 +80,17 @@ class Page_Controller extends ContentController {
      *
      * @var array
      */
-    private static $allowed_actions = array ();
+    private static $allowed_actions = [
+        "admin"
+    ];
+    
+    
+    /** Actions */
+	public function admin() {
+		
+		// A little util to quickly redirect to a page's admin
+		return $this->redirect("admin/pages/edit/show/{$this->ID}");
+	}
 
 
     /** Called when an instance is created */

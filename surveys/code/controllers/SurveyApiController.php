@@ -12,7 +12,7 @@ class SurveyApiController extends Controller {
         'submit' => 'submitSurvey',
         'view' => 'viewSurvey',
         'responses' => 'getResponses',
-        'r/$ResponseID/view' => 'viewResponse'
+        'r/$ResponseID' => 'viewResponse'
     ];
     
     public function init() {
@@ -167,10 +167,12 @@ class SurveyApiController extends Controller {
             "Response" => $response
         ]);
         
-        return $this->jsonResponse([
-            'title' => $response->getTitle(),
-            'content' => $rendered->getValue()
-        ]);
+        // return $this->jsonResponse([
+        //     'title' => $response->getTitle(),
+        //     'content' => $rendered->getValue()
+        // ]);
+        
+        return $this->jsonResponse($response->toJson());
     }
     
     

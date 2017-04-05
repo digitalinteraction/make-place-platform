@@ -9,7 +9,8 @@ class MapPage extends Page {
     private static $db = [
         'StartLat' => 'Decimal(16, 8)',
         'StartLng' => 'Decimal(16, 8)',
-        'StartZoom' => 'Int'
+        'StartZoom' => 'Int',
+        'Tileset' => 'Enum(array("Google", "OpenStreet"), "Google")'
     ];
     
     private static $has_many = [
@@ -31,6 +32,9 @@ class MapPage extends Page {
     
         $fields->addFieldsToTab('Root.Maps', [
             HeaderField::create('StartLabel', 'Initial Position'),
+            DropdownField::create('Tileset', 'Tileset',
+                singleton('MapPage')->dbObject('Tileset')->enumValues()
+            ),
             FieldGroup::create([
                 NumericField::create('StartLat', 'Latitude'),
                 NumericField::create('StartLng', 'Longitude'),
@@ -63,6 +67,8 @@ class MapPage_Controller extends Page_Controller {
     
     public function mapConfig() {
         
+        $config = SiteConfig::current_site_config();
+        
         // Add our base values
         $json = [
             'page' => [
@@ -70,6 +76,8 @@ class MapPage_Controller extends Page_Controller {
                 'startLat' => $this->StartLat,
                 'startLng' => $this->StartLng,
                 'startZoom' => $this->StartZoom,
+                'tileset' => $this->Tileset,
+                'googleMapsKey' => $config->MapApiKey
             ],
             'components' => []
         ];

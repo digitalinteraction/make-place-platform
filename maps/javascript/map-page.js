@@ -5,7 +5,7 @@
 var setupMap = null;
 
 
-(function($, Vue) {
+(function($) {
     
     // Entrypoint
     setupMap = function() {
@@ -260,4 +260,4 @@ var setupMap = null;
     });
     
     
-})($, Vue);
+})($);

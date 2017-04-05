@@ -1,13 +1,9 @@
-<% require javascript('maps/javascript/vue.min.js') %>
-<% require javascript('maps/javascript/jquery-3.1.1.min.js') %>
-<% require javascript('maps/javascript/map-page.js') %>
-
 <% require themedCSS('survey') %>
 
 
-
-<%-- TODO: Get working with themedCSS --%>
 <% require css('maps/css/maps.css') %>
+<% require css('maps/css/leaflet.css') %>
+<% require css('maps/css/marker-cluster.css') %>
 
 
 
@@ -40,7 +36,10 @@
 </div>
 
 
-<% require javascript('https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js') %>
-<script async defer
-    src="https://maps.googleapis.com/maps/api/js?key={$SiteConfig.MapApiKey}&amp;callback=setupMap">
+<script
+    src="https://maps.googleapis.com/maps/api/js?key={$SiteConfig.MapApiKey}&amp;">
+    // callback=setupMap
 </script>
+
+
+<script data-main="maps/javascript/map.js" src="maps/javascript/libs/require.js"></script>

@@ -1,0 +1,8 @@
+{
+    "browser": true,
+    "globals": [
+        "require",
+        "define",
+        "notify"
+    ]
+}

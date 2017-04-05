@@ -17,6 +17,10 @@
     .main {
         // padding: 0px;
     }
+    
+    a:focus {
+        text-decoration: none;
+    }
         
     #map-app {
         background: #fafafa;
