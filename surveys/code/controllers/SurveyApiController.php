@@ -162,16 +162,6 @@ class SurveyApiController extends Controller {
             return $this->httpError(404);
         }
         
-        
-        $rendered = $this->renderWith("SurveyResponse", [
-            "Response" => $response
-        ]);
-        
-        // return $this->jsonResponse([
-        //     'title' => $response->getTitle(),
-        //     'content' => $rendered->getValue()
-        // ]);
-        
         $member = $response->Member();
         
         return $this->jsonResponse([

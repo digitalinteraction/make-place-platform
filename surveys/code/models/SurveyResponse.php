@@ -51,13 +51,25 @@ class SurveyResponse extends DataObject {
     
     public function toJson() {
         
+        $rawValues = $this->jsonField('Responses');
+        $values = [];
+        
+        $questions = $this->Survey()->Questions();
+        
+        foreach ($questions as $question) {
+            $values[] = [
+                "key" => $question->Name,
+                "value" => isset($rawValues[$question->Handle]) ? $rawValues[$question->Handle] : ''
+            ];
+        }
+        
         return [
             'id' => $this->ID,
             'surveyId' => $this->SurveyID,
             'memberId' => $this->MemberID,
             'lat' => floatval($this->Latitude),
             'lng' => floatval($this->Longitude),
-            'responses' => $this->jsonField('Responses')
+            'values' => $values
         ];
     }
 }

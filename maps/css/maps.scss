@@ -123,20 +123,18 @@
       // padding-bottom: percentage(9/16);
     }
     
-    #map-detail, #map-controls, #map-actions {
+    #map-detail, #map-controls, #map-actions, #map-overlay {
       &:not(.active) { display: none; }
     }
     
     #map-detail {
-      
       position: absolute;
-      top: 0;
-      right: 0;
+      top: 0; right: 0;
       margin-right: $cardPadding;
       margin-top: $cardPadding;
       max-width: 100%;
       width: 500px;
-      z-index: 1000;
+      z-index: 2000;
       
       @extend .card-style;
       
@@ -149,9 +147,84 @@
       }
     }
     
+    #map-actions {
+      position: absolute;
+      top: 0; right: 0;
+      margin-top: $cardPadding;
+      margin-right: $cardPadding;
+      width: 180px;
+      max-width: 50%;
+      z-index: 1000;
+      
+      .action {
+        cursor: pointer;
+        box-shadow: 1px 1px 1px #666;
+        font-size: 16px;
+        border-radius: 5px;
+        color: white;
+        padding: 8px 18px;
+        text-align: center;
+        border: 1px solid white;
+        
+        .icon {
+          float: left;
+          padding-top: 3px;
+        }
+        
+        &.green {
+          background: #5cb85c;
+          border-color: #52A352;
+          
+          &:hover { background-color: #52A352; }
+        }
+        
+        &.blue {
+          background: #3c87c7;
+          border-color: #306da1;
+          
+          &:hover { background-color: #306da1; }
+        }
+        
+        &.red {
+          background: #c94b4d;
+          border-color: #99393b;
+          
+          &:hover { background-color: #99393b; }
+        }
+      }
+    }
+    
+    #map-overlay {
+      position: absolute;
+      top: 0; bottom: 0;
+      left: 0; right: 0;
+      background: rgba(0,0,0,0.3);
+      z-index: 1000;
+      
+      &.selecting {
+        cursor: crosshair;
+      }
+    }
+    
+    
+    
+    
+    
+    
+    
+    .survey-response {
+      
+      label.name {
+        font-size: 18px;
+        font-style: italic;
+        margin: 0px;
+      }
+      
+      p.value {
+        font-weight: 400;
+      }
+    }
+    
   }
   
-  footer.bottom {
-    // ...
-  }
 }

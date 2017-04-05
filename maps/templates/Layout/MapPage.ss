@@ -14,8 +14,8 @@
 
 <div id="map-app">
     
+    <div id="map-overlay" class=""></div>
     
-        
     <div id="map-detail" class="">
         <h1 class="title">
             <span class="text"></span>
@@ -26,7 +26,7 @@
     
     <div id="map-controls" class=""></div>
     
-    <div id="map-actions" class=""></div>
+    <div id="map-actions" class="active"></div>
     
     
     
