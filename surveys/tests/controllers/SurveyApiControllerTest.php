@@ -301,10 +301,10 @@ class SurveyApiControllerTest extends FunctionalTest {
             'memberId' => 1,
             'lat' => 10.0,
             'lng' => 20.0,
-            'responses' => [
-                'question-a' => 'abc',
-                'question-b' => '123'
-            ]
+            'values' => [
+                [ 'key' => 'Question A', 'value' => 'abc' ],
+                [ 'key' => 'Question B', 'value' => '123' ]
+             ]
         ];
         
         $this->assertEquals($expected, $json[0]);
