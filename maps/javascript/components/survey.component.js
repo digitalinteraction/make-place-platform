@@ -15,24 +15,14 @@ define(["jquery", "vue", "lodash", "utils"], function($, Vue, _, Utils) {
         marker.on("click", function(e) {
             
             var response = this.response;
-            
-            console.log(e);
-            
             state.map.panTo(e.latlng);
-            
-            // e
-            
             $.ajax(Utils.apiUrl("/s/" + response.surveyId + "/r/" + response.id))
             .then(function(data) {
                 
                 var title = data.member.name || "Unknown";
-                
                 state.methods.showDetail(title, Utils.tpl.surveyResponse(data), null);
             })
-            .catch(function(error) {
-                console.log(error);
-            });
-            
+            .catch(function(error) { console.log(error); });
         });
         
         return marker;
@@ -43,17 +33,12 @@ define(["jquery", "vue", "lodash", "utils"], function($, Vue, _, Utils) {
         state.methods.addAction(componentId, {
             title: "Add Response",
             colour: "green",
+            icon: 'fa-plus',
             callback: function(e) {
-                
-                state.methods.removeAction(componentId);
                 
                 state.methods.selectPosition(function(position) {
                     
-                    addPinButton(state);
-                    
-                    if (position) {
-                        console.log(position);
-                    }
+                    if (position) { console.log(position); }
                 });
             }
         });
@@ -61,13 +46,21 @@ define(["jquery", "vue", "lodash", "utils"], function($, Vue, _, Utils) {
     
     
     
-    
+    /* The function to setup the component */
     return function(page, component, state) {
         
-        componentId = "SurveyComponent-" + component.surveyID;
+        componentId = "survey-component-" + component.surveyID;
+        
         
         // Add the "Add Response" button
         addPinButton(state);
+        
+        
+        // Add a dummy control
+        state.methods.addControl(componentId, "<p> Hello, World </p>");
+        $("#map-controls #"+componentId).on("click", function(e) {
+            console.log(e);
+        });
         
         
         // Load responses

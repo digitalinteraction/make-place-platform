@@ -41,48 +41,80 @@ requirejs([
         },
         map: null,
         methods: {
+            toggleElem: toggleElem,
             addControl: addMapControl,
             removeControl: removeMapControl,
             addAction: addMapAction,
             removeAction: removeMapAction,
             showDetail: showMapDetail,
+            hideDetail: hideMapDetail,
             selectPosition: selectMapPosition,
             toggleOverlay: toggleMapOverlay
         }
     };
     
+    function toggleElem(selector, toggle) {
+        $(selector).toggleClass("active", toggle);
+    }
+    
     function addMapControl(id, html) {
-        // ...
+        
+        // Remove previous instances of the control
+        var controlSelector = "#map-controls #" + id;
+        $(controlSelector).remove();
+        
+        // Add the control
+        var control = "<div id=\"" + id + "\">" + html + "</div>";
+        $("#map-controls").append(control);
     }
     
     function removeMapControl(id) {
-        // ...
+        $("#map-controls #" + id).remove();
     }
     
     function showMapDetail(title, html, onClose) {
         
+        // Get the detail object
         var detail = $("#map-detail");
         
+        // Set it up with the passed values
         detail.find(".title .text").text(title);
         detail.find(".inner").html(html);
-        detail.toggleClass("active", true);
+        toggleElem(detail, true);
         
-        detail.off("click");
-        detail.on("click", function(e) {
+        
+        // Listen for clicks on the close button
+        detail.find(".close-button").on("click", function(e) {
             
-            if (onClose && onClose(e) === false) {
-                return;
-            }
+            // If there is a callback and it returns false, don't close
+            if (onClose && onClose(e) === false) { return; }
             
-            detail.find(".title .text").html("");
-            detail.find(".inner").html("");
-            detail.toggleClass("active", false);
+            hideMapDetail();
         });
+    }
+    
+    function hideMapDetail() {
         
-        return false;
+        // Get the detail object
+        var detail = $("#map-detail");
+        
+        // Stop listening for clicks
+        detail.find(".close-button").off("click");
+        
+        // Reset the detail
+        detail.find(".title .text").html("");
+        detail.find(".inner").html("");
+        
+        // Hide the detail
+        toggleElem(detail, false);
     }
     
     function addMapAction(id, options) {
+        
+        var actionSelector = "#map-actions #" + id;
+        
+        // Remove previous instances of the action
+        $(actionSelector).remove();
         
         options.id = id;
         options.title = options.title || "Action";
@@ -90,24 +122,34 @@ requirejs([
         
         $("#map-actions").append(Utils.tpl.mapAction(options));
         
-        if (options.callback) {
-            $("#map-actions #"+id).on("click", options.callback);
-        }
+        $(actionSelector).on("click", function(e) {
+            actionChosen(e, id);
+            if (options.callback) { options.callback(e);}
+        });
+        
     }
     
     function removeMapAction(id) {
-        $("#"+id).remove();
+        $("#map-actions #" + id).remove();
     }
     
     function selectMapPosition(callback) {
         
-        toggleMapOverlay(true, "selecting");
+        toggleMapOverlay(true, "selecting", "Select a position on the map");
+        
+        toggleElem("#map-actions", false);
+        toggleElem("#map-cancel-button", true);
+        toggleElem("#mobile-buttons", false);
         
         function finish(position) {
             state.map.off("click");
             toggleMapOverlay(false);
             callback(position);
-            removeMapAction("SelectPosCancel");
+            $("#map-cancel-button .button").off("click");
+            
+            toggleElem("#map-actions", true);
+            toggleElem("#map-cancel-button", false);
+            toggleElem("#mobile-buttons", true);
         }
         
         
@@ -116,20 +158,21 @@ requirejs([
         });
         
         
-        addMapAction("SelectPosCancel", {
-            title: "Cancel",
-            colour: "red",
-            icon: "fa-ban",
-            callback: function(e) {
-                finish(null);
-            }
+        $("#map-cancel-button .button").on("click", function(e) {
+            finish(null);
         });
     }
     
-    function toggleMapOverlay(toggle, className) {
+    function toggleMapOverlay(toggle, className, message) {
         
-        if (!toggle) { $("#map-overlay").removeClass(); }
-        else { $("#map-overlay").attr("class", "active " + className); }
+        $("#map-overlay .message").text(toggle ? message : "");
+        
+        if (!toggle) {
+            $("#map-overlay").removeClass();
+        }
+        else {
+            $("#map-overlay").attr("class", "active " + className);
+        }
     }
     
     
@@ -147,8 +190,11 @@ requirejs([
         });
         
         
+        var mapConfig = {
+            attributionControl: config.page.tileset !== "Google"
+        };
         
-        state.map = L.map("map").setView([config.page.startLat, config.page.startLng], config.page.startZoom);
+        state.map = L.map("map", mapConfig).setView([config.page.startLat, config.page.startLng], config.page.startZoom);
         
         state.map.zoomControl.setPosition("bottomright");
         
@@ -186,9 +232,71 @@ requirejs([
         );
     }).resize();
     
+    
     // Add a click listener to the overlay to propergate events to the #map
     $("#map-overlay").on("click", function(e) {
         $("#map").trigger(e);
     });
+    
+    
+    // Add mobile tap listeners
+    $("#mobile-buttons .actions").on("click", function(e) {
+        
+        mobileToggle("#map-actions", "Pick an action");
+    });
+    
+    $("#mobile-buttons .controls").on("click", function(e) {
+        
+        mobileToggle("#map-controls", "");
+    });
+    
+    function mobileToggle(selector, message) {
+        
+        // Hide the detail if showing
+        hideMapDetail();
+        
+        // Add overlay
+        toggleMapOverlay(true, "actions", message);
+        
+        // Enable the thing
+        $(selector).toggleClass("toggled", true);
+        
+        // Add cancel button
+        toggleElem("#map-cancel-button", true);
+        
+        // Hide mobile buttons
+        toggleElem("#mobile-buttons", false);
+        
+        
+        $("#map-cancel-button .button").on("click", function(e) {
+            
+            // Remove overlay
+            toggleMapOverlay(false);
+            
+            // Diable the thing
+            $(selector).toggleClass("toggled", false);
+            
+            // Remove cancel button
+            toggleElem("#map-cancel-button", false);
+            
+            // Show mobile buttons
+            toggleElem("#mobile-buttons", true);
+        });
+    }
+    
+    function actionChosen() {
+        
+        // Remove overlay
+        toggleMapOverlay(false);
+        
+        // Diable actions
+        $("#map-actions").toggleClass("toggled", false);
+        
+        // Remove cancel button
+        toggleElem("#map-cancel-button", false);
+        
+        // Show mobile buttons
+        toggleElem("#mobile-buttons", true);
+    }
     
 });

@@ -12,6 +12,7 @@ body {
   background: #f8f8f8;
   padding-top: 75px;
   position: relative;
+  min-width: 320px;
   
   &.fill {
     min-height: 100%;
@@ -58,6 +59,7 @@ header {
     border-bottom: 5px solid $themeColour;
     border-radius: 0px;
     margin-bottom: 0px;
+    z-index: 10000;
     
     .navbar-header {
       
