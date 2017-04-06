@@ -4,7 +4,7 @@
 
 
 # Start from our base image
-FROM openlab.ncl.ac.uk:4567/b30282237/make-place:base
+FROM openlab.ncl.ac.uk:4567/make-place/web:base
 
 
 # Add nginx config file
