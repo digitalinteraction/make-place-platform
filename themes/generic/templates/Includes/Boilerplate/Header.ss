@@ -2,7 +2,7 @@
     <nav class="navbar navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#header-collapse" aria-expanded="false"><i class="fa fa-2x fa-bars" aria-hidden="true"></i></button>
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#header-collapse" aria-expanded="false"><i class="fa fa-bars" aria-hidden="true"></i></button>
                 <a href="/" class="navbar-brand">
                     <% if SiteConfig.BrandLogo %>
                         <img src="$SiteConfig.BrandLogo.URL" alt="$SiteConfig.Title">

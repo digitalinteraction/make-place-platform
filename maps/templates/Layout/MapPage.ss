@@ -33,11 +33,7 @@
         <p class="button controls"></p>
     </div>
     
-    <div id="map-actions" class="active">
-        <p id="survey-component-1" class="action green">
-          <i class="icon fa fa-info-circle"></i>Add Response
-        </p>
-    </div>
+    <div id="map-actions" class="active"></div>
     
     
     

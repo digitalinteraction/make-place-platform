@@ -135,9 +135,10 @@ requirejs([
     
     function selectMapPosition(callback) {
         
-        toggleMapOverlay(true, "selecting", "Select a position on the map");
+        toggleMapOverlay(true, "selecting", "Pick a place on the map");
         
         toggleElem("#map-actions", false);
+        toggleElem("#map-controls", false);
         toggleElem("#map-cancel-button", true);
         toggleElem("#mobile-buttons", false);
         
@@ -148,6 +149,7 @@ requirejs([
             $("#map-cancel-button .button").off("click");
             
             toggleElem("#map-actions", true);
+            toggleElem("#map-controls", true);
             toggleElem("#map-cancel-button", false);
             toggleElem("#mobile-buttons", true);
         }
@@ -165,13 +167,18 @@ requirejs([
     
     function toggleMapOverlay(toggle, className, message) {
         
+        message = message || null;
+        console.log(message);
+        
         $("#map-overlay .message").text(toggle ? message : "");
         
         if (!toggle) {
             $("#map-overlay").removeClass();
+            $("#map-overlay .message").removeClass("text");
         }
         else {
             $("#map-overlay").attr("class", "active " + className);
+            $("#map-overlay .message").toggleClass("text", message !== null);
         }
     }
     
@@ -227,8 +234,12 @@ requirejs([
     
     // Add a handler to resize the map height to fit the page
     $(window).resize(function() {
+        
+        var footerHeight = $("footer").is(":visible") ? $("footer").outerHeight() : 0;
+        console.log(footerHeight);
+        
         $(".MapPage .main").height(
-            $(window).height() - $("header nav").outerHeight() - $("footer").outerHeight()
+            $(window).height() - $("header nav").outerHeight() - footerHeight
         );
     }).resize();
     
@@ -241,16 +252,15 @@ requirejs([
     
     // Add mobile tap listeners
     $("#mobile-buttons .actions").on("click", function(e) {
-        
-        mobileToggle("#map-actions", "Pick an action");
+        mobileToggle("#map-actions");
     });
-    
     $("#mobile-buttons .controls").on("click", function(e) {
-        
-        mobileToggle("#map-controls", "");
+        mobileToggle("#map-controls");
     });
     
     function mobileToggle(selector, message) {
+        
+        message = message || null;
         
         // Hide the detail if showing
         hideMapDetail();
