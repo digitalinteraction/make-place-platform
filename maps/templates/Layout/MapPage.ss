@@ -24,8 +24,9 @@
         <div class="inner"></div>
     </div>
     
-    <div id="map-controls" class="active">
+    <div id="map-controls" class="">
         <h2 class="title"> Customise </h2>
+        <div class="inner"></div>
     </div>
     
     <div id="mobile-buttons" class="active visible-xs">

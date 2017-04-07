@@ -1,6 +1,6 @@
-<%-- <div class="survey-response"> --%>
+<div class="survey-response">
 <% loop Response.Values %>
-    <label> $Question.Name </label>
-    <p> $Rendered </p>
+    <label class="key"> $Question.Name </label>
+    <p class="value"> $Rendered </p>
 <% end_loop %>
-<%-- </div> --%>
+</div>

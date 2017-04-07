@@ -13,9 +13,6 @@ SSViewer:
 
 
 # Custom configuration for PHP Classes
-Page:
-  extensions:
-    - PageSidebarExtension
 
 Page_Controller:
   extensions:

@@ -109,6 +109,11 @@ $buttonSize: 48px;
       &:not(.active) { display: none !important; }
     }
     
+    &.selecting {
+      #map { cursor: crosshair !important; }
+      .leaflet-interactive { pointer-events: none; }
+    }
+    
     #map-detail {
       position: absolute;
       top: 0; right: 0;
@@ -171,9 +176,7 @@ $buttonSize: 48px;
       background: rgba(0,0,0,0.3);
       z-index: 1500;
       
-      &.selecting {
-        cursor: crosshair;
-      }
+      pointer-events: none;
       
       .message.text {
         @extend .map-card-style;

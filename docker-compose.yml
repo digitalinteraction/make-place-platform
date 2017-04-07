@@ -6,6 +6,7 @@ volumes:
 
 services:
     web:
+        container_name: 'mp_web'
         build: .
         ports:
             - 80
@@ -33,6 +34,7 @@ services:
             PATH: '$PATH:/app/scripts'
     
     mysql:
+        container_name: 'mp_mysql'
         image: mysql:latest
         ports:
             - 3306:3306

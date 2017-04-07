@@ -164,11 +164,15 @@ class SurveyApiController extends Controller {
         
         $member = $response->Member();
         
+        $rendered = $this->renderWith("SurveyResponse", [
+            "Response" => $response
+        ]);
+        
+        $name = ($member) ? $member->getName() : "Unknown";
+        
         return $this->jsonResponse([
-            "response" => $response->toJson(),
-            "member" => [
-                "name" => $member->getName()
-            ]
+            "title" => "$name's Response",
+            "body" => $rendered->getValue()
         ]);
     }
     

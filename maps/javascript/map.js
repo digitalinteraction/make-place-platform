@@ -65,7 +65,10 @@ requirejs([
         
         // Add the control
         var control = "<div id=\"" + id + "\">" + html + "</div>";
-        $("#map-controls").append(control);
+        $("#map-controls .inner").append(control);
+        
+        var children = $("#map-controls .inner").children().length;
+        toggleElem("#map-controls", children > 0);
     }
     
     function removeMapControl(id) {
@@ -81,6 +84,7 @@ requirejs([
         detail.find(".title .text").text(title);
         detail.find(".inner").html(html);
         toggleElem(detail, true);
+        toggleElem("#map-actions", false);
         
         
         // Listen for clicks on the close button
@@ -107,6 +111,9 @@ requirejs([
         
         // Hide the detail
         toggleElem(detail, false);
+        
+        // Re-enable actions
+        toggleElem("#map-actions", true);
     }
     
     function addMapAction(id, options) {
@@ -142,6 +149,8 @@ requirejs([
         toggleElem("#map-cancel-button", true);
         toggleElem("#mobile-buttons", false);
         
+        $("#map-app").toggleClass("selecting", true);
+        
         function finish(position) {
             state.map.off("click");
             toggleMapOverlay(false);
@@ -152,14 +161,18 @@ requirejs([
             toggleElem("#map-controls", true);
             toggleElem("#map-cancel-button", false);
             toggleElem("#mobile-buttons", true);
+            
+            $("#map-app").toggleClass("selecting", false);
         }
         
         
+        // On poisition chosen
         state.map.on("click", function(e) {
             finish([e.latlng.lat, e.latlng.lng]);
         });
         
         
+        // On cancel
         $("#map-cancel-button .button").on("click", function(e) {
             finish(null);
         });
@@ -168,7 +181,6 @@ requirejs([
     function toggleMapOverlay(toggle, className, message) {
         
         message = message || null;
-        console.log(message);
         
         $("#map-overlay .message").text(toggle ? message : "");
         
@@ -190,6 +202,16 @@ requirejs([
         
         console.log("config", config);
         
+        
+        var mapConfig = {
+            attributionControl: config.page.tileset !== "Google"
+        };
+        
+        
+        state.map = L.map("map", mapConfig).setView([config.page.startLat, config.page.startLng], config.page.startZoom);
+        state.map.zoomControl.setPosition("bottomright");
+        
+        
         _.each(config.components, function(comp) {
             if (componentMap[comp.type]) {
                 componentMap[comp.type](config.page, comp, state);
@@ -197,13 +219,8 @@ requirejs([
         });
         
         
-        var mapConfig = {
-            attributionControl: config.page.tileset !== "Google"
-        };
         
-        state.map = L.map("map", mapConfig).setView([config.page.startLat, config.page.startLng], config.page.startZoom);
         
-        state.map.zoomControl.setPosition("bottomright");
         
         
         if (config.page.tileset === "Google") {
@@ -236,18 +253,12 @@ requirejs([
     $(window).resize(function() {
         
         var footerHeight = $("footer").is(":visible") ? $("footer").outerHeight() : 0;
-        console.log(footerHeight);
         
         $(".MapPage .main").height(
             $(window).height() - $("header nav").outerHeight() - footerHeight
         );
     }).resize();
     
-    
-    // Add a click listener to the overlay to propergate events to the #map
-    $("#map-overlay").on("click", function(e) {
-        $("#map").trigger(e);
-    });
     
     
     // Add mobile tap listeners

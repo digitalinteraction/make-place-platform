@@ -27,9 +27,9 @@
     
     
     <div class="action-list">
-        <% if ClearTitle %>
+        <%-- <% if ClearTitle %>
             <input type="submit" name="clear" value="$ClearTitle">
-        <% end_if %>
+        <% end_if %> --%>
         
         <% if SubmitTitle %>
             <input type="submit" name="submit" value="$SubmitTitle">
