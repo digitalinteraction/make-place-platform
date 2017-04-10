@@ -12,41 +12,17 @@ $buttonSize: 48px;
 
 // Reusables
 .map-button-style {
-  cursor: pointer;
+  @extend .button-style;
+  
   box-shadow: 1px 1px 1px #666;
   font-size: 20px;
-  border-radius: 5px;
-  color: white;
-  padding: 8px 18px;
   text-align: center;
   border: 1px solid white;
-  user-select: none;
   
   .icon {
     float: left;
     padding-top: 5px;
     padding-right: 4px;
-  }
-  
-  &.green {
-    background: #5cb85c;
-    border-color: #52A352;
-    
-    &:hover { background-color: #52A352; }
-  }
-  
-  &.blue {
-    background: #3c87c7;
-    border-color: #306da1;
-    
-    &:hover { background-color: #306da1; }
-  }
-  
-  &.red {
-    background: #c94b4d;
-    border-color: #99393b;
-    
-    &:hover { background-color: #99393b; }
   }
 }
 

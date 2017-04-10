@@ -8,6 +8,6 @@ After: framework/routes#coreroutes
 #   Connects routes with Controllers
 #
 
-Director:
-  rules:
-    'login': 'LoginController'
+# Director:
+#   rules:
+#     'login': 'LoginController'

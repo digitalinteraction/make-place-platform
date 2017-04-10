@@ -3,7 +3,7 @@
 <% if IsSimplePage %>
     
     <div class="container">
-        <article>
+        <article class="content-card">
             
             <div class="jumbotron">
                 <% include PageTitle %>
@@ -18,7 +18,7 @@
     
     <div class="container">
         
-        <article>
+        <article class="content-card">
             
             <h1 class="title">
                 <% if BackURL %>

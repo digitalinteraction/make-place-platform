@@ -152,4 +152,67 @@ footer {
 
 
 
+/* Forms */
+form {
+  
+  .message {
+    // ...
+  }
+  
+  label {
+    color: $bodyTextColour;
+    font-weight: 600;
+    margin: 0px;
+  }
+  
+  
+  // General Styles
+  input.text, input.file, textarea, select {
+    width: 100%;
+    background: #fafafa;
+    border: none;
+    border-bottom: 3px solid #ddd;
+    margin-bottom: 8px;
+    border-radius: 0px;
+    color: #333;
+    font-weight: 400;
+    
+    &:focus {
+      outline: none;
+      border-color: $themeColour;
+      background: #eee;
+    }
+  }
+  
+  input.file {
+    -webkit-appearance: none;
+    padding: 20px 0px;
+  }
+  
+  select {
+    
+    height: 35px;
+  }
+  
+  input.text, textarea, select {
+    
+    padding: 4px 1px 0px;
+    font-size: 20px;
+    
+    transition:
+      border 0.2s,
+      background 0.2s,
+      padding 0.2s;
+    
+    &:focus {
+      padding: 4px 5px 0px;
+    }
+  }
+  
+  
+  
+}
+
+
+
 @import 'responsive';

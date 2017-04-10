@@ -1,0 +1,15 @@
+---
+Name: authroutes
+After: framework/routes#coreroutes
+---
+
+#
+#   Custom routing for the applications
+#   Connects routes with Controllers
+#
+
+Director:
+  rules:
+    login: 'LoginController'
+    me/edit: 'EditProfileController'
+    me: 'ProfileController'

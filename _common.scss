@@ -34,4 +34,50 @@
   color: $lightTextColour;
 }
 
+.button-style {
+  cursor: pointer;
+  border-radius: 5px;
+  color: white;
+  user-select: none;
+  padding: 8px 18px;
+  font-size: 18px;
+  font-family: $baseFont;
+  
+  border: 1px solid #ccc;
+  
+  &:hover {
+    text-decoration: none;
+  }
+  
+  &.full {
+    display: block;
+    margin-bottom: 12px;
+    text-align: center;
+  }
+  
+  &.green {
+    background: $greenColour;
+    border-color: $greenAltColour;
+    &:hover { background-color: $greenAltColour; }
+  }
+  
+  &.blue {
+    background: $blueColour;
+    border-color: $blueAltColour;
+    &:hover { background-color: $blueAltColour; }
+  }
+  
+  &.red {
+    background: $redColour;
+    border-color: $redAltColour;
+    &:hover { background-color: $redAltColour; }
+  }
+  
+  &.orange {
+    background: $orangeColour;
+    border-color: $orangeAltColour;
+    &:hover { background-color: $orangeAltColour; }
+  }
+}
+
 html { height: 100%; }

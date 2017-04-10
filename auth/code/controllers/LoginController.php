@@ -43,7 +43,6 @@ class LoginController extends ContentController {
     }
     
     public function Layout() {
-    
         return $this->renderWith("LoginPage");
     }
     

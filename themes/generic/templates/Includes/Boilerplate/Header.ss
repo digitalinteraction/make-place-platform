@@ -23,6 +23,24 @@
                         </li>
                     <% end_loop %>
                     
+                    
+                    <% if CurrentMember %>
+                        
+                        <li class="menu-item">
+                            <a href="me/" title="profile">
+                                <i class="fa fa-user" aria-hidden="true"></i>
+                                $CurrentMember.Name
+                            </a>
+                        </li>
+                        
+                    <% else %>
+                        
+                        <li class="menu-item">
+                            <a href="login?BackURL=$Link.URLATT" title="login"> Login </a>
+                        </li>
+                        
+                    <% end_if %>
+                    
                 </ul>
             </div>
         </div>

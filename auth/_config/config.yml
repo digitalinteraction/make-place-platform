@@ -10,3 +10,4 @@ Member:
   extensions:
     - MemberOAuthExtension
     - MemberRegisterExtension
+    - MemberProfileExtension
