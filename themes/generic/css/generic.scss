@@ -76,8 +76,7 @@ header {
     
     .menu-item a {
       margin-top: 20px;
-      padding-top: 15px;
-      padding-bottom: 15px;
+      padding: 15px;
       font-size: 16px;
       font-style: normal;
       font-weight: 400;
@@ -156,7 +155,34 @@ footer {
 form {
   
   .message {
-    // ...
+    &.error {
+      background-color: #f2dede;
+      border-color: $redAltColour;
+      color: $redAltColour;
+    }
+    &.warning {
+      background-color: #fcf8e3;
+      border-color: $orangeAltColour;
+      color: $orangeAltColour;
+    }
+  }
+  
+  p.message {
+    margin-bottom: 32px;
+    border-bottom-width: 4px;
+    border-bottom-style: solid;
+    text-align: center;
+    padding: 8px 0px;
+  }
+  
+  span.message {
+    background: none !important;
+    position: relative;
+    top: -22px;
+    display: block;
+    text-align: right;
+    border-top-width: 4px;
+    border-top-style: solid;
   }
   
   label {
@@ -170,33 +196,44 @@ form {
   input.text, input.file, textarea, select {
     width: 100%;
     background: #fafafa;
-    border: none;
-    border-bottom: 3px solid #ddd;
-    margin-bottom: 8px;
+    border: 1px solid #f1f1f1;
+    border-bottom: 3px solid $themeColour;
+    margin-bottom: 18px;
     border-radius: 0px;
     color: #333;
     font-weight: 400;
     
     &:focus {
       outline: none;
-      border-color: $themeColour;
+      border-color: $actionColour;
       background: #eee;
     }
   }
   
   input.file {
-    -webkit-appearance: none;
-    padding: 20px 0px;
+    padding: 20px 3px;
+  }
+  
+  input.checkbox, input[type=checkbox] {
+    
+    margin-left: 0px !important;
+    
+    &+ label {
+      padding-left: 25px;
+      padding-top: 1px;
+      padding-bottom: 18px;
+    }
   }
   
   select {
-    
     height: 35px;
+    -webkit-appearance: none;
+    position: relative;
   }
   
   input.text, textarea, select {
     
-    padding: 4px 1px 0px;
+    padding: 4px 3px 0px;
     font-size: 20px;
     
     transition:
@@ -205,8 +242,25 @@ form {
       padding 0.2s;
     
     &:focus {
-      padding: 4px 5px 0px;
+      padding: 4px 6px 0px;
     }
+  }
+  
+  input[type=text], input[type=password],
+  input[type=number], input[type=email] {
+    @extend .text;
+  }
+  
+  
+  input[type=submit] {
+    @extend .button-style;
+    @extend .green;
+  }
+  
+  
+  
+  .Actions {
+    text-align: right;
   }
   
   

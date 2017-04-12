@@ -85,6 +85,7 @@ requirejs([
         detail.find(".inner").html(html);
         toggleElem(detail, true);
         toggleElem("#map-actions", false);
+        toggleElem("#mobile-buttons", false);
         
         
         // Listen for clicks on the close button
@@ -114,6 +115,9 @@ requirejs([
         
         // Re-enable actions
         toggleElem("#map-actions", true);
+        
+        // Re-show mobile buttons
+        toggleElem("#mobile-buttons", true);
     }
     
     function addMapAction(id, options) {

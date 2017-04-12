@@ -12,8 +12,7 @@
             $Title
         </h1>
         
-        <div class="edit-form">
-            $MemberEditForm
+        <div class="edit-form"> $MemberEditForm
         </div>
         
     </article>

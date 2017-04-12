@@ -29,7 +29,7 @@
             
             
             <%-- OAuth --%>
-            <div class="oauth">
+            <%-- <div class="oauth">
                 
                 <h4> Sign in with: </h4>
                 
@@ -37,9 +37,9 @@
                     <i class="fa fa-facebook-official" aria-hidden="true"></i>
                     Facebook
                 </a>
-            </div>
+            </div> --%>
             
-            <p class="or-section"> or </p>
+            <%-- <p class="or-section"> or </p> --%>
             
             <div class="form-tabs">
                 

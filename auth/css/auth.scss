@@ -33,12 +33,14 @@
     overflow: hidden;
     text-align: center;
     color: #888;
-    margin: 20px 0px;
+    margin-top: 20px;
     
     &:before, &:after { content: '~'; }
   }
   
   .form-tabs {
+    
+    margin-top: 20px;
     
     ul.nav {
       text-align: center;
