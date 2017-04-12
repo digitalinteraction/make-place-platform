@@ -161,6 +161,10 @@ $buttonSize: 48px;
         margin-top: $cardPadding 15px;
         font-size: 18px;
         color: $titleTextColour;
+        max-width: 550px;
+        min-width: 100%;
+        margin-left: auto;
+        margin-right: auto;
       }
     }
     

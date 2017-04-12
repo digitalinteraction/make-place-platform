@@ -45,17 +45,6 @@ class Page extends SiteTree {
 		
 		return $list->renderWith("Breadcrumbs");
 	}
-    
-    
-    
-    /** Customise CMS fields */
-    public function getCMSFields() {
-        $fields = parent::getCMSFields();
-        
-        // Add custom fields to edit the page
-        
-        return $fields;
-    }
 }
 
 /**

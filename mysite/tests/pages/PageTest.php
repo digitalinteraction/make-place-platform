@@ -4,21 +4,43 @@
  */
 class PageTest extends SapphireTest {
     
-    protected static $fixture_file = "mysite/tests/fixtures/pages.yml";
-    
-    
     public function setUp() {
         
         parent::setUp();
         
         // ...
+        
+        $this->page = Page::create([
+            "URLSegment" => "test/",
+            "Title" => "Test Page",
+            "MenuTitle" => "Test Page",
+            "Content" => "<p> Hello, World! </p>"
+        ]);
     }
     
     
     public function testInit() {
         
-        $page = $this->objFromFixture('Page', 'SomePage');
+        $this->assertNotNull($this->page);
+    }
+    
+    
+    public function testGetSiteTree() {
         
-        $this->assertNotNull($page);
+        // Make sure it renders something
+        $render = $this->page->getSitetree();
+        $this->assertNotNull($render);
+    }
+    
+    
+    
+    
+    public function testControllerAdmin() {
+        
+        $controller = Page_Controller::create($this->page);
+        
+        $response = $controller->admin();
+        
+        $this->assertEquals(302, $response->getStatusCode());
     }
 }

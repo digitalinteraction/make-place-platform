@@ -1,47 +1,64 @@
 version: '2'
 
 volumes:
-    database_data:
-        driver: local
+  database_data:
+    driver: local
 
 services:
-    web:
-        container_name: 'mp_web'
-        build: .
-        ports:
-            - 80
-        links:
-            - mysql
-        depends_on:
-            - mysql
-        volumes:
-            - ./mysite:/app/mysite
-            - ./themes:/app/themes
-            - ./assets:/app/assets
-            - ./scripts:/app/scripts
-            - ./surveys:/app/surveys
-            - ./auth:/app/auth
-            - ./maps:/app/maps
-            - ./phpunit.xml:/app/phpunit.xml
-        environment:
-            DB_HOST: mysql
-            DB_USER: user
-            DB_PASS: secret
-            DB_NAME: make-place
-            SITE_ENV: dev
-            DEFAULT_USER: rob@veodesign.co.uk
-            DEFAULT_PASS: password
-            PATH: '$PATH:/app/scripts'
+  web:
+    container_name: mp_web
+    build: .
+    ports:
+      - 80
+    links:
+      - mysql
+      - geo
+    depends_on:
+      - mysql
+      - geo
+    volumes:
+      - ./mysite:/app/mysite:ro
+      - ./themes:/app/themes:ro
+      - ./assets:/app/assets:rw
+      - ./scripts:/app/scripts:ro
+      - ./surveys:/app/surveys:ro
+      - ./auth:/app/auth:ro
+      - ./maps:/app/maps:ro
+      - ./phpunit.xml:/app/phpunit.xml:ro
+    environment:
+      DB_HOST: mysql
+      DB_USER: user
+      DB_PASS: secret
+      DB_NAME: make-place
+      SITE_ENV: dev
+      DEFAULT_USER: rob@veodesign.co.uk
+      DEFAULT_PASS: password
+      PATH: '$PATH:/app/scripts'
+      GEO_URL: geo:3000
+      GEO_KEY: 4DJ3Nws3h5zj73aKWUQIOavpVAVqeAaV
     
-    mysql:
-        container_name: 'mp_mysql'
-        image: mysql:latest
-        ports:
-            - 3306:3306
-        volumes:
-            - database_data:/var/lib/mysql
-        environment:
-            MYSQL_ROOT_PASSWORD: secret
-            MYSQL_DATABASE: make-place
-            MYSQL_USER: user
-            MYSQL_PASSWORD: secret
+  mysql:
+    container_name: mp_mysql
+    image: mysql:latest
+    ports:
+      - 3306:3306
+    volumes:
+      - database_data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: make-place
+      MYSQL_USER: user
+      MYSQL_PASSWORD: secret
+    
+  geo:
+    container_name: mp_geo
+    build: '../geo-api'
+    ports:
+      - 3000:3000
+    expose:
+      - 3000
+    links:
+      - mysql
+    environment:
+      SQL_URL: mysql://user:secret@mysql/make-geo
+      NODE_ENV: dev

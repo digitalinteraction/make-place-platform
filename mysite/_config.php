@@ -71,6 +71,10 @@ define('FB_SECRET', _envVar('FB_SECRET', 'NO_FB_SECRET_ID_PROVIDED'));
 define("ADMIN_EMAIL", _envVar("ADMIN_EMAIL", "noreply@openlab.ncl.ac.uk"));
 Email::setAdminEmail(ADMIN_EMAIL);
 
+// Geo Config
+define("GEO_URL", _envVar("GEO_URL"));
+define("GEO_KEY", _envVar("GEO_KEY"));
+
 
 // Define file-url mapping for using framework/sake
 global $_FILE_TO_URL_MAPPING;

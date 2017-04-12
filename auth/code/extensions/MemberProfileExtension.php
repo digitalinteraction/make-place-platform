@@ -69,7 +69,7 @@ class MemberProfileExtension extends DataExtension {
                 // Find if the file exists
                 // -> If so, remove the old file & delete the record
                 
-                // Find or create assets/profiles folder
+                // Find or create assets/profiles
                 
                 // Create a new file record with the image
                 

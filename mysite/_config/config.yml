@@ -14,10 +14,6 @@ SSViewer:
 
 # Custom configuration for PHP Classes
 
-Page_Controller:
-  extensions:
-    - PageControllerSidebarExtension
-
 Registration:
   extensions:
     - SecureGeneratorExtension

@@ -39,7 +39,7 @@ do
         php5dismod xdebug
     elif [[ " coverage " == *" $PARAMS "* ]]; then
         php5enmod xdebug
-        vendor/bin/phpunit --coverage
+        vendor/bin/phpunit --coverage-text
         php5dismod xdebug
     else
         # Otherwise, just run unit tests
