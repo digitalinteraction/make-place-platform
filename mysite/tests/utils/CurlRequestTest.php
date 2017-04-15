@@ -12,7 +12,7 @@ class CurlRequestTest extends SapphireTest {
     public function setUp() {
         parent::setUp();
         
-        $this->request = MockCurlRequest::create("localhost", ["key" => "value"]);
+        $this->request = MockCurlRequest::create("127.0.0.1", ["key" => "value"]);
     }
     
     public function testInit() {
@@ -22,7 +22,7 @@ class CurlRequestTest extends SapphireTest {
         
         
         // Check params were set
-        $this->assertEquals("localhost", $this->request->getUrl());
+        $this->assertEquals("127.0.0.1", $this->request->getUrl());
         $this->assertEquals(["key" => "value"], $this->request->getGetVars());
     }
     
@@ -46,7 +46,7 @@ class CurlRequestTest extends SapphireTest {
     public function testConstructUrl() {
         
         // Check url was constructed correctly
-        $this->assertEquals("localhost?key=value", $this->request->constructUrl());
+        $this->assertEquals("127.0.0.1?key=value", $this->request->constructUrl());
     }
     
     

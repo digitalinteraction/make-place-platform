@@ -11,14 +11,7 @@ class MemberProfileExtension extends DataExtension {
     
     public function getProfileImageUrl() {
         
-        $image = $this->owner->ProfileImage();
-        
-        if ($image) {
-            return $image->getURL();
-        }
-        else {
-            return "/auth/images/default-profile.png";
-        }
+        return "/auth/images/default-profile.png";
     }
     
     public function updateProfile($data) {
@@ -44,7 +37,7 @@ class MemberProfileExtension extends DataExtension {
             $hasChange = true;
         }
         
-        
+        /* Coming soon ...
         if (isset($data["ProfileImage"]) && $data["ProfileImage"]["tmp_name"] != "") {
             # code...
             
@@ -78,7 +71,7 @@ class MemberProfileExtension extends DataExtension {
                 // $hasChange = true;
             }
             
-        }
+        }*/
         
         if (count($errors) === 0 && $hasChange) {
             $this->owner->write();
@@ -88,8 +81,8 @@ class MemberProfileExtension extends DataExtension {
         return $errors;
     }
     
-    public function updateProfileImage($image, &$errors) {
-        
-        // More magic happens here ...
-    }
+    // public function updateProfileImage($image, &$errors) {
+    //
+    //     // More magic happens here ...
+    // }
 }
