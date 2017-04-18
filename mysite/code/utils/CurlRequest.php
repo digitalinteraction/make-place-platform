@@ -6,7 +6,7 @@ class CurlRequest extends Object {
     protected $url = null;
     protected $getVars = [];
     protected $responseBody = null;
-    protected $responseCode = null;
+    protected $responseCode = -1;
     
     public static $testResponse = null;
     
