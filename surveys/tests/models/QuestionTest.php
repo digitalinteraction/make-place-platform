@@ -24,9 +24,7 @@ class QuestionTest extends SapphireTest {
     protected $question = null;
     
     
-    /*
-     *  Testing lifecycle
-     */
+    /* Testing lifecycle */
     public function setUp() {
         
         parent::setUp();
@@ -36,9 +34,7 @@ class QuestionTest extends SapphireTest {
     
     
     
-    /*
-     *  Test Handle
-     */
+    /* Test Handle */
     public function testHandleGeneration() {
         
         $question = Question::create([
@@ -90,9 +86,7 @@ class QuestionTest extends SapphireTest {
     
     
     
-    /*
-     *  Test types field
-     */
+    /* Test types field */
     public function testTypeField() {
         
         $question = Question::create(["Name" => "Question"]);
@@ -118,9 +112,7 @@ class QuestionTest extends SapphireTest {
     
     
     
-    /*
-     *  Test extra fields
-     */
+    /* Test extra fields */
     public function testExtraFieldsDefault() {
         
         $question = Question::create(["Name", "Question"]);
@@ -156,9 +148,7 @@ class QuestionTest extends SapphireTest {
     
     
     
-    /*
-     *  Test render
-     */
+    /* Test render */
     public function testRendering() {
         
         $this->assertNotNull($this->question->forTemplate());
@@ -171,9 +161,7 @@ class QuestionTest extends SapphireTest {
     
     
     
-    /*
-     *  Test Properties
-     */
+    /* Test Properties */
     public function testDefaultType() {
         
         $this->assertEquals("text", $this->question->getType());
@@ -189,5 +177,20 @@ class QuestionTest extends SapphireTest {
     public function testClasses() {
         
         $this->assertEquals('control new-class', $this->question->getClasses());
+    }
+    
+    
+    
+    /* Test Default Value Handling */
+    public function testValidateValue() {
+        $this->assertEquals(0, count($this->question->validateValue("value")));
+    }
+    
+    public function testPackValue() {
+        $this->assertEquals("value", $this->question->packValue("value"));
+    }
+    
+    public function testUnpackValue() {
+        $this->assertEquals("value", $this->question->unpackValue("value"));
     }
 }

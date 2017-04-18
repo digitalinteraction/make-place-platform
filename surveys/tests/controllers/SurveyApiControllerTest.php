@@ -1,5 +1,15 @@
 <?php
 
+
+class MockValidationQuestion extends Question {
+    public function validateValue($value) { return ["Error"]; }
+}
+
+class MockPackingQuestion extends Question {
+    public function packValue($value) { return "packed"; }
+}
+
+
 /** ... */
 class SurveyApiControllerTest extends FunctionalTest {
     
@@ -13,7 +23,6 @@ class SurveyApiControllerTest extends FunctionalTest {
      *  Test Lifecycle
      */
     public function setUp() {
-        
         parent::setUp();
         
         
@@ -104,25 +113,6 @@ class SurveyApiControllerTest extends FunctionalTest {
         $this->assertEquals($data['Fields'], $json);
     }
     
-    public function testSubmitWithLatAndLng() {
-        
-        $data = $this->survey->generateData([
-            'question-a' => 'answer-a',
-            'question-b' => 'answer-b',
-        ]);
-        
-        $data['ResponseLat'] = '10';
-        $data['ResponseLng'] = '20';
-        
-        $res = $this->post('s/1/submit', $data);
-        $json = json_decode($res->getBody(), true);
-        
-        
-        // Check the lat and long were set & returned
-        $this->assertEquals(10.0, $json['lat']);
-        $this->assertEquals(20.0, $json['lng']);
-    }
-    
     public function testSubmitRedirectBack() {
         
         // Create a response to the survey
@@ -143,10 +133,7 @@ class SurveyApiControllerTest extends FunctionalTest {
     
     
     
-    /*
-     *  Submission edge cases
-     */
-    /*
+    /* Submission edge cases */
     public function testSubmitRequiresLogin() {
         
         $this->member->logOut();
@@ -159,12 +146,26 @@ class SurveyApiControllerTest extends FunctionalTest {
         
         $res = $this->post('s/1/submit', $data);
         
-        // See if a surveyResponse was created
-        $response = SurveyResponse::get()->first();
-        
-        $this->assertEquals(404, $res->getStatusCode());
+        $this->assertEquals(400, $res->getStatusCode());
     }
-    */
+    
+    public function testSubmitWithoutAuth() {
+        
+        $this->survey->AuthType = "None";
+        $this->survey->write();
+        
+        $this->member->logOut();
+        
+        // Create a response to the survey
+        $data = $this->survey->generateData([
+            'question-a' => 'answer-a',
+            'question-b' => 'answer-b'
+        ]);
+        
+        $res = $this->post('s/1/submit', $data);
+        
+        $this->assertEquals(200, $res->getStatusCode());
+    }
     
     public function testSubmitSurveyMustExist() {
         
@@ -174,9 +175,7 @@ class SurveyApiControllerTest extends FunctionalTest {
             'question-b' => 'answer-b'
         ]);
         
-        $data['SurveyID'] = '2';
-        
-        $res = $this->post('s/1/submit', $data);
+        $res = $this->post('s/1000/submit', $data);
         
         // Check the response failed
         $this->assertEquals(404, $res->getStatusCode());
@@ -193,7 +192,7 @@ class SurveyApiControllerTest extends FunctionalTest {
         
         $res = $this->post('s/1/submit', $data);
         
-        $this->assertEquals(404, $res->getStatusCode());
+        $this->assertEquals(400, $res->getStatusCode());
     }
     
     public function testSubmitFailsOnGet() {
@@ -202,7 +201,7 @@ class SurveyApiControllerTest extends FunctionalTest {
             'question-a' => 'answer-a',
             'question-b' => 'answer-b'
         ]);
-        
+    
         $url = 's/1/submit' . http_build_query($data, '?');
     
         $res = $this->get($url);
@@ -210,42 +209,69 @@ class SurveyApiControllerTest extends FunctionalTest {
         $this->assertEquals(404, $res->getStatusCode());
     }
     
-    public function testSubmitWithIncorrectSurveyID() {
+    public function testSubmitFailsFromValidation() {
         
-        // Make another survey
-        Survey::create()->write();
-        
-        $data = $this->survey->generateData([
-            'question-a' => 'answer-a',
-            'question-b' => 'answer-b'
-        ]);
-        
-        $res = $this->post('s/2/submit', $data);
-        
-        $this->assertEquals(404, $res->getStatusCode());
-    }
-    
-    public function testSubmitWithIncorectLatLng() {
+        $this->survey->Questions()->add(MockValidationQuestion::create(["Handle" => "failing-question"]));
         
         $data = $this->survey->generateData([
             'question-a' => 'answer-a',
             'question-b' => 'answer-b',
+            'failing-question' => 'Something'
         ]);
-        
-        $data['ResponseLat'] = '10';
-        
-        // Don't set the lng
         
         $res = $this->post('s/1/submit', $data);
         
-        $this->assertEquals(404, $res->getStatusCode());
+        $this->assertEquals(400, $res->getStatusCode());
+        $this->assertEquals('["Error"]', $res->getBody());
+    }
+    
+    public function testSubmitMultipleQuestionErrors() {
+        
+        // A survey with 2 failing questions
+        $this->survey->Questions()->addMany([
+            MockValidationQuestion::create(["Handle" => "failing-q1"]),
+            MockValidationQuestion::create(["Handle" => "failing-q2"])
+        ]);
+        
+        // The data to post
+        $data = $this->survey->generateData([
+            'question-a' => 'answer-a',
+            'question-b' => 'answer-b',
+            'failing-q1' => 'Something',
+            'failing-q2' => 'Something'
+        ]);
+        
+        // Post the response & decode the json
+        $res = $this->post('s/1/submit', $data);
+        $json = json_decode($res->getBody(), true);
+        
+        // Check it returned 2 arrays
+        $this->assertEquals(2, count($json));
+    }
+    
+    public function testSubmitUsesQuestionPacking() {
+        
+        $this->survey->Questions()->add(MockPackingQuestion::create(["Handle" => "packing-question"]));
+        
+        $data = $this->survey->generateData([
+            'question-a' => 'answer-a',
+            'question-b' => 'answer-b',
+            'packing-question' => 'Something'
+        ]);
+        
+        $res = $this->post('s/1/submit', $data);
+        
+        
+        $response = SurveyResponse::get()->last();
+        $json = $response->jsonField('Responses');
+        
+        $this->assertEquals("packed", $json["packing-question"]);
     }
     
     
     
-    /*
-     *  Viewing surveys
-     */
+    
+    /* Viewing surveys */
     public function testViewSurveyRoute() {
         
         $res = $this->get('s/1/view');
@@ -285,9 +311,7 @@ class SurveyApiControllerTest extends FunctionalTest {
     
     
     
-    /*
-     *  Responses test
-     */
+    /* Responses test */
     public function testGetResponses() {
         
         $res = $this->get('s/1/responses');
@@ -327,9 +351,7 @@ class SurveyApiControllerTest extends FunctionalTest {
     
     
     
-    /*
-     *  Test viewing responses
-     */
+    /* Test viewing responses */
     public function testViewResponseRoute() {
         
         $res = $this->get('s/1/r/1');
@@ -352,11 +374,10 @@ class SurveyApiControllerTest extends FunctionalTest {
     
     
     
-    /*
-     *  Test Misc
-     */
-    /** @expectedException SS_HTTPResponse_Exception */
+    /* Test Misc */
     public function testInit() {
+        
+        $this->setExpectedException(SS_HTTPResponse_Exception::class);
         
         $controller = SurveyApiController::create();
         

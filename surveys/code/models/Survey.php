@@ -9,7 +9,7 @@ class Survey extends DataObject {
         "Name" => "Varchar(255)",
         "Handle" => "Varchar(255)",
         "SubmitTitle" => "Varchar(255)",
-        "ClearTitle" => "Varchar(255)"
+        "AuthType" => 'Enum(array("Member","None"), "Member")'
     ];
     
     private static $has_many = [
@@ -17,8 +17,7 @@ class Survey extends DataObject {
     ];
     
     private static $defaults = [
-        "SubmitTitle" => "Submit",
-        "ClearTitle" => "Clear"
+        "SubmitTitle" => "Submit"
     ];
     
     
@@ -71,7 +70,9 @@ class Survey extends DataObject {
             TextField::create('Name','Name'),
             ReadonlyField::create('Handle', 'Handle'),
             TextField::create('SubmitTitle','Submit Title'),
-            TextField::create('ClearTitle','Clear Title'),
+            DropdownField::create('AuthType', 'Authentication',
+                singleton('Survey')->dbObject('AuthType')->enumValues()
+            ),
             GridField::create(
                 'Questions',
                 'Questions',
@@ -112,6 +113,21 @@ class Survey extends DataObject {
             $this->getSecurityToken()->getName() => $this->getSecurityToken()->getValue(),
             'Fields' => $fields
         ];
+    }
+    
+    
+    
+    public function getQuestionMap() {
+        
+        // Get all questions
+        $questions = $this->Questions();
+        $map = [];
+        
+        foreach ($questions as $question) {
+            $map[$question->Handle] = $question;
+        }
+        
+        return $map;
     }
     
     

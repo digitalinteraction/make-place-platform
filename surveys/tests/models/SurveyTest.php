@@ -68,6 +68,12 @@ class SurveyTest extends SapphireTest {
         
         $fields = $s1->getCMSFields();
         
+        $this->assertNotNull($fields->fieldByName("Root.Main.Name"));
+        $this->assertNotNull($fields->fieldByName("Root.Main.Handle"));
+        $this->assertNotNull($fields->fieldByName("Root.Main.SubmitTitle"));
+        $this->assertNotNull($fields->fieldByName("Root.Main.AuthType"));
+        $this->assertNotNull($fields->fieldByName("Root.Main.Questions"));
+        
         $this->assertTrue($fields->count() > 0);
     }
     
@@ -120,6 +126,22 @@ class SurveyTest extends SapphireTest {
         $data = $survey->generateData($fields);
         
         $this->assertEquals($fields, $data['Fields']);
+    }
+    
+    public function testQuestionMap() {
+        
+        // Create a survey with some questions
+        $survey = Survey::create(["Name" => "My Survey"]);
+        $survey->Questions()->addMany([
+            Question::create(["Handle" => "first-question"]),
+            Question::create(["Handle" => "second-question"])
+        ]);
+        
+        
+        // Generate the map and check it put the questions in
+        $map = $survey->getQuestionMap();
+        $this->assertArrayHasKey("first-question", $map);
+        $this->assertArrayHasKey("second-question", $map);
     }
     
     public function testWithRedirect() {

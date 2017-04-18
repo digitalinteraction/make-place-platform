@@ -59,6 +59,8 @@ class Question extends DataObject {
     }
     
     
+    
+    /* Fields */
     public function getCMSFields() {
         
         // Create the fields ourself
@@ -117,6 +119,7 @@ class Question extends DataObject {
     
     
     
+    /* Rendering */
     public function forTemplate() {
         
         return $this->renderWith("QuestionHolder");
@@ -139,6 +142,7 @@ class Question extends DataObject {
     }
     
     
+    /* Types */
     public function getType() {
         return "text";
     }
@@ -153,5 +157,23 @@ class Question extends DataObject {
         $all =  array_merge(["control"], $this->extraClasses);
         
         return implode($all, " ");
+    }
+    
+    
+    
+    /* Handling Values */
+    /** Called to check if a value is acceptable to save in a SurveyResponse, return an array of errors */
+    public function validateValue($value) {
+        return [];
+    }
+    
+    /** Called once to pack a value into a SurveyResponse's json */
+    public function packValue($value) {
+        return $value;
+    }
+    
+    /** Called to unpack a value from a SurveyResponse's json */
+    public function unpackValue($value) {
+        return $value;
     }
 }

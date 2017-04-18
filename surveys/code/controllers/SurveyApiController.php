@@ -34,7 +34,7 @@ class SurveyApiController extends Controller {
         return $this->Survey->Name . ': index';
     }
     
-    public function submitSurvey() {
+    public function submitSurveyX() {
         
         $errors = [];
         
@@ -82,7 +82,6 @@ class SurveyApiController extends Controller {
         
         // If there is any errors, stop here
         if (count($errors) > 0) {
-            
             return $this->jsonResponse($errors, 404);
         }
         
@@ -96,6 +95,73 @@ class SurveyApiController extends Controller {
             'Longitude' => $lng
         ]);
         
+        $response->write();
+        
+        
+        // If not ajax or command-line, redirect back
+        // IDEA: refactor to a parameter? e.g. RedirectURL? + check if on site
+        if ($redirectBack != null) {
+            return $this->redirectBack();
+        }
+        
+        
+        return $this->jsonResponse($response->toJson());
+    }
+    
+    public function submitSurvey() {
+        
+        $errors = [];
+        
+        $memberId = Member::currentUserID();
+        $fields = $this->postVar('Fields', $errors);
+        $token = $this->postVar('SecurityID', $errors);
+        $redirectBack = $this->postVar('RedirectBack') != null;
+        
+        $auth = $this->Survey->AuthType;
+        
+        if ($auth === "Member" && $memberId == null) {
+            $errors[] = "You need to be logged in to do that";
+        }
+        
+        // Check the security token matches
+        if ($token != (new SecurityToken())->getValue()) {
+            $errors[] = "Validation failed, please submit again";
+        }
+        
+        
+        
+        $questionMap = $this->Survey->getQuestionMap();
+        
+        
+        // Validate each question
+        foreach ($questionMap as $field => $question) {
+            
+            // Validate each question with a value (or null if not passed)
+            $errors = array_merge($errors, $question->validateValue(isset($fields[$field]) ? $fields[$field] : null));
+        }
+        
+        
+        // If there were any errors upto this point, return them as a failed response
+        if (count($errors) > 0) {
+            return $this->jsonResponse($errors, 400);
+        }
+        
+        
+        // Let the questions pack their value
+        foreach ($fields as $field => $value) {
+            $fields[$field] = $questionMap[$field]->packValue($value);
+        }
+        
+        
+        // Generate a SurveyResponse & save it
+        $response = SurveyResponse::create([
+            'SurveyID' => $this->Survey->ID,
+            'MemberID' => $memberId,
+            'Responses' => $fields
+        ]);
+        
+        
+        // Save the response
         $response->write();
         
         
