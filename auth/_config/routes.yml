@@ -13,3 +13,4 @@ Director:
     login: 'LoginController'
     me/edit: 'EditProfileController'
     me: 'ProfileController'
+    oauth/google: 'GoogleOAuthController'

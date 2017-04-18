@@ -26,18 +26,6 @@ class CurlRequestTest extends SapphireTest {
         $this->assertEquals(["key" => "value"], $this->request->getGetVars());
     }
     
-    public function testExecute() {
-        
-        // Check performing a curl to localhost returns its body
-        $this->assertNotNull($this->request->responseBody());
-    }
-    
-    public function testResponseCode() {
-        
-        // Check the response code was set
-        $this->assertNotEquals(0, $this->request->responseCode());
-    }
-    
     public function testDoubleExecutionCaches() {
         
         // TODO: Call twice doesn't do 2 requests

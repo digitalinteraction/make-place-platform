@@ -1,6 +1,9 @@
 <?php
 
-
+/**
+ * @codeCoverageIgnore
+ * Provides an access to curl to allow mocking in unit tests
+ */
 class CurlRequest extends Object {
     
     protected $url = null;
@@ -16,6 +19,10 @@ class CurlRequest extends Object {
         $this->getVars = $getVars;
     }
     
+    /**
+     * @codeCoverageIgnore
+     * - don't want to be testing network code in tests
+     */
     public function execute() {
         
         // Don't execute the request again
@@ -59,9 +66,13 @@ class CurlRequest extends Object {
     
     
     
-    public function getGetVars() { return $this->getVars; }
+    public function getGetVars() {
+        return $this->getVars;
+    }
     
-    public function getUrl() { return $this->url; }
+    public function getUrl() {
+        return $this->url;
+    }
     
     
     public function constructUrl() {

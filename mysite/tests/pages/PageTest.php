@@ -43,4 +43,9 @@ class PageTest extends SapphireTest {
         
         $this->assertEquals(302, $response->getStatusCode());
     }
+    
+    public function testGetShouldFillScreen() {
+        
+        $this->assertEquals("fill", $this->page->getShouldFillScreen());
+    }
 }
