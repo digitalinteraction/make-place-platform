@@ -19,9 +19,7 @@ class SurveyApiControllerTest extends FunctionalTest {
     
     
     
-    /*
-     *  Test Lifecycle
-     */
+    /* Test Lifecycle */
     public function setUp() {
         parent::setUp();
         
@@ -45,9 +43,7 @@ class SurveyApiControllerTest extends FunctionalTest {
     
     
     
-    /*
-     *  Basic Submission tests
-     */
+    /* Basic Submission tests */
     public function testSubmitRoute() {
         
         // Create a response to the survey
@@ -134,7 +130,7 @@ class SurveyApiControllerTest extends FunctionalTest {
     
     
     /* Submission edge cases */
-    public function testSubmitRequiresLogin() {
+    public function testSubmitRequiresLoginWhenSet() {
         
         $this->member->logOut();
         
@@ -146,12 +142,12 @@ class SurveyApiControllerTest extends FunctionalTest {
         
         $res = $this->post('s/1/submit', $data);
         
-        $this->assertEquals(400, $res->getStatusCode());
+        $this->assertEquals(401, $res->getStatusCode());
     }
     
     public function testSubmitWithoutAuth() {
         
-        $this->survey->AuthType = "None";
+        $this->survey->SubmitAuth = "None";
         $this->survey->write();
         
         $this->member->logOut();
@@ -192,7 +188,7 @@ class SurveyApiControllerTest extends FunctionalTest {
         
         $res = $this->post('s/1/submit', $data);
         
-        $this->assertEquals(400, $res->getStatusCode());
+        $this->assertEquals(401, $res->getStatusCode());
     }
     
     public function testSubmitFailsOnGet() {
@@ -286,20 +282,18 @@ class SurveyApiControllerTest extends FunctionalTest {
         
         $this->assertArrayHasKey('title', $json);
         $this->assertArrayHasKey('content', $json);
+        
+        $this->assertEquals("Some Survey", $json["title"]);
     }
     
-    public function testViewSurveyWithLatLng() {
+    public function testViewSurveyRequiresLogin() {
         
-        $params = 'lat=54.980759337802&lng=-1.614518165588379';
+        $this->member->logOut();
         
-        $res = $this->get("s/1/view?$params");
+        $res = $this->get('s/1/view');
         $json = json_decode($res->getBody(), true);
         
-        $content = $json['content'];
-        
-        // Assert 2 hidden fields were added to the form
-        $this->assertRegExp('/ResponseLat.*54.980759337802/', $content);
-        $this->assertRegExp('/ResponseLng.*-1.614518165588379/', $content);
+        $this->assertEquals("Please log in", $json['title']);
     }
     
     public function testViewNullResponse() {
@@ -334,19 +328,17 @@ class SurveyApiControllerTest extends FunctionalTest {
         $this->assertEquals($expected, $json[0]);
     }
     
-    // public function testGetResponseWithGeo() {
-    //
-    //     SurveyResponse::create([
-    //         "SurveyID" => 1,
-    //         "MemberID" => 2,
-    //         "Responses" => '{"a": "b"}'
-    //     ])->write();
-    //
-    //     $res = $this->get('s/1/responses?onlygeo');
-    //     $json = json_decode($res->getBody(), true);
-    //
-    //     $this->assertEquals(2, count($json));
-    // }
+    public function testGetResponsesRequiresAuthWhenSet() {
+        
+        $this->survey->ViewAuth = "Member";
+        $this->survey->write();
+        
+        $this->member->logOut();
+        
+        $res = $this->get('s/1/responses');
+        
+        $this->assertEquals(401, $res->getStatusCode());
+    }
     
     
     

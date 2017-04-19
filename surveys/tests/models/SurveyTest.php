@@ -3,6 +3,8 @@
 /* ...  */
 class SurveyTest extends SapphireTest {
     
+    public $usesDatabase = true;
+    
     /* Testing lifecycle */
     public function setUp() {
         
@@ -71,7 +73,8 @@ class SurveyTest extends SapphireTest {
         $this->assertNotNull($fields->fieldByName("Root.Main.Name"));
         $this->assertNotNull($fields->fieldByName("Root.Main.Handle"));
         $this->assertNotNull($fields->fieldByName("Root.Main.SubmitTitle"));
-        $this->assertNotNull($fields->fieldByName("Root.Main.AuthType"));
+        $this->assertNotNull($fields->fieldByName("Root.Main.ViewAuth"));
+        $this->assertNotNull($fields->fieldByName("Root.Main.SubmitAuth"));
         $this->assertNotNull($fields->fieldByName("Root.Main.Questions"));
         
         $this->assertTrue($fields->count() > 0);

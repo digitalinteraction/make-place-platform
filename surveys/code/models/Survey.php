@@ -9,7 +9,8 @@ class Survey extends DataObject {
         "Name" => "Varchar(255)",
         "Handle" => "Varchar(255)",
         "SubmitTitle" => "Varchar(255)",
-        "AuthType" => 'Enum(array("Member","None"), "Member")'
+        "ViewAuth" => 'Enum(array("Member","None"), "None")',
+        "SubmitAuth" => 'Enum(array("Member","None"), "Member")'
     ];
     
     private static $has_many = [
@@ -74,8 +75,11 @@ class Survey extends DataObject {
             TextField::create('Name','Name'),
             ReadonlyField::create('Handle', 'Handle'),
             TextField::create('SubmitTitle','Submit Title'),
-            DropdownField::create('AuthType', 'Authentication',
-                singleton('Survey')->dbObject('AuthType')->enumValues()
+            DropdownField::create('ViewAuth', 'Who can view responses',
+                singleton('Survey')->dbObject('ViewAuth')->enumValues()
+            ),
+            DropdownField::create('SubmitAuth', 'Who can add responses',
+                singleton('Survey')->dbObject('SubmitAuth')->enumValues()
             ),
             GridField::create(
                 'Questions',

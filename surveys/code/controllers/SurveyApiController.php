@@ -43,7 +43,7 @@ class SurveyApiController extends Controller {
         $token = $this->postVar('SecurityID', $errors);
         $redirectBack = $this->postVar('RedirectBack') != null;
         
-        $auth = $this->Survey->AuthType;
+        $auth = $this->Survey->SubmitAuth;
         
         if ($auth === "Member" && $memberId == null) {
             $errors[] = "You need to be logged in to do that";
@@ -52,6 +52,10 @@ class SurveyApiController extends Controller {
         // Check the security token matches
         if ($token != (new SecurityToken())->getValue()) {
             $errors[] = "Validation failed, please submit again";
+        }
+        
+        if (count($errors) > 0) {
+            return $this->jsonResponse($errors, 401);
         }
         
         
@@ -101,15 +105,16 @@ class SurveyApiController extends Controller {
     
     public function viewSurvey() {
         
-        $lat = $this->getVar('lat');
-        $lng = $this->getVar('lng');
+        $memberId = Member::currentUserID();
+        $auth = $this->Survey->SubmitAuth;
         
-        if ($lat != null && $lng != null) {
-            $this->Survey->ResponseLat = $lat;
-            $this->Survey->ResponseLng = $lng;
+        if ($auth == "Member" && $memberId == null) {
+            
+            return $this->jsonResponse([
+                'title' => "Please log in",
+                'content' => "<p>Sorry, you need to log in to do that!</p>"
+            ], 401);
         }
-        
-        // TODO: report an error if only 1 is passed?
         
         return $this->jsonResponse([
             'title' => $this->Survey->Name,
@@ -120,6 +125,14 @@ class SurveyApiController extends Controller {
     public function getResponses() {
         
         $responses = SurveyResponse::get()->filter("SurveyID", $this->Survey->ID);
+        
+        $memberId = Member::currentUserID();
+        $auth = $this->Survey->ViewAuth;
+        
+        if ($auth == "Member" && $memberId == null) {
+            
+            return $this->jsonResponse(["You need to log in to do that"], 401);
+        }
         
         
         // If 'onlygeo' is passed, non-placed responses are ignored

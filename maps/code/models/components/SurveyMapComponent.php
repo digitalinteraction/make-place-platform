@@ -24,10 +24,12 @@ class SurveyMapComponent extends MapComponent {
         // Start with the base config
         $data = parent::configData();
         
+        $survey = $this->Survey();
+        
         
         // Add the survey id to the config
         $data += [
-            'surveyID' => $this->SurveyID
+            'surveyID' => $survey->ID
         ];
         
         
@@ -40,6 +42,13 @@ class SurveyMapComponent extends MapComponent {
                 break;
             }
         }
+        
+        
+        // Add auth config to the component
+        $data["canView"] = Member::currentUserID() != null
+            || $survey->ViewAuth == "None";
+        $data["canSubmit"] = Member::currentUserID() != null
+            || $survey->SubmitAuth == "None";
         
         
         return $data;

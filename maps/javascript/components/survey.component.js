@@ -137,7 +137,9 @@ define(["jquery", "vue", "lodash", "utils"], function($, Vue, _, Utils) {
         
         
         // Add the "Add Response" button
-        addPinButton();
+        if (component.canSubmit) {
+            addPinButton();
+        }
         
         
         // Add a dummy control
@@ -148,19 +150,21 @@ define(["jquery", "vue", "lodash", "utils"], function($, Vue, _, Utils) {
         
         
         // Load responses
-        $.ajax({
-            url: Utils.getOrigin() + "/s/" + component.surveyID + "/responses?onlygeo",
-            success: function(responses) {
-                
-                // Generate markers and add them to the layer
-                _.each(responses, function(response) {
-                    clusterer.addLayer(createResponseMarker(response, state.pins.blue));
-                });
-                
-                state.map.addLayer(clusterer);
-                
-            }
-        });
+        if (component.canView) {
+            $.ajax({
+                url: Utils.getOrigin() + "/s/" + component.surveyID + "/responses?onlygeo",
+                success: function(responses) {
+                    
+                    // Generate markers and add them to the layer
+                    _.each(responses, function(response) {
+                        clusterer.addLayer(createResponseMarker(response, state.pins.blue));
+                    });
+                    
+                    state.map.addLayer(clusterer);
+                    
+                }
+            });
+        }
         
         // ...
     };

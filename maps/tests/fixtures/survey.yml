@@ -10,6 +10,8 @@ Survey:
     surveyA:
         Name: 'Some Survey'
         Handle: 'some-survey'
+        ViewAuth: 'None'
+        SubmitAuth: 'Member'
         Questions: =>Question.question1,=>Question.question2
 
 SurveyMapComponent:
