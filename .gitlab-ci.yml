@@ -36,11 +36,9 @@ test:
         CI_PROJECT_DIR: '/app/'
         CI_APP_VOLUME: '/app/'
     script:
-        - pwd
-        - ls
-        - ls /app
         - cp -r /app .
-        - bash /app/scripts/coverage
+        - ls
+        - bash scripts/coverage
         # - docker run --rm $CONTAINER_BRANCH_IMAGE bash scripts/coverage
         # - docker push $CONTAINER_BRANCH_IMAGE
 
