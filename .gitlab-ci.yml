@@ -32,7 +32,8 @@ test:
     stage: test
     script:
         - pwd
-        - ls
+        - ls /app
+        - cd /app
         - bash scripts/coverage
         # - docker run --rm $CONTAINER_BRANCH_IMAGE bash scripts/coverage
         # - docker push $CONTAINER_BRANCH_IMAGE
