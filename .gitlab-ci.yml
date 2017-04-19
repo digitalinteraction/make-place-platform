@@ -34,7 +34,6 @@ test:
     script:
         - pwd
         - ls
-        - mv . /app/*
         - bash /app/scripts/coverage
         # - docker run --rm $CONTAINER_BRANCH_IMAGE bash scripts/coverage
         # - docker push $CONTAINER_BRANCH_IMAGE

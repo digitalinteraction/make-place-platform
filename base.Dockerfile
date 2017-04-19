@@ -5,7 +5,11 @@
 
 
 # Use my compose image
-FROM openlab.ncl.ac.uk:4567/b30282237/composer-image:1.0.3
+FROM openlab.ncl.ac.uk:4567/b30282237/composer-image:1.0.4
+
+
+# Set thet working directory
+WORKDIR /app
 
 
 # Add Sqlite3
