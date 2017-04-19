@@ -47,3 +47,6 @@ RUN mkdir -p /app/silverstripe-cache \
 
 # Add volumes for assets & backup data
 VOLUME ["/app/assets", "/backup", "/app/silverstripe-cache"]
+
+
+ENTRYPOINT "/bin/bash"
