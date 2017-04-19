@@ -1,7 +1,6 @@
 <?php
 
 /** ... */
-/** @group whitelist */
 class SurveyMapComponentTest extends SapphireTest {
     
     /** @var SurveyMapComponent */
@@ -36,6 +35,9 @@ class SurveyMapComponentTest extends SapphireTest {
         $fields = $this->component->getCMSFields();
         
         $this->assertNotNull($fields->fieldByName('Root.Main.SurveyID'));
+        $this->assertNotNull($fields->fieldByName('Root.Main.ActionMessage'));
+        $this->assertNotNull($fields->fieldByName('Root.Main.ActionColour'));
+        $this->assertNotNull($fields->fieldByName('Root.Main.PinColour'));
     }
     
     
@@ -51,7 +53,10 @@ class SurveyMapComponentTest extends SapphireTest {
             'type' => 'SurveyMapComponent',
             'surveyID' => 1,
             'canView' => true,
-            'canSubmit' => false
+            'canSubmit' => false,
+            'actionColour' => 'green',
+            'actionMessage' => 'Add Response',
+            'pinColour' => 'blue'
         ];
         
         $this->assertEquals($expected, $this->component->configData());
@@ -74,7 +79,10 @@ class SurveyMapComponentTest extends SapphireTest {
             'type' => 'SurveyMapComponent',
             'surveyID' => 1,
             'canView' => true,
-            'canSubmit' => true
+            'canSubmit' => true,
+            'actionColour' => 'green',
+            'actionMessage' => 'Add Response',
+            'pinColour' => 'blue'
         ];
         
         $this->assertEquals($expected, $this->component->configData());

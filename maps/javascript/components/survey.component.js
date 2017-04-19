@@ -43,7 +43,7 @@ define(["jquery", "vue", "lodash", "utils"], function($, Vue, _, Utils) {
                 
                 // Generate markers and add them to the layer
                 _.each(responses, function(response) {
-                    self.clusterer.addLayer(self.createResponseMarker(response, self.state.pins.blue));
+                    self.clusterer.addLayer(self.createResponseMarker(response));
                 });
                 
                 self.state.map.addLayer(self.clusterer);
@@ -53,11 +53,15 @@ define(["jquery", "vue", "lodash", "utils"], function($, Vue, _, Utils) {
     
     
     /* Class Methods */
-    SurveyComponent.prototype.createResponseMarker = function(response, type) {
+    SurveyComponent.prototype.createResponseMarker = function(response) {
         
         // Get the key of where the location will be
         var pointKey = this.component.geoPointQuestion;
         var data = response.values[pointKey].value;
+        
+        
+        // Get the pin type from our config
+        var type = this.state.pins[this.component.pinColour || "blue"];
         
         
         // Create a marker with the response's position
@@ -93,8 +97,8 @@ define(["jquery", "vue", "lodash", "utils"], function($, Vue, _, Utils) {
         // Add an action via the state
         var self = this;
         this.state.methods.addAction(this.id, {
-            title: "Add Response",
-            colour: "green",
+            title: this.component.actionMessage || "Add Response",
+            colour: this.component.actionColour || "green",
             icon: 'fa-plus',
             callback: function(e) {
                 
@@ -155,7 +159,7 @@ define(["jquery", "vue", "lodash", "utils"], function($, Vue, _, Utils) {
         .then(function(data) {
             
             // Add a pin from the response
-            self.clusterer.addLayer(self.createResponseMarker(data, self.state.pins.blue));
+            self.clusterer.addLayer(self.createResponseMarker(data));
             
             // Remove the survey form
             self.removeSurveyForm();

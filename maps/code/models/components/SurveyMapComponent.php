@@ -3,8 +3,20 @@
 /** ... */
 class SurveyMapComponent extends MapComponent {
     
+    private static $db = [
+        'ActionColour' => 'Enum(array("blue", "green", "orange", "purple", "red"), "green")',
+        'ActionMessage' => 'Varchar(255)',
+        'PinColour' => 'Enum(array("blue", "green", "orange", "purple", "red"), "blue")'
+    ];
+    
     private static $has_one = [
         'Survey' => 'Survey'
+    ];
+    
+    private static $defaults = [
+        'ActionMessage' => 'Add Response',
+        'ActionColour' => 'green',
+        'PinColour' => 'blue'
     ];
     
     public function addExtraFields(FieldList $fields) {
@@ -14,6 +26,13 @@ class SurveyMapComponent extends MapComponent {
                 'SurveyID',
                 'Survey',
                 Survey::get()->map()->toArray()
+            ),
+            TextField::create('ActionMessage', 'Action'),
+            DropdownField::create('ActionColour', 'Action Colour',
+                singleton('SurveyMapComponent')->dbObject('ActionColour')->enumValues()
+            ),
+            DropdownField::create('PinColour', 'Pin Colour',
+                singleton('SurveyMapComponent')->dbObject('PinColour')->enumValues()
             )
         ]);
     }
@@ -29,7 +48,10 @@ class SurveyMapComponent extends MapComponent {
         
         // Add the survey id to the config
         $data += [
-            'surveyID' => $survey->ID
+            'surveyID' => $survey->ID,
+            'actionColour' => $this->ActionColour,
+            'actionMessage' => $this->ActionMessage,
+            'pinColour' => $this->PinColour
         ];
         
         
