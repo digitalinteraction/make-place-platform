@@ -3,6 +3,8 @@
 /** ... */
 class SurveyResponse extends DataObject {
     
+    public $HiddenQuestion = false;
+    
     private static $db = [
         "Responses" => "JsonText",
         'Latitude' => 'Decimal(16, 8)',
@@ -57,9 +59,12 @@ class SurveyResponse extends DataObject {
         $questions = $this->Survey()->Questions();
         
         foreach ($questions as $question) {
-            $values[] = [
-                "key" => $question->Name,
-                "value" => isset($rawValues[$question->Handle]) ? $rawValues[$question->Handle] : ''
+            
+            $value = isset($rawValues[$question->Handle]) ? $rawValues[$question->Handle] : '';
+            
+            $values[$question->Handle] = [
+                "name" => $question->Name,
+                "value" => $question->unpackValue($value)
             ];
         }
         

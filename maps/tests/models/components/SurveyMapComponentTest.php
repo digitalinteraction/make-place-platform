@@ -53,4 +53,15 @@ class SurveyMapComponentTest extends SapphireTest {
         
         $this->assertEquals($expected, $this->component->configData());
     }
+    
+    public function testConfigAddsGeoQuestionHandle() {
+        
+        $this->component->Survey()->Questions()->addMany([
+            GeoQuestion::create(["Handle" => "geo-q", "GeoType" => "POINT"])
+        ]);
+        
+        $config = $this->component->configData();
+        
+        $this->assertEquals("geo-q", $config["geoPointQuestion"]);
+    }
 }

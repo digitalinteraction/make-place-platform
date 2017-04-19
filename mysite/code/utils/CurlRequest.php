@@ -6,23 +6,24 @@
  */
 class CurlRequest extends Object {
     
+    protected $method = "GET";
     protected $url = null;
     protected $getVars = [];
+    protected $body = null;
+    protected $headers = [];
     protected $responseBody = null;
     protected $responseCode = -1;
     
     public static $testResponse = null;
     
+    
+    /* Request Lifecycle */
     public function __construct($url, $getVars = []) {
         
         $this->url = $url;
         $this->getVars = $getVars;
     }
     
-    /**
-     * @codeCoverageIgnore
-     * - don't want to be testing network code in tests
-     */
     public function execute() {
         
         // Don't execute the request again
@@ -43,12 +44,7 @@ class CurlRequest extends Object {
         
         
         // Setup the request
-        curl_setopt_array($ch, [
-            CURLOPT_SSL_VERIFYPEER => true,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_TIMEOUT => 1,
-            CURLINFO_HEADER_OUT => true,
-        ]);
+        curl_setopt_array($ch, $this->curlOptions());
         
         
         // Execute the request
@@ -64,22 +60,81 @@ class CurlRequest extends Object {
         return $this;
     }
     
-    
-    
-    public function getGetVars() {
-        return $this->getVars;
+    public function curlOptions() {
+        
+        $options = [
+            CURLOPT_SSL_VERIFYPEER => true,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_TIMEOUT => 1,
+            CURLINFO_HEADER_OUT => true,
+        ];
+        
+        if ($this->body) {
+            $options[CURLOPT_POSTFIELDS] = $this->body;
+        }
+        
+        if (count($this->headers) > 0) {
+            $options[CURLOPT_HTTPHEADER] = $this->headers;
+        }
+        
+        switch($this->method) {
+            case "POST": $options[CURLOPT_POST] = 1; break;
+            // case "PUT": $options[CURLOPT_PUT] = 1; break;
+            // More methods ...
+        }
+        
+        return $options;
     }
-    
-    public function getUrl() {
-        return $this->url;
-    }
-    
     
     public function constructUrl() {
         return $this->url."?".http_build_query($this->getVars);
     }
     
     
+    
+    
+    /* Request Properties */
+    public function getUrl() {
+        return $this->url;
+    }
+    
+    public function getGetVars() {
+        return $this->getVars;
+    }
+    
+    
+    
+    
+    /* Request Configuration */
+    public function setMethod($method) {
+        $this->method = $method;
+        return $this;
+    }
+    
+    public function setBody($body) {
+        $this->body = $body;
+        return $this;
+    }
+    
+    public function setJsonBody($json) {
+        $this->body = json_encode($json);
+        $this->addHeader("Content-Type", "application/json");
+        $this->addHeader("Content-Length", strlen($this->body));
+        return $this;
+    }
+    
+    public function addHeader($key, $value) {
+        $this->headers[] = "$key: $value";
+        return $this;
+    }
+    
+    
+    
+    
+    
+    
+    
+    /* Responses */
     public function responseBody() {
         $this->execute();
         return $this->responseBody;
@@ -96,6 +151,8 @@ class CurlRequest extends Object {
     }
     
     
+    
+    /* Utils */
     public static function validApiResponse($response) {
         
         return isset($response['meta'])
@@ -104,3 +161,15 @@ class CurlRequest extends Object {
             && $response['meta']['success'];
     }
 }
+
+
+
+// class CurlResponse extends Object {
+//
+//     protected $code;
+//     protected $body;
+//
+//     public function __construct($code, $body) {
+//
+//     }
+// }

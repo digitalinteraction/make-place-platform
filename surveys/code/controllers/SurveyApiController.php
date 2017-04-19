@@ -55,19 +55,17 @@ class SurveyApiController extends Controller {
         }
         
         
-        
+        // Get the map of handle to question objects
         $questionMap = $this->Survey->getQuestionMap();
         
         
-        // Validate each question
+        // Validate each question with the passed value or null
         foreach ($questionMap as $field => $question) {
-            
-            // Validate each question with a value (or null if not passed)
             $errors = array_merge($errors, $question->validateValue(isset($fields[$field]) ? $fields[$field] : null));
         }
         
         
-        // If there were any errors upto this point, return them as a failed response
+        // If there were any errors upto this point, return them in a failed response
         if (count($errors) > 0) {
             return $this->jsonResponse($errors, 400);
         }
@@ -127,10 +125,10 @@ class SurveyApiController extends Controller {
         // If 'onlygeo' is passed, non-placed responses are ignored
         if ($this->getRequest()->getVar("onlygeo") !== null) {
             
-            $responses = $responses->exclude([
-                "Latitude" => 0.0,
-                "Longitude" => 0.0
-            ]);
+            // $responses = $responses->exclude([
+            //     "Latitude" => 0.0,
+            //     "Longitude" => 0.0
+            // ]);
         }
         
         
@@ -170,9 +168,7 @@ class SurveyApiController extends Controller {
     
     
     
-    /*
-     *  Utils
-     */
+    /* Utils */
     public function postVar($name, &$errors = []) {
         
         if ($this->request->postVar($name) != null) {

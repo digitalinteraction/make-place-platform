@@ -9,9 +9,13 @@ define(["jquery", "vue", "lodash", "utils"], function($, Vue, _, Utils) {
     
     function createResponseMarker(response, type) {
         
-        var marker = L.marker([response.lat, response.lng], {
+        var pointKey = config.component.geoPointQuestion;
+        var data = response.values[pointKey].value;
+        
+        var marker = L.marker([data.geom.x, data.geom.y], {
             icon: type
         });
+        
         
         marker.response = response;
         
@@ -49,23 +53,29 @@ define(["jquery", "vue", "lodash", "utils"], function($, Vue, _, Utils) {
         if (!position) { return; }
         
         var id = config.component.surveyID;
-        var params = $.param({ lat: position[0], lng: position[1] });
         
         addingMarker = L.marker(position, {
             icon: state.pins.orange
         });
         
+        
         addingMarker.addTo(state.map);
         
         
-        var url = Utils.apiUrl("/s/"+id+"/view?"+params);
-        
-        console.log(url);
-        
-        $.ajax(Utils.apiUrl("/s/"+id+"/view?"+params))
+        $.ajax(Utils.apiUrl("/s/"+id+"/view"))
         .then(function(data) {
             
             state.methods.showDetail(data.title, data.content, removeSurveyForm);
+            
+            var posField = 'Fields['+config.component.geoPointQuestion+']';
+            
+            // Add the latlng to the form
+            var extras = '';
+            extras += '<input type="hidden" name="'+posField+'[x]" value="'+position[0]+'">';
+            extras += '<input type="hidden" name="'+posField+'[y]" value="'+position[1]+'">';
+            
+            
+            $('#map-detail .inner form').append(extras);
             
             $('#map-detail .inner form').on('submit', submitSurvey);
         });
@@ -77,7 +87,7 @@ define(["jquery", "vue", "lodash", "utils"], function($, Vue, _, Utils) {
         
         var url = e.target.action;
         
-        // TODO: Disable submission
+        // TODO: Disable submission while processing ...
         
         $.post(e.target.action, $(e.target).serialize())
         .then(function(data) {
@@ -89,6 +99,8 @@ define(["jquery", "vue", "lodash", "utils"], function($, Vue, _, Utils) {
             state.methods.hideDetail();
         })
         .catch(function(error) {
+            
+            console.log(error);
             
             // TODO: Re-enable submission
             
@@ -118,6 +130,7 @@ define(["jquery", "vue", "lodash", "utils"], function($, Vue, _, Utils) {
             component: component
         };
         state = mapState;
+        
         
         // Create a clustering layer
         clusterer = L.markerClusterGroup();

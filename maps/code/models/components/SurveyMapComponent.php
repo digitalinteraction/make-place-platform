@@ -21,11 +21,26 @@ class SurveyMapComponent extends MapComponent {
     
     public function configData() {
         
+        // Start with the base config
         $data = parent::configData();
         
+        
+        // Add the survey id to the config
         $data += [
             'surveyID' => $this->SurveyID
         ];
+        
+        
+        // Find a geo-point question to pass along
+        $questions = $this->Survey()->Questions();
+        foreach ($questions as $question) {
+            
+            if ($question->ClassName == "GeoQuestion" && $question->GeoType == "POINT") {
+                $data["geoPointQuestion"] = $question->Handle;
+                break;
+            }
+        }
+        
         
         return $data;
     }

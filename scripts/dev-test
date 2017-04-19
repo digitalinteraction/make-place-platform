@@ -32,18 +32,26 @@ do
     }
     
     
-    # If 'coverage' is passed,  run the coverage
     if [[ " coverage-html " == *" $PARAMS "* ]]; then
+        
+        # If 'coverage-html' is passed, run the coverage html generator
         php5enmod xdebug
         vendor/bin/phpunit --coverage-html assets/coverage
         php5dismod xdebug
     elif [[ " coverage " == *" $PARAMS "* ]]; then
+        
+        # If 'coverage' is passed, run the coverage summary
         php5enmod xdebug
         vendor/bin/phpunit --coverage-text
         php5dismod xdebug
-    else
-        # Otherwise, just run unit tests
+    elif [[ " all " == *" $PARAMS "* ]]; then
+        
+        # If 'all' is passed, run all tests
         vendor/bin/phpunit --colors
+    else
+        
+        # Otherwise, just the whitelist group ( use @group whitelist )
+        vendor/bin/phpunit --colors --group whitelist
     fi
     
 done
