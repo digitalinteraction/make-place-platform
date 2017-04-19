@@ -7,6 +7,7 @@ variables:
     DOCKER_DRIVER: overlay
     GITLAB_USER: gitlab-ci-token
     CI_PROJECT_DIR: '/app/'
+    CI_APP_VOLUME: '/app/'
     
 
 # before_script:
