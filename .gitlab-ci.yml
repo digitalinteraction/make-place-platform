@@ -32,6 +32,9 @@ stages:
 test:
     image: $CONTAINER_BASE_IMAGE
     stage: test
+    variables:
+        CI_PROJECT_DIR: '/app/'
+        CI_APP_VOLUME: '/app/'
     script:
         - pwd
         - ls
