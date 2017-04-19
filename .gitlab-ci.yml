@@ -8,8 +8,8 @@ variables:
     GITLAB_USER: gitlab-ci-token
     
 
-before_script:
-    - docker login -u $GITLAB_USER -p $CI_BUILD_TOKEN $CI_REGISTRY
+# before_script:
+#     - docker login -u $GITLAB_USER -p $CI_BUILD_TOKEN $CI_REGISTRY
 
 
 
