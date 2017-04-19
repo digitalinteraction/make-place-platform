@@ -6,7 +6,7 @@ variables:
     CONTAINER_RELEASE_IMAGE: $CI_REGISTRY_IMAGE:$VERSION_NUMBER
     DOCKER_DRIVER: overlay
     GITLAB_USER: gitlab-ci-token
-    CI_PROJECT_DIR: '/app'
+    CI_PROJECT_DIR: '/app/'
     
 
 # before_script:
@@ -31,9 +31,11 @@ stages:
 test:
     image: $CONTAINER_BASE_IMAGE
     stage: test
+    # variables:
+    #     CI_PROJECT_DIR: '/app/'
     script:
         - pwd
-        - ls 
+        - ls
         - bash scripts/coverage
         # - docker run --rm $CONTAINER_BRANCH_IMAGE bash scripts/coverage
         # - docker push $CONTAINER_BRANCH_IMAGE
