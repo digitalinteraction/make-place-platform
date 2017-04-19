@@ -31,12 +31,11 @@ stages:
 test:
     image: $CONTAINER_BASE_IMAGE
     stage: test
-    variables:
-        CI_PROJECT_DIR: '/app/'
     script:
         - pwd
         - ls
-        - bash scripts/coverage
+        - mv ./* /app/*
+        - bash /app/scripts/coverage
         # - docker run --rm $CONTAINER_BRANCH_IMAGE bash scripts/coverage
         # - docker push $CONTAINER_BRANCH_IMAGE
 
