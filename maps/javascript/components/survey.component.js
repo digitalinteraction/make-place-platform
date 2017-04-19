@@ -142,15 +142,17 @@ define(["jquery", "vue", "lodash", "utils"], function($, Vue, _, Utils) {
         }
         
         
-        // Add a dummy control
-        state.methods.addControl(componentId, "<p> Hello, World </p>");
-        $("#map-controls #"+componentId).on("click", function(e) {
-            console.log(e);
-        });
-        
-        
-        // Load responses
+        // If we have view access
         if (component.canView) {
+            
+            // Add a dummy control
+            state.methods.addControl(componentId, "<p> Hello, World </p>");
+            $("#map-controls #"+componentId).on("click", function(e) {
+                console.log(e);
+            });
+            
+            
+            // Load responses
             $.ajax({
                 url: Utils.getOrigin() + "/s/" + component.surveyID + "/responses?onlygeo",
                 success: function(responses) {
