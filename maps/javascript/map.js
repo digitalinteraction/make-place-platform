@@ -50,7 +50,8 @@ requirejs([
             hideDetail: hideMapDetail,
             selectPosition: selectMapPosition,
             toggleOverlay: toggleMapOverlay
-        }
+        },
+        components: {}
     };
     
     function toggleElem(selector, toggle) {
@@ -204,21 +205,27 @@ requirejs([
     // Setup the map ...
     function setupMap(config) {
         
+        // Print the config for debug
         console.log("config", config);
         
         
-        var mapConfig = {
-            attributionControl: config.page.tileset !== "Google"
-        };
-        
-        
+        // Configure the Leaflet map
+        var mapConfig = { attributionControl: config.page.tileset !== "Google" };
         state.map = L.map("map", mapConfig).setView([config.page.startLat, config.page.startLng], config.page.startZoom);
         state.map.zoomControl.setPosition("bottomright");
         
         
+        
+        // Load each component
         _.each(config.components, function(comp) {
             if (componentMap[comp.type]) {
-                componentMap[comp.type](config.page, comp, state);
+                
+                // Get the type of the component to create
+                var ComponentType = componentMap[comp.type];
+                
+                // Create and store the component
+                var component = new ComponentType(config.page, comp, state);
+                componentMap[component.id] = component;
             }
         });
         
@@ -226,16 +233,18 @@ requirejs([
         
         
         
-        
+        // Add a tileset based on the config
         if (config.page.tileset === "Google") {
             
-            L.gridLayer.googleMutant({type: "roadmap"})
-                .addTo(state.map);
+            // If google, add google tiles
+            L.gridLayer.googleMutant({type: "roadmap"}).addTo(state.map);
         }
         else {
             
+            // Otherwise, use OpenStreetMap tiles
             var url = "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
             
+            // Add the tiles as a layer
             var osm = new L.TileLayer(url, {
                 attribution: "Map data © <a href=\"http://openstreetmap.org\">OpenStreetMap</a> contributors"
             });
