@@ -139,6 +139,7 @@ requirejs([
             if (options.callback) { options.callback(e);}
         });
         
+        $("#map-actions").toggleClass("has-actions", $("#map-actions .inner").children().length > 0);
     }
     
     function removeMapAction(id) {
@@ -213,7 +214,7 @@ requirejs([
         var mapConfig = { attributionControl: config.page.tileset !== "Google" };
         state.map = L.map("map", mapConfig).setView([config.page.startLat, config.page.startLng], config.page.startZoom);
         state.map.zoomControl.setPosition("bottomright");
-        
+        state.clusterer = L.markerClusterGroup();
         
         
         // Load each component
@@ -252,6 +253,7 @@ requirejs([
             state.map.addLayer(osm);
         }
         
+        state.map.addLayer(state.clusterer);
     }
     
     
@@ -272,6 +274,14 @@ requirejs([
         );
     }).resize();
     
+    
+    
+    // Listen for the escape key
+    $(document).on("keyup", function(e) {
+        if (e.keyCode == 27) {
+            $("#map-detail .close-button").trigger("click");
+        }
+    });
     
     
     // Add mobile tap listeners

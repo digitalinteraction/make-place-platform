@@ -17,7 +17,7 @@ define(["jquery", "vue", "lodash", "utils"], function($, Vue, _, Utils) {
         
         
         // Create a clustering layer
-        this.clusterer = L.markerClusterGroup();
+        // this.clusterer = L.markerClusterGroup();
         
         
         // Add the "Add Response" button
@@ -43,10 +43,9 @@ define(["jquery", "vue", "lodash", "utils"], function($, Vue, _, Utils) {
                 
                 // Generate markers and add them to the layer
                 _.each(responses, function(response) {
-                    self.clusterer.addLayer(self.createResponseMarker(response));
+                    self.state.clusterer.addLayer(self.createResponseMarker(response));
                 });
                 
-                self.state.map.addLayer(self.clusterer);
             });
         }
     };
@@ -159,7 +158,7 @@ define(["jquery", "vue", "lodash", "utils"], function($, Vue, _, Utils) {
         .then(function(data) {
             
             // Add a pin from the response
-            self.clusterer.addLayer(self.createResponseMarker(data));
+            self.state.clusterer.addLayer(self.createResponseMarker(data));
             
             // Remove the survey form
             self.removeSurveyForm();

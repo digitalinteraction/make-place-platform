@@ -8,10 +8,6 @@
 FROM openlab.ncl.ac.uk:4567/b30282237/composer-image:1.0.4
 
 
-# Set thet working directory
-WORKDIR /app
-
-
 # Add Sqlite3
 RUN apt-get -y update \
  && apt-get -y upgrade -y \
@@ -47,6 +43,3 @@ RUN mkdir -p /app/silverstripe-cache \
 
 # Add volumes for assets & backup data
 VOLUME ["/app/assets", "/backup", "/app/silverstripe-cache"]
-
-
-ENTRYPOINT "/bin/bash"

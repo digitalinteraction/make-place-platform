@@ -28,8 +28,8 @@ define([
         generatePin: function(L, colour) {
             return L.icon({
                 iconUrl: "/maps/images/pins/pin-" + colour + ".png",
-                iconSize: [30, 42],
-                iconAnchor: [15, 42]
+                iconSize: [30, 56],
+                iconAnchor: [15, 40]
             });
         },
     };

@@ -78,6 +78,10 @@ $buttonSize: 48px;
     #map {
       width: 100%;
       height: 100%;
+      
+      .leaflet-marker-icon:focus {
+        outline: none;
+      }
     }
     
     #map-detail, #map-controls, #map-actions,

@@ -78,6 +78,12 @@
     border-color: $orangeAltColour;
     &:hover { background-color: $orangeAltColour; }
   }
+  
+  &.purple {
+    background: $purpleColour;
+    border-color: $purpleAltColour;
+    &:hover { background-color: $purpleAltColour; }
+  }
 }
 
 html { height: 100%; }
