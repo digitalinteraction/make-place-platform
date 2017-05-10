@@ -113,7 +113,7 @@ class SurveyTest extends SapphireTest {
         ]);
         $survey->write();
         
-        $this->assertEquals("/s/{$survey->ID}/submit", $survey->getSurveyUrl());
+        $this->assertEquals("/survey/{$survey->ID}/submit", $survey->getSurveyUrl());
     }
     
     public function testGenerateData() {

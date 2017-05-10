@@ -73,4 +73,8 @@ class GeoQuestion extends Question {
         return $ref->fetchValue();
     }
     
+    public function sample() {
+        return parent::sample() . ":" . $this->GeoType;
+    }
+    
 }

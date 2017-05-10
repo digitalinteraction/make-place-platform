@@ -31,6 +31,17 @@ class SurveyApiController extends Controller {
     
     public function index($request) {
         
+        $questions = $this->Survey->getQuestionMap();
+        $fields = [];
+        foreach ($questions as $handle => $question) {
+            $fields[$handle] = $question->sample();
+        }
+        
+        return $this->jsonResponse([
+            "name" => $this->Survey->Name,
+            "questions" => $fields
+        ]);
+        
         return $this->Survey->Name . ': index';
     }
     
@@ -39,19 +50,26 @@ class SurveyApiController extends Controller {
         $errors = [];
         
         $memberId = Member::currentUserID();
-        $fields = $this->postVar('Fields', $errors);
-        $token = $this->postVar('SecurityID', $errors);
-        $redirectBack = $this->postVar('RedirectBack') != null;
+        $fields = $this->bodyVar('Fields', $errors);
+        $token = $this->bodyVar('SecurityID');
+        $redirectBack = $this->bodyVar('RedirectBack') != null;
         
-        $auth = $this->Survey->SubmitAuth;
-        
-        if ($auth === "Member" && $memberId == null) {
-            $errors[] = "You need to be logged in to do that";
+        if ($this->checkApiAuth()) {
+            
+            // If authed with the api, get the newly authenticated member
+            $memberId = Member::currentUserID();
         }
-        
-        // Check the security token matches
-        if ($token != (new SecurityToken())->getValue()) {
-            $errors[] = "Validation failed, please submit again";
+        else {
+            $auth = $this->Survey->SubmitAuth;
+            
+            if ($auth === "Member" && $memberId == null) {
+                $errors[] = "You need to be logged in to do that";
+            }
+            
+            // Check the security token matches
+            if ($token == null || $token != (new SecurityToken())->getValue()) {
+                $errors[] = "Validation failed, please submit again";
+            }
         }
         
         if (count($errors) > 0) {

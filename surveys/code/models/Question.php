@@ -117,6 +117,10 @@ class Question extends DataObject {
         return [];
     }
     
+    public function sample() {
+        return $this->ClassName;
+    }
+    
     
     
     /* Rendering */

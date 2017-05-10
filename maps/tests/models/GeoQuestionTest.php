@@ -136,4 +136,11 @@ class GeoQuestionTest extends SapphireTest {
         
     }
     
+    
+    
+    /* Misc */
+    public function testSample() {
+        $this->assertEquals("GeoQuestion:POINT", $this->question->sample());
+    }
+    
 }

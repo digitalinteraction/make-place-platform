@@ -18,6 +18,7 @@ class SomeComplexMockQuestion extends Question {
     
 }
 
+/** Tests Question */
 class QuestionTest extends SapphireTest {
     
     
@@ -192,5 +193,11 @@ class QuestionTest extends SapphireTest {
     
     public function testUnpackValue() {
         $this->assertEquals("value", $this->question->unpackValue("value"));
+    }
+    
+    
+    /* Test Sample value */
+    public function testSample() {
+        $this->assertEquals("MockQuestion", $this->question->sample());
     }
 }

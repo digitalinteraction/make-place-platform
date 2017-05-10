@@ -27,3 +27,4 @@ SurveyResponse:
 SurveyApiController:
   extensions:
     - JsonApiExtension
+    - ApiAuthExtension

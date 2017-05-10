@@ -9,6 +9,7 @@ class MockPackingQuestion extends Question {
     public function packValue($value) { return "packed"; }
 }
 
+/** Tests SurveyApiController */
 /** @group whitelist */
 class SurveyApiControllerTest extends FunctionalTest {
     
@@ -52,7 +53,7 @@ class SurveyApiControllerTest extends FunctionalTest {
         ]);
         
         
-        $res = $this->post('s/1/submit', $data);
+        $res = $this->post('survey/1/submit', $data);
         
         $this->assertEquals(200, $res->getStatusCode());
     }
@@ -65,7 +66,7 @@ class SurveyApiControllerTest extends FunctionalTest {
             'question-b' => 'answer-b'
         ]);
         
-        $res = $this->post('s/1/submit', $data);
+        $res = $this->post('survey/1/submit', $data);
         
         // See if a surveyResponse was created
         $response = SurveyResponse::get()->last();
@@ -81,7 +82,7 @@ class SurveyApiControllerTest extends FunctionalTest {
             'question-b' => 'answer-b'
         ]);
         
-        $res = $this->post('s/1/submit', $data);
+        $res = $this->post('survey/1/submit', $data);
         $json = json_decode($res->getBody(), true);
         
         // See if a surveyResponse was created
@@ -98,7 +99,7 @@ class SurveyApiControllerTest extends FunctionalTest {
             'question-b' => 'answer-b'
         ]);
         
-        $res = $this->post('s/1/submit', $data);
+        $res = $this->post('survey/1/submit', $data);
         
         // See if a surveyResponse was created
         $response = SurveyResponse::get()->last();
@@ -118,7 +119,7 @@ class SurveyApiControllerTest extends FunctionalTest {
         
         $data['RedirectBack'] = '1';
         
-        $res = $this->post('s/1/submit', $data);
+        $res = $this->post('survey/1/submit', $data);
         
         
         // Test a non-success code is thrown
@@ -139,7 +140,7 @@ class SurveyApiControllerTest extends FunctionalTest {
             'question-b' => 'answer-b'
         ]);
         
-        $res = $this->post('s/1/submit', $data);
+        $res = $this->post('survey/1/submit', $data);
         
         $this->assertEquals(401, $res->getStatusCode());
     }
@@ -157,7 +158,7 @@ class SurveyApiControllerTest extends FunctionalTest {
             'question-b' => 'answer-b'
         ]);
         
-        $res = $this->post('s/1/submit', $data);
+        $res = $this->post('survey/1/submit', $data);
         
         $this->assertEquals(200, $res->getStatusCode());
     }
@@ -170,7 +171,7 @@ class SurveyApiControllerTest extends FunctionalTest {
             'question-b' => 'answer-b'
         ]);
         
-        $res = $this->post('s/1000/submit', $data);
+        $res = $this->post('survey/1000/submit', $data);
         
         // Check the response failed
         $this->assertEquals(404, $res->getStatusCode());
@@ -185,7 +186,7 @@ class SurveyApiControllerTest extends FunctionalTest {
         
         $data['SecurityID'] = 'Error';
         
-        $res = $this->post('s/1/submit', $data);
+        $res = $this->post('survey/1/submit', $data);
         
         $this->assertEquals(401, $res->getStatusCode());
     }
@@ -197,7 +198,7 @@ class SurveyApiControllerTest extends FunctionalTest {
             'question-b' => 'answer-b'
         ]);
     
-        $url = 's/1/submit' . http_build_query($data, '?');
+        $url = 'survey/1/submit' . http_build_query($data, '?');
     
         $res = $this->get($url);
     
@@ -214,7 +215,7 @@ class SurveyApiControllerTest extends FunctionalTest {
             'failing-question' => 'Something'
         ]);
         
-        $res = $this->post('s/1/submit', $data);
+        $res = $this->post('survey/1/submit', $data);
         
         $this->assertEquals(400, $res->getStatusCode());
         $this->assertEquals('["Error"]', $res->getBody());
@@ -237,7 +238,7 @@ class SurveyApiControllerTest extends FunctionalTest {
         ]);
         
         // Post the response & decode the json
-        $res = $this->post('s/1/submit', $data);
+        $res = $this->post('survey/1/submit', $data);
         $json = json_decode($res->getBody(), true);
         
         // Check it returned 2 arrays
@@ -254,7 +255,7 @@ class SurveyApiControllerTest extends FunctionalTest {
             'packing-question' => 'Something'
         ]);
         
-        $res = $this->post('s/1/submit', $data);
+        $res = $this->post('survey/1/submit', $data);
         
         
         $response = SurveyResponse::get()->last();
@@ -263,20 +264,40 @@ class SurveyApiControllerTest extends FunctionalTest {
         $this->assertEquals("packed", $json["packing-question"]);
     }
     
+    public function testSubmitWithApiAuth() {
+        
+        // Log out the current member
+        $this->member->logOut();
+        
+        // Create an apikey to auth with
+        $apikey = ApiKey::create(["Key" => "secret", "MemberID" => $this->member->ID]);
+        $apikey->write();
+        
+        // Create a response to the survey
+        $data = $this->survey->generateData([
+            'question-a' => 'answer-a',
+            'question-b' => 'answer-b'
+        ]);
+        
+        $res = $this->post('survey/1/submit?apikey=secret', $data);
+        
+        $this->assertEquals(200, $res->getStatusCode());
+    }
+    
     
     
     
     /* Viewing surveys */
     public function testViewSurveyRoute() {
         
-        $res = $this->get('s/1/view');
+        $res = $this->get('survey/1/view');
         
         $this->assertEquals(200, $res->getStatusCode());
     }
     
     public function testViewSurvey() {
         
-        $res = $this->get('s/1/view');
+        $res = $this->get('survey/1/view');
         $json = json_decode($res->getBody(), true);
         
         $this->assertArrayHasKey('title', $json);
@@ -289,7 +310,7 @@ class SurveyApiControllerTest extends FunctionalTest {
         
         $this->member->logOut();
         
-        $res = $this->get('s/1/view');
+        $res = $this->get('survey/1/view');
         $json = json_decode($res->getBody(), true);
         
         $this->assertEquals("Please log in", $json['title']);
@@ -297,7 +318,7 @@ class SurveyApiControllerTest extends FunctionalTest {
     
     public function testViewNullResponse() {
         
-        $res = $this->get('s/0/view');
+        $res = $this->get('survey/0/view');
         
         $this->assertEquals(404, $res->getStatusCode());
     }
@@ -307,7 +328,7 @@ class SurveyApiControllerTest extends FunctionalTest {
     /* Responses test */
     public function testGetResponses() {
         
-        $res = $this->get('s/1/responses');
+        $res = $this->get('survey/1/responses');
         $json = json_decode($res->getBody(), true);
         
         $this->assertEquals(2, count($json));
@@ -334,7 +355,7 @@ class SurveyApiControllerTest extends FunctionalTest {
         
         $this->member->logOut();
         
-        $res = $this->get('s/1/responses');
+        $res = $this->get('survey/1/responses');
         
         $this->assertEquals(401, $res->getStatusCode());
     }
@@ -345,14 +366,14 @@ class SurveyApiControllerTest extends FunctionalTest {
     /* Test viewing responses */
     public function testViewResponseRoute() {
         
-        $res = $this->get('s/1/r/1');
+        $res = $this->get('survey/1/response/1');
         
         $this->assertEquals(200, $res->getStatusCode());
     }
     
     public function testViewResponse() {
         
-        $res = $this->get('s/1/r/1');
+        $res = $this->get('survey/1/response/1');
         $json = json_decode($res->getBody(), true);
         
         $expected = [
@@ -379,7 +400,7 @@ class SurveyApiControllerTest extends FunctionalTest {
     
     public function testIndex() {
         
-        $res = $this->get('s/1');
+        $res = $this->get('survey/1');
         
         $this->assertEquals(200, $res->getStatusCode());
     }
