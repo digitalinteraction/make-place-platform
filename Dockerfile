@@ -26,7 +26,3 @@ COPY themes /app/themes
 COPY surveys /app/surveys
 COPY maps /app/maps
 COPY auth /app/auth
-
-RUN ls
-RUN cat run.sh
-CMD run.sh
