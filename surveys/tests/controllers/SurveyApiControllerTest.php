@@ -284,8 +284,6 @@ class SurveyApiControllerTest extends FunctionalTest {
     }
     
     
-    
-    
     /* Viewing surveys */
     public function testViewSurveyRoute() {
         
@@ -321,7 +319,6 @@ class SurveyApiControllerTest extends FunctionalTest {
         
         $this->assertEquals(404, $res->getStatusCode());
     }
-    
     
     
     /* Responses test */
@@ -360,8 +357,6 @@ class SurveyApiControllerTest extends FunctionalTest {
     }
     
     
-    
-    
     /* Test viewing responses */
     public function testViewResponseRoute() {
         
@@ -382,6 +377,69 @@ class SurveyApiControllerTest extends FunctionalTest {
         
         $this->assertNotNull($expected, array_keys($json));
     }
+    
+    
+    /* Creating geometries */
+    public function testCreateGeomRoute() {
+        
+        $params = $this->survey->generateData([]);
+        $res = $this->post('survey/1/geo', $params);
+        
+        // Check the request was not a 404 - not found
+        $this->assertNotEquals(404, $res->getStatusCode());
+    }
+    
+    public function testCreateGeomFailsWithoutAuth() {
+        
+        $this->member->logOut();
+        $res = $this->post('survey/1/geo', []);
+        
+        // Check we got a 401 - Unauthorised
+        $this->assertEquals(401, $res->getStatusCode());
+    }
+    
+    public function testCreateGeomFailsWithoutParams() {
+        
+        $params = $this->survey->generateData([]);
+        $res = $this->post('survey/2/geo', $params);
+        
+        // Check the request failed without params
+        $this->assertEquals(400, $res->getStatusCode());
+    }
+    
+    public function testCreateGeomFailsWithInvalidQuestion() {
+        
+        $params = $this->survey->generateFormData([
+            "question" => 'question-d'
+        ]);
+        
+        $res = $this->post('survey/2/geo', $params);
+        
+        // Check the request failed with an invalid question
+        $this->assertEquals(400, $res->getStatusCode());
+    }
+    
+    public function testCreateGeomSuccess() {
+        
+        // Don't actually go creating a geo record
+        GeoRef::$testMode = true;
+        
+        $params = $this->survey->generateFormData([
+            "question" => "question-c",
+            "type" => "POINT",
+            "geom" => [ "x" => 50, "y" => -1 ]
+        ]);
+        
+        $res = $this->post('survey/2/geo', $params);
+        
+        // Check the request was successful
+        $this->assertEquals(200, $res->getStatusCode());
+        
+        // Turn off test mode
+        GeoRef::$testMode = false;
+    }
+    
+    
     
     
     

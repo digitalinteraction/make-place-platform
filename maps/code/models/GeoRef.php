@@ -22,7 +22,11 @@ class GeoRef extends DataObject {
     
     
     
-    public static function makeRef($type, $geoType, $value) {
+    public static function makeRef($type, $dataType, $value, &$errors = []) {
+        
+        // If in test mode, return a fake value
+        if (self::$testMode) { return GeoRef::create(["Reference" => 1]); }
+        
         
         // Add the type to the value
         $value["type"] = $type;
@@ -34,7 +38,7 @@ class GeoRef extends DataObject {
         $req->setMethod("POST");
         $req->setJsonBody([
             "geom" => $value,
-            "data_type" => $geoType
+            "data_type" => $dataType
         ]);
         
         // Execute the request
@@ -53,13 +57,18 @@ class GeoRef extends DataObject {
         }
         else {
             
-            // TODO: Handle this error!?
+            array_push($errors, CurlRequest::apiResponseErrors($res));
             return null;
         }
     }
     
     
     public function fetchValue() {
+        
+        // If in test mode, mock it
+        if (self::$testMode) {
+            return [ "ID" => "1", "Some" => "data" ]; 
+        }
         
         // Check in the cache for a value
         // TODO: Not tested, so leaving it out for now

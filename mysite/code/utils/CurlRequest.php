@@ -160,6 +160,15 @@ class CurlRequest extends Object {
             && isset($response['data'])
             && $response['meta']['success'];
     }
+    
+    public static function apiResponseErrors($response) {
+        
+        if (isset($response['meta']['messages'])) {
+            return $response['meta']['messages'];
+        }
+        
+        return [ 'An unknown error occurred' ];
+    }
 }
 
 

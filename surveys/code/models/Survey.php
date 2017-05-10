@@ -116,11 +116,16 @@ class Survey extends DataObject {
     
     public function generateData($fields) {
         
-        return [
+        return $this->generateFormData([
             'SurveyID' => $this->ID,
-            $this->getSecurityToken()->getName() => $this->getSecurityToken()->getValue(),
             'Fields' => $fields
-        ];
+        ]);
+    }
+    
+    public function generateFormData($data) {
+        
+        $data[$this->getSecurityToken()->getName()] = $this->getSecurityToken()->getValue();
+        return $data;
     }
     
     

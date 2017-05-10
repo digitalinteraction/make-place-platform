@@ -5,6 +5,7 @@ class MockCurlRequest extends CurlRequest {
     // ...
 }
 
+/** @group whitelist */
 class CurlRequestTest extends SapphireTest {
     
     protected $request = null;
@@ -114,6 +115,28 @@ class CurlRequestTest extends SapphireTest {
         ];
         
         $this->assertFalse(CurlRequest::validApiResponse($response));
+    }
+    
+    
+    public function testApiResponseErrors() {
+        
+        $response = [
+            'meta' => [
+                'messages' => [ "A", "B"]
+            ]
+        ];
+        
+        $this->assertEquals(["A", "B"], CurlRequest::apiResponseErrors($response));
+    }
+    
+    public function testApiResponseErrorsUnknown() {
+        
+        $response = [
+            'meta' => [
+            ]
+        ];
+        
+        $this->assertEquals(["An unknown error occurred"], CurlRequest::apiResponseErrors($response));
     }
     
     

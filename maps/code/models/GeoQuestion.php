@@ -68,6 +68,7 @@ class GeoQuestion extends Question {
         
         // Create GeoRef & link to response
         $ref = GeoRef::makeRef($this->GeoType, $this->DataType, $value);
+        
         // Return GeoRef id
         return $ref->ID;
     }

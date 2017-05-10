@@ -4,7 +4,7 @@
 class SurveyApiController extends Controller {
     
     private static $allowed_actions = [
-        'index', 'submitSurvey', 'getResponses', 'viewResponse', 'viewSurvey'
+        'index', 'submitSurvey', 'getResponses', 'viewResponse', 'viewSurvey', 'createGeom'
     ];
     
     private static $url_handlers = [
@@ -12,7 +12,8 @@ class SurveyApiController extends Controller {
         'submit' => 'submitSurvey',
         'view' => 'viewSurvey',
         'responses' => 'getResponses',
-        'response/$ResponseID' => 'viewResponse'
+        'response/$ResponseID' => 'viewResponse',
+        'geo' => 'createGeom'
     ];
     
     public function init() {
@@ -49,31 +50,16 @@ class SurveyApiController extends Controller {
         
         $errors = [];
         
-        $memberId = Member::currentUserID();
-        $fields = $this->bodyVar('Fields', $errors);
-        $token = $this->bodyVar('SecurityID');
-        $redirectBack = $this->bodyVar('RedirectBack') != null;
-        
-        if ($this->checkApiAuth()) {
-            
-            // If authed with the api, get the newly authenticated member
-            $memberId = Member::currentUserID();
-        }
-        else {
-            $auth = $this->Survey->SubmitAuth;
-            
-            if ($auth === "Member" && $memberId == null) {
-                $errors[] = "You need to be logged in to do that";
-            }
-            
-            // Check the security token matches
-            if ($token == null || $token != (new SecurityToken())->getValue()) {
-                $errors[] = "Validation failed, please submit again";
-            }
-        }
-        
-        if (count($errors) > 0) {
+        // Check the authentication of the request
+        $memberId = $this->requestMemberId($errors);
+        if ($memberId === null) {
             return $this->jsonResponse($errors, 401);
+        }
+        
+        $redirectBack = $this->bodyVar('RedirectBack') != null;
+        $fields = $this->bodyVar('Fields', $errors);
+        if (count($errors) > 0) {
+            return $this->jsonResponse($errors, 400);
         }
         
         
@@ -187,9 +173,77 @@ class SurveyApiController extends Controller {
         ]);
     }
     
+    public function createGeom() {
+        
+        $errors = [];
+        
+        // Fetch the member from the request or fail
+        $memberId = $this->requestMemberId($errors);
+        
+        if ($memberId === null) {
+            return $this->jsonResponse($errors, 401);
+        }
+        
+        
+        // Get request params or fail
+        $questionHandle = $this->bodyVar('question', $errors);
+        $geom = $this->bodyVar('geom', $errors);
+        $type = $this->bodyVar('type', $errors);
+        
+        if (count($errors)) {
+            return $this->jsonResponse($errors, 400);
+        }
+        
+        // Check question exists on survey
+        $questionMap = $this->Survey->getQuestionMap();
+        if (!isset($questionMap[$questionHandle])) {
+            return $this->jsonResponse([ "Invalid 'question'"], 400);
+        }
+        
+        // Check the question is valid
+        $question = $questionMap[$questionHandle];
+        if ($question->ClassName != 'GeoQuestion') {
+            return $this->jsonResponse([ "Must be a GeoQuestion"], 400);
+        }
+        
+        
+        // Create the geo ref & return the errors or new reference
+        $ref = GeoRef::makeRef($type, $question->DataType, $geom, $errors);
+        if ($ref == null) {
+            return $this->jsonResponse($errors, 400);
+        }
+        
+        return $this->jsonResponse($ref->toJson());
+    }
+    
     
     
     /* Utils */
+    public function requestMemberId(&$errors) {
+        
+        // Try to use api auth first
+        if ($this->checkApiAuth()) {
+            
+            // If authed with the api, get the newly authenticated member
+            return Member::currentUserID();
+        }
+        
+        $auth = $this->Survey->SubmitAuth;
+        $memberId = Member::currentUserID();
+        
+        if ($auth === "Member" && $memberId == null) {
+            $errors[] = "You need to be logged in to do that";
+        }
+        
+        // Check the security token matches
+        $token = $this->bodyVar('SecurityID');
+        if ($token == null || $token != (new SecurityToken())->getValue()) {
+            $errors[] = "Validation failed, please submit again";
+        }
+        
+        return count($errors) == 0 ? $memberId : null;
+    }
+    
     public function bodyVar($name, &$errors = []) {
         
         $post = $this->postVar($name);

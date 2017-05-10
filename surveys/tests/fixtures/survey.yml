@@ -12,11 +12,22 @@ Question:
         Name: 'Question B'
         Handle: 'question-b'
 
+GeoQuestion:
+    question3:
+        Name: 'Question C'
+        Handle: 'question-c'
+        GeoType: 'POINT'
+        DataType: 1
+
 Survey:
     surveyA:
         Name: 'Some Survey'
         Handle: 'some-survey'
         Questions: =>Question.question1,=>Question.question2
+    surveyB:
+        Name: 'Geo Survey'
+        Handle: 'geo-survey'
+        Questions: =>GeoQuestion.question3
 
 SurveyResponse:
     responseA:
