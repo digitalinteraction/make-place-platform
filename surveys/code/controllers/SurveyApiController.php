@@ -12,7 +12,7 @@ class SurveyApiController extends Controller {
         'submit' => 'submitSurvey',
         'view' => 'viewSurvey',
         'responses' => 'getResponses',
-        'r/$ResponseID' => 'viewResponse'
+        'response/$ResponseID' => 'viewResponse'
     ];
     
     public function init() {
@@ -135,16 +135,6 @@ class SurveyApiController extends Controller {
         }
         
         
-        // If 'onlygeo' is passed, non-placed responses are ignored
-        if ($this->getRequest()->getVar("onlygeo") !== null) {
-            
-            // $responses = $responses->exclude([
-            //     "Latitude" => 0.0,
-            //     "Longitude" => 0.0
-            // ]);
-        }
-        
-        
         $data = [];
         
         foreach ($responses as $r) {
@@ -182,6 +172,18 @@ class SurveyApiController extends Controller {
     
     
     /* Utils */
+    public function bodyVar($name, &$errors = []) {
+        
+        $post = $this->postVar($name);
+        if ($post != null) { return $post; }
+        
+        $json = $this->jsonVar($name);
+        if ($json != null) { return $json; }
+        
+        $errors[] = "Please provide '$name'";
+        return null;
+    }
+    
     public function postVar($name, &$errors = []) {
         
         if ($this->request->postVar($name) != null) {
@@ -189,6 +191,21 @@ class SurveyApiController extends Controller {
         }
         
         $errors[] = "Please provide '$name'";
+        return null;
+    }
+    
+    public function jsonVar($name, &$errors = []) {
+        
+        if ($this->jsonBody == null) {
+            $this->jsonBody = json_decode($this->request->getBody(), true);
+        }
+        
+        if (isset($this->jsonBody[$name])) {
+            return $this->jsonBody[$name];
+        }
+        
+        $errors[] = "Please provide '$name'";
+        
         return null;
     }
     
@@ -201,4 +218,5 @@ class SurveyApiController extends Controller {
         $errors[] = "Please provide '$name'";
         return null;
     }
+    
 }

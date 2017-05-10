@@ -38,7 +38,7 @@ define(["jquery", "vue", "lodash", "utils"], function($, Vue, _, Utils) {
             
             // Load responses
             var self = this;
-            $.ajax(Utils.getOrigin() + "/s/" + self.component.surveyID + "/responses")
+            $.ajax(Utils.getOrigin() + "/survey/" + self.component.surveyID + "/responses")
             .then(function(responses) {
                 
                 // Generate markers and add them to the layer
@@ -77,7 +77,7 @@ define(["jquery", "vue", "lodash", "utils"], function($, Vue, _, Utils) {
             
             
             // Fetch the pin's data over ajax
-            $.ajax(Utils.apiUrl("/s/" + response.surveyId + "/r/" + response.id))
+            $.ajax(Utils.apiUrl("/survey/" + response.surveyId + "/response/" + response.id))
             .then(function(data) {
                 
                 // Show a detail with the ajax response
@@ -121,7 +121,7 @@ define(["jquery", "vue", "lodash", "utils"], function($, Vue, _, Utils) {
         
         // Request the survey form over ajax
         var self = this;
-        $.ajax(Utils.apiUrl("/s/"+this.component.surveyID+"/view"))
+        $.ajax(Utils.apiUrl("/survey/"+this.component.surveyID+"/view"))
         .then(function(data) {
             
             // Show a detail with the form

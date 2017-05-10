@@ -15,7 +15,7 @@ SiteConfig:
 
 Director:
   rules:
-    's/$SurveyID': 'SurveyApiController'
+    'survey/$SurveyID': 'SurveyApiController'
 
 
 
