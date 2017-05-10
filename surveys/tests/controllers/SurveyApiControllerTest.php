@@ -10,7 +10,6 @@ class MockPackingQuestion extends Question {
 }
 
 /** Tests SurveyApiController */
-/** @group whitelist */
 class SurveyApiControllerTest extends FunctionalTest {
     
     protected static $fixture_file = "surveys/tests/fixtures/survey.yml";

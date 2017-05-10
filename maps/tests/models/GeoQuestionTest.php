@@ -1,6 +1,7 @@
 <?php
 
 /** Testing GeoQuestion */
+/** @group whitelist */
 class GeoQuestionTest extends SapphireTest {
     
     public $usesDatabase = true;
@@ -75,6 +76,28 @@ class GeoQuestionTest extends SapphireTest {
         $this->assertEquals(2, count($errors));
     }
     
+    public function testValidateWithGeoRefId() {
+        
+        // Create our geo ref
+        $ref = GeoRef::create([]);
+        $ref->write();
+        
+        // Try to pack it
+        $errors = $this->question->validateValue($ref->ID);
+        
+        // Check there were no issues
+        $this->assertEquals(0, count($errors));
+    }
+    
+    public function testValidateWithGeoRefIdChecksRef() {
+    
+        // Try to pack an invalid geo id
+        $errors = $this->question->validateValue("10");
+    
+        // Check there were no issues
+        $this->assertEquals(1, count($errors));
+    }
+    
     
     
     /* Test Value Packing */
@@ -103,6 +126,19 @@ class GeoQuestionTest extends SapphireTest {
         
         // Check a ref was created
         $this->assertEquals(1, $refs);
+    }
+    
+    public function testPackValueWithId() {
+        
+        // Create our geo ref
+        $ref = GeoRef::create([]);
+        $ref->write();
+        
+        // Try to pack it
+        $packed = $this->question->packValue($ref->ID);
+        
+        // Check it returned our ref's id
+        $this->assertEquals($ref->ID, $packed);
     }
     
     public function testUnpackValue() {

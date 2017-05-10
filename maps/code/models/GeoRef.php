@@ -28,6 +28,7 @@ class GeoRef extends DataObject {
         $value["type"] = $type;
         
         
+        
         // Create a request to create the geometry
         $req = self::geoRequest("geo");
         $req->setMethod("POST");

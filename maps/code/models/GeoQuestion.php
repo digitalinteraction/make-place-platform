@@ -25,6 +25,16 @@ class GeoQuestion extends Question {
         
         $errors = [];
         
+        // If the value is a number, check it is a valid georef
+        if (is_numeric($value)) {
+            if (GeoRef::get()->byID($value) == null) {
+                return "Invalid geo id for {$this->Handle}";
+            }
+            else {
+                return [];
+            }
+        }
+        
         // For Points, check for x & y pos
         if ($this->GeoType == "POINT") {
             
@@ -52,6 +62,9 @@ class GeoQuestion extends Question {
     }
     
     public function packValue($value) {
+        
+        // If its a number, its already 'packed'
+        if (is_numeric($value)) { return $value; }
         
         // Create GeoRef & link to response
         $ref = GeoRef::makeRef($this->GeoType, $this->DataType, $value);
