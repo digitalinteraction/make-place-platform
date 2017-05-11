@@ -7,6 +7,7 @@ define(["jquery", "vue", "lodash", "utils"], function($, Vue, _, Utils) {
         
         // Setup variables
         this.addingMarker = null;
+        this.formFiles = {};
         
         
         // Setup state
@@ -137,11 +138,20 @@ define(["jquery", "vue", "lodash", "utils"], function($, Vue, _, Utils) {
             $('#map-detail .inner form').append(extras);
             
             
+            // Add listener for file changes
+            $('input[type=file]').on('change', self.fileAttatched.bind(self));
+            
+            
             // Listen for the form submitting
             // + rebind this for function call
             $('#map-detail .inner form').on('submit', self.submitSurvey.bind(self));
         });
     };
+    
+    SurveyComponent.prototype.fileAttatched = function(e) {
+        var name = $(e.target).attr('name');
+        this.formFiles[name] = e.target.files;
+    }
     
     SurveyComponent.prototype.submitSurvey = function(e) {
         
@@ -151,10 +161,19 @@ define(["jquery", "vue", "lodash", "utils"], function($, Vue, _, Utils) {
         
         // TODO: Disable submission while processing ...
         
+        // Process form files
+        var formData = new FormData(e.target);
+        
         
         // Submit the form over ajax
         var self = this;
-        $.post(e.target.action, $(e.target).serialize())
+        $.ajax({
+            url: e.target.action,
+            type: 'POST',
+            contentType: false,
+            data: formData,
+            processData: false
+        })
         .then(function(data) {
             
             // Add a pin from the response

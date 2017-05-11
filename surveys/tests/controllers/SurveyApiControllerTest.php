@@ -306,6 +306,7 @@ class SurveyApiControllerTest extends FunctionalTest {
     }
     
     
+    
     /* Viewing surveys */
     public function testViewSurveyRoute() {
         
@@ -341,6 +342,7 @@ class SurveyApiControllerTest extends FunctionalTest {
         
         $this->assertEquals(404, $res->getStatusCode());
     }
+    
     
     
     /* Responses test */
@@ -379,6 +381,7 @@ class SurveyApiControllerTest extends FunctionalTest {
     }
     
     
+    
     /* Test viewing responses */
     public function testViewResponseRoute() {
         
@@ -399,6 +402,7 @@ class SurveyApiControllerTest extends FunctionalTest {
         
         $this->assertNotNull($expected, array_keys($json));
     }
+    
     
     
     /* Creating geometries */
@@ -457,11 +461,100 @@ class SurveyApiControllerTest extends FunctionalTest {
         // Check the request was successful
         $this->assertEquals(200, $res->getStatusCode());
         
+        $json = json_decode($res->getBody(), true);
+        $this->assertEquals(["id" => "1"], $json);
+        
         // Turn off test mode
         GeoRef::$testMode = false;
     }
     
     
+    
+    /* Creating Media */
+    public function testCreateMediaRoute() {
+        
+        $params = $this->survey->generateFormData([]);
+        $res = $this->post('survey/1/media', $params);
+        
+        // Check the request was not a 404 - not found
+        $this->assertNotEquals(404, $res->getStatusCode());
+    }
+    
+    public function testCreateMediaSuccess() {
+        
+        // Pretend a file was uploaded
+        $_FILES["question-d"] = [
+            "name" => "image.png",
+            "type" => "image/png",
+            "tmp_name" => "/tmp/test_image.png",
+            "error" => 0,
+            "size" => 13181
+        ];
+        
+        // Put file in a temporary location
+        $file = fopen($_FILES["question-d"]["tmp_name"], "w");
+        fwrite($file, "Some dummy data\n");
+        fclose($file);
+        
+        // The params for the request
+        $params = $this->survey->generateFormData([
+            "question" => "question-d",
+        ]);
+        
+        // Perform the request
+        $res = $this->post('survey/2/media', $params);
+        
+        // Check the response was sucessful
+        $this->assertEquals(200, $res->getStatusCode());
+        
+        // Check it returned a json id
+        $json = json_decode($res->getBody(), true);
+        $this->assertEquals(["id" => "1"], $json);
+        
+        unset($_FILES["question-d"]);
+    }
+    
+    public function testCreateMediaFailsWithoutAuth() {
+        
+        $this->member->logOut();
+        $res = $this->post('survey/1/media', []);
+        
+        // Check we got a 401 - Unauthorised
+        $this->assertEquals(401, $res->getStatusCode());
+    }
+    
+    public function testCreateMediaWithoutFile() {
+        
+        // The params for the request
+        $params = $this->survey->generateFormData([
+            "question" => "question-d",
+        ]);
+        
+        // Perform the request
+        $res = $this->post('survey/2/media', $params);
+        
+        // Check the response was sucessful
+        $this->assertEquals(400, $res->getStatusCode());
+    }
+    
+    public function testCreateMediaWithInvalidFile() {
+        
+        // Pretend a file was uploaded
+        $_FILES["question-d"] = [
+            "Invalid" => "values"
+        ];
+        
+        // The params for the request
+        $params = $this->survey->generateFormData([
+            "question" => "question-d",
+        ]);
+        
+        // Perform the request
+        $res = $this->post('survey/2/media', $params);
+        
+        // Check the response was sucessful
+        $this->assertEquals(400, $res->getStatusCode());
+    }
     
     
     
@@ -545,5 +638,9 @@ class SurveyApiControllerTest extends FunctionalTest {
         
         $this->assertEquals("JsonValue", $jsonValue);
         $this->assertEquals("PostValue", $postValue);
+    }
+    
+    public function testGetQuestionFromRequest() {
+        
     }
 }

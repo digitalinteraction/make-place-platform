@@ -89,20 +89,15 @@ class Question extends DataObject {
         
         // If the subclass doesn't add extra fields, don't add any more fields
         $extraFields = $this->extraFields();
-        if (count($extraFields) == 0) {
-            return $fields;
+        if (count($extraFields) > 0) {
+            
+            // If the subclass does add fields, add a header and the fields
+            $fields->addFieldsToTab('Root.Main', array_merge(
+                [HeaderField::create('PropertiesLabel', 'Question Properties', 2)],
+                $extraFields
+            ));
+            
         }
-        
-        
-        // If the subclass does add fields, add a header and the fields
-        $fields->addFieldsToTab('Root.Main', array_merge(
-            [HeaderField::create('PropertiesLabel', 'Question Properties', 2)],
-            $extraFields
-        ));
-        
-        
-        // Add fields depending on $this->Type
-        // If Type changes, show an alery similar to Page's Type
         
         return $fields;
     }

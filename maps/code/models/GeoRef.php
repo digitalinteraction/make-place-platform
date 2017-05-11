@@ -29,7 +29,11 @@ class GeoRef extends DataObject {
     public static function makeRef($type, $dataType, $value, &$errors = []) {
         
         // If in test mode, return a fake value
-        if (self::$testMode) { return GeoRef::create(["Reference" => 1]); }
+        if (self::$testMode) {
+            $ref = GeoRef::create(["Reference" => 1]);
+            $ref->write();
+            return $ref;
+        }
         
         
         // Add the type to the value
@@ -61,7 +65,8 @@ class GeoRef extends DataObject {
         }
         else {
             
-            array_push($errors, CurlRequest::apiResponseErrors($res));
+            // TODO: need to push values individually
+            $errors = CurlRequest::apiResponseErrors($res);
             return null;
         }
     }

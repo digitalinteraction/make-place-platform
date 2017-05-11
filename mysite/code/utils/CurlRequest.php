@@ -170,15 +170,3 @@ class CurlRequest extends Object {
         return [ 'An unknown error occurred' ];
     }
 }
-
-
-
-// class CurlResponse extends Object {
-//
-//     protected $code;
-//     protected $body;
-//
-//     public function __construct($code, $body) {
-//
-//     }
-// }

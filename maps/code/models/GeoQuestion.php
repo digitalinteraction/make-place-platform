@@ -6,7 +6,7 @@ class GeoQuestion extends Question {
     public $HiddenQuestion = true;
     
     private static $db = [
-        "GeoType" => "Enum(array('POINT', 'LINE'), 'POINT')",
+        "GeoType" => "Enum(array('POINT', 'LINESTRING'), 'POINT')",
         "DataType" => "Int"
     ];
     
@@ -53,7 +53,7 @@ class GeoQuestion extends Question {
             }
         }
         
-        // if $this->Type == "LINE"
+        // if $this->Type == "LINESTRING"
         // -> Check for x & y array
         
         // ...

@@ -1,7 +1,7 @@
 <%-- Renders a survey --%>
 <% require themedCSS('survey') %>
 
-<form id="form-$Handle" method="post" enctype="application/x-www-form-urlencoded" action="$SurveyUrl" method="post" class="survey">
+<form id="form-$Handle" method="post" enctype="multipart/form-data" action="$SurveyUrl"  class="survey">
 
     <div class="question-list">
         <% loop $Questions %>

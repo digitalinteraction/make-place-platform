@@ -18,6 +18,13 @@ GeoQuestion:
         Handle: 'question-c'
         GeoType: 'POINT'
         DataType: 1
+    
+MediaQuestion:
+    question4:
+        Name: 'Question D'
+        Handle: 'question-d'
+        MediaType: 'ANY'
+        Strategy: 'LOCAL'
 
 Survey:
     surveyA:
@@ -27,7 +34,7 @@ Survey:
     surveyB:
         Name: 'Geo Survey'
         Handle: 'geo-survey'
-        Questions: =>GeoQuestion.question3
+        Questions: =>GeoQuestion.question3,=>MediaQuestion.question4
 
 SurveyResponse:
     responseA:

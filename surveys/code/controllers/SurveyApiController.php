@@ -4,7 +4,7 @@
 class SurveyApiController extends Controller {
     
     private static $allowed_actions = [
-        'index', 'submitSurvey', 'getResponses', 'viewResponse', 'viewSurvey', 'createGeom'
+        'index', 'submitSurvey', 'getResponses', 'viewResponse', 'viewSurvey', 'createGeom', 'createMedia'
     ];
     
     private static $url_handlers = [
@@ -13,7 +13,8 @@ class SurveyApiController extends Controller {
         'view' => 'viewSurvey',
         'responses' => 'getResponses',
         'response/$ResponseID' => 'viewResponse',
-        'geo' => 'createGeom'
+        'geo' => 'createGeom',
+        'media' => 'createMedia'
     ];
     
     public function init() {
@@ -60,6 +61,11 @@ class SurveyApiController extends Controller {
         $fields = $this->bodyVar('Fields', $errors);
         if (count($errors) > 0) {
             return $this->jsonResponse($errors, 400);
+        }
+        
+        // Process files
+        foreach ($_FILES as $name => $file) {
+            $fields[$name] = $file;
         }
         
         
@@ -185,41 +191,65 @@ class SurveyApiController extends Controller {
         
         // Fetch the member from the request or fail
         $memberId = $this->requestMemberId($errors);
-        
         if ($memberId === null) {
             return $this->jsonResponse($errors, 401);
         }
         
         
         // Get request params or fail
-        $questionHandle = $this->bodyVar('question', $errors);
+        $question = $this->getQuestionFromRequest('question', 'GeoQuestion', $errors);
         $geom = $this->bodyVar('geom', $errors);
         $type = $this->bodyVar('type', $errors);
+        if (count($errors)) {
+            return $this->jsonResponse($errors, 400);
+        }
+        
+        // Let the question validate the value
+        $errors = $question->validateValue($geom);
         
         if (count($errors)) {
             return $this->jsonResponse($errors, 400);
         }
         
-        // Check question exists on survey
-        $questionMap = $this->Survey->getQuestionMap();
-        if (!isset($questionMap[$questionHandle])) {
-            return $this->jsonResponse([ "Invalid 'question'"], 400);
+        return $this->jsonResponse([
+            "id" => $question->packValue($geom)
+        ]);
+    }
+    
+    public function createMedia() {
+        
+        $errors = [];
+        
+        // Check the member permissions
+        $memberId = $this->requestMemberId($errors);
+        if ($memberId === null) {
+            return $this->jsonResponse($errors, 401);
         }
         
-        // Check the question is valid
-        $question = $questionMap[$questionHandle];
-        if ($question->ClassName != 'GeoQuestion') {
-            return $this->jsonResponse([ "Must be a GeoQuestion"], 400);
-        }
         
-        
-        // Create the geo ref & return the errors or new reference
-        $ref = GeoRef::makeRef($type, $question->DataType, $geom, $errors);
-        if ($ref == null) {
+        // Get params from the request from the request or fail
+        $question = $this->getQuestionFromRequest('question', 'MediaQuestion', $errors);
+        if ($question == null) {
             return $this->jsonResponse($errors, 400);
         }
         
-        return $this->jsonResponse($ref->toJson());
+        $handle = $question->Handle;
+        
+        if (!isset($_FILES[$handle])) {
+            return $this->jsonResponse([ "Please upload file to '$handle'" ], 400);
+        }
+        
+        // Validate w/ question
+        $value = $_FILES[$handle];
+        $errors = $question->validateValue($value);
+        if (count($errors)) {
+            return $this->jsonResponse($errors, 400);
+        }
+        
+        // Pack w/ question
+        return $this->jsonResponse([
+            "id" => $question->packValue($value)
+        ]);
     }
     
     
@@ -295,6 +325,31 @@ class SurveyApiController extends Controller {
         
         $errors[] = "Please provide '$name'";
         return null;
+    }
+    
+    public function getQuestionFromRequest($key, $type, &$errors = []) {
+        
+        // Get the question handle from the request
+        $questionHandle = $this->bodyVar($key, $errors);
+        
+        // Stop if it wasn't passed
+        if ($questionHandle == null) { return null; }
+        
+        // Check if the question was passed
+        $questionMap = $this->Survey->getQuestionMap();
+        if (!isset($questionMap[$questionHandle])) {
+            $errors[] = "Invalid question '$questionHandle'";
+            return null;
+        }
+        
+        $question = $questionMap[$questionHandle];
+        
+        if ($question->ClassName != $type) {
+            $errors[] = "Must be a '$type'";
+            return null;
+        }
+        
+        return $question;
     }
     
 }

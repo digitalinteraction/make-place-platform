@@ -19,9 +19,10 @@ class SomeComplexMockQuestion extends Question {
 }
 
 /** Tests Question */
+/** @group whitelist */
 class QuestionTest extends SapphireTest {
     
-    
+    protected $usesDatabase = true;
     protected $question = null;
     
     
@@ -150,6 +151,11 @@ class QuestionTest extends SapphireTest {
     
     
     /* Test render */
+    public function testDefaultRender() {
+        
+        $this->assertNotNull(Question::create()->forTemplate());
+    }
+    
     public function testRendering() {
         
         $this->assertNotNull($this->question->forTemplate());

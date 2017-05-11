@@ -3,16 +3,13 @@
 class Page extends SiteTree {
 
     /** Custom fields every page will have */
-    private static $db = array(
-    );
+    private static $db = [];
     
     /** Custom one-to-one relations every page has */
-    private static $has_one = array(
-    );
+    private static $has_one = [];
     
     /** Custom one-to-many relations every page has */
-    private static $has_many = array(
-    );
+    private static $has_many = [];
     
     
     /** Whether the page should show the sidebar option in the CMS (set in subclasses) */
@@ -34,7 +31,7 @@ class Page extends SiteTree {
 		
 		$page = $this->data();
 		
-		$list = ArrayList::create(array($page));
+		$list = ArrayList::create([$page]);
 		
 		while ($page->ParentID != null) {
 			$page = $page->Parent();
