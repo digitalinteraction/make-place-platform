@@ -93,6 +93,12 @@ class SurveyApiController extends Controller {
         ]);
         
         
+        // Let the questions perform post-create actions
+        foreach ($fields as $field => $value) {
+            $questionMap[$field]->responseCreated($response, $value);
+        }
+        
+        
         // Save the response
         $response->write();
         

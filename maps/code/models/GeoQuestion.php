@@ -87,8 +87,21 @@ class GeoQuestion extends Question {
         return $ref->fetchValue();
     }
     
+    public function responseCreated($response, $value) {
+        
+        // Add the geometry as an sql relation to our response
+        $ref = GeoRef::get()->byID($value);
+        $response->Geometries()->add($ref);
+    }
+    
     public function sample() {
-        return parent::sample() . ":" . $this->GeoType;
+        
+        $sample = parent::sample();
+        
+        $sample['geoType'] = $this->GeoType;
+        $sample['dataType'] = $this->DataType;
+        
+        return $sample;
     }
     
 }

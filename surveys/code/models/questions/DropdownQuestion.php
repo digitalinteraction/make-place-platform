@@ -65,4 +65,10 @@ class DropdownQuestion extends Question {
         // If we reached here it wasn't found
         return null;
     }
+    
+    public function sample() {
+        $sample = parent::sample();
+        $sample['options'] = $this->getRawOptions();
+        return $sample;
+    }
 }

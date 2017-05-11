@@ -15,7 +15,8 @@ class GeoQuestionTest extends SapphireTest {
         $this->question = GeoQuestion::create([
             "Name" => "Geo Question",
             "Handle" => "geo-question",
-            "GeoType" => "POINT"
+            "GeoType" => "POINT",
+            "DataType" => 1
         ]);
     }
     
@@ -174,8 +175,29 @@ class GeoQuestionTest extends SapphireTest {
     
     
     /* Misc */
+    public function testResponseCreated() {
+        
+        // Create a geo ref to relate to
+        $ref = GeoRef::create(["Ref" => 1]);
+        $ref->write();
+        
+        $response = SurveyResponse::create([]);
+        $response->write();
+        
+        $this->question->responseCreated($response, $ref->ID);
+        
+        $this->assertEquals(1, $response->Geometries()->count());
+        $this->assertEquals(1, $ref->Responses()->count());
+    }
+    
     public function testSample() {
-        $this->assertEquals("GeoQuestion:POINT", $this->question->sample());
+        
+        $expected = [
+            "type" => "GeoQuestion",
+            "geoType" => "POINT",
+            "dataType" => 1
+        ];
+        $this->assertEquals($expected, $this->question->sample());
     }
     
 }

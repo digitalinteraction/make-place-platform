@@ -16,6 +16,11 @@ class SurveyResponse extends DataObject {
         "Survey" => "Survey"
     ];
     
+    private static $many_many = [
+        "Geometries" => "GeoRef",
+        "Media" => "SurveyMedia"
+    ];
+    
     
     public function getValues() {
         

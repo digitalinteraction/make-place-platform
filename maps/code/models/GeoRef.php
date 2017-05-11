@@ -12,6 +12,10 @@ class GeoRef extends DataObject {
     protected static $refCache = [];
     public static $testMode = false;
     
+    private static $belongs_many_many = [
+        "Responses" => "SurveyResponse"
+    ];
+    
     
     
     public static function geoRequest($endpoint) {
@@ -67,7 +71,7 @@ class GeoRef extends DataObject {
         
         // If in test mode, mock it
         if (self::$testMode) {
-            return [ "ID" => "1", "Some" => "data" ]; 
+            return [ "ID" => "1", "Some" => "data" ];
         }
         
         // Check in the cache for a value

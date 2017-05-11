@@ -109,7 +109,7 @@ class Question extends DataObject {
     
     public function availableTypes() {
         
-        return ClassUtils::getSubclasses('Question', 'Question');
+        return ClassUtils::getSubclasses('Question', 'Question', true);
     }
     
     public function extraFields() {
@@ -118,7 +118,9 @@ class Question extends DataObject {
     }
     
     public function sample() {
-        return $this->ClassName;
+        return [
+            "type" => $this->ClassName
+        ];
     }
     
     
@@ -179,5 +181,10 @@ class Question extends DataObject {
     /** Called to unpack a value from a SurveyResponse's json */
     public function unpackValue($value) {
         return $value;
+    }
+    
+    /** Called once a response is created, with the value returned from packValue */
+    public function responseCreated($response, $value) {
+        // Override in subclasses
     }
 }

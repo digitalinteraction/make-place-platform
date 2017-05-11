@@ -5,7 +5,6 @@ class MockCurlRequest extends CurlRequest {
     // ...
 }
 
-/** @group whitelist */
 class CurlRequestTest extends SapphireTest {
     
     protected $request = null;

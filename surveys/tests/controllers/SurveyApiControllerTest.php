@@ -9,6 +9,11 @@ class MockPackingQuestion extends Question {
     public function packValue($value) { return "packed"; }
 }
 
+class MockResponseCreatedQuestion extends Question {
+    public static $called = false;
+    public function responseCreated($response, $value) { self::$called = true; }
+}
+
 /** Tests SurveyApiController */
 class SurveyApiControllerTest extends FunctionalTest {
     
@@ -261,6 +266,23 @@ class SurveyApiControllerTest extends FunctionalTest {
         $json = $response->jsonField('Responses');
         
         $this->assertEquals("packed", $json["packing-question"]);
+    }
+    
+    public function testSubmitUsesResponseCreatedCallback() {
+        
+        $this->survey->Questions()->add(MockResponseCreatedQuestion::create(["Handle" => "response-created-question"]));
+        
+        $data = $this->survey->generateData([
+            'question-a' => 'answer-a',
+            'question-b' => 'answer-b',
+            'response-created-question' => 'Something'
+        ]);
+        
+        $res = $this->post('survey/1/submit', $data);
+        
+        $this->assertTrue(MockResponseCreatedQuestion::$called);
+        
+        MockResponseCreatedQuestion::$called = false;
     }
     
     public function testSubmitWithApiAuth() {

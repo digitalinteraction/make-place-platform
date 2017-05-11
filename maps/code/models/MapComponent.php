@@ -62,7 +62,7 @@ class MapComponent extends DataObject {
     }
     
     public function availableTypes() {
-        return ClassUtils::getSubclasses('MapComponent', 'MapComponent');
+        return ClassUtils::getSubclasses('MapComponent', 'MapComponent', true);
     }
     
     /** @codeCoverageIgnore */

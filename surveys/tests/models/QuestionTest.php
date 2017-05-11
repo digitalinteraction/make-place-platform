@@ -198,6 +198,7 @@ class QuestionTest extends SapphireTest {
     
     /* Test Sample value */
     public function testSample() {
-        $this->assertEquals("MockQuestion", $this->question->sample());
+        $this->assertEquals(["type" => "MockQuestion"], $this->question->sample());
     }
+    
 }

@@ -1,6 +1,6 @@
 <?php
 
-/** ... */
+/** Tests DropdownQuestion */
 class DropdownQuestionTest extends SapphireTest {
     
     protected $question = null;
@@ -41,5 +41,14 @@ class DropdownQuestionTest extends SapphireTest {
         $result = $this->question->renderResponse($value);
         
         $this->assertEquals($expected, $result);
+    }
+    
+    public function testSample() {
+        
+        $expected = [
+            "type" => "DropdownQuestion",
+            "options" => ["A", "B", "C"]
+        ];
+        $this->assertEquals($expected, $this->question->sample());
     }
 }
