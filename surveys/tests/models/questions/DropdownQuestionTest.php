@@ -49,9 +49,9 @@ class DropdownQuestionTest extends SapphireTest {
         $expected = [
             "type" => "DropdownQuestion",
             "options" => [
-                ["Key" => "A", "Value" => "a"],
-                ["Key" => "B", "Value" => "b"],
-                ["Key" => "C", "Value" => "c"]
+                ["key" => "A", "value" => "a"],
+                ["key" => "B", "value" => "b"],
+                ["key" => "C", "value" => "c"]
             ]
         ];
         $this->assertEquals($expected, $this->question->sample());
