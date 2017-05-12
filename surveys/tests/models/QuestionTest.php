@@ -19,7 +19,6 @@ class SomeComplexMockQuestion extends Question {
 }
 
 /** Tests Question */
-/** @group whitelist */
 class QuestionTest extends SapphireTest {
     
     protected $usesDatabase = true;

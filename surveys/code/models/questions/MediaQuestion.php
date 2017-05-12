@@ -85,4 +85,11 @@ class MediaQuestion extends Question {
         // TODO: actually unpack the value
         return [ 'ID' => $media->ID ];
     }
+    
+    public function responseCreated($response, $value) {
+        
+        // Add the media as an sql relation to our response
+        $media = SurveyMedia::get()->byID($value);
+        $response->Media()->add($media);
+    }
 }

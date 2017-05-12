@@ -1,6 +1,7 @@
 <?php
 
 /** Tests MediaQuestion */
+/** @group whitelist */
 class MediaQuestionTest extends SapphireTest {
     
     public $usesDatabase = true;
@@ -81,5 +82,25 @@ class MediaQuestionTest extends SapphireTest {
         $unpacked = $this->question->unpackValue($media->ID);
         
         $this->assertNotNull($unpacked);
+    }
+    
+    
+    /* Misc */
+    public function testResponseCreated() {
+        
+        // Create a SurveyMedia to relate to
+        $media = SurveyMedia::create();
+        $media->write();
+        
+        // Create our response
+        $response = SurveyResponse::create([]);
+        $response->write();
+        
+        // Call the callback
+        $this->question->responseCreated($response, $media->ID);
+        
+        // Check the relaition was setup
+        $this->assertEquals(1, $response->Media()->count());
+        $this->assertEquals(1, $media->Responses()->count());
     }
 }

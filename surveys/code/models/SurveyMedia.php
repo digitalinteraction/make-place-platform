@@ -10,4 +10,8 @@ class SurveyMedia extends DataObject {
         "Type" => "Varchar(255)",
         "Size" => "Int"
     ];
+    
+    private static $belongs_many_many = [
+        "Responses" => "SurveyResponse"
+    ];
 }

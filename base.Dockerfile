@@ -31,11 +31,12 @@ EXPOSE 80
 
 # Make and own silverstripe folders & files
 RUN mkdir -p /app/silverstripe-cache \
-    && mkdir -p /app/assets \
+    && mkdir -p /app/assets/surveymedia \
     && mkdir -p /backup/db \
     && touch /app/silverstripe.log \
     && chown www-data /app/silverstripe.log \
     && chown www-data /app/assets \
+    && chown www-data /app/assets/surveymedia \
     && chown www-data /app/silverstripe-cache \
     && chown www-data /backup \
     && chown www-data /backup/db
