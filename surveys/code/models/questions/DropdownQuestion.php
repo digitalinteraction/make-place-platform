@@ -35,8 +35,8 @@ class DropdownQuestion extends Question {
         foreach(explode(",", $this->Options) as $option) {
             
             $options->push(ArrayData::create([
-                "Key" => $option,
-                "Value" => $filter->filter($option)
+                "key" => trim($option),
+                "value" => $filter->filter($option)
             ]));
             
         }
@@ -68,7 +68,8 @@ class DropdownQuestion extends Question {
     
     public function sample() {
         $sample = parent::sample();
-        $sample['options'] = $this->getRawOptions();
+        
+        $sample['options'] = $this->getOptionsArray()->toNestedArray();
         return $sample;
     }
 }

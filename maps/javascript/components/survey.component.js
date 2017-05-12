@@ -5,8 +5,12 @@ define(["jquery", "vue", "lodash", "utils"], function($, Vue, _, Utils) {
     /** Constructor */
     var SurveyComponent = function(page, component, mapState) {
         
+        // Don't do anything if the positionQ isn't set
+        if (!component.positionQuestion) { return; }
+        
         // Setup variables
         this.addingMarker = null;
+        this.highlightLayer = null;
         this.formFiles = {};
         
         
@@ -30,13 +34,6 @@ define(["jquery", "vue", "lodash", "utils"], function($, Vue, _, Utils) {
         // If we have view access
         if (this.component.canView) {
             
-            // Add a dummy control
-            // this.state.methods.addControl(this.componentId, "<p> Hello, World </p>");
-            // $("#map-controls #"+this.componentId).on("click", function(e) {
-            //     console.log(e);
-            // });
-            
-            
             // Load responses
             var self = this;
             $.ajax(Utils.getOrigin() + "/survey/" + self.component.surveyID + "/responses")
@@ -46,7 +43,6 @@ define(["jquery", "vue", "lodash", "utils"], function($, Vue, _, Utils) {
                 _.each(responses, function(response) {
                     self.state.clusterer.addLayer(self.createResponseMarker(response));
                 });
-                
             });
         }
     };
@@ -56,7 +52,7 @@ define(["jquery", "vue", "lodash", "utils"], function($, Vue, _, Utils) {
     SurveyComponent.prototype.createResponseMarker = function(response) {
         
         // Get the key of where the location will be
-        var pointKey = this.component.geoPointQuestion;
+        var pointKey = this.component.positionQuestion;
         var data = response.values[pointKey].value;
         
         
@@ -77,12 +73,18 @@ define(["jquery", "vue", "lodash", "utils"], function($, Vue, _, Utils) {
             self.state.map.panTo(e.latlng);
             
             
+            // Highlight the pin
+            self.highlightSurvey(e.target.response);
+            
+            
             // Fetch the pin's data over ajax
             $.ajax(Utils.apiUrl("/survey/" + response.surveyId + "/response/" + response.id))
             .then(function(data) {
                 
                 // Show a detail with the ajax response
-                self.state.methods.showDetail(data.title, data.body);
+                self.state.methods.showDetail(data.title, data.body, function(e) {
+                    self.responseDetailRemoved();
+                });
             })
             .catch(function(error) { console.log(error); });
         });
@@ -90,6 +92,14 @@ define(["jquery", "vue", "lodash", "utils"], function($, Vue, _, Utils) {
         
         // Return the new marker
         return marker;
+    };
+    
+    SurveyComponent.prototype.responseDetailRemoved = function() {
+        
+        if (this.highlightLayer) {
+            this.highlightLayer.remove();
+            this.highlightLayer = null;
+        }
     };
     
     SurveyComponent.prototype.addPinButton = function() {
@@ -107,6 +117,31 @@ define(["jquery", "vue", "lodash", "utils"], function($, Vue, _, Utils) {
                 self.state.methods.selectPosition(self.positionPicked.bind(self));
             }
         });
+    };
+    
+    SurveyComponent.prototype.highlightSurvey = function(response) {
+        
+        if (this.component.highlightQuestion && response.values[this.component.highlightQuestion]) {
+            var question = response.values[this.component.highlightQuestion];
+            
+            if (question.value && question.value.type == "LINESTRING") {
+                
+                var points = question.value.geom.map(function(value, key) {
+                    return new L.LatLng(value.x, value.y);
+                });
+                
+                this.highlightLayer = new L.Polyline(points, {
+                    color: 'red',
+                    weight: 10,
+                    opacity: 0.5,
+                    smoothFactor: 1
+                });
+                
+                this.state.map.addLayer(this.highlightLayer);
+                
+            }
+            
+        }
     };
     
     SurveyComponent.prototype.positionPicked = function(position) {
@@ -129,7 +164,7 @@ define(["jquery", "vue", "lodash", "utils"], function($, Vue, _, Utils) {
             self.state.methods.showDetail(data.title, data.content, self.removeSurveyForm.bind(self));
             
             // Get the name of the position field from our config
-            var posField = 'Fields['+self.component.geoPointQuestion+']';
+            var posField = 'Fields['+self.component.positionQuestion+']';
             
             // Add the hidden latlng fields to the form
             var extras = '';
@@ -151,7 +186,7 @@ define(["jquery", "vue", "lodash", "utils"], function($, Vue, _, Utils) {
     SurveyComponent.prototype.fileAttatched = function(e) {
         var name = $(e.target).attr('name');
         this.formFiles[name] = e.target.files;
-    }
+    };
     
     SurveyComponent.prototype.submitSurvey = function(e) {
         

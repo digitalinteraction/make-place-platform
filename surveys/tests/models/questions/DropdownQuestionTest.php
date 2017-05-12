@@ -1,6 +1,7 @@
 <?php
 
 /** Tests DropdownQuestion */
+/** @group whitelist */
 class DropdownQuestionTest extends SapphireTest {
     
     protected $question = null;
@@ -47,7 +48,11 @@ class DropdownQuestionTest extends SapphireTest {
         
         $expected = [
             "type" => "DropdownQuestion",
-            "options" => ["A", "B", "C"]
+            "options" => [
+                ["Key" => "A", "Value" => "a"],
+                ["Key" => "B", "Value" => "b"],
+                ["Key" => "C", "Value" => "c"]
+            ]
         ];
         $this->assertEquals($expected, $this->question->sample());
     }

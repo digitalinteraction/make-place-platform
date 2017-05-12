@@ -78,6 +78,10 @@ requirejs([
     
     function showMapDetail(title, html, onClose) {
         
+        // Close the old detail, if there is one
+        $("#map-detail .close-button").trigger("click");
+        
+        
         // Get the detail object
         var detail = $("#map-detail");
         
@@ -207,7 +211,7 @@ requirejs([
     function setupMap(config) {
         
         // Print the config for debug
-        console.log("config", config);
+        // console.log("config", config);
         
         
         // Configure the Leaflet map

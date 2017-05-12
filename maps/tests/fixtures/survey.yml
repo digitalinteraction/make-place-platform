@@ -17,3 +17,4 @@ Survey:
 SurveyMapComponent:
     componentA:
         Survey: =>Survey.surveyA
+        PositionQuestion: 'position'

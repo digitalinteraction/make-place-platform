@@ -6,7 +6,9 @@ class SurveyMapComponent extends MapComponent {
     private static $db = [
         'ActionColour' => 'Enum(array("blue", "green", "orange", "purple", "red"), "green")',
         'ActionMessage' => 'Varchar(255)',
-        'PinColour' => 'Enum(array("blue", "green", "orange", "purple", "red"), "blue")'
+        'PinColour' => 'Enum(array("blue", "green", "orange", "purple", "red"), "blue")',
+        'PositionQuestion' => 'Varchar(255)',
+        'HighlightQuestion' => 'Varchar(255)'
     ];
     
     private static $has_one = [
@@ -28,6 +30,8 @@ class SurveyMapComponent extends MapComponent {
                 Survey::get()->map()->toArray()
             ),
             TextField::create('ActionMessage', 'Action'),
+            TextField::create('PositionQuestion', 'Position Question'),
+            TextField::create('HighlightQuestion', 'Highlight Question'),
             DropdownField::create('ActionColour', 'Action Colour',
                 singleton('SurveyMapComponent')->dbObject('ActionColour')->enumValues()
             ),
@@ -51,26 +55,18 @@ class SurveyMapComponent extends MapComponent {
             'surveyID' => $survey->ID,
             'actionColour' => $this->ActionColour,
             'actionMessage' => $this->ActionMessage,
-            'pinColour' => $this->PinColour
+            'pinColour' => $this->PinColour,
+            'positionQuestion' => $this->PositionQuestion
         ];
         
-        
-        // Find a geo-point question to pass along
-        $questions = $this->Survey()->Questions();
-        foreach ($questions as $question) {
-            
-            if ($question->ClassName == "GeoQuestion" && $question->GeoType == "POINT") {
-                $data["geoPointQuestion"] = $question->Handle;
-                break;
-            }
+        if ($this->HighlightQuestion != null) {
+            $data['highlightQuestion'] = $this->HighlightQuestion;
         }
         
         
         // Add auth config to the component
-        $data["canView"] = Member::currentUserID() != null
-            || $survey->ViewAuth == "None";
-        $data["canSubmit"] = Member::currentUserID() != null
-            || $survey->SubmitAuth == "None";
+        $data["canView"] = Member::currentUserID() != null || $survey->ViewAuth == "None";
+        $data["canSubmit"] = Member::currentUserID() != null || $survey->SubmitAuth == "None";
         
         
         return $data;
