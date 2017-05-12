@@ -25,6 +25,65 @@ class MediaQuestionTest extends SapphireTest {
     }
     
     
+    /* Test rendering */
+    public function testRenderImage() {
+        
+        // Create an image media
+        $media = SurveyMedia::create([
+            "Path" => "some/file.png",
+            "Type" => "image/png"
+        ]);
+        
+        $media->write();
+        
+        $rendered = $this->question->renderResponse($media->ID);
+        
+        // Check it created an image tag
+        $this->assertRegexp('/<img/', $rendered);
+        
+        // Check it put the path of the image in
+        $this->assertRegexp('/some\/file.png/', $rendered);
+    }
+    
+    public function testRenderVideo() {
+        
+        // Create an image media
+        $media = SurveyMedia::create([
+            "Path" => "some/file.mp4",
+            "Type" => "video/mp4"
+        ]);
+        
+        $media->write();
+        
+        $rendered = $this->question->renderResponse($media->ID);
+        
+        // Check it created a video tag
+        $this->assertRegexp('/<video/', $rendered);
+        
+        // Check it put the path of the video in
+        $this->assertRegexp('/some\/file.mp4/', $rendered);
+    }
+    
+    public function testRenderAudio() {
+        
+        // Create an image media
+        $media = SurveyMedia::create([
+            "Path" => "some/file.mp3",
+            "Type" => "video/mp3"
+        ]);
+        
+        $media->write();
+        
+        $rendered = $this->question->renderResponse($media->ID);
+        
+        // Check it created an audio tag
+        $this->assertRegexp('/<video/', $rendered);
+        
+        // Check it put the path of the audio in
+        $this->assertRegexp('/some\/file.mp3/', $rendered);
+    }
+    
+    
     /* Value Validation */
     public function testValidateValueWithMediaId() {
         

@@ -16,4 +16,8 @@ class MediaStrategy extends Object {
         // Overriden by subclasses
         return null;
     }
+    
+    public function mediaUrl($media) {
+        return $media->Path;
+    }
 }

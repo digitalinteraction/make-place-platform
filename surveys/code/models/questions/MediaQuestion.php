@@ -33,8 +33,32 @@ class MediaQuestion extends Question {
     
     
     /* Rendering */
-    // ...
-    
+    public function renderResponse($value) {
+        
+        $media = SurveyMedia::get()->byID($value);
+        
+        $url = MediaStrategy::get($this->Strategy)->mediaUrl($media);
+        
+        $type = substr($media->Type, 0, 5);
+        
+        $inner = "";
+        
+        if ($type == "image") {
+            $inner = "<img src='$url' alt='{$media->Name}'>";
+        }
+        else if ($type == "audio") {
+            $inner = "<audio controls> <source src='$url' type='{$media->Type}'> </audio>";
+        }
+        else if ($type == "video") {
+            $inner = "<video webkit-playsinline playsinline controls> <source src='$url' type='{$media->Type}'> </video>";
+        }
+        else {
+            $inner = "Unknown file was uploaded";
+            $type = "unknown";
+        }
+        
+        return "<span class='media $type'>$inner</span>";
+    }
     
     
     
@@ -79,6 +103,8 @@ class MediaQuestion extends Question {
     }
     
     public function unpackValue($value) {
+        
+        if ($value == null) { return $value; }
         
         $media = SurveyMedia::get()->byID($value);
         
