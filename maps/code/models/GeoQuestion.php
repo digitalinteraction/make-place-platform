@@ -70,7 +70,7 @@ class GeoQuestion extends Question {
         $ref = GeoRef::makeRef($this->GeoType, $this->DataType, $value);
         
         // Return GeoRef id
-        return $ref->ID;
+        return $ref != null ? $ref->ID : null;
     }
     
     public function unpackValue($value) {

@@ -109,7 +109,7 @@ class MediaQuestion extends Question {
         $media = SurveyMedia::get()->byID($value);
         
         // TODO: actually unpack the value
-        return [ 'ID' => $media->ID ];
+        return [ 'id' => $media->ID, ];
     }
     
     public function responseCreated($response, $value) {

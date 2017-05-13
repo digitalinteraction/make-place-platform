@@ -6,9 +6,7 @@ class SurveyResponse extends DataObject {
     public $HiddenQuestion = false;
     
     private static $db = [
-        "Responses" => "JsonText",
-        'Latitude' => 'Decimal(16, 8)',
-        'Longitude' => 'Decimal(16, 8)',
+        "Responses" => "JsonText"
     ];
     
     private static $has_one = [
@@ -77,8 +75,6 @@ class SurveyResponse extends DataObject {
             'id' => $this->ID,
             'surveyId' => $this->SurveyID,
             'memberId' => $this->MemberID,
-            'lat' => floatval($this->Latitude),
-            'lng' => floatval($this->Longitude),
             'values' => $values
         ];
     }

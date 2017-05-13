@@ -1,0 +1,16 @@
+{
+  "name": "Make Place",
+  "version": "0.1.0",
+  "description": "How to use the MakePlace api, a framework for surveys around locations",
+  "title": "Make Place Api",
+  "url" : "http://makeyour.place/",
+  "order": [
+    "SurveyIndex",
+    "SurveyView",
+    "SurveyResponses",
+    "SurveyResponseView",
+    "SurveyGeoCreate",
+    "SurveyMediaCreate",
+    "SurveySubmit"
+  ]
+}

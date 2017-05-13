@@ -3,6 +3,19 @@
 /** ... */
 class SurveyApiController extends Controller {
     
+    /**
+     * @apiDefine Member Member access only
+     * Authentication requires a valid web session or a valid `apikey`
+     */
+    
+    /**
+     * @apiDefine SurveyNotFound
+     * @apiSuccessExample 404 Not Found
+     * [ "Survey Not Found" ]
+     */
+    
+    
+    
     private static $allowed_actions = [
         'index', 'submitSurvey', 'getResponses', 'viewResponse', 'viewSurvey', 'createGeom', 'createMedia'
     ];
@@ -31,6 +44,44 @@ class SurveyApiController extends Controller {
         return $this;
     }
     
+    
+    /**
+     * @api {get} survey/:id/ Questions
+     * @apiName SurveyIndex
+     * @apiGroup Survey
+     * @apiPermission Member
+     *
+     * @apiDescription Gets information about a survey and the questions it asks
+     *
+     * @apiParam {int} id The id of the survey to fetch
+     *
+     * @apiSuccessExample {json} 200 OK
+     * {
+     *   "name": "Bike Accidents",
+     *   "questions": {
+     *     "what-happened": { "type": "TextQuestion" },
+     *     "bike-type": {
+     *       "type": "DropdownQuestion",
+     *       "options": [
+     *         "Mountain Bike",
+     *         "Road Bike",
+     *         "Motorbike",
+     *         "Hybrid",
+     *         "Other"
+     *       ]
+     *     },
+     *     "comments": { "type": "Question" },
+     *     "position": {
+     *       "type": "GeoQuestion",
+     *       "geoType": "POINT",
+     *       "dataType": 1
+     *     },
+     *     "reflection": { "type": "MediaQuestion" }
+     *   }
+     * }
+     *
+     * @apiUse SurveyNotFound
+     */
     public function index($request) {
         
         $questions = $this->Survey->getQuestionMap();
@@ -47,6 +98,65 @@ class SurveyApiController extends Controller {
         return $this->Survey->Name . ': index';
     }
     
+    /**
+     * @api {post} survey/:id/submit Submit Response
+     * @apiName SurveySubmit
+     * @apiGroup Survey
+     * @apiPermission Member
+     *
+     * @apiDescription Submits a response to a survey.
+     * You post the answers to each question in the survey where each question type
+     * validates the response you gave it. You can get the questions to answer
+     * from `/survey/:id`
+     *
+     * Geo & Media questions allow you to post
+     * the raw response or an id to a Geo or Media object created with
+     *  `/survey/:id/geo` or `/survey/:id/media`
+     *
+     * When uploading files to respond to a MediaQuestion,
+     * make sure the file is uploaded under the question-handle
+     *
+     * For GeoQuestion response structure see `survey/:id/geo`
+     *
+     * @apiParam {int} id The id of the survey to submit to
+     * @apiParam {Object} Fields The responses to submit with each question as a key
+     *
+     * @apiParamExample {json} Json Example
+     * {
+     *   "Fields": {
+     *     "what-happened": "something",
+     *     "bike-type": "mountain",
+     *     "reflection": 13,
+     *     "position": { "type": "POINT", "x": 50.1, "y": -1.2 }
+     *   }
+     * }
+     *
+     * @apiSuccessExample {json} 200 OK
+     * {
+     *   "id": 21,
+     *   "surveyId": 1,
+     *   "memberId": 4,
+     *   "values": {
+     *     "what-happened": { "name": "What happened", "value": "thing" },
+     *     "bike-type": { "name": "Bike Type", "value": "mountain" },
+     *     "comments": { "name": "Comments", "value": "" },
+     *     "position": {
+     *       "name": "Position",
+     *       "value": {
+     *         "id": 53,
+     *         "geom": { "x": 50.1, "y": -1.2},
+     *         "type": "POINT"
+     *       }
+     *     },
+     *     "reflection": {
+     *       "name": "Reflection",
+     *       "value": { "ID": 13 }
+     *     }
+     *   }
+     * }
+     *
+     * @apiUse SurveyNotFound
+     */
     public function submitSurvey() {
         
         $errors = [];
@@ -119,6 +229,21 @@ class SurveyApiController extends Controller {
         return $this->jsonResponse($response->toJson());
     }
     
+    /**
+     * @api {get} survey/:id/view View
+     * @apiName SurveyView
+     * @apiGroup Survey
+     *
+     * @apiDescription Gets a form to view a survey & fill it out
+     *
+     * @apiSuccessExample 200 OK
+     * {
+     *   "title": "Bike Accidents",
+     *   "content": "&lt;form ...&gt; ... &lt;/form&gt;"
+     * }
+     *
+     * @apiUse SurveyNotFound
+     */
     public function viewSurvey() {
         
         $memberId = Member::currentUserID();
@@ -138,6 +263,40 @@ class SurveyApiController extends Controller {
         ]);
     }
     
+    /**
+     * @api {get} survey/:id/responses Responses
+     * @apiName SurveyResponses
+     * @apiGroup Survey
+     *
+     * @apiDescription Gets the responses to a survey
+     *
+     * @apiSuccessExample 200 OK
+     * [
+     *   {
+     *     "id": 2,
+     *     "surveyId": 1,
+     *     "memberId": 2,
+     *     "values": {
+     *       "what-happened": { "name": "What happened", "value": "I was hit by a van" },
+     *       "bike-type": { "name": "Bike Type", "value": "motorbike" },
+     *       "comments": { "name": "Comments", "value": "Lorem ipsum dolor ..." },
+     *       "position": {
+     *         "name": "Position",
+     *         "value": {
+     *           "id": 2,
+     *           "geom": { "x": 54.981, "y": -1.618 },
+     *           "deployment_id": 1,
+     *           "data_type_id": 1,
+     *           "type": "POINT"
+     *         }
+     *       },
+     *       "reflection": { "name": "Reflection", "value": "" }
+     *     }
+     *   }
+     * ]
+     *
+     * @apiUse SurveyNotFound
+     */
     public function getResponses() {
         
         $responses = SurveyResponse::get()->filter("SurveyID", $this->Survey->ID);
@@ -160,6 +319,21 @@ class SurveyApiController extends Controller {
         return $this->jsonResponse($data);
     }
     
+    /**
+     * @api {get} survey/:id/response/:id View Response
+     * @apiName SurveyResponseView
+     * @apiGroup Survey
+     *
+     * @apiDescription Gets html to view a response to a survey
+     *
+     * @apiSuccessExample 200 OK
+     * {
+     *   "title": "Geoff's Response",
+     *   "content": "&lt;div class='survey-response'&gt; ... &lt;/div&gt;"
+     * }
+     *
+     * @apiUse SurveyNotFound
+     */
     public function viewResponse() {
         
         $response = SurveyResponse::get()
@@ -168,7 +342,7 @@ class SurveyApiController extends Controller {
             ->first();
         
         if ($response == null) {
-            return $this->httpError(404);
+            return $this->jsonResponse(["Response not found"], 404);
         }
         
         $member = $response->Member();
@@ -185,6 +359,42 @@ class SurveyApiController extends Controller {
         ]);
     }
     
+    /**
+     * @api {post} survey/:id/geo Create Geometry
+     * @apiName SurveyGeoCreate
+     * @apiGroup Survey
+     * @apiPermission Member
+     *
+     * @apiDescription Pre-create a geometry to pass to `survey/:id/submit`
+     *
+     * @apiParam {string} question The question this geometry is in response to
+     * @apiParam {string="POINT","LINESTRING"} type The type of geometry to create
+     * @apiParam {object} geom The geometry to create (see examples)
+     *
+     * @apiParamExample Point Json
+     * {
+     *   "question": "position",
+     *   "type": "POINT",
+     *   "geom": { "x": 50, "y": 1 }
+     * }
+     *
+     * @apiParamExample Line Json
+     * {
+     *   "question": "position",
+     *   "type": "LINESTRING",
+     *   "geom": {
+     *     "points": [
+     *       {"x": 50, "y": -1 },
+     *       {"x": 50.1, "y": -0.1 }
+     *     ]
+     *   }
+     * }
+     *
+     * @apiSuccessExample 200 OK
+     * { "id": 42 }
+     * 
+     * @apiUse SurveyNotFound
+     */
     public function createGeom() {
         
         $errors = [];
@@ -216,6 +426,22 @@ class SurveyApiController extends Controller {
         ]);
     }
     
+    /**
+     * @api {post} survey/:id/media Create Media
+     * @apiName SurveyMediaCreate
+     * @apiGroup Survey
+     * @apiPermission Member
+     *
+     * @apiDescription Pre-create media to pass to `survey/:id/submit`.
+     * Upload your media under the same name as the `question` being responded to
+     *
+     * @apiParam {string} question The question this geometry is in response to
+     *
+     * @apiSuccessExample 200 OK
+     * { "id": 42 }
+     *
+     * @apiUse SurveyNotFound
+     */
     public function createMedia() {
         
         $errors = [];

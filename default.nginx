@@ -21,7 +21,7 @@ server {
         try_files $uri =404;
     }
     
-    location ~ /api/docs/? {
+    location ~ /docs/? {
         sendfile on;
         try_files $uri $uri/ $uri/index.html;
     }

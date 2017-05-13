@@ -357,8 +357,6 @@ class SurveyApiControllerTest extends FunctionalTest {
             'id' => 1,
             'surveyId' => 1,
             'memberId' => 1,
-            'lat' => 10.0,
-            'lng' => 20.0,
             'values' => [
                 'question-a' => [ 'name' => 'Question A', 'value' => 'abc' ],
                 'question-b' => [ 'name' => 'Question B', 'value' => '123' ]
