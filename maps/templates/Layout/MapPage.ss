@@ -19,7 +19,10 @@
     <div id="map-detail" class="">
         <h2 class="title">
             <span class="text"></span>
-            <i class="close-button fa fa-times"></i>
+            <span class="menu">
+                <i class="mini-button fa fa-minus-circle"></i>
+                <i class="close-button fa fa-times-circle"></i>
+            </span>
         </h2>
         <div class="inner"></div>
     </div>

@@ -99,20 +99,31 @@ $buttonSize: 48px;
       top: 0; right: 0;
       width: 500px;
       z-index: 5000;
+      padding-bottom: 0px;
       
       @extend .map-card-style;
       
       .title {
-        margin-top: 0px;
         position: relative;
-        padding-right: 20px;
+        margin: -$cardPadding;
+        margin-bottom: 0;
+        padding: $cardPadding;
+        padding-right: 82px;
         
-        .close-button {
+        .menu {
           position: absolute;
-          top: 0; right: 0;
-          
-          &:hover { cursor: pointer; }
+          top: 12px;
+          right: 12px;
+          user-select: none;
+          i {
+            cursor: pointer;
+            color: $actionColour;
+          }
         }
+      }
+      
+      .inner {
+        padding-bottom: $cardPadding;
       }
       
       

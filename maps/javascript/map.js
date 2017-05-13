@@ -13,7 +13,7 @@ requirejs.config({
     shim: {
         leafletGoogle: ["leaflet"],
         leafletClusterer: ["leaflet"]
-  }
+    }
 });
 
 
@@ -82,6 +82,10 @@ requirejs([
         $("#map-detail .close-button").trigger("click");
         
         
+        // Make sure we aren't minimized
+        minimizeDetail(false);
+        
+        
         // Get the detail object
         var detail = $("#map-detail");
         
@@ -101,6 +105,24 @@ requirejs([
             
             hideMapDetail();
         });
+        
+        detail.find(".mini-button").on("click", function(e) {
+            minimizeDetail(!detail.hasClass("minimized"));
+        });
+    }
+    
+    function minimizeDetail(minimize) {
+        
+        var detail = $("#map-detail");
+        var button = detail.find(".mini-button");
+        var inner = detail.find(".inner");
+        
+        if (minimize) { $(inner).slideUp("fast"); }
+        else { $(inner).slideDown("fast"); }
+        
+        detail.toggleClass("minimized", minimize);
+        button.toggleClass("fa-minus-circle", !minimize);
+        button.toggleClass("fa-plus-circle", minimize);
     }
     
     function hideMapDetail() {
@@ -110,6 +132,7 @@ requirejs([
         
         // Stop listening for clicks
         detail.find(".close-button").off("click");
+        detail.find(".mini-button").off("click");
         
         // Reset the detail
         detail.find(".title .text").html("");
