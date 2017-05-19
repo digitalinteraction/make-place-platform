@@ -1,6 +1,6 @@
 <?php
 
-/* ...  */
+/* Tests Survey */
 class SurveyTest extends SapphireTest {
     
     public $usesDatabase = true;
@@ -75,9 +75,17 @@ class SurveyTest extends SapphireTest {
         $this->assertNotNull($fields->fieldByName("Root.Main.SubmitTitle"));
         $this->assertNotNull($fields->fieldByName("Root.Main.ViewAuth"));
         $this->assertNotNull($fields->fieldByName("Root.Main.SubmitAuth"));
-        $this->assertNotNull($fields->fieldByName("Root.Main.Questions"));
+        $this->assertNull($fields->fieldByName("Root.Main.Questions"));
+    }
+    
+    public function testCmsFieldsWhenCreated() {
         
-        $this->assertTrue($fields->count() > 0);
+        $s1 = Survey::create(["Name" => "My Survey"]);
+        $s1->write();
+        
+        $fields = $s1->getCMSFields();
+        
+        $this->assertNotNull($fields->fieldByName("Root.Main.Questions"));
     }
     
     

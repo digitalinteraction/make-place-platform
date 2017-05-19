@@ -80,15 +80,20 @@ class Survey extends DataObject {
             ),
             DropdownField::create('SubmitAuth', 'Who can add responses',
                 singleton('Survey')->dbObject('SubmitAuth')->enumValues()
-            ),
-            GridField::create(
-                'Questions',
-                'Questions',
-                $this->Questions(),
-                GridFieldConfig_RelationEditor::create()
-                    ->removeComponentsByType('GridFieldAddExistingAutocompleter')
             )
         ]);
+        
+        if ($this->ID) {
+            $fields->addFieldsToTab('Root.Main', [
+                GridField::create(
+                    'Questions',
+                    'Questions',
+                    $this->Questions(),
+                    GridFieldConfig_RelationEditor::create()
+                        ->removeComponentsByType('GridFieldAddExistingAutocompleter')
+                )
+            ]);
+        }
         
         
         return $fields;

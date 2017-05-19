@@ -192,6 +192,11 @@ class QuestionTest extends SapphireTest {
         $this->assertEquals(0, count($this->question->validateValue("value")));
     }
     
+    public function testValidateValueWhenRequired() {
+        $this->question->Required = true;
+        $this->assertEquals(1, count($this->question->validateValue(null)));
+    }
+    
     public function testPackValue() {
         $this->assertEquals("value", $this->question->packValue("value"));
     }

@@ -165,6 +165,7 @@ class Question extends DataObject {
     /* Handling Values */
     /** Called to check if a value is acceptable to save in a SurveyResponse, return an array of errors */
     public function validateValue($value) {
+        if ($this->Required && !$value) { return [ "{$this->Handle} is a required field" ]; }
         return [];
     }
     

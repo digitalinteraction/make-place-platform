@@ -169,6 +169,16 @@ class SurveyApiController extends Controller {
         
         $redirectBack = $this->bodyVar('RedirectBack') != null;
         $fields = $this->bodyVar('Fields', $errors);
+        $created = $this->bodyVar('Created');
+        
+        if ($created) {
+            
+            // If set, check it is a valid date
+            if (!DateTime::createFromFormat('Y-m-d H:i:s', $created)) {
+                $errors[] = "'Created' date is invalid";
+            }
+        }
+        
         if (count($errors) > 0) {
             return $this->jsonResponse($errors, 400);
         }
@@ -196,22 +206,24 @@ class SurveyApiController extends Controller {
         
         
         // Let the questions pack their value
-        foreach ($fields as $field => $value) {
-            $fields[$field] = $questionMap[$field]->packValue($value);
+        $packedValues = [];
+        foreach ($questionMap as $field => $question) {
+            $packedValues[$field] = $question->packValue(isset($fields[$field]) ? $fields[$field] : null);
         }
         
         
         // Generate a SurveyResponse & save it
         $response = SurveyResponse::create([
+            'Created' => $created ? $created : date('Y-m-d H:i:s'),
             'SurveyID' => $this->Survey->ID,
             'MemberID' => $memberId,
-            'Responses' => $fields
+            'Responses' => $packedValues
         ]);
         
         
         // Let the questions perform post-create actions
-        foreach ($fields as $field => $value) {
-            $questionMap[$field]->responseCreated($response, $value);
+        foreach ($questionMap as $field => $question) {
+            $question->responseCreated($response, $packedValues[$field]);
         }
         
         
@@ -392,7 +404,7 @@ class SurveyApiController extends Controller {
      *
      * @apiSuccessExample 200 OK
      * { "id": 42 }
-     * 
+     *
      * @apiUse SurveyNotFound
      */
     public function createGeom() {

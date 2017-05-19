@@ -1,7 +1,6 @@
 <?php
 
 /** Tests DropdownQuestion */
-/** @group whitelist */
 class DropdownQuestionTest extends SapphireTest {
     
     protected $question = null;

@@ -1,6 +1,7 @@
 <?php
 
 /** Testing GeoQuestion */
+/** @group whitelist */
 class GeoQuestionTest extends SapphireTest {
     
     public $usesDatabase = true;
@@ -38,6 +39,14 @@ class GeoQuestionTest extends SapphireTest {
     
     
     /* Test Validation */
+    public function testNonRequiredValidation() {
+        
+        $this->question->Required = true;
+        $errors = $this->question->validateValue(null);
+        
+        $this->assertEquals(1, count($errors));
+    }
+    
     public function testValidatePointValue() {
         
         $errors = $this->question->validateValue([

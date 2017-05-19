@@ -305,6 +305,42 @@ class SurveyApiControllerTest extends FunctionalTest {
         $this->assertEquals(200, $res->getStatusCode());
     }
     
+    public function testSubmitWithCreatedDate() {
+        
+        // Create a response to the survey
+        $data = $this->survey->generateData([
+            'question-a' => 'answer-a',
+            'question-b' => 'answer-b'
+        ]);
+        
+        $data["Created"] = "2017-08-22 16:31:00";
+        
+        $res = $this->post('survey/1/submit', $data);
+        
+        // See if a surveyResponse was created
+        $response = SurveyResponse::get()->last();
+        
+        $this->assertEquals("2017-08-22 16:31:00", $response->Created);
+    }
+    
+    public function testSubmitWithInvalidCreatedDate() {
+        
+        // Create a response to the survey
+        $data = $this->survey->generateData([
+            'question-a' => 'answer-a',
+            'question-b' => 'answer-b'
+        ]);
+        
+        $data["Created"] = "Not a date";
+        
+        $res = $this->post('survey/1/submit', $data);
+        
+        // See if a surveyResponse was created
+        $response = SurveyResponse::get()->last();
+        
+        $this->assertEquals(400, $res->getStatusCode());
+    }
+    
     
     
     /* Viewing surveys */
@@ -359,11 +395,11 @@ class SurveyApiControllerTest extends FunctionalTest {
             'memberId' => 1,
             'values' => [
                 'question-a' => [ 'name' => 'Question A', 'value' => 'abc' ],
-                'question-b' => [ 'name' => 'Question B', 'value' => '123' ]
+                'question-b' => [ 'name' => 'Question B', 'value' => '123' ],
              ]
         ];
         
-        $this->assertEquals($expected, $json[0]);
+        $this->assertArraySubset($expected, $json[0]);
     }
     
     public function testGetResponsesRequiresAuthWhenSet() {

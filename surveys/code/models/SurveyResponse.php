@@ -73,6 +73,7 @@ class SurveyResponse extends DataObject {
         
         return [
             'id' => $this->ID,
+            'created' => $this->Created,
             'surveyId' => $this->SurveyID,
             'memberId' => $this->MemberID,
             'values' => $values

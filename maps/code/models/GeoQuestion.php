@@ -23,7 +23,9 @@ class GeoQuestion extends Question {
     
     public function validateValue($value) {
         
-        $errors = [];
+        $errors = parent::validateValue($value);
+        
+        if (count($errors)) { return $errors; }
         
         // If the value is a number, check it is a valid georef
         if (is_numeric($value)) {
