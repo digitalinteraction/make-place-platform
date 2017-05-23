@@ -160,7 +160,7 @@ define(["jquery", "vue", "lodash", "leaflet", "utils"], function($, Vue, _, L, U
             self.state.methods.showDetail(data.title, data.content, self.removeSurveyForm.bind(self));
             
             // Get the name of the position field from our config
-            var posField = 'Fields['+self.component.positionQuestion+']';
+            var posField = 'fields['+self.component.positionQuestion+']';
             
             // Add the hidden latlng fields to the form
             var extras = '';
