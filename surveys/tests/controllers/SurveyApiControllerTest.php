@@ -110,7 +110,7 @@ class SurveyApiControllerTest extends FunctionalTest {
         
         $json = $response->jsonField('Responses');
         
-        $this->assertEquals($data['Fields'], $json);
+        $this->assertEquals($data['fields'], $json);
     }
     
     public function testSubmitRedirectBack() {
@@ -313,7 +313,7 @@ class SurveyApiControllerTest extends FunctionalTest {
             'question-b' => 'answer-b'
         ]);
         
-        $data["Created"] = "2017-08-22 16:31:00";
+        $data["created"] = "2017-08-22 16:31:00";
         
         $res = $this->post('survey/1/submit', $data);
         
@@ -331,7 +331,7 @@ class SurveyApiControllerTest extends FunctionalTest {
             'question-b' => 'answer-b'
         ]);
         
-        $data["Created"] = "Not a date";
+        $data["created"] = "Not a date";
         
         $res = $this->post('survey/1/submit', $data);
         

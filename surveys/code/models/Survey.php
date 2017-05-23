@@ -122,8 +122,7 @@ class Survey extends DataObject {
     public function generateData($fields) {
         
         return $this->generateFormData([
-            'SurveyID' => $this->ID,
-            'Fields' => $fields
+            'fields' => $fields
         ]);
     }
     

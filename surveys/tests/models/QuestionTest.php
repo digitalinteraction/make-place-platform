@@ -177,7 +177,7 @@ class QuestionTest extends SapphireTest {
         
         $this->question->Handle = "test";
         
-        $this->assertEquals("Fields[test]", $this->question->getFieldName());
+        $this->assertEquals("fields[test]", $this->question->getFieldName());
     }
     
     public function testClasses() {

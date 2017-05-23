@@ -136,7 +136,7 @@ class SurveyTest extends SapphireTest {
         
         $data = $survey->generateData($fields);
         
-        $this->assertEquals($fields, $data['Fields']);
+        $this->assertEquals($fields, $data['fields']);
     }
     
     public function testQuestionMap() {

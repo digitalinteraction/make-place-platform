@@ -150,7 +150,7 @@ class Question extends DataObject {
     
     public function getFieldName() {
         
-        return "Fields[{$this->Handle}]";
+        return "fields[{$this->Handle}]";
     }
     
     public function getClasses() {

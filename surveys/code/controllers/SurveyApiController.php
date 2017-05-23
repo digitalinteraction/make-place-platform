@@ -123,12 +123,13 @@ class SurveyApiController extends Controller {
      *
      * @apiParamExample {json} Json Example
      * {
-     *   "Fields": {
+     *   "fields": {
      *     "what-happened": "something",
      *     "bike-type": "mountain",
      *     "reflection": 13,
      *     "position": { "type": "POINT", "x": 50.1, "y": -1.2 }
-     *   }
+     *   },
+     *   "created": "2017-02-03 22:11:00"
      * }
      *
      * @apiSuccessExample {json} 200 OK
@@ -168,8 +169,8 @@ class SurveyApiController extends Controller {
         }
         
         $redirectBack = $this->bodyVar('RedirectBack') != null;
-        $fields = $this->bodyVar('Fields', $errors);
-        $created = $this->bodyVar('Created');
+        $fields = $this->bodyVar('fields', $errors);
+        $created = $this->bodyVar('created');
         
         if ($created) {
             
