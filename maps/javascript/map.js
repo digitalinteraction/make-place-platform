@@ -32,6 +32,79 @@ requirejs([
     var detailOnClose = null;
     
     
+    
+    var app = new Vue({
+        el: "#map-app",
+        data: {
+            overlayMessage: null,
+            controls: [ ],
+            actions: [ ],
+            detail: null,
+            showActions: true,
+            mobileActions: false,
+            mobileControls: false,
+            showMobileOptions: true,
+            cancelAction: null,
+            mapAction: null,
+            isSelecting: false,
+        },
+        computed: {
+            mobileOptionsEnabled: function() {
+                return this.isMobile && this.showActions && this.showMobileOptions;
+            },
+            actionsEnabled: function() {
+                return this.isMobile ? this.mobileActions : this.showActions;
+            },
+            controlsEnabled: function() {
+                return this.isMobile ? this.mobileControls : this.controls.length > 0;
+            },
+            isMobile: function() { return window.outerWidth < 767; }
+        },
+        methods: {
+            cancel: function(e) {
+                if (this.cancelAction) this.cancelAction(e);
+                this.cancelAction = null;
+            },
+            closeDetail: function(e) {
+                this.detail = null;
+                this.showActions = true;
+                if (detailOnClose) detailOnClose();
+                detailOnClose = null;
+            },
+            minifyDetail: function(e) {
+                if (!this.detail) return;
+                this.detail.minimized = !this.detail.minimized;
+            },
+            mapClicked: function(e) {
+                if (this.mapAction) this.mapAction(e);
+                this.mapAction = null;
+            },
+            addMobileActions: function(e) {
+                
+                this.detail = null;
+                this.overlayMessage = "Choose an Action";
+                this.showMobileOptions = false;
+                this.mobileActions = true;
+                this.cancelAction = function() {
+                    this.overlayMessage = null;
+                    this.showMobileOptions = true;
+                    this.mobileActions = false;
+                };
+            },
+            addMobileControls: function(e) {
+                this.detail = null;
+                this.overlayMessage = "";
+                this.showMobileOptions = false;
+                this.mobileControls = true;
+                this.cancelAction = function() {
+                    this.overlayMessage = null;
+                    this.showMobileOptions = true;
+                    this.mobileControls = false;
+                };
+            }
+        }
+    });
+    
     var state = {
         pins: {
             blue: Utils.generatePin(L, "blue"),
@@ -41,6 +114,7 @@ requirejs([
             red: Utils.generatePin(L, "red")
         },
         map: null,
+        app: app,
         methods: {
             toggleElem: toggleElem,
             addControl: addMapControl,
@@ -55,73 +129,52 @@ requirejs([
         components: {}
     };
     
+    
+    
+    
     function toggleElem(selector, toggle) {
         $(selector).toggleClass("active", toggle);
     }
     
-    function addMapControl(id, html) {
+    
+    
+    
+    
+    function addMapControl(id, contents) {
         
         // Remove previous instances of the control
-        var controlSelector = "#map-controls #" + id;
-        $(controlSelector).remove();
-        
-        // Add the control
-        var control = "<div id=\"" + id + "\">" + html + "</div>";
-        $("#map-controls .inner").append(control);
-        
-        var children = $("#map-controls .inner").children().length;
-        toggleElem("#map-controls", children > 0);
+        app.$data.controls.push({
+            id: id,
+            contents: contents
+        });
     }
     
     function removeMapControl(id) {
-        $("#map-controls #" + id).remove();
+        app.$data.controls = _.filter(app.$data.controls, function(control) {
+            return control.id !== id;
+        });
     }
     
-    function showMapDetail(title, html, onClose) {
+    function showMapDetail(title, content, onClose) {
         
         // Close the old detail, if there was one
         hideMapDetail();
         
         
-        // Make sure we aren't minimized
-        minimizeDetail(false);
-        
-        
         // Get the detail object
-        var detail = $("#map-detail");
+        app.$data.detail = {
+            title: title,
+            content: content,
+            minimized: false
+        };
+        
         
         // Set it up with the passed values
-        detail.find(".title .text").text(title);
-        detail.find(".inner").html(html);
-        toggleElem(detail, true);
-        toggleElem("#map-actions", false);
-        toggleElem("#mobile-buttons", false);
+        app.$data.showActions = false;
         
+        
+        // Store the callback
         detailOnClose = onClose;
-        
-        
-        // Listen for clicks on the close button
-        detail.find(".close-button").on("click", function(e) {
-            hideMapDetail();
-        });
-        
-        detail.find(".mini-button").on("click", function(e) {
-            minimizeDetail(!detail.hasClass("minimized"));
-        });
-    }
-    
-    function minimizeDetail(minimize) {
-        
-        var detail = $("#map-detail");
-        var button = detail.find(".mini-button");
-        var inner = detail.find(".inner");
-        
-        if (minimize) { $(inner).slideUp("fast"); }
-        else { $(inner).slideDown("fast"); }
-        
-        detail.toggleClass("minimized", minimize);
-        button.toggleClass("fa-minus-circle", !minimize);
-        button.toggleClass("fa-plus-circle", minimize);
     }
     
     function hideMapDetail() {
@@ -129,105 +182,69 @@ requirejs([
         if (detailOnClose) detailOnClose();
         detailOnClose = null;
         
-        // Get the detail object
-        var detail = $("#map-detail");
-        
-        // Stop listening for clicks
-        detail.find(".close-button").off("click");
-        detail.find(".mini-button").off("click");
-        
-        // Reset the detail
-        detail.find(".title .text").html("");
-        detail.find(".inner").html("");
-        
-        // Hide the detail
-        toggleElem(detail, false);
-        
-        // Re-enable actions
-        toggleElem("#map-actions", true);
-        
-        // Re-show mobile buttons
-        toggleElem("#mobile-buttons", true);
+        app.$data.showActions = true;
+        app.$data.detail = null;
     }
     
     function addMapAction(id, options) {
         
-        var actionSelector = "#map-actions #" + id;
-        
-        // Remove previous instances of the action
-        $(actionSelector).remove();
-        
-        options.id = id;
-        options.title = options.title || "Action";
-        options.icon = options.icon || "fa-info-circle";
-        
-        $("#map-actions").append(Utils.tpl.mapAction(options));
-        
-        $(actionSelector).on("click", function(e) {
-            actionChosen(e, id);
-            if (options.callback) { options.callback(e);}
+        app.$data.actions.push({
+            id: id,
+            title: options.title || "Action",
+            icon: options.title || "fa-info-circle",
+            colour: options.colour || "blue",
+            onClick: function(e) {
+                actionChosen();
+                if (options.callback) options.callback(e);
+            }
         });
-        
-        $("#map-actions").toggleClass("has-actions", $("#map-actions .inner").children().length > 0);
     }
     
     function removeMapAction(id) {
-        $("#map-actions #" + id).remove();
+        app.$data.actions = _.filter(app.$data.actions, function(action) {
+            return action.id !== id;
+        });
     }
     
     function selectMapPosition(callback) {
         
-        toggleMapOverlay(true, "selecting", "Pick a place on the map");
+        app.$data.overlayMessage = "Pick a place on the map";
+        app.$data.isSelecting = true;
         
-        toggleElem("#map-actions", false);
-        toggleElem("#map-controls", false);
-        toggleElem("#map-cancel-button", true);
-        toggleElem("#mobile-buttons", false);
-        
-        $("#map-app").toggleClass("selecting", true);
+        app.$data.showActions = false;
         
         function finish(position) {
-            state.map.off("click");
-            toggleMapOverlay(false);
+            
+            app.$data.overlayMessage = null;
+            app.$data.isSelecting = false;
+            
+            app.$data.showActions = true;
+            app.$data.cancelAction = null;
+            app.$data.mapAction = null;
+            
             callback(position);
-            $("#map-cancel-button .button").off("click");
-            
-            toggleElem("#map-actions", true);
-            toggleElem("#map-controls", true);
-            toggleElem("#map-cancel-button", false);
-            toggleElem("#mobile-buttons", true);
-            
-            $("#map-app").toggleClass("selecting", false);
         }
         
+        app.$data.mapAction = function(e) {
+            var pos = state.map.mouseEventToLatLng(e);
+            finish([pos.lat, pos.lng]);
+        };
         
-        // On poisition chosen
-        state.map.on("click", function(e) {
-            finish([e.latlng.lat, e.latlng.lng]);
-        });
-        
-        
-        // On cancel
-        $("#map-cancel-button .button").on("click", function(e) {
+        app.$data.cancelAction = function(e) {
             finish(null);
-        });
+        };
     }
     
     function toggleMapOverlay(toggle, className, message) {
         
-        message = message || null;
-        
-        $("#map-overlay .message").text(toggle ? message : "");
-        
-        if (!toggle) {
-            $("#map-overlay").removeClass();
-            $("#map-overlay .message").removeClass("text");
-        }
-        else {
-            $("#map-overlay").attr("class", "active " + className);
-            $("#map-overlay .message").toggleClass("text", message !== null);
-        }
+        app.$data.overlayMessage = message || null;
     }
+    
+    
+    
+    
+    
+    
     
     
     
@@ -312,64 +329,16 @@ requirejs([
         }
     });
     
-    
-    // Add mobile tap listeners
-    $("#mobile-buttons .actions").on("click", function(e) {
-        mobileToggle("#map-actions");
-    });
-    $("#mobile-buttons .controls").on("click", function(e) {
-        mobileToggle("#map-controls");
-    });
-    
-    function mobileToggle(selector, message) {
-        
-        message = message || null;
-        
-        // Hide the detail if showing
-        hideMapDetail();
-        
-        // Add overlay
-        toggleMapOverlay(true, "actions", message);
-        
-        // Enable the thing
-        $(selector).toggleClass("toggled", true);
-        
-        // Add cancel button
-        toggleElem("#map-cancel-button", true);
-        
-        // Hide mobile buttons
-        toggleElem("#mobile-buttons", false);
-        
-        
-        $("#map-cancel-button .button").on("click", function(e) {
-            
-            // Remove overlay
-            toggleMapOverlay(false);
-            
-            // Diable the thing
-            $(selector).toggleClass("toggled", false);
-            
-            // Remove cancel button
-            toggleElem("#map-cancel-button", false);
-            
-            // Show mobile buttons
-            toggleElem("#mobile-buttons", true);
-        });
-    }
-    
     function actionChosen() {
         
         // Remove overlay
         toggleMapOverlay(false);
         
-        // Diable actions
-        $("#map-actions").toggleClass("toggled", false);
-        
         // Remove cancel button
-        toggleElem("#map-cancel-button", false);
+        app.$data.cancelAction = null;
         
-        // Show mobile buttons
-        toggleElem("#mobile-buttons", true);
+        // Remove the mobile actions
+        app.$data.mobileActions = false;
     }
     
 });

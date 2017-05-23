@@ -6,43 +6,64 @@
 <% require css('maps/css/marker-cluster.css') %>
 
 
-<div id="map-app">
+<div id="map-app" :class="{selecting: isSelecting}">
     
-    
-    <div id="map-cancel-button" class="">
+    <div v-if="cancelAction" id="map-cancel-button" @click="cancel">
         <p class="web button red hidden-xs"> <i class="icon fa fa-ban"></i> Cancel </p>
         <p class="button mobile visible-xs"> </p>
     </div>
     
-    <div id="map-overlay" class=""> <p class="message"></p></div>
+    <transition name="fade">
+        <div id="map-overlay" v-if="overlayMessage != null">
+            <p v-if="overlayMessage != ''" class="message">{{overlayMessage}}</p>
+        </div>
+    </transition>
     
-    <div id="map-detail" class="">
-        <h2 class="title">
-            <span class="text"></span>
-            <span class="menu">
-                <i class="mini-button fa fa-minus-circle"></i>
-                <i class="close-button fa fa-times-circle"></i>
-            </span>
-        </h2>
-        <div class="inner"></div>
-    </div>
+    <transition name="grow-fade">
+        <div v-if="detail" id="map-detail">
+            <h2 class="title">
+                <span class="text">{{detail.title}}</span>
+                <span class="menu">
+                    <i @click="minifyDetail" class="mini-button fa"
+                        :class="detail.minimized ? 'fa-plus-circle' : 'fa-minus-circle'" ></i>
+                    <i @click="closeDetail" class="close-button fa fa-times-circle"></i>
+                </span>
+            </h2>
+            <div class="inner" v-if="!detail.minimized" v-html="detail.content"></div>
+        </div>
+    </transition>
     
-    <div id="map-controls" class="">
+    <div id="map-controls" v-if="controlsEnabled">
         <h2 class="title"> Customise </h2>
-        <div class="inner"></div>
+        <div class="inner">
+            <div v-for="c in controls" :id="c.id" class="control" v-html="c.contents"></div>
+        </div>
     </div>
     
-    <div id="mobile-buttons" class="active visible-xs">
-        <p class="button actions"></p>
-        <p class="button controls"></p>
-    </div>
+    <transition name="grow-fade">
+        <div v-if="mobileOptionsEnabled" id="mobile-buttons" class="active visible-xs">
+            <p class="button actions" @click="addMobileActions"></p>
+            <p class="button controls" v-if="controls.length > 0" @click="addMobileControls"></p>
+        </div>
+    </transition>
     
-    <div id="map-actions" class="active"></div>
+    <transition name="grow-fade">
+        <div v-if="actionsEnabled" id="map-actions">
+            <p v-for="a in actions"
+              :id="a.id"
+              @click.prevent="a.onClick()"
+              class="action"
+              :class="a.colour">
+                <i class="icon fa" :class="a.icon"></i>
+                {{a.title}}
+            </p>
+        </div>
+    </transition>
     
     
     
     <%-- An element to render the map into --%>
-    <div id="map"></div>
+    <div id="map" @click="mapClicked"></div>
     
 </div>
 

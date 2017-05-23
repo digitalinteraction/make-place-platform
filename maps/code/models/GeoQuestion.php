@@ -24,8 +24,10 @@ class GeoQuestion extends Question {
     public function validateValue($value) {
         
         $errors = parent::validateValue($value);
-        
         if (count($errors)) { return $errors; }
+        if (!$value && $this->Required == false) { return []; }
+        
+        
         
         // If the value is a number, check it is a valid georef
         if (is_numeric($value)) {
@@ -68,14 +70,18 @@ class GeoQuestion extends Question {
         // If its a number, its already 'packed'
         if (is_numeric($value)) { return $value; }
         
-        // Create GeoRef & link to response
-        $ref = GeoRef::makeRef($this->GeoType, $this->DataType, $value);
+        // Create GeoRef to link to SurveyResponse by returning its id
+        if ($value) {
+            $ref = GeoRef::makeRef($this->GeoType, $this->DataType, $value);
+            return $ref != null ? $ref->ID : null;
+        }
         
-        // Return GeoRef id
-        return $ref != null ? $ref->ID : null;
+        return null;
     }
     
     public function unpackValue($value) {
+        
+        if ($value == null) { return $value; }
         
         // Get GeoRef from id value
         $ref = GeoRef::get()->byID($value);
@@ -92,8 +98,10 @@ class GeoQuestion extends Question {
     public function responseCreated($response, $value) {
         
         // Add the geometry as an sql relation to our response
-        $ref = GeoRef::get()->byID($value);
-        $response->Geometries()->add($ref);
+        if ($value) {
+            $ref = GeoRef::get()->byID($value);
+            $response->Geometries()->add($ref);
+        }
     }
     
     public function sample() {

@@ -49,6 +49,24 @@ $buttonSize: 48px;
 }
 
 
+// Transitions
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .2s ease;
+}
+.fade-enter, .fade-leave-to {
+  opacity: 0;
+}
+
+.grow-fade-enter-active, .grow-fade-leave-active {
+  transition: opacity .2s ease, transform .2s ease;
+}
+.grow-fade-enter, .grow-fade-leave-to {
+  opacity: 0;
+  transform: scale(0.5);
+}
+
+
+
 
 
 
@@ -84,11 +102,6 @@ $buttonSize: 48px;
       }
     }
     
-    #map-detail, #map-controls, #map-actions,
-    #map-overlay, #map-cancel-button, #mobile-buttons {
-      &:not(.active) { display: none !important; }
-    }
-    
     &.selecting {
       #map { cursor: crosshair !important; }
       .leaflet-interactive { pointer-events: none; }
@@ -100,6 +113,7 @@ $buttonSize: 48px;
       width: 500px;
       z-index: 5000;
       padding-bottom: 0px;
+      overflow-x: hidden;
       
       @extend .map-card-style;
       
@@ -166,14 +180,15 @@ $buttonSize: 48px;
       left: 0; right: 0;
       background: rgba(0,0,0,0.3);
       z-index: 1500;
+      padding: 0px $cardPadding;
       
       pointer-events: none;
       
-      .message.text {
+      .message {
         @extend .map-card-style;
         
         text-align: center;
-        margin-top: $cardPadding 15px;
+        margin-top: $cardPadding;
         font-size: 18px;
         color: $titleTextColour;
         max-width: 550px;
@@ -190,7 +205,7 @@ $buttonSize: 48px;
       margin: auto;
       z-index: 3000;
       text-align: center;
-      margin-bottom: $cardPadding;
+      margin-bottom: 32px;
       
       
       .button.web {
@@ -285,11 +300,9 @@ $buttonSize: 48px;
     #map-controls {
       top: inherit;
       bottom: calc(#{$buttonSize} + #{$cardPadding});
+      margin-bottom: calc(#{$cardPadding} * 2.5);
     }
     
-    #map-actions, #map-controls {
-      &:not(.toggled) { display: none !important; }
-    }
     
     #map-actions {
       top: inherit;
@@ -297,7 +310,7 @@ $buttonSize: 48px;
       left: 0;
       bottom: $buttonSize;
       margin: #{$cardPadding} auto;
-      margin-bottom: calc(#{$cardPadding} * 2);
+      margin-bottom: calc(#{$cardPadding} * 2.5);
       
       p { font-size: 24px; }
     }

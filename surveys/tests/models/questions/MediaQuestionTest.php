@@ -1,6 +1,7 @@
 <?php
 
 /** Tests MediaQuestion */
+/** @group whitelist */
 class MediaQuestionTest extends SapphireTest {
     
     public $usesDatabase = true;
@@ -13,7 +14,8 @@ class MediaQuestionTest extends SapphireTest {
             "Name" => "Media Question",
             "Handle" => "media-question",
             "MediaType" => "any",
-            "Strategy" => "LOCAL"
+            "Strategy" => "LOCAL",
+            "Required" => true
         ]);
     }
     
@@ -117,10 +119,11 @@ class MediaQuestionTest extends SapphireTest {
     
     public function testValidateValueWithInvalidFile() {
         
-        $errors = $this->question->validateValue([]);
+        $errors = $this->question->validateValue("Something");
         
         $this->assertEquals(4, count($errors));
     }
+    
     
     /* Value Packing */
     public function testPackValueWithMediaId() {

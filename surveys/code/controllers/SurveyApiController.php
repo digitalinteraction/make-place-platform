@@ -185,7 +185,9 @@ class SurveyApiController extends Controller {
         
         // Process files
         foreach ($_FILES as $name => $file) {
-            $fields[$name] = $file;
+            if ($file["error"] == UPLOAD_ERR_OK) {
+                $fields[$name] = $file;
+            }
         }
         
         

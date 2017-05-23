@@ -1,4 +1,4 @@
-define(["jquery", "vue", "lodash", "utils"], function($, Vue, _, Utils) {
+define(["jquery", "vue", "lodash", "leaflet", "utils"], function($, Vue, _, L, Utils) {
     "use strict";
     
     
@@ -19,10 +19,6 @@ define(["jquery", "vue", "lodash", "utils"], function($, Vue, _, Utils) {
         this.page = page;
         this.component = component;
         this.state = mapState;
-        
-        
-        // Create a clustering layer
-        // this.clusterer = L.markerClusterGroup();
         
         
         // Add the "Add Response" button
@@ -75,8 +71,6 @@ define(["jquery", "vue", "lodash", "utils"], function($, Vue, _, Utils) {
     
     SurveyComponent.prototype.responseClicked = function(e) {
         
-        console.log("Clicked");
-        
         // Pan to the pin's position
         this.state.map.panTo(e.latlng);
         
@@ -99,8 +93,6 @@ define(["jquery", "vue", "lodash", "utils"], function($, Vue, _, Utils) {
     };
     
     SurveyComponent.prototype.responseDetailRemoved = function() {
-        
-        console.log("Removed");
         
         if (this.highlightLayer) {
             this.highlightLayer.remove();
@@ -126,8 +118,6 @@ define(["jquery", "vue", "lodash", "utils"], function($, Vue, _, Utils) {
     };
     
     SurveyComponent.prototype.highlightResponse = function(response) {
-        
-        console.log("Highlighting");
         
         if (this.component.highlightQuestion && response.values[this.component.highlightQuestion]) {
             var question = response.values[this.component.highlightQuestion];
@@ -176,16 +166,23 @@ define(["jquery", "vue", "lodash", "utils"], function($, Vue, _, Utils) {
             var extras = '';
             extras += '<input type="hidden" name="'+posField+'[x]" value="'+position[0]+'">';
             extras += '<input type="hidden" name="'+posField+'[y]" value="'+position[1]+'">';
-            $('#map-detail .inner form').append(extras);
             
             
-            // Add listener for file changes
-            $('input[type=file]').on('change', self.fileAttatched.bind(self));
-            
-            
-            // Listen for the form submitting
-            // + rebind this for function call
-            $('#map-detail .inner form').on('submit', self.submitSurvey.bind(self));
+            // Wait for vue to render the detail
+            setTimeout(function() {
+                
+                $('#map-detail .inner form').append(extras);
+                
+                
+                // Add listener for file changes
+                $('input[type=file]').on('change', self.fileAttatched.bind(self));
+                
+                
+                // Listen for the form submitting
+                // + rebind this for function call
+                $('#map-detail .inner form').on('submit', self.submitSurvey.bind(self));
+                
+            }, 0);
         });
     };
     
@@ -222,6 +219,9 @@ define(["jquery", "vue", "lodash", "utils"], function($, Vue, _, Utils) {
             
             // Remove the survey form
             self.removeSurveyForm();
+            
+            // Remove the detail view via the state
+            self.state.methods.hideDetail();
         })
         .catch(function(error) {
             
@@ -243,9 +243,6 @@ define(["jquery", "vue", "lodash", "utils"], function($, Vue, _, Utils) {
             this.addingMarker = null;
         }
         
-        
-        // Remove the detail view via the state
-        this.state.methods.hideDetail();
     };
     
     

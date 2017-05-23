@@ -65,6 +65,12 @@ class MediaQuestion extends Question {
     /* Value Management */
     public function validateValue($value) {
         
+        $errors = parent::validateValue($value);
+        if (count($errors)) return $errors;
+        if (!$value && $this->Required == false) { return []; }
+        
+        
+        
         // If an id was passed, validate that
         if (is_numeric($value)) {
             if (SurveyMedia::get()->byID($value) == null) {
@@ -74,6 +80,8 @@ class MediaQuestion extends Question {
                 return [];
             }
         }
+        
+        
         
         // Check we have the properties
         $errors = [];
@@ -98,8 +106,12 @@ class MediaQuestion extends Question {
         // If an id was passed, return the id to pack into json
         if (is_numeric($value)) { return $value; }
         
-        // Use our stratey
-        return MediaStrategy::get($this->Strategy)->createMedia($value);
+        // Use our stratey to create a SurveyMedia & return its id
+        if ($value) {
+            return MediaStrategy::get($this->Strategy)->createMedia($value);
+        }
+        
+        return null;
     }
     
     public function unpackValue($value) {
@@ -115,7 +127,9 @@ class MediaQuestion extends Question {
     public function responseCreated($response, $value) {
         
         // Add the media as an sql relation to our response
-        $media = SurveyMedia::get()->byID($value);
-        $response->Media()->add($media);
+        if ($value) {
+            $media = SurveyMedia::get()->byID($value);
+            $response->Media()->add($media);
+        }
     }
 }
