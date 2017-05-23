@@ -29,6 +29,7 @@ requirejs([
     var componentMap = {
         "SurveyMapComponent": SurveyComponent
     };
+    var detailOnClose = null;
     
     
     var state = {
@@ -78,8 +79,8 @@ requirejs([
     
     function showMapDetail(title, html, onClose) {
         
-        // Close the old detail, if there is one
-        $("#map-detail .close-button").trigger("click");
+        // Close the old detail, if there was one
+        hideMapDetail();
         
         
         // Make sure we aren't minimized
@@ -96,13 +97,11 @@ requirejs([
         toggleElem("#map-actions", false);
         toggleElem("#mobile-buttons", false);
         
+        detailOnClose = onClose;
+        
         
         // Listen for clicks on the close button
         detail.find(".close-button").on("click", function(e) {
-            
-            // If there is a callback and it returns false, don't close
-            if (onClose && onClose(e) === false) { return; }
-            
             hideMapDetail();
         });
         
@@ -126,6 +125,9 @@ requirejs([
     }
     
     function hideMapDetail() {
+        
+        if (detailOnClose) detailOnClose();
+        detailOnClose = null;
         
         // Get the detail object
         var detail = $("#map-detail");

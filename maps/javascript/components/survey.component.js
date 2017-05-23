@@ -66,35 +66,41 @@ define(["jquery", "vue", "lodash", "utils"], function($, Vue, _, Utils) {
         
         
         // Listen for clicks on the pin
-        var self = this;
-        marker.on("click", function(e) {
-            
-            // Pan to the pin's position
-            self.state.map.panTo(e.latlng);
-            
-            
-            // Highlight the pin
-            self.highlightSurvey(e.target.response);
-            
-            
-            // Fetch the pin's data over ajax
-            $.ajax(Utils.apiUrl("/survey/" + response.surveyId + "/response/" + response.id))
-            .then(function(data) {
-                
-                // Show a detail with the ajax response
-                self.state.methods.showDetail(data.title, data.body, function(e) {
-                    self.responseDetailRemoved();
-                });
-            })
-            .catch(function(error) { console.log(error); });
-        });
+        marker.on("click", this.responseClicked.bind(this));
         
         
         // Return the new marker
         return marker;
     };
     
+    SurveyComponent.prototype.responseClicked = function(e) {
+        
+        console.log("Clicked");
+        
+        // Pan to the pin's position
+        this.state.map.panTo(e.latlng);
+        
+        
+        // Fetch the pin's data over ajax
+        var response = e.target.response;
+        var self = this;
+        $.ajax(Utils.apiUrl("/survey/" + response.surveyId + "/response/" + response.id))
+        .then(function(data) {
+            
+            // Show a detail with the ajax response
+            self.state.methods.showDetail(data.title, data.body, function() {
+                self.responseDetailRemoved();
+            });
+            
+            // Highlight the pin
+            self.highlightResponse(response);
+        })
+        .catch(function(error) { console.log(error); });
+    };
+    
     SurveyComponent.prototype.responseDetailRemoved = function() {
+        
+        console.log("Removed");
         
         if (this.highlightLayer) {
             this.highlightLayer.remove();
@@ -119,7 +125,9 @@ define(["jquery", "vue", "lodash", "utils"], function($, Vue, _, Utils) {
         });
     };
     
-    SurveyComponent.prototype.highlightSurvey = function(response) {
+    SurveyComponent.prototype.highlightResponse = function(response) {
+        
+        console.log("Highlighting");
         
         if (this.component.highlightQuestion && response.values[this.component.highlightQuestion]) {
             var question = response.values[this.component.highlightQuestion];
@@ -138,9 +146,7 @@ define(["jquery", "vue", "lodash", "utils"], function($, Vue, _, Utils) {
                 });
                 
                 this.state.map.addLayer(this.highlightLayer);
-                
             }
-            
         }
     };
     
