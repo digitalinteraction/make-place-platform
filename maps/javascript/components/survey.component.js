@@ -1,5 +1,28 @@
-define(["jquery", "vue", "lodash", "leaflet", "utils"], function($, Vue, _, L, Utils) {
+define([
+    "jquery", "vue", "lodash", "leaflet", "utils",
+    "text!templates/survey-response.vue",
+    "text!templates/survey.vue"
+], function($, Vue, _, L, Utils, SurveyResponseTemplate, SurveyTemplate) {
     "use strict";
+    
+    /** Components */
+    function makeResponseComp(response) {
+        return {
+            data: function() {
+                return { response: response };
+            },
+            template: SurveyResponseTemplate
+        };
+    }
+    
+    function makeSurveyComp(survey, position) {
+        return {
+            data: function() {
+                return { survey: survey, position: position };
+            },
+            template: SurveyTemplate
+        };
+    }
     
     
     /** Constructor */
@@ -81,8 +104,10 @@ define(["jquery", "vue", "lodash", "leaflet", "utils"], function($, Vue, _, L, U
         $.ajax(Utils.apiUrl("/survey/" + response.surveyId + "/response/" + response.id))
         .then(function(data) {
             
+            let comp = makeResponseComp(data);
+            
             // Show a detail with the ajax response
-            self.state.methods.showDetail(data.title, data.body, function() {
+            self.state.methods.showDetail(data.title, comp, function() {
                 self.responseDetailRemoved();
             });
             
@@ -156,8 +181,12 @@ define(["jquery", "vue", "lodash", "leaflet", "utils"], function($, Vue, _, L, U
         $.ajax(Utils.apiUrl("/survey/"+this.component.surveyID+"/view"))
         .then(function(data) {
             
+            var comp = makeSurveyComp(data, position);
+            
             // Show a detail with the form
-            self.state.methods.showDetail(data.title, data.content, self.removeSurveyForm.bind(self));
+            self.state.methods.showDetail(data.title, comp, function() {
+                self.removeSurveyForm();
+            });
             
             // Get the name of the position field from our config
             var posField = 'fields['+self.component.positionQuestion+']';
@@ -244,6 +273,7 @@ define(["jquery", "vue", "lodash", "leaflet", "utils"], function($, Vue, _, L, U
         }
         
     };
+    
     
     
     

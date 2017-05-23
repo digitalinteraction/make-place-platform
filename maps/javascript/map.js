@@ -155,7 +155,7 @@ requirejs([
         });
     }
     
-    function showMapDetail(title, content, onClose) {
+    function showMapDetail(title, component, onClose) {
         
         // Close the old detail, if there was one
         hideMapDetail();
@@ -164,7 +164,7 @@ requirejs([
         // Get the detail object
         app.$data.detail = {
             title: title,
-            content: content,
+            component: component,
             minimized: false
         };
         

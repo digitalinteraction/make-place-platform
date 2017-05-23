@@ -6,7 +6,7 @@
 <% require css('maps/css/marker-cluster.css') %>
 
 
-<div id="map-app" :class="{selecting: isSelecting}">
+<div id="map-app" :class="{selecting: isSelecting}" v-cloak>
     
     <div v-if="cancelAction" id="map-cancel-button" @click="cancel">
         <p class="web button red hidden-xs"> <i class="icon fa fa-ban"></i> Cancel </p>
@@ -29,7 +29,10 @@
                     <i @click="closeDetail" class="close-button fa fa-times-circle"></i>
                 </span>
             </h2>
-            <div class="inner" v-if="!detail.minimized" v-html="detail.content"></div>
+            <%-- <div class="inner" v-if="!detail.minimized" v-html="detail.content"></div> --%>
+            
+            <component :is="detail.component" v-if="!detail.minimized" class="inner"></component>
+            
         </div>
     </transition>
     

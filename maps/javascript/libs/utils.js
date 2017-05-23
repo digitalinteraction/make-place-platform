@@ -1,15 +1,9 @@
 define([
-    "jquery", "vue", "handlebars",
-    "text!templates/map-action.hbs",
-    "text!templates/survey-response.hbs"
-], function($, Vue, Handlebars, MapAction, SurveyResponse) {
+    "jquery", "vue", "handlebars"
+], function($, Vue, Handlebars) {
     "use strict";
     
     return {
-        tpl: {
-            mapAction: Handlebars.compile(MapAction),
-            surveyResponse: Handlebars.compile(SurveyResponse)
-        },
         
         getUrl: function() {
             var url = window.location.href;
