@@ -19,16 +19,4 @@ Filesystem:
 
 Director:
   rules:
-    'survey/$SurveyID': 'SurveyApiController'
-
-
-
-SurveyResponse:
-  extensions:
-    - JsonFieldExtension
-
-
-SurveyApiController:
-  extensions:
-    - JsonApiExtension
-    - ApiAuthExtension
+    'api/survey/$SurveyID': 'SurveyApiController'

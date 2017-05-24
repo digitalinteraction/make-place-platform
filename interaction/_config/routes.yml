@@ -1,0 +1,13 @@
+---
+Name: interactionroutes
+After: framework/routes#coreroutes
+---
+
+#
+#   Custom routing for the applications
+#   Connects routes with Controllers
+#
+
+Director:
+  rules:
+    'api/comment': 'CommentApiController'

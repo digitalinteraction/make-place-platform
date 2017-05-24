@@ -1,8 +1,10 @@
 <?php
 
-/** ... */
+/** An controller extension to provide json api utilities */
 class JsonApiExtension extends Extension {
     
+    // Reponses
+    /** Returns a json response with json data */
     public function jsonResponse($json = [], $statusCode = 200) {
         
         $response = $this->owner->getResponse();
@@ -14,6 +16,7 @@ class JsonApiExtension extends Extension {
         return $response;
     }
     
+    /** Returns a json response in airbnb style */
     public function formattedJsonResponse($data, $messages = [], $success = true) {
         
         if (!is_array($messages)) {
@@ -30,4 +33,5 @@ class JsonApiExtension extends Extension {
             'data' => $data
         ], $status);
     }
+    
 }

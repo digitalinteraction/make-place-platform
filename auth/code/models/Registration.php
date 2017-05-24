@@ -4,6 +4,8 @@
  */
 class Registration extends DataObject implements PermissionProvider {
     
+    private static $extensions = [ 'SecureGeneratorExtension' ];
+    
     private static $db = array(
         "Key" => "Varchar(255)",
         "Active" => "Boolean",

@@ -55,7 +55,7 @@ define([
             
             // Load responses
             var self = this;
-            $.ajax(Utils.getOrigin() + "/survey/" + self.component.surveyID + "/responses")
+            $.ajax(Utils.getOrigin() + "/api/survey/" + self.component.surveyID + "/responses")
             .then(function(responses) {
                 
                 // Generate markers and add them to the layer
@@ -101,7 +101,7 @@ define([
         // Fetch the pin's data over ajax
         var response = e.target.response;
         var self = this;
-        $.ajax(Utils.apiUrl("/survey/" + response.surveyId + "/response/" + response.id))
+        $.ajax(Utils.apiUrl("/api/survey/" + response.surveyId + "/response/" + response.id))
         .then(function(data) {
             
             let comp = makeResponseComp(data);
@@ -178,7 +178,7 @@ define([
         
         // Request the survey form over ajax
         var self = this;
-        $.ajax(Utils.apiUrl("/survey/"+this.component.surveyID+"/view"))
+        $.ajax(Utils.apiUrl("/api/survey/"+this.component.surveyID+"/view"))
         .then(function(data) {
             
             var comp = makeSurveyComp(data, position);

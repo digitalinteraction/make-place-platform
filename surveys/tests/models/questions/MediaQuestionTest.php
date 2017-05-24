@@ -1,7 +1,6 @@
 <?php
 
 /** Tests MediaQuestion */
-/** @group whitelist */
 class MediaQuestionTest extends SapphireTest {
     
     public $usesDatabase = true;

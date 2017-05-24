@@ -1,20 +1,16 @@
 <?php
 
-/** ... */
-class SurveyApiController extends Controller {
+/**
+ * @apiDefine SurveyNotFound
+ * @apiSuccessExample 404 Not Found
+ * [ "Survey Not Found" ]
+ */
+
+
+/** A controller to handle actions around surveys */
+class SurveyApiController extends ApiController {
     
-    /**
-     * @apiDefine Member Member access only
-     * Authentication requires a valid web session or a valid `apikey`
-     */
-    
-    /**
-     * @apiDefine SurveyNotFound
-     * @apiSuccessExample 404 Not Found
-     * [ "Survey Not Found" ]
-     */
-    
-    
+    private static $extensions = [];
     
     private static $allowed_actions = [
         'index', 'submitSurvey', 'getResponses', 'viewResponse', 'viewSurvey', 'createGeom', 'createMedia'
@@ -46,7 +42,7 @@ class SurveyApiController extends Controller {
     
     
     /**
-     * @api {get} survey/:id/ Questions
+     * @api {get} api/survey/:id/ Questions
      * @apiName SurveyIndex
      * @apiGroup Survey
      * @apiPermission Member
@@ -99,7 +95,7 @@ class SurveyApiController extends Controller {
     }
     
     /**
-     * @api {post} survey/:id/submit Submit Response
+     * @api {post} api/survey/:id/submit Submit Response
      * @apiName SurveySubmit
      * @apiGroup Survey
      * @apiPermission Member
@@ -245,7 +241,7 @@ class SurveyApiController extends Controller {
     }
     
     /**
-     * @api {get} survey/:id/view View
+     * @api {get} api/survey/:id/view View
      * @apiName SurveyView
      * @apiGroup Survey
      *
@@ -279,7 +275,7 @@ class SurveyApiController extends Controller {
     }
     
     /**
-     * @api {get} survey/:id/responses Responses
+     * @api {get} api/survey/:id/responses Responses
      * @apiName SurveyResponses
      * @apiGroup Survey
      *
@@ -335,7 +331,7 @@ class SurveyApiController extends Controller {
     }
     
     /**
-     * @api {get} survey/:id/response/:id View Response
+     * @api {get} api/survey/:id/response/:id View Response
      * @apiName SurveyResponseView
      * @apiGroup Survey
      *
@@ -375,7 +371,7 @@ class SurveyApiController extends Controller {
     }
     
     /**
-     * @api {post} survey/:id/geo Create Geometry
+     * @api {post} api/survey/:id/geo Create Geometry
      * @apiName SurveyGeoCreate
      * @apiGroup Survey
      * @apiPermission Member
@@ -442,7 +438,7 @@ class SurveyApiController extends Controller {
     }
     
     /**
-     * @api {post} survey/:id/media Create Media
+     * @api {post} api/survey/:id/media Create Media
      * @apiName SurveyMediaCreate
      * @apiGroup Survey
      * @apiPermission Member
@@ -496,6 +492,7 @@ class SurveyApiController extends Controller {
     
     
     /* Utils */
+    /** Get the member id of the user making the request via session or ApiKey */
     public function requestMemberId(&$errors) {
         
         // Try to use api auth first
@@ -521,53 +518,7 @@ class SurveyApiController extends Controller {
         return count($errors) == 0 ? $memberId : null;
     }
     
-    public function bodyVar($name, &$errors = []) {
-        
-        $post = $this->postVar($name);
-        if ($post != null) { return $post; }
-        
-        $json = $this->jsonVar($name);
-        if ($json != null) { return $json; }
-        
-        $errors[] = "Please provide '$name'";
-        return null;
-    }
-    
-    public function postVar($name, &$errors = []) {
-        
-        if ($this->request->postVar($name) != null) {
-            return $this->request->postVar($name);
-        }
-        
-        $errors[] = "Please provide '$name'";
-        return null;
-    }
-    
-    public function jsonVar($name, &$errors = []) {
-        
-        if ($this->jsonBody == null) {
-            $this->jsonBody = json_decode($this->request->getBody(), true);
-        }
-        
-        if (isset($this->jsonBody[$name])) {
-            return $this->jsonBody[$name];
-        }
-        
-        $errors[] = "Please provide '$name'";
-        
-        return null;
-    }
-    
-    public function getVar($name, &$errors = []) {
-        
-        if ($this->request->getVar($name) != null) {
-            return $this->request->getVar($name);
-        }
-        
-        $errors[] = "Please provide '$name'";
-        return null;
-    }
-    
+    /** Gets a question from the request using the given handle */
     public function getQuestionFromRequest($key, $type, &$errors = []) {
         
         // Get the question handle from the request

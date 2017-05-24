@@ -4,6 +4,8 @@
  */
 class ApiKey extends DataObject {
     
+    private static $extensions = [ 'SecureGeneratorExtension' ];
+    
     /* The ApiKey's database fields */
     private static $db = [
         "Name" => "Varchar(50)",

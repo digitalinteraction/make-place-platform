@@ -114,7 +114,7 @@ class Survey extends DataObject {
     
     
     public function getSurveyUrl() {
-        return "/survey/{$this->ID}/submit";
+        return "/api/survey/{$this->ID}/submit";
     }
     
     

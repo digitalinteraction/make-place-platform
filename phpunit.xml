@@ -7,6 +7,7 @@
             <directory>surveys</directory>
             <directory>maps</directory>
             <directory>auth</directory>
+            <directory>interaction</directory>
         </testsuite>
         
     </testsuites>
@@ -17,6 +18,7 @@
             <directory suffix=".php">surveys/code</directory>
             <directory suffix=".php">maps/code</directory>
             <directory suffix=".php">auth/code</directory>
+            <directory suffix=".php">interaction/code</directory>
         </whitelist>
     </filter>
 

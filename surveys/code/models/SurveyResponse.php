@@ -5,6 +5,10 @@ class SurveyResponse extends DataObject {
     
     public $HiddenQuestion = false;
     
+    private static $extensions = [
+        'JsonFieldExtension'
+    ];
+    
     private static $db = [
         "Responses" => "JsonText"
     ];

@@ -24,6 +24,7 @@ services:
       - ./surveys:/app/surveys:ro
       - ./auth:/app/auth:ro
       - ./maps:/app/maps:ro
+      - ./interaction:/app/interaction:ro
       - ./phpunit.xml:/app/phpunit.xml:ro
     environment:
       DB_HOST: mysql

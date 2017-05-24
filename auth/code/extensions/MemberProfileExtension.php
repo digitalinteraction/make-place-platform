@@ -1,6 +1,6 @@
 <?php
 
-/** ... */
+/** An extension for Member adding profile information */
 class MemberProfileExtension extends DataExtension {
     
     private static $db = [];

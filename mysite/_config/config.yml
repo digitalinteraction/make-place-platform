@@ -9,19 +9,10 @@ After:
 
 # Set the default theme
 SSViewer:
-  theme: 'strapped'
+  theme: 'generic'
 
 
 # Custom configuration for PHP Classes
-
-Registration:
-  extensions:
-    - SecureGeneratorExtension
-
 SiteConfig:
   extensions:
     - BrandSiteConfigExtension
-
-ApiKey:
-  extensions:
-    - SecureGeneratorExtension
