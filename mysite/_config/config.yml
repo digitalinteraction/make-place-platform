@@ -16,3 +16,7 @@ SSViewer:
 SiteConfig:
   extensions:
     - BrandSiteConfigExtension
+
+DataObject:
+  extensions:
+    - JsonSerializableDataExtension

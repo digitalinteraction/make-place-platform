@@ -28,6 +28,60 @@ class CommentApiController extends ApiController {
         return "!?";
     }
     
+    public function comment() {
+        
+        $errors = [];
+        $target = $this->getTarget(
+            $this->request->param('TargetType'),
+            $this->request->param('TargetID'),
+            $errors
+        );
+        
+        if (count($errors)) {
+            return $this->jsonResponse($errors, 400);
+        }
+        
+        if ($this->request->httpMethod() == "POST") {
+            return $this->commentCreate($target);
+        }
+        else {
+            return $this->commentIndex($target);
+        }
+    }
+    
+    function getTarget($type, $id, &$errors = []) {
+        
+        $errorMsg = "$type($id)";
+        
+        // Check the class exists
+        if (!class_exists($type)) {
+            $errors[] = "Unknown Target $errorMsg"; return null;
+        }
+        
+        // Reflect the class to check its a DataObject
+        $reflection = new ReflectionClass($type);
+        if (!$reflection->isSubclassOf('DataObject')) {
+            $errors[] = "Invalid Target $errorMsg"; return null;
+        }
+        
+        // Check the object is Commentable
+        if (!DataObject::has_extension($type, "CommentableDataExtension")) {
+            $errors[] = "Cannot comment on $errorMsg"; return null;
+        }
+        
+        // Fetch the object
+        $object = $type::get()->byID($id);
+        
+        // Check the object exists
+        if (!$object) {
+            $errors[] = "$errorMsg does not exist"; return null;
+        }
+        
+        // Return the object
+        return $object;
+    }
+    
+    
     
     /**
      * @api {get} api/comment/:id/children/ Children
@@ -46,23 +100,19 @@ class CommentApiController extends ApiController {
      */
     public function commentChildren() {
         
-        return $this->jsonResponse([ "msg" => "CommentChildren: Coming soon" ]);
+        $children = Comment::get()->filter([
+            "ParentID" => $this->request->param("CommentID")
+        ]);
+        
+        $json = [];
+        foreach ($children as $comment) {
+            $json[] = $comment->jsonSerialize();
+        }
+        
+        return $this->jsonResponse($json);
     }
     
-    public function comment() {
-        
-        $type = $this->request->param('TargetType');
-        $id = $this->request->param('TargetID');
-        
-        $method = $this->request->httpMethod();
-        
-        if ($method == "POST") {
-            return $this->commentCreate($type, $id);
-        }
-        else {
-            return $this->commentIndex($type, $id);
-        }
-    }
+    
     
     
     /**
@@ -81,9 +131,19 @@ class CommentApiController extends ApiController {
      *   "msg": "coming soon"
      * }
      */
-    public function commentIndex($targetType, $targetId) {
+    public function commentIndex($target) {
         
-        return $this->jsonResponse([ "msg" => "CommentIndex: Coming soon" ]);
+        $comments = Comment::get()->filter([
+            "TargetClass" => $target->ClassName,
+            "TargetID" => $target->ID
+        ]);
+        
+        $json = [];
+        foreach($comments as $comment) {
+            $json[] = $comment->jsonSerialize();
+        }
+        
+        return $this->jsonResponse($json);
     }
     
     /**
@@ -96,15 +156,54 @@ class CommentApiController extends ApiController {
      *
      * @apiParam {string} targetType The classname of the thing being commented on
      * @apiParam {int} id The id of the record being commented on
+     * @apiParam {string} message The message of the comment being made
      *
      * @apiSuccessExample {json} 200 OK
      * {
      *   "msg": "coming soon"
      * }
      */
-    public function commentCreate($targetType, $targetId) {
+    public function commentCreate($target) {
         
-        return $this->jsonResponse([ "msg" => "CommentCreate: Coming soon" ]);
+        // Check they are logged in
+        $this->checkApiAuth();
+        $member = Member::currentUser();
+        if (!$member) {
+            return $this->jsonResponse(["You need to log in to do that"], 401);
+        }
+        
+        // Check parameters were passed
+        $errors = [];
+        $message = $this->bodyVar("message", $errors);
+        $parentId = $this->bodyVar("parentID");
+        if (!$target->canCreateComment($member)) {
+            $errors[] = "Sorry, you can't do that";
+        }
+        
+        if ($parentId != null && Comment::get()->byID($parentId) == null) {
+            $errors[] = "Parent comment does not exist";
+        }
+        
+        
+        if (count($errors)) { return $this->jsonResponse($errors, 400); }
+        
+        
+        // Create the comment
+        $comment = Comment::create([
+            "Message" => $message,
+            "TargetClass" => $target->ClassName,
+            "TargetID" => $target->ID,
+            "MemberID" => Member::currentUserID(),
+            "ParentID" => $parentId
+        ]);
+        
+        
+        // Save the comment
+        $comment->write();
+        
+        
+        // Return the serialized comment
+        return $this->jsonResponse($comment->jsonSerialize());
     }
     
     // ...

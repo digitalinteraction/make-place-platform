@@ -1,13 +1,13 @@
 <?php
 
-/** ... */
+/** A response to the questions of a survey */
 class SurveyResponse extends DataObject {
     
-    public $HiddenQuestion = false;
-    
     private static $extensions = [
-        'JsonFieldExtension'
+        "JsonFieldExtension", "CommentableDataExtension"
     ];
+    
+    public $HiddenQuestion = false;
     
     private static $db = [
         "Responses" => "JsonText"
@@ -52,7 +52,6 @@ class SurveyResponse extends DataObject {
         return $values;
     }
     
-    
     public function getTitle() {
         
         return $this->Member()->getName() . "'s Response";
@@ -83,4 +82,11 @@ class SurveyResponse extends DataObject {
             'values' => $values
         ];
     }
+    
+    
+    
+    /* Commentable */
+    public function canViewComments($member) { return true; }
+    
+    public function canCreateComment($member) { return true; }
 }
