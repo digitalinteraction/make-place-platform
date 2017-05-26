@@ -12,7 +12,7 @@ class MediaQuestionTest extends SapphireTest {
         $this->question = MediaQuestion::create([
             "Name" => "Media Question",
             "Handle" => "media-question",
-            "MediaType" => "any",
+            "MediaType" => "ANY",
             "Strategy" => "LOCAL",
             "Required" => true
         ]);

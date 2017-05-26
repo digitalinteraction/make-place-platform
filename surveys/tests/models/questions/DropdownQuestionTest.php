@@ -10,6 +10,7 @@ class DropdownQuestionTest extends SapphireTest {
         parent::setUp();
         
         $this->question = DropdownQuestion::create([
+            'Handle' => 'dropdown',
             'Options' => 'A, B, C'
         ]);
     }
@@ -43,16 +44,15 @@ class DropdownQuestionTest extends SapphireTest {
         $this->assertEquals($expected, $result);
     }
     
-    public function testSample() {
+    public function testSerialize() {
         
         $expected = [
-            "type" => "DropdownQuestion",
             "options" => [
                 ["key" => "A", "value" => "a"],
                 ["key" => "B", "value" => "b"],
                 ["key" => "C", "value" => "c"]
             ]
         ];
-        $this->assertEquals($expected, $this->question->sample());
+        $this->assertArraySubset($expected, $this->question->jsonSerialize());
     }
 }

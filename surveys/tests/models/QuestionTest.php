@@ -1,22 +1,16 @@
 <?php
-/*
- *
- */
+
 
 class MockQuestion extends Question {
     
     public function extraFields() {
-        return [
-            TextField::create('TestField', 'TestField')
-        ];
+        return [ TextField::create('TestField', 'TestField') ];
     }
-    
     protected $extraClasses = ['new-class'];
 }
 
-class SomeComplexMockQuestion extends Question {
-    
-}
+class SomeComplexMockQuestion extends Question { }
+
 
 /** Tests Question */
 class QuestionTest extends SapphireTest {
@@ -30,7 +24,10 @@ class QuestionTest extends SapphireTest {
         
         parent::setUp();
         
-        $this->question = MockQuestion::create(["Name", "Question"]);
+        $this->question = MockQuestion::create([
+            "Name" => "Question",
+            "Handle" => "question"
+        ]);
     }
     
     
@@ -203,12 +200,6 @@ class QuestionTest extends SapphireTest {
     
     public function testUnpackValue() {
         $this->assertEquals("value", $this->question->unpackValue("value"));
-    }
-    
-    
-    /* Test Sample value */
-    public function testSample() {
-        $this->assertEquals(["type" => "MockQuestion"], $this->question->sample());
     }
     
 }

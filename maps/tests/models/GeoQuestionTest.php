@@ -206,14 +206,5 @@ class GeoQuestionTest extends SapphireTest {
         $this->assertEquals(1, $ref->Responses()->count());
     }
     
-    public function testSample() {
-        
-        $expected = [
-            "type" => "GeoQuestion",
-            "geoType" => "POINT",
-            "dataType" => 1
-        ];
-        $this->assertEquals($expected, $this->question->sample());
-    }
     
 }

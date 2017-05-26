@@ -4,7 +4,7 @@
 class SurveyResponse extends DataObject {
     
     private static $extensions = [
-        "JsonFieldExtension", "CommentableDataExtension"
+        "JsonFieldExtension", "Commentable", "Votable"
     ];
     
     public $HiddenQuestion = false;
@@ -86,7 +86,16 @@ class SurveyResponse extends DataObject {
     
     
     /* Commentable */
-    public function canViewComments($member) { return true; }
+    public function canViewComments($member = null) { return true; }
     
-    public function canCreateComment($member) { return true; }
+    public function canCreateComment($member = null) { return true; }
+    
+    
+    
+    /* Votable */
+    public function voteType() { return "EMOJI"; }
+    
+    public function canViewVotes($member = null) { return true; }
+    
+    public function canCreateVote($member = null) { return true; }
 }

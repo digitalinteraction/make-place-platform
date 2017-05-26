@@ -1,29 +1,31 @@
 <?php
 
 class MockCommentTarget extends DataObject {
-    private static $extensions = [ "CommentableDataExtension" ];
+    private static $extensions = [ "Commentable" ];
     
     public function canViewComments($member) { return true; }
     public function canCreateComment($member) { return true; }
 }
 
 class MockCommentTargetWithPerms extends DataObject {
-    private static $extensions = [ "CommentableDataExtension" ];
+    private static $extensions = [ "Commentable" ];
     
     public function canViewComments($member) { return false; }
     public function canCreateComment($member) { return false; }
 }
 
+class MockNonCommentable extends DataObject { }
+
 
 
 /** Tests CommentApiController */
-/** @group whitelist */
 class CommentApiControllerTest extends FunctionalTest {
     
     public $usesDatabase = true;
-    
     public $apiBase = "api/comment";
     
+    
+    /* Test Lifecycle */
     public function setUp() {
         parent::setUp();
         
@@ -58,60 +60,6 @@ class CommentApiControllerTest extends FunctionalTest {
     }
     
     
-    
-    /* Target Tests */
-    public function testGetTarget() {
-        
-        $controller = CommentApiController::create();
-        
-        $errors = [];
-        $target = $controller->getTarget("MockCommentTarget", $this->target->ID, $errors);
-        
-        $this->assertNotNull($target);
-        $this->assertCount(0, $errors);
-    }
-    
-    public function testGetTargetWithInvalidClass() {
-        
-        $controller = CommentApiController::create();
-        
-        $errors = [];
-        $target = $controller->getTarget("null", 999, $errors);
-        
-        $this->assertCount(1, $errors);
-    }
-    
-    public function testGetTargetWithNonDataObject() {
-        
-        $controller = CommentApiController::create();
-        
-        $errors = [];
-        $target = $controller->getTarget("Object", 999, $errors);
-        
-        $this->assertCount(1, $errors);
-    }
-    
-    public function testGetTargetWithNonCommentable() {
-        
-        $controller = CommentApiController::create();
-        
-        $errors = [];
-        $target = $controller->getTarget("Page", 999, $errors);
-        
-        $this->assertCount(1, $errors);
-    }
-    
-    public function testGetTargetNotExisting() {
-        
-        $controller = CommentApiController::create();
-        
-        $errors = [];
-        $target = $controller->getTarget("MockCommentTarget", 999, $errors);
-        
-        $this->assertCount(1, $errors);
-    }
-    
-    
     /* Comment Index Tests */
     public function testCommentsIndex() {
         
@@ -124,6 +72,15 @@ class CommentApiControllerTest extends FunctionalTest {
         
         $this->assertEquals(200, $res->getStatusCode());
         $this->assertCount(2, $json);
+    }
+    
+    public function testCommentsIndexWithNonCommentable() {
+        
+        MockNonCommentable::create()->write();
+        
+        $res = $this->get("{$this->apiBase}/on/MockNonCommentable/1");
+        
+        $this->assertEquals(400, $res->getStatusCode());
     }
     
     public function testCommentIndexWithInvalidTarget() {

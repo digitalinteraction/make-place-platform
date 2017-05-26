@@ -72,4 +72,32 @@ class ApiController extends Controller {
         $errors[] = "Please provide '$name'";
         return null;
     }
+    
+    /** Gets an object of a given type by its id, or creates errors */
+    function findObject($type, $id, &$errors = []) {
+        
+        $errorMsg = "$type($id)";
+        
+        // Check the class exists
+        if (!class_exists($type)) {
+            $errors[] = "Unknown Target $errorMsg"; return null;
+        }
+        
+        // Reflect the class to check its a DataObject
+        $reflection = new ReflectionClass($type);
+        if (!$reflection->isSubclassOf('DataObject')) {
+            $errors[] = "Invalid Target $errorMsg"; return null;
+        }
+        
+        // Fetch the object
+        $object = $type::get()->byID($id);
+        
+        // Check the object exists
+        if (!$object) {
+            $errors[] = "$errorMsg does not exist"; return null;
+        }
+        
+        // Return the object
+        return $object;
+    }
 }

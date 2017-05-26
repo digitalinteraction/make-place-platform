@@ -1,25 +1,23 @@
 <?php
 
 class MockCommentableObject extends DataObject {
-    private static $extensions = [ "CommentableDataExtension" ];
-    public function canViewComments($member) { return true; }
-    public function canCreateComment($member) { return true; }
+    private static $extensions = [ "Commentable" ];
 }
 
-/** Tests CommentableDataExtension */
-class CommentableDataExtensionTest extends SapphireTest {
+/** Tests Commentable */
+class CommentableTest extends SapphireTest {
     
     public function testCanViewCallsOwner() {
         
         $object = MockCommentableObject::create();
         $canView = $object->canViewComments(null);
-        $this->assertTrue($canView);
+        $this->assertFalse($canView);
     }
     
     public function testCanCreateCallsOwner() {
         
         $object = MockCommentableObject::create();
         $canCreate = $object->canCreateComment(null);
-        $this->assertTrue($canCreate);
+        $this->assertFalse($canCreate);
     }
 }

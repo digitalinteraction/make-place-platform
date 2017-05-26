@@ -31,11 +31,16 @@ class CommentApiController extends ApiController {
     public function comment() {
         
         $errors = [];
-        $target = $this->getTarget(
+        $target = $this->findObject(
             $this->request->param('TargetType'),
             $this->request->param('TargetID'),
             $errors
         );
+        
+        // Check the target is Commentable
+        if ($target && $target->hasExtension("Commentable") == false) {
+            $errors[] = "Cannot comment on {$target->ClassName}";
+        }
         
         if (count($errors)) {
             return $this->jsonResponse($errors, 400);
@@ -47,38 +52,6 @@ class CommentApiController extends ApiController {
         else {
             return $this->commentIndex($target);
         }
-    }
-    
-    function getTarget($type, $id, &$errors = []) {
-        
-        $errorMsg = "$type($id)";
-        
-        // Check the class exists
-        if (!class_exists($type)) {
-            $errors[] = "Unknown Target $errorMsg"; return null;
-        }
-        
-        // Reflect the class to check its a DataObject
-        $reflection = new ReflectionClass($type);
-        if (!$reflection->isSubclassOf('DataObject')) {
-            $errors[] = "Invalid Target $errorMsg"; return null;
-        }
-        
-        // Check the object is Commentable
-        if (!DataObject::has_extension($type, "CommentableDataExtension")) {
-            $errors[] = "Cannot comment on $errorMsg"; return null;
-        }
-        
-        // Fetch the object
-        $object = $type::get()->byID($id);
-        
-        // Check the object exists
-        if (!$object) {
-            $errors[] = "$errorMsg does not exist"; return null;
-        }
-        
-        // Return the object
-        return $object;
     }
     
     

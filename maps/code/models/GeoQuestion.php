@@ -104,14 +104,4 @@ class GeoQuestion extends Question {
         }
     }
     
-    public function sample() {
-        
-        $sample = parent::sample();
-        
-        $sample['geoType'] = $this->GeoType;
-        $sample['dataType'] = $this->DataType;
-        
-        return $sample;
-    }
-    
 }

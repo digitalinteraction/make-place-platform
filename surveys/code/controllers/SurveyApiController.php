@@ -83,7 +83,7 @@ class SurveyApiController extends ApiController {
         $questions = $this->Survey->getQuestionMap();
         $fields = [];
         foreach ($questions as $handle => $question) {
-            $fields[$handle] = $question->sample();
+            $fields[] = $question->jsonSerialize();
         }
         
         return $this->jsonResponse([

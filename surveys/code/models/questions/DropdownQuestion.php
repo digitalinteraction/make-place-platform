@@ -66,10 +66,10 @@ class DropdownQuestion extends Question {
         return null;
     }
     
-    public function sample() {
-        $sample = parent::sample();
-        
-        $sample['options'] = $this->getOptionsArray()->toNestedArray();
-        return $sample;
+    public function jsonSerialize() {
+        return array_merge(parent::jsonSerialize(), [
+            "options" => $this->getOptionsArray()->toNestedArray()
+        ]);
     }
+    
 }

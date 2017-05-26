@@ -1,8 +1,28 @@
 <?php
 
+
+class MockApiDataObject extends DataObject {
+    
+}
+
+
 /** Tests ApiController */
 class ApiControllerTest extends SapphireTest {
     
+    
+    public $usesDatabase = true;
+    
+    
+    /* Test Lifecycle */
+    function setUp() {
+        parent::setUp();
+        
+        $this->mockObject = MockApiDataObject::create();
+        $this->mockObject->write();
+    }
+    
+    
+    /* Parameter Tests */
     public function testPostVar() {
         
         $controller = ApiController::create();
@@ -64,5 +84,49 @@ class ApiControllerTest extends SapphireTest {
         
         $this->assertEquals("JsonValue", $jsonValue);
         $this->assertEquals("PostValue", $postValue);
+    }
+    
+    
+    
+    /* Target Tests */
+    public function testFindObject() {
+        
+        $controller = CommentApiController::create();
+        
+        $errors = [];
+        $target = $controller->findObject("MockApiDataObject", 1, $errors);
+        
+        $this->assertNotNull($target);
+        $this->assertCount(0, $errors);
+    }
+    
+    public function testFindObjectWithInvalidClass() {
+        
+        $controller = CommentApiController::create();
+        
+        $errors = [];
+        $target = $controller->findObject("null", 999, $errors);
+        
+        $this->assertCount(1, $errors);
+    }
+    
+    public function testFindObjectWithNonDataObject() {
+        
+        $controller = CommentApiController::create();
+        
+        $errors = [];
+        $target = $controller->findObject("Object", 999, $errors);
+        
+        $this->assertCount(1, $errors);
+    }
+    
+    public function testFindObjectNotExisting() {
+        
+        $controller = CommentApiController::create();
+        
+        $errors = [];
+        $target = $controller->findObject("MockApiDataObject", 999, $errors);
+        
+        $this->assertCount(1, $errors);
     }
 }
