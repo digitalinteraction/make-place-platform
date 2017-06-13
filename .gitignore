@@ -20,3 +20,7 @@ silverstripe.log
 /monolog
 /sortablegridfield
 /sqlite3
+
+
+# Sass compiles
+.sass-cache

@@ -4,8 +4,8 @@
 
 
 // General Config
-$themeColour: #87bf67;
-$actionColour: #3886c9;
+$primaryColour: #85c162;
+$secondaryColour: #aaaab1;
 
 
 // Header Config
@@ -16,19 +16,23 @@ $headerActiveBackground: #f6f6f6;
 
 
 // Card Config
-$cardBorder: #eee;
+$cardBorder: #eaeaea;
 $cardBackground: #fff;
 $cardPadding: 18px;
 
 
 // Fonts
-$baseFont: 'Open Sans', -apple-system, system-ui, sans-serif;
-$headingFont: $baseFont;
-$titleFont: 'Montserrat', -apple-system, system-ui, sans-serif;
+$openSans: 'Open Sans', -apple-system, system-ui, sans-serif;
+$jaldi: 'Jaldi', -apple-system, system-ui, sans-serif;
 
+
+// Reusable Colours
+$darkColour: #333344;
+
+
+// Text colours
 $bodyTextColour: #555;
 $lightTextColour: #aaa;
-$titleTextColour: #333;
 
 
 

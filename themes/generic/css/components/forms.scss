@@ -1,0 +1,139 @@
+/* Forms */
+form {
+  
+  .message {
+    &.error {
+      background-color: #f2dede;
+      border-color: $redAltColour;
+      color: $redAltColour;
+    }
+    &.warning {
+      background-color: #fcf8e3;
+      border-color: $orangeAltColour;
+      color: $orangeAltColour;
+    }
+  }
+  
+  p.message {
+    margin-bottom: 32px;
+    border-bottom-width: 4px;
+    border-bottom-style: solid;
+    text-align: center;
+    padding: 8px 0px;
+  }
+  
+  span.message {
+    background: none !important;
+    position: relative;
+    top: -22px;
+    display: block;
+    text-align: right;
+    border-top-width: 4px;
+    border-top-style: solid;
+  }
+  
+  label {
+    color: $darkColour;
+    font-weight: 700;
+    margin: 0px;
+    font-size: 16px;
+  }
+  
+  
+  // General Styles
+  input.text, input.file, textarea, select {
+    width: 100%;
+    background: #fff;
+    border: 1px solid rgba(0,0,0,0);
+    border-bottom: 3px solid $primaryColour;
+    margin-bottom: 18px;
+    border-radius: 0px;
+    color: #333;
+    font-weight: 400;
+    
+    @include placeholder {
+      font-style: italic;
+      color: #bbb;
+    }
+    
+    &:focus {
+      outline: none;
+      border-color: $primaryColour;
+      background: #f7f7f7;
+      padding-left: 6px;
+    }
+  }
+  
+  input.file {
+    padding: 20px 3px;
+  }
+  
+  input.checkbox, input[type=checkbox] {
+    
+    margin-left: 0px !important;
+    
+    &+ label {
+      padding-left: 25px;
+      padding-top: 1px;
+      padding-bottom: 18px;
+    }
+  }
+  
+  select {
+    height: 42px;
+  }
+  
+  input.text, textarea, select {
+    
+    padding: 6px 4px;
+    font-size: 20px;
+    
+    transition: border 0.3s ease, background-colour 0.3s ease, padding 0.3s ease;
+    
+    &:focus {
+      border-top-color: $primaryColour;
+      border-left-color: $primaryColour;
+      border-right-color: $primaryColour;
+    }
+  }
+  
+  input[type=text], input[type=password],
+  input[type=number], input[type=email], input[type=file] {
+    @extend .text;
+  }
+  
+  input[type=submit] {
+    @extend .button-style;
+    @extend .green;
+  }
+  
+  .Actions {
+    text-align: right;
+  }
+  
+  
+  .select-wrap {
+    position: relative;
+    display: block;
+    
+    select {
+      -webkit-appearance: none;
+    }
+    
+    &:hover { cursor: hover; }
+    
+    &:after {
+      @include fa;
+      content: "\f078";
+      color: $darkColour;
+      position: absolute;
+      right: 6px;
+      padding: 6px;
+      top: 6px;
+      font-size: 1.5em;
+    }
+  }
+  
+  
+  
+}

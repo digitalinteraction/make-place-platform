@@ -20,10 +20,13 @@
         
         <article class="content-card">
             
+            <% if BackURL %>
+                <p><a class="bubble" href="$BackURL" title="Go Back" class="back">
+                    <i class="fa fa-chevron-left"></i> Go Back
+                </a></p>
+            <% end_if %>
+            
             <h1 class="title">
-                <% if BackURL %>
-                    <a href="$BackURL" title="Go Back" class="back"><i class="fa fa-chevron-left"></i></a>
-                <% end_if %>
                 $Title
             </h1>
             

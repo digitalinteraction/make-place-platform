@@ -21,6 +21,11 @@ generic. A parameterised silverstripe theme
 	
 	$MetaTags(false)
 	
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700+Jaldi" rel="stylesheet">
+	<% require themedCSS('bootstrap.min') %>
+	<% require themedCSS('font-awesome.min') %>
+	
+	<% require themedCSS('libs') %>
 	<% require themedCSS('generic') %>
 	
 	

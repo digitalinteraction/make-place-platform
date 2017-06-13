@@ -3,23 +3,24 @@
  */
 
 .text-style {
-  font-family: $baseFont;
+  font-family: $openSans;
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 500;
   color: $bodyTextColour;
 }
 
 .heading-style {
-  font-family: $headingFont;
+  font-family: $openSans;
   font-style: oblique;
   font-weight: 600;
 }
 
 .title-style {
   font-size: 42px;
-  font-family: $titleFont;
+  font-family: $openSans;
   font-style: normal;
-  font-weight: 400;
+  font-weight: 700;
+  color: $darkColour;
 }
 
 .card-style {
@@ -41,7 +42,7 @@
   user-select: none;
   padding: 8px 18px;
   font-size: 18px;
-  font-family: $baseFont;
+  font-family: $openSans;
   
   border: 1px solid #ccc;
   

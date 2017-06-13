@@ -133,7 +133,7 @@ $buttonSize: 48px;
           user-select: none;
           i {
             cursor: pointer;
-            color: $actionColour;
+            color: $primaryColour;
           }
         }
       }
@@ -192,7 +192,7 @@ $buttonSize: 48px;
         text-align: center;
         margin-top: $cardPadding;
         font-size: 18px;
-        color: $titleTextColour;
+        color: $darkColour;
         max-width: 550px;
         min-width: 100%;
         margin-left: auto;

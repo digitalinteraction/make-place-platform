@@ -7,7 +7,7 @@
                     <% if SiteConfig.BrandLogo %>
                         <img src="$SiteConfig.BrandLogo.URL" alt="$SiteConfig.Title">
                     <% else %>
-                        <img src="$ThemeDir/images/brand.png" alt="$SiteConfig.Title">
+                        <% include Brand %>
                     <% end_if %>
                 </a>
             </div>

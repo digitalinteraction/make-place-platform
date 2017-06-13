@@ -4,7 +4,7 @@
 
 
 # Start from our base image
-FROM openlab.ncl.ac.uk:4567/make-place/web:base-2.1
+FROM openlab.ncl.ac.uk:4567/make-place/web:base-2.2.0
 
 
 # Add nginx config file
@@ -12,7 +12,7 @@ COPY default.nginx /etc/nginx/sites-available/default
 
 
 # Add composer & cronjobs files
-COPY ["phpunit.xml", "cronjobs", "bootstrap.sh", "/app/"]
+COPY ["phpunit.xml", "cronjobs", "bootstrap.sh", "_config.scss", "_common.scss", "/app/"]
 
 
 # Start cron jobs

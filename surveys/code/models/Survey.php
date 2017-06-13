@@ -17,10 +17,6 @@ class Survey extends DataObject {
         "Questions" => "Question"
     ];
     
-    private static $many_many = [
-        "Geometries" => "GeoRef"
-    ];
-    
     private static $defaults = [
         "SubmitTitle" => "Submit"
     ];

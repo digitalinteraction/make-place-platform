@@ -17,15 +17,16 @@ services:
       - mysql
       - geo
     volumes:
-      - ./mysite:/app/mysite:ro
-      - ./themes:/app/themes:ro
-      - ./assets:/app/assets:rw
-      - ./scripts:/app/scripts:ro
-      - ./surveys:/app/surveys:ro
-      - ./auth:/app/auth:ro
-      - ./maps:/app/maps:ro
-      - ./interaction:/app/interaction:ro
+      - ./mysite:/app/mysite
+      - ./themes:/app/themes
+      - ./assets:/app/assets
+      - ./scripts:/app/scripts
+      - ./surveys:/app/surveys
+      - ./auth:/app/auth
+      - ./maps:/app/maps
+      - ./interaction:/app/interaction
       - ./phpunit.xml:/app/phpunit.xml:ro
+      - ./bootstrap.sh:/app/bootstrap.sh
     environment:
       DB_HOST: mysql
       DB_USER: user
@@ -37,6 +38,7 @@ services:
       PATH: '$PATH:/app/scripts'
       GEO_URL: geo:3000
       GEO_KEY: 4DJ3Nws3h5zj73aKWUQIOavpVAVqeAaV
+      PRIMARY_COL: '#836953'
     
   mysql:
     container_name: mp_mysql

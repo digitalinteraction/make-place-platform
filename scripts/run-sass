@@ -1,0 +1,14 @@
+#!/bin/sh
+
+# Runs sass to compile our scss files into css
+sass --scss --style compressed \
+    themes/generic/css/generic.scss:themes/generic/css/generic.css \
+    surveys/css/survey.scss:surveys/css/survey.css \
+    maps/css/maps.scss:maps/css/maps.css \
+    interaction/css/interaction.scss:interaction/css/interaction.css \
+    auth/css/auth.scss:auth/css/auth.css $@
+
+
+# Notes:
+# - Install sass on your dev machine with `sudo gem install sass`
+# - Add `--watch` to run a watcher for dev

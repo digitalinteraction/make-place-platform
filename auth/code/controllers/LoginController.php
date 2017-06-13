@@ -291,7 +291,7 @@ class LoginController extends ContentController {
      */
     public function LoginForm() {
         
-        $forgotten = "<p><a href='Security/lostpassword?BackURL={$this->getBackURL()}' target='_blank'> I forgot my password </a></p>";
+        $forgotten = "<p><a class='bubble' href='Security/lostpassword?BackURL={$this->getBackURL()}' target='_blank'> I forgot my password </a></p>";
         
         $fields = FieldList::create(array(
             TextField::create('Email','Email')

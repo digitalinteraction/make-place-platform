@@ -8,13 +8,17 @@
 FROM openlab.ncl.ac.uk:4567/b30282237/composer-image:1.0.4
 
 
-# Add Sqlite3
+# Add Sqlite3 & ruby
 RUN apt-get -y update \
  && apt-get -y upgrade -y \
  && DEBIAN_FRONTEND=noninteractive apt-get -y install \
         sqlite3 \
         php5-sqlite \
+        ruby-full \
         && rm -rf /var/lib/apt/lists/*
+
+# Add sass
+RUN gem install sass
 
 
 # Add composer & cronjobs files

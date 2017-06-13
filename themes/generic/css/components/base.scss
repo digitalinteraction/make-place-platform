@@ -1,0 +1,65 @@
+/* Base Styles */
+body {
+  background: #f5f5f5;
+  padding-top: 75px;
+  position: relative;
+  min-width: 320px;
+  font-family: $jaldi;
+  
+  &.fill {
+    min-height: 100%;
+    footer {
+      position: absolute;
+      left: 0; right: 0;bottom: 0;
+    }
+  }
+  
+  
+  p { @extend .text-style; }
+  h1 { @extend .title-style; }
+  h2, h3, h4, h5, h6 { @extend .heading-style; }
+  
+  a {
+    color: $primaryColour;
+    font-weight: 700;
+    
+    transition: color .2s ease, background-color .2s ease;
+    
+    &:hover {
+      color: darken($primaryColour, 20%);
+    }
+    
+    &.bubble {
+      text-decoration: none;
+      font-weight: 700;
+      padding: 5px 7px;
+      border-radius: 5px;
+      margin: 0 -7px;
+      
+      
+      &:hover {
+        text-decoration: none;
+        background-color: $primaryColour;
+        color: white;
+      }
+    }
+  }
+  
+  
+  .content-card {
+    @extend .card-style;
+    
+    .title { margin: 0px; }
+    &:first-child { margin-top: $cardPadding; }
+  }
+  
+  .breadcrumbs {
+    .crumb { color: $primaryColour; }
+    .crumb.last { color: $lightTextColour; font-weight: 400; }
+    .seperator { padding: 0px 5px; }
+  }
+  
+  .content {
+    img { max-width: 100%; }
+  }
+}
