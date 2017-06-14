@@ -32,7 +32,7 @@ test:
     stage: test
     script:
         - cp -r /app/* .
-        - bash scripts/coverage
+        - bash scripts/test
         # - docker run --rm $CONTAINER_BRANCH_IMAGE bash scripts/coverage
         # - docker push $CONTAINER_BRANCH_IMAGE
 
