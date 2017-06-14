@@ -82,7 +82,7 @@ requirejs([
             addMobileActions: function(e) {
                 
                 this.detail = null;
-                this.overlayMessage = "Choose an Action";
+                this.overlayMessage = "";
                 this.showMobileOptions = false;
                 this.mobileActions = true;
                 this.cancelAction = function() {
