@@ -45,6 +45,9 @@ RUN mkdir -p /app/silverstripe-cache \
     && chown www-data /backup \
     && chown www-data /backup/db
 
+# Setup the mail server to use our docker image
+RUN sed -i -e "s/mailhub.*/mailhub=smtp/" /etc/ssmtp/ssmtp.conf
+
 
 # Add volumes for assets & backup data
 VOLUME ["/app/assets", "/backup", "/app/silverstripe-cache"]
