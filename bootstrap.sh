@@ -20,3 +20,9 @@ sed -i -e "s/\$secondaryColour.*/\$secondaryColour: ${SECONDARY_COL:-"#aaaab2"};
 # Recompile the scss
 echo "Compiling styles"
 sh scripts/run-sass -f
+
+
+# Configure php5-fpm
+sed -i -e "s/pm =.*/pm = ondemand/" /etc/php5/fpm/pool.d/www.conf
+sed -i -e "s/pm.max_children =.*/pm.max_children = 3/" /etc/php5/fpm/pool.d/www.conf
+service php5-fpm restart

@@ -55,15 +55,13 @@ services:
     
   geo:
     container_name: mp_geo
-    build: '../geo-api'
+    image: 'openlab.ncl.ac.uk:4567/make-place/geo:1.0.0'
     ports:
       - 3000:3000
     expose:
       - 3000
     links:
       - mysql
-    volumes:
-      - ../geo-api/web:/app/web
     environment:
       SQL_URL: mysql://user:secret@mysql/make-geo
       NODE_ENV: dev
