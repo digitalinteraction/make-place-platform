@@ -29,7 +29,7 @@
             <li class="menu-item">
               <a href="me/" title="profile">
                 <i class="fa fa-user" aria-hidden="true"></i>
-                $CurrentMember.Name
+                $CurrentMember.FirstName
               </a>
             </li>
             
