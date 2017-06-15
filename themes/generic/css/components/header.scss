@@ -1,3 +1,11 @@
+
+
+@keyframes scale-in {
+  0% { transform: scale(0, 0); }
+  100% { transform: scale(1, 1); }
+}
+
+
 /* Header */
 header {
   
@@ -24,10 +32,18 @@ header {
           width: auto;
           max-width: 100%;
           
-          .primary-bg {
-            background: $primaryColour;
-            fill: $primaryColour;
+          &:hover {
+            #make-splash { transform: scale(0.9, 0.9); }
           }
+          
+          #make-splash {
+            transform-origin: center;
+            transform: scale(1,1);
+            transition: transform 0.3s ease;
+          }
+          
+          
+          .primary-bg { fill: $primaryColour; }
         }
       }
     }
@@ -47,12 +63,21 @@ header {
       
       color: $headerInactive;
       
+      
+      transform: scale(1);
+      transition: transform 0.3s, color 0.3s;
+      
       &:hover {
-        background: $headerActiveBackground;
+        background-color: rgba(0,0,0,0);
+        
+        &:not(.active) {
+          transform: scale(1.1);
+          color: $darkColour
+        }
       }
       
       &.active {
-        color: $headerActive;
+        color: $darkColour;
         font-weight: 600;
         border-bottom-color: $primaryColour;
       }

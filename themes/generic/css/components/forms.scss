@@ -4,13 +4,13 @@ form {
   .message {
     &.error {
       background-color: #f2dede;
-      border-color: $redAltColour;
-      color: $redAltColour;
+      border-color: darken($redColour, 7%);
+      color: darken($redColour, 7%);
     }
     &.warning {
       background-color: #fcf8e3;
-      border-color: $orangeAltColour;
-      color: $orangeAltColour;
+      border-color: darken($orangeColour, 7%);
+      color: darken($orangeColour, 7%);
     }
   }
   

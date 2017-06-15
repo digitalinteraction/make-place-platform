@@ -21,7 +21,7 @@
     <% end_if %>
     
     <p class="text-right">
-        <a href="$Link" title="$MenuTitle.XML">
+        <a href="$Link" title="$MenuTitle.XML" class="bubble">
             Keep Reading
             <i class="fa fa-long-arrow-right"></i>
         </a>

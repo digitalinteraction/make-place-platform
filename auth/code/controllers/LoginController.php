@@ -48,8 +48,13 @@ class LoginController extends ContentController {
     
     public function getBackURL() {
         
+        // Get the url from the get var
         $url = $this->request->getVar("BackURL");
-        return ($url != null)? $url : "home/";
+        
+        // If not passed or point off-site, return home
+        if (!$url || !Director::is_relative_url($url)) return "home/";
+        
+        return $url;
     }
     
     
@@ -69,19 +74,19 @@ class LoginController extends ContentController {
      */
     public function emailsent() {
         
-        // Get the email passed in a get var
         $email = $this->request->getVar("email");
+        if (!$email) $email = "";
         
-        
-        // Set the title and content for the page
-        $this->Title = "Activation email sent";
-        $this->Content = "<p> Thank you for registering, an email has been sent to '$email' to finish setting up your account. </p>";
-        
-        
-        $this->useBasicPage = true;
-        
-        // Render the page
-        return $this->renderWith("Page");
+        // Render the email sent page
+        return $this->renderWith("Page", [
+            "Layout" => $this->renderWith("AuthPage", [
+                "Title" => "Activating Account",
+                "Content" => $this->renderWith("Content/EmailSent", [
+                    "Email" => $email,
+                    "AdminEmail" => ADMIN_EMAIL
+                ])
+            ])
+        ]);
     }
     
     public function activate() {
@@ -130,17 +135,13 @@ class LoginController extends ContentController {
     
     public function registered() {
         
-        // Set the title and content for the page
-        $this->Title = "Registered";
-        $this->Content =  "<p> You're all set! Your account has been created and verified, now you can vote and comment on videos </p>";
-        $this->Content .= "<p> Log in with your new account <a href='login/'> here </a> </p>";
-        
-        
-        $this->useBasicPage = true;
-        
-        
-        // Render the page
-        return $this->renderWith("Page");
+        // Render the registered page
+        return $this->renderWith("Page", [
+            "Layout" => $this->renderWith("AuthPage", [
+                "Title" => "Registered",
+                "Content" => $this->renderWith("Content/Registered")
+            ])
+        ]);
     }
     
     
@@ -241,9 +242,6 @@ class LoginController extends ContentController {
         
         
         
-        
-        
-        
         // Create a registration object, generating a unique key for it
         $register = Registration::create();
         $register->MemberID = $member->ID;
@@ -265,7 +263,8 @@ class LoginController extends ContentController {
         // Create an email with the registration key in it
         $email = Email::create()
             ->setTo($email)
-            ->setSubject("$title Account Activation")
+            ->setFrom("$title <".ADMIN_EMAIL.">")
+            ->setSubject("Please verify your email address")
             ->setTemplate("ActivationEmail")
             ->populateTemplate(array(
                 "FirstName" => $firstName,

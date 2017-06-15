@@ -13,11 +13,9 @@ services:
     links:
       - mysql
       - geo
-      - smtp
     depends_on:
       - mysql
       - geo
-      - smtp
     volumes:
       - ./mysite:/app/mysite
       - ./themes:/app/themes

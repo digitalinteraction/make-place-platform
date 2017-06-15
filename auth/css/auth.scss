@@ -8,6 +8,13 @@
     margin: 0px auto;
   }
   
+  .auth-message {
+    p { font-size: 18px; }
+    .email {
+      font-weight: 600;
+    }
+  }
+  
   .oauth {
     padding-top: 20px;
     margin: 0px;

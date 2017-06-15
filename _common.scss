@@ -2,6 +2,14 @@
  *      Reusable Styles
  */
 
+
+@mixin style-button ($colour, $percent: 7%) {
+  background: $colour; border-color: darken($colour, 4%);
+  &:hover { background-color: darken($colour, $percent); }
+  .icon { color: $colour; }
+}
+
+
 .text-style {
   font-family: $openSans;
   font-size: 16px;
@@ -16,7 +24,7 @@
 }
 
 .title-style {
-  font-size: 42px;
+  font-size: 36px;
   font-family: $openSans;
   font-style: normal;
   font-weight: 700;
@@ -37,54 +45,74 @@
 
 .button-style {
   cursor: pointer;
-  border-radius: 3px;
+  border-radius: 5px;
   color: white;
   user-select: none;
-  padding: 8px 18px;
+  padding: 0.5em 1.2em;
   font-size: 18px;
+  font-weight: 600;
   font-family: $openSans;
-  
   border: 1px solid #ccc;
+  display: inline-block;
+  
+  margin-bottom: 0.5em;
+  
+  transition: background-color 0.3s, transform 0.3s;
+  
+  box-shadow: -1.5px -1.5px 0px rgba(0,0,0,0.1) inset;
+  
+  transform: scale(1);
+  
   
   &:hover {
     text-decoration: none;
+    transform: scale(1.04);
   }
   
-  &.full {
-    display: block;
-    margin-bottom: 12px;
-    text-align: center;
+  &.with-icon {
+    position: relative;
+    padding-left: 2.4em;
+    padding-right: 1.2em;
+    border-radius: 2em;
+    
+    &:hover .icon {
+      // background: rgba(0,0,0,0);
+      // color: white;
+      transform: scale(1.08);
+    }
+    
+    .icon {
+      position: absolute;
+      left: 0.3em;
+      top: 0.3em;
+      bottom: 0.3em;
+      width: 1.8em;
+      border-radius: 1em;
+      
+      padding: 0.22em;
+      
+      background: white;
+      color: black;
+      
+      // transition: background-color 0.3s, color 0.3s;
+      transition: transform 0.4s;
+      transform: scale(1);
+      
+      .fa {
+        display: block;
+        text-align: center;
+        font-size: 1.3em;
+      }
+    }
   }
   
-  &.green {
-    background: $greenColour;
-    border-color: $greenAltColour;
-    &:hover { background-color: $greenAltColour; }
-  }
-  
-  &.blue {
-    background: $blueColour;
-    border-color: $blueAltColour;
-    &:hover { background-color: $blueAltColour; }
-  }
-  
-  &.red {
-    background: $redColour;
-    border-color: $redAltColour;
-    &:hover { background-color: $redAltColour; }
-  }
-  
-  &.orange {
-    background: $orangeColour;
-    border-color: $orangeAltColour;
-    &:hover { background-color: $orangeAltColour; }
-  }
-  
-  &.purple {
-    background: $purpleColour;
-    border-color: $purpleAltColour;
-    &:hover { background-color: $purpleAltColour; }
-  }
+  &.primary { @include style-button($primaryColour); }
+  &.secondary { @include style-button($secondaryColour); }
+  &.green { @include style-button($greenColour); }
+  &.blue { @include style-button($blueColour); }
+  &.red { @include style-button($redColour); }
+  &.orange { @include style-button($orangeColour); }
+  &.purple { @include style-button($purpleColour); }
 }
 
 html { height: 100%; }

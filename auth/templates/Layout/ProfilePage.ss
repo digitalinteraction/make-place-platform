@@ -10,12 +10,16 @@
                 </div>
                 <h3 class="title"> $Member.Name </h3>
                 <div class="action-list">
-                    <a class="action full blue" href="me/edit/">
-                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                    <a class="action blue with-icon" href="me/edit/">
+                        <span class="icon">
+                            <i class="fa fa-pencil" aria-hidden="true"></i>
+                        </span>
                         Edit Profile
                     </a>
-                    <a class="action full red" href="Security/logout/?BackURL=home%2F">
-                        <i class="fa fa-sign-out" aria-hidden="true"></i>
+                    <a class="action red with-icon" href="Security/logout/?BackURL=home%2F">
+                        <span class="icon">
+                            <i class="fa fa-sign-out" aria-hidden="true"></i>
+                        </span>
                         Logout
                     </a>
                 </div>
