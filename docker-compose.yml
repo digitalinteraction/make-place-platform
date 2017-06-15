@@ -29,6 +29,8 @@ services:
       - ./interaction:/app/interaction
       - ./phpunit.xml:/app/phpunit.xml:ro
       - ./bootstrap.sh:/app/bootstrap.sh
+    env_file:
+      - secrets.env
     environment:
       DB_HOST: mysql
       DB_USER: user
@@ -67,6 +69,3 @@ services:
     environment:
       SQL_URL: mysql://user:secret@mysql/make-geo
       NODE_ENV: dev
-
-  smtp:
-    image: 'namshi/smtp'

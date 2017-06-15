@@ -22,6 +22,16 @@ echo "Compiling styles"
 sh scripts/run-sass -f
 
 
+# Configure smtp
+sed -i -e "s/mailhub.*/mailhub=smtp.sendgrid.net:587/" /etc/ssmtp/ssmtp.conf
+echo "" >> /etc/ssmtp/ssmtp.conf
+echo "# Sendgrid config"
+echo "AuthUser=apikey" >> /etc/ssmtp/ssmtp.conf
+echo "AuthPass=${SENDGRID_API_KEY}" >> /etc/ssmtp/ssmtp.conf
+echo "AuthMethod=LOGIN" >> /etc/ssmtp/ssmtp.conf
+echo "UseSTARTTLS=YES" >> /etc/ssmtp/ssmtp.conf
+
+
 # Configure php5-fpm
 sed -i -e "s/pm =.*/pm = ondemand/" /etc/php5/fpm/pool.d/www.conf
 sed -i -e "s/pm.max_children =.*/pm.max_children = 3/" /etc/php5/fpm/pool.d/www.conf

@@ -6,5 +6,5 @@ then
     exit 1
 fi
 
-docker build -t "openlab.ncl.ac.uk:4567/make-place/web:$1" .
+docker build ${@:2} -t "openlab.ncl.ac.uk:4567/make-place/web:$1" .
 docker push "openlab.ncl.ac.uk:4567/make-place/web:$1"

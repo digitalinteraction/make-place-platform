@@ -24,3 +24,7 @@ silverstripe.log
 
 # Sass compiles
 .sass-cache
+
+
+# Ignore environment files
+*.env
