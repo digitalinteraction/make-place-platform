@@ -94,7 +94,7 @@ class LoginControllerTest extends FunctionalTest {
         
         
         // Check the member now has interaction priverlages
-        $this->assertTrue(Permission::check('CAN_INTERACT', 'any', $member));
+        $this->assertTrue(Permission::check('VERIFIED', 'any', $member));
     }
     
     public function testActivateEmailFailsWhenNotActive() {
@@ -128,7 +128,7 @@ class LoginControllerTest extends FunctionalTest {
         
         
         // Check the member now has interaction priverlages
-        $this->assertFalse(Permission::check('CAN_INTERACT', 'any', $member));
+        $this->assertFalse(Permission::check('VERIFIED', 'any', $member));
     }
     
     public function testRegistered() {

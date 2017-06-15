@@ -25,7 +25,7 @@ class LoginController extends ContentController {
         
         $user = Member::currentUser();
         
-        if ($user != null && $user->getCanInteract()) {
+        if ($user != null && $user->getHasVerified()) {
             return $this->redirect($this->getBackURL());
         }
         
@@ -201,13 +201,13 @@ class LoginController extends ContentController {
         
         // Check if a signed up member exists with that email
         $existing = Member::get()->filter("Email", $email)->first();
-        if ($existing != null && $existing->getCanInteract()) {
+        if ($existing != null && $existing->getHasVerified()) {
             
             // If they do, pretend we sent an email to that address
             // TODO: what if they created an account before but didn't verify it?
             return $this->redirect("login/emailsent/?email=$encodedEmail");
         }
-        else if ($existing && !$existing->getCanInteract()){
+        else if ($existing && !$existing->getHasVerified()){
             
             $member = $existing;
         }

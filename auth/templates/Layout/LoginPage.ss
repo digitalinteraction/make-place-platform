@@ -5,9 +5,11 @@
     <div class="container">
         <article class="content-card">
             
-            <div class="jumbotron">
+            <div class="text-center">
                 <% include PageTitle %>
             </div>
+            
+            <hr>
             
             <div class="content"> $Content </div>
             

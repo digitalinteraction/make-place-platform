@@ -17,6 +17,6 @@ class Registration extends DataObject implements PermissionProvider {
     
     
     public function providePermissions() {
-        return [ "CAN_INTERACT" => "Vote and comment on content" ];
+        return [ "VERIFIED" => "Has verified their email address" ];
     }
 }

@@ -21,7 +21,6 @@ class MockNonVotable extends DataObject { }
 
 
 /** Tests VoteApiController */
-/** @group whitelist */
 class VoteApiControllerTest extends FunctionalTest {
     
     public $apiBase = "api/vote";

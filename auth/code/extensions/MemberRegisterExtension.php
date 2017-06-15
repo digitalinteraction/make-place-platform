@@ -7,9 +7,9 @@ class MemberRegisterExtension extends DataExtension {
         "Registration" => "Registration"
     );
     
-    /** If this member can vote / comment */
-    public function getCanInteract() {
-        return Permission::check('CAN_INTERACT', 'any', $this->owner);
+    /** If this member has verified their email */
+    public function getHasVerified() {
+        return Permission::check('VERIFIED', 'any', $this->owner);
     }
     
     
@@ -18,28 +18,28 @@ class MemberRegisterExtension extends DataExtension {
     public function addInteraction() {
         
         // Get the interaction group and add ourself to it
-        $group = $this->getInteractiveGroup()
+        $group = $this->getVerifiedGroup()
             ->Members()
             ->add($this->owner);
     }
     
     /** Get the interaction group */
-    public function getInteractiveGroup() {
+    public function getVerifiedGroup() {
         
-        $group = Group::get()->filter("Code", "interactive")->first();
-        
+        // Find the group and return that if it exists
+        $group = Group::get()->filter("Code", "verified")->first();
         if ($group) { return $group; }
         
         $group = Group::create([
-            "Title" => "Interactive",
-            "Code" => "interactive"
+            "Title" => "Verified",
+            "Code" => "verified"
         ]);
         $group->write();
         
         
-        // Give it CAN_INTERACT permission
+        // Give it VERIFIED permission
         $permission = Permission::create([
-            "Code" => "CAN_INTERACT",
+            "Code" => "VERIFIED",
             "Type" => 1,
             "GroupID" => $group->ID
         ]);

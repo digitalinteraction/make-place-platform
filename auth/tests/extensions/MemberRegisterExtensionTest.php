@@ -3,7 +3,7 @@
 /** ... */
 class MemberRegisterExtensionTest extends SapphireTest {
     
-    public function testGetCanInteract() {
+    public function testgetHasVerified() {
         
         // ...
     }
@@ -13,17 +13,17 @@ class MemberRegisterExtensionTest extends SapphireTest {
         // ...
     }
     
-    public function testGetInteractiveGroup() {
+    public function testGetVerifiedGroup() {
         
         // ...
     }
     
-    public function testGetInteractiveGroupCreatesGroup() {
+    public function testGetVerifiedGroupCreatesGroup() {
         
         // ...
     }
     
-    public function testGetInteractiveGroupAddsPermission() {
+    public function testGetVerifiedGroupAddsPermission() {
         
         // ...
     }

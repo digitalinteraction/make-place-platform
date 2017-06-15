@@ -64,9 +64,14 @@ class SurveyMapComponent extends MapComponent {
         }
         
         
+        // Get the current member and check they're verified
+        $member = Member::currentUser();
+        $verified = $member ? $member->getHasVerified() : false;
+        
+        
         // Add auth config to the component
-        $data["canView"] = Member::currentUserID() != null || $survey->ViewAuth == "None";
-        $data["canSubmit"] = Member::currentUserID() != null || $survey->SubmitAuth == "None";
+        $data["canView"] = $verified || $survey->ViewAuth == "None";
+        $data["canSubmit"] = $verified || $survey->SubmitAuth == "None";
         
         
         return $data;
