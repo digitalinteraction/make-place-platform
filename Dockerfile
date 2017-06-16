@@ -27,4 +27,5 @@ COPY themes /app/themes
 COPY surveys /app/surveys
 COPY maps /app/maps
 COPY auth /app/auth
+COPY public /app/public
 COPY interaction /app/interaction

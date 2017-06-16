@@ -8,7 +8,8 @@ requirejs.config({
         lodash: "./libs/lodash.min",
         text: "./libs/text",
         utils: "./libs/utils",
-        vue: "./libs/vue.min"
+        vue: "./libs/vue.min",
+        vuex: "./libs/vuex"
     },
     shim: {
         leafletGoogle: ["leaflet"],
@@ -18,12 +19,17 @@ requirejs.config({
 
 
 requirejs([
-    "jquery", "vue", "lodash",
+    "jquery", "vue", "vuex", "lodash",
     "leaflet", "leafletGoogle", "leafletClusterer",
     "utils",
-    "components/survey.component"
+    "map-components/survey.component",
+    "vue-components/DefaultMapComponent",
+    "vue-components/PickingMapComponent",
+    "vue-components/DetailMapComponent",
     
-], function($, Vue, _, L, LG, LC, Utils, SurveyComponent) {
+], function($, Vue, VueX, _, L, LG, LC, Utils,
+    SurveyComponent, DefaultMapComp, PickingMapComp, DetailMapComp
+) {
     "use strict";
     
     var componentMap = {
@@ -33,6 +39,7 @@ requirejs([
     
     
     
+    /*
     var app = new Vue({
         el: "#map-app",
         data: {
@@ -47,6 +54,13 @@ requirejs([
             cancelAction: null,
             mapAction: null,
             isSelecting: false,
+            
+            isMobile: false,
+            mobileActionsToggled: false
+        },
+        mounted: function() {
+            this.onResize();
+            window.addEventListener('resize', this.onResize);
         },
         computed: {
             mobileOptionsEnabled: function() {
@@ -58,7 +72,19 @@ requirejs([
             controlsEnabled: function() {
                 return this.isMobile ? this.mobileControls : this.controls.length > 0;
             },
-            isMobile: function() { return window.outerWidth < 767; }
+            
+            
+            showMainActions: function() {
+                
+                // No actions when showing a detail or overlay
+                if (this.detail || this.overlayMessage) { return false; }
+                
+                // Only show mobile actions when toggled
+                if (this.isMobile && !this.mobileActionsToggled) { return false; }
+                
+                // Don't show actions if there aren't any!
+                return this.actions.length > 0;
+            }
         },
         methods: {
             cancel: function(e) {
@@ -101,9 +127,63 @@ requirejs([
                     this.showMobileOptions = true;
                     this.mobileControls = false;
                 };
+            },
+            
+            
+            toggleMobileActions: function() {
+                console.log('here');
+                this.mobileActionsToggled = !this.mobileActionsToggled;
+            },
+            onResize: function() {
+                this.isMobile = window.outerWidth < 767;
             }
         }
     });
+    */
+    
+    
+    
+    
+    var defaultComp = new DefaultMapComp();
+    var pickingComp = new PickingMapComp();
+    var detailComp = new DetailMapComp();
+    
+    Vue.use(VueX);
+    
+    
+    var testActions = [
+        { title: 'Map Info', colour: 'orange' },
+        { title: 'I saw a pug!', icon: 'info', onClick: function(e) {
+        console.log('Ouch', e);
+        } }
+    ];
+    
+    
+    var store = new VueX.Store({
+        state: {
+            actions: testActions
+        }
+    });
+    
+    
+    
+    
+    
+    var app = new Vue({
+        el: "#map-app",
+        store: store,
+        data: {
+            currentState: defaultComp,
+            isMobile: false
+        },
+        mounted: function() {
+            this.onResize(); window.addEventListener('resize', this.onResize);
+        },
+        methods: {
+            onResize: function() { this.isMobile = window.outerWidth < 767; }
+        }
+    });
+   
     
     var state = {
         pins: {
@@ -191,7 +271,7 @@ requirejs([
         app.$data.actions.push({
             id: id,
             title: options.title || "Action",
-            icon: options.title || "fa-info-circle",
+            icon: options.icon || "fa-info-circle",
             colour: options.colour || "blue",
             onClick: function(e) {
                 actionChosen();
@@ -264,17 +344,17 @@ requirejs([
         
         
         // Load each component
-        _.each(config.components, function(comp) {
-            if (componentMap[comp.type]) {
-                
-                // Get the type of the component to create
-                var ComponentType = componentMap[comp.type];
-                
-                // Create and store the component
-                var component = new ComponentType(config.page, comp, state);
-                componentMap[component.id] = component;
-            }
-        });
+        // _.each(config.components, function(comp) {
+        //     if (componentMap[comp.type]) {
+        //
+        //         // Get the type of the component to create
+        //         var ComponentType = componentMap[comp.type];
+        //
+        //         // Create and store the component
+        //         var component = new ComponentType(config.page, comp, state);
+        //         componentMap[component.id] = component;
+        //     }
+        // });
         
         
         

@@ -132,7 +132,7 @@ define([
         this.state.methods.addAction(this.id, {
             title: this.component.actionMessage || "Add Response",
             colour: this.component.actionColour || "green",
-            icon: 'fa-plus',
+            icon: '/public/images/icons/plus.svg',
             callback: function(e) {
                 
                 // On click, prompt for a position to be clicked

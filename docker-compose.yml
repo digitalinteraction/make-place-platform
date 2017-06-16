@@ -24,6 +24,7 @@ services:
       - ./surveys:/app/surveys
       - ./auth:/app/auth
       - ./maps:/app/maps
+      - ./public:/app/public
       - ./interaction:/app/interaction
       - ./phpunit.xml:/app/phpunit.xml:ro
       - ./bootstrap.sh:/app/bootstrap.sh

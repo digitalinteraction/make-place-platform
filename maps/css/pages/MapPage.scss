@@ -1,0 +1,240 @@
+
+
+
+$zMainActions: 500;
+$zMobileActionToggle: 500;
+
+
+
+
+.MapPage {
+  
+  
+  .action {
+    @extend .button-style;
+  }
+  
+  
+  
+  .map-state {
+    position: absolute;
+    left: 0; right: 0;
+    top: 0; bottom: 0;
+    display: block;
+  }
+  
+  
+  .action-list {
+    position: absolute;
+    top: $cardPadding;
+    right: $cardPadding;
+    display: block;
+    z-index: $zMainActions;
+    text-align: right;
+    
+    .action {
+      font-size: 18px;
+    }
+  }
+  
+  
+  .mobile-action-toggle {
+    position: absolute;
+    left: 12px;
+    bottom: 22px;
+    
+    z-index: $zMobileActionToggle;
+    
+    .action {
+      
+      
+    }
+  }
+  
+  .is-mobile .action-list {
+    top: inherit;
+    bottom: 42px;
+    left: 12px;
+    right: 12px;
+    text-align: center;
+  }
+  
+  
+  
+  
+  
+  
+  header {
+    // ...
+  }
+  
+  .main {
+    // padding: 0px;
+  }
+  
+  a:focus {
+    text-decoration: none;
+  }
+  
+  #map-app {
+    background: #fafafa;
+    position: relative;
+    height: 100%;
+    
+    
+    #map {
+      width: 100%;
+      height: 100%;
+      
+      .leaflet-marker-icon:focus {
+        outline: none;
+      }
+    }
+    
+    &.selecting {
+      #map { cursor: crosshair !important; }
+      .leaflet-interactive { pointer-events: none; }
+    }
+    
+    #map-detail {
+      position: absolute;
+      top: 0; right: 0;
+      width: 500px;
+      z-index: 5000;
+      padding-bottom: 0px;
+      overflow-x: hidden;
+      
+      @extend .map-card-style;
+      
+      .title {
+        position: relative;
+        margin: -$cardPadding;
+        margin-bottom: 0;
+        padding: $cardPadding;
+        padding-right: 82px;
+        
+        .menu {
+          position: absolute;
+          top: 12px;
+          right: 12px;
+          user-select: none;
+          i {
+            cursor: pointer;
+            color: $primaryColour;
+          }
+        }
+      }
+      
+      .inner {
+        padding-bottom: $cardPadding;
+      }
+      
+      
+    }
+    
+    #map-actions {
+      position: absolute;
+      top: 0; right: 0;
+      margin-top: $cardPadding;
+      margin-right: $cardPadding;
+      width: 220px;
+      z-index: 2000;
+      
+      .action {
+        @extend .map-button-style;
+        
+        &:last-child { margin-bottom: 0px; }
+      }
+    }
+    
+    #map-controls {
+      @extend .map-card-style;
+      
+      position: absolute;
+      left: 0; top: 0;
+      width: 320px;
+      z-index: 4000;
+      
+      .title {
+        margin-top: 0px;
+        border-bottom: 1px solid #ccc;
+        padding-bottom: 10px;
+        text-align: center;
+      }
+    }
+    
+    #map-overlay {
+      position: absolute;
+      top: 0; bottom: 0;
+      left: 0; right: 0;
+      background: rgba(0,0,0,0.3);
+      z-index: 1500;
+      padding: 0px $cardPadding;
+      
+      pointer-events: none;
+      
+      .message {
+        @extend .map-card-style;
+        
+        text-align: center;
+        margin-top: $cardPadding;
+        font-size: 18px;
+        color: $darkColour;
+        max-width: 550px;
+        min-width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+      }
+    }
+    
+    #map-cancel-button {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      margin: auto;
+      z-index: 3000;
+      text-align: center;
+      margin-bottom: 32px;
+      
+      
+      .button.web {
+        @extend .map-button-style;
+        display: inline-block;
+        margin: 0;
+      }
+      
+      .button.mobile {
+        @extend .mobile-button-style;
+        background-image: url(../images/icons/cancel-button.svg);
+        margin: auto;
+      }
+    }
+    
+    #mobile-buttons {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      z-index: 3000;
+      margin-left: calc(#{$cardPadding} * 0.5);
+      margin-bottom: 32px;
+      
+      p.button {
+        float: left;
+        margin-right: 12px;
+        
+        @extend .mobile-button-style;
+        
+        &.actions {
+          background-image: url(../images/icons/actions-button.svg);
+        }
+        
+        &.controls {
+          background-image: url(../images/icons/controls-button.svg);
+        }
+      }
+    }
+    
+    
+  }
+  
+}

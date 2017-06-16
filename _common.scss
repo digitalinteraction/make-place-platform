@@ -3,8 +3,9 @@
  */
 
 
-@mixin style-button ($colour, $percent: 7%) {
-  background: $colour; border-color: darken($colour, 4%);
+@mixin style-button ($colour, $percent: 5%) {
+  background: $colour;
+  border-color: darken($colour, 4%);
   &:hover { background-color: darken($colour, $percent); }
   .icon { color: $colour; }
 }
@@ -45,19 +46,21 @@
 
 .button-style {
   cursor: pointer;
-  border-radius: 5px;
-  color: white;
   user-select: none;
-  padding: 0.5em 1.2em;
-  font-size: 18px;
+  border-radius: 2em;
+  color: white;
+  padding: 0.5em 1em;
+  font-size: 16px;
   font-weight: 600;
   font-family: $openSans;
   border: 1px solid #ccc;
   display: inline-block;
   
+  -webkit-font-smoothing: antialiased;
+  
   margin-bottom: 0.5em;
   
-  transition: background-color 0.3s, transform 0.3s;
+  transition: background-color 0.3s, transform 0.3s, border 0.3s;
   
   box-shadow: -1.5px -1.5px 0px rgba(0,0,0,0.1) inset;
   
@@ -66,20 +69,22 @@
   
   &:hover {
     text-decoration: none;
-    transform: scale(1.04);
+    transform: scale(1.03);
+  }
+  
+  &:active {
+    transform: scale(0.95);
+  }
+  
+  &.full-width {
+    display: block;
   }
   
   &.with-icon {
     position: relative;
     padding-left: 2.4em;
-    padding-right: 1.2em;
-    border-radius: 2em;
     
-    &:hover .icon {
-      // background: rgba(0,0,0,0);
-      // color: white;
-      transform: scale(1.08);
-    }
+    &:hover .icon { transform: scale(1.08); }
     
     .icon {
       position: absolute;
@@ -89,20 +94,11 @@
       width: 1.8em;
       border-radius: 1em;
       
-      padding: 0.22em;
-      
-      background: white;
-      color: black;
-      
-      // transition: background-color 0.3s, color 0.3s;
       transition: transform 0.4s;
       transform: scale(1);
       
-      .fa {
-        display: block;
-        text-align: center;
-        font-size: 1.3em;
-      }
+      background-size: contain;
+      background-repeat: no-repeat;
     }
   }
   

@@ -5,10 +5,6 @@ server {
     
     client_max_body_size 200M;
     
-    if ( $http_x_forwarded_proto != 'https' ) {
-        #return 301 https://$host$request_uri;
-    }
-    
     location / {
         try_files $uri /framework/main.php?url=$uri&$query_string;
     }
@@ -17,6 +13,11 @@ server {
     error_page 500 /assets/error-500.html;
     
     location ^~ /assets/ {
+        sendfile on;
+        try_files $uri =404;
+    }
+    
+    location ^~ /public/ {
         sendfile on;
         try_files $uri =404;
     }
