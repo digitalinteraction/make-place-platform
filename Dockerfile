@@ -8,11 +8,12 @@ FROM openlab.ncl.ac.uk:4567/make-place/web:base-2.2.2
 
 
 # Add nginx config file
-COPY default.nginx /etc/nginx/sites-available/default
+COPY _config/default.nginx /etc/nginx/sites-available/default
 
 
 # Add composer & cronjobs files
-COPY ["phpunit.xml", "cronjobs", "bootstrap.sh", "_config.scss", "_common.scss", "/app/"]
+COPY _config/ .
+RUN mkdir _config && mv vars.scss _config/vars.scss && mv common.scss _config/common.scss
 
 
 # Start cron jobs

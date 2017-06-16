@@ -29,6 +29,18 @@ generic. A parameterised silverstripe theme
 	<% require themedCSS('generic') %>
 	
 	
+	<%-- Js to go to the top of the stack --%>
+	
+	<%-- Webpack compiled --%>
+	<% require javascript('public/js/manifest.js') %>
+	<% require javascript('public/js/vendor.js') %>
+	
+	<%-- Our scripts --%>
+	<% require javascript('themes/generic/javascript/jquery.min.js') %>
+	<% require javascript('themes/generic/javascript/script.js') %>
+	<% require javascript('themes/generic/javascript/bootstrap.min.js') %>
+	
+	
 	
 	<!-- The favicon -->
 	<link rel="shortcut icon" href="$ThemeDir/images/favicon.png" />

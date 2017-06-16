@@ -26,8 +26,7 @@ services:
       - ./maps:/app/maps
       - ./public:/app/public
       - ./interaction:/app/interaction
-      - ./phpunit.xml:/app/phpunit.xml:ro
-      - ./bootstrap.sh:/app/bootstrap.sh
+      - ./_config/phpunit.xml:/app/phpunit.xml:ro
     env_file:
       - secrets.env
     environment:
@@ -36,7 +35,7 @@ services:
       DB_PASS: secret
       DB_NAME: make-place
       SITE_ENV: dev
-      DEFAULT_USER: rob@veodesign.co.uk
+      DEFAULT_USER: admin
       DEFAULT_PASS: password
       PATH: '$PATH:/app/scripts'
       GEO_URL: geo:3000

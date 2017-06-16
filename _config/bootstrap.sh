@@ -14,8 +14,9 @@ framework/sake dev/build > build.log 2> build.log
 
 
 # Build the theme
-sed -i -e "s/\$primaryColour.*/\$primaryColour: ${PRIMARY_COL:-"#3886c9"};/" _config.scss
-sed -i -e "s/\$secondaryColour.*/\$secondaryColour: ${SECONDARY_COL:-"#aaaab2"};/" _config.scss
+sed -i -e "s/\$primaryColour.*/\$primaryColour: ${PRIMARY_COL:-"#3886c9"};/" _config/vars.scss
+sed -i -e "s/\$secondaryColour.*/\$secondaryColour: ${SECONDARY_COL:-"#aaaab2"};/" _config/vars.scss
+
 
 # Recompile the scss
 echo "Compiling styles"
@@ -25,7 +26,7 @@ sh scripts/run-sass -f
 # Configure smtp
 sed -i -e "s/mailhub.*/mailhub=smtp.sendgrid.net:587/" /etc/ssmtp/ssmtp.conf
 echo "" >> /etc/ssmtp/ssmtp.conf
-echo "# Sendgrid config"
+echo "# Sendgrid config" >> /etc/ssmtp/ssmtp.conf
 echo "AuthUser=apikey" >> /etc/ssmtp/ssmtp.conf
 echo "AuthPass=${SENDGRID_API_KEY}" >> /etc/ssmtp/ssmtp.conf
 echo "AuthMethod=LOGIN" >> /etc/ssmtp/ssmtp.conf

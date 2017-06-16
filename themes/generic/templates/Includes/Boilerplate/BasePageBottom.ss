@@ -1,8 +1,7 @@
 
-<%-- Our scripts --%>
-<% require javascript('themes/generic/javascript/jquery.min.js') %>
-<% require javascript('themes/generic/javascript/script.js') %>
-<% require javascript('themes/generic/javascript/bootstrap.min.js') %>
+<%-- Webpack scripts --%>
+<%-- <script src="/public/js/vendor.js"></script>
+<script src="/public/js/manifest.js"></script> --%>
 
 
 <%-- Google Analytics --%>

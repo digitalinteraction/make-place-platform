@@ -126,4 +126,6 @@
 <% end_if %>
 
 
-<script data-main="maps/javascript/map.js" src="maps/javascript/libs/require.js"></script>
+<%-- <script data-main="maps/javascript/map.js" src="maps/javascript/libs/require.js"></script> --%>
+
+<script src="/public/js/maps.js"></script>
