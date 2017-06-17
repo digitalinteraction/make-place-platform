@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 # Runs sass to compile our scss files into css
 sass --scss --style compressed \
