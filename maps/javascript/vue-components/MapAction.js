@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 define([
   "vue", "text!templates/map-action.vue"
 ], function(Vue, Template) {

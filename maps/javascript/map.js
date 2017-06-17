@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 requirejs.config({
     paths: {
         handlebars: "./libs/handlebars-v4.0.5",

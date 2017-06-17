@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 define([
     "jquery", "vue", "handlebars"
 ], function($, Vue, Handlebars) {

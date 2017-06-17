@@ -6,22 +6,49 @@ $zMobileActionToggle: 500;
 
 
 
+.MapPage, #map-app, #map-base, .main {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
 
 .MapPage {
+  
+  .main {
+    padding-bottom: 48px;
+    
+    @media only screen and (max-width:767px) {
+      padding-bottom: 0px;
+    }
+  }
+  
+  footer {
+    position: absolute;
+    left: 0; right: 0;
+    bottom: 0;
+  }
+  
   
   
   .action {
     @extend .button-style;
   }
   
-  
-  
-  .map-state {
-    position: absolute;
-    left: 0; right: 0;
-    top: 0; bottom: 0;
-    display: block;
+  #map-base {
+    width: 100%;
+    height: 100%;
+    .leaflet-marker-icon:focus { outline: none; }
   }
+  
+  
+  
+  // .map-state {
+  //   position: absolute;
+  //   left: 0; right: 0;
+  //   top: 0; bottom: 0;
+  //   display: block;
+  // }
   
   
   .action-list {
@@ -37,7 +64,6 @@ $zMobileActionToggle: 500;
     }
   }
   
-  
   .mobile-action-toggle {
     position: absolute;
     left: 12px;
@@ -45,10 +71,7 @@ $zMobileActionToggle: 500;
     
     z-index: $zMobileActionToggle;
     
-    .action {
-      
-      
-    }
+    .action { }
   }
   
   .is-mobile .action-list {
@@ -63,7 +86,7 @@ $zMobileActionToggle: 500;
   
   
   
-  
+  /*
   header {
     // ...
   }
@@ -233,8 +256,7 @@ $zMobileActionToggle: 500;
         }
       }
     }
-    
-    
   }
+  */
   
 }

@@ -1,16 +1,22 @@
 const path = require('path')
+const vueConfig = require('./vue-loader.config')
 
-function resolve (dir) { return path.join(__dirname, '..', '..', dir) }
+function resolve(dir) { return path.join(__dirname, '..', '..', dir) }
 
 
 module.exports = {
   entry: {
-    maps: resolve('maps/js/maps.js'),
-    auth: resolve('auth/js/auth.js')
+    maps: resolve('maps/js/maps-main.js'),
+    auth: resolve('auth/js/auth-main.js')
   },
   output: {
     filename: '[name].js',
     path: resolve('public/js')
+  },
+  resolve: {
+    alias: {
+      vue: 'vue/dist/vue.js'
+    }
   },
   module: {
     rules: [
@@ -24,11 +30,11 @@ module.exports = {
           formatter: require('eslint-friendly-formatter')
         }
       },
-      // {
-      //   test: /\.vue$/,
-      //   loader: 'vue-loader',
-      //   options: vueLoaderConfig
-      // },
+      {
+        test: /\.vue$/,
+        loader: 'vue-loader',
+        options: vueConfig
+      },
       {
         test: /\.js$/,
         exclude: /node_modules/,

@@ -5,7 +5,7 @@ const extractSass = new ExtractTextPlugin({
   filename: '[name].css'
 })
 
-function resolve (dir) { return path.join(__dirname, '..', '..', dir) }
+function resolve(dir) { return path.join(__dirname, '..', '..', dir) }
 
 
 let cssOptions = {
@@ -22,8 +22,13 @@ let scssOptions = Object.assign({
 
 module.exports = {
   entry: {
-    generic: resolve('themes/generic/css/generic.scss'),
-    auth: resolve('auth/css/auth.scss')
+    styles: [
+      resolve('themes/generic/css/generic.scss'),
+      resolve('auth/css/auth.scss'),
+      resolve('maps/css/maps.scss'),
+      resolve('interaction/css/interaction.scss'),
+      resolve('surveys/css/surveys.scss')
+    ]
   },
   output: {
     filename: '[name].css',

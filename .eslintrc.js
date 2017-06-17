@@ -25,7 +25,9 @@ module.exports = {
     'no-trailing-spaces': 'off',
     'padded-blocks': 'off',
     'brace-style': ["error", "stroustrup", { "allowSingleLine": true } ],
-    'no-multiple-empty-lines': 'off'
+    'no-multiple-empty-lines': 'off',
+    'no-unused-vars': 'off',
+    'space-before-function-paren': ['error', 'never']
   },
   
   // Custom globals

@@ -26,7 +26,7 @@ generic. A parameterised silverstripe theme
 	<% require themedCSS('font-awesome.min') %>
 	
 	<%-- <% require themedCSS('generic') %> --%>
-	<% require css('public/css/generic.css') %>
+	<% require css('public/css/styles.css') %>
 	
 	
 	<%-- Js to go to the top of the stack --%>
