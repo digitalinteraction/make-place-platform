@@ -1,32 +1,38 @@
 #
-# Dockerfile to deploy a silverstripe server
+# Base image Dockerfile for Make Place
+# Specifically sets up all packages without adding any project code
 #
 
 
 
-# Use my compose image
+# Start with a php-fpm-nginx-composer image
 FROM openlab.ncl.ac.uk:4567/b30282237/composer-image:1.0.4
 
 
-# Add Sqlite3 & ruby
+# Run the node setup
+RUN curl -sL https://deb.nodesource.com/setup_8.x | bash -
+
+
+# Add Sqlite3 & node packages
 RUN apt-get -y update \
  && apt-get -y upgrade -y \
  && DEBIAN_FRONTEND=noninteractive apt-get -y install \
         sqlite3 \
         php5-sqlite \
-        ruby-full \
+        nodejs \
         && rm -rf /var/lib/apt/lists/*
 
-# Add sass
-RUN gem install sass
+
+# Add package configuration files
+COPY ["package.json", "composer.json", "/app/"]
 
 
-# Add composer & cronjobs files
-COPY ["composer.json", "/app/"]
-
-
-# Run Composer to install packages
+# Run Composer to install php packages
 RUN /composer.phar install
+
+
+# Run npm to install js packages
+RUN npm install
 
 
 # Expose port 80 to serve html on

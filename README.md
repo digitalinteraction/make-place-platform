@@ -1,16 +1,63 @@
 [![build status](https://openlab.ncl.ac.uk/gitlab/make-place/web/badges/master/build.svg)](https://openlab.ncl.ac.uk/gitlab/make-place/web/commits/master)
-[![coverage report](https://openlab.ncl.ac.uk/gitlab/make-place/web/badges/master/coverage.svg)](https://openlab.ncl.ac.uk/gitlab/make-place/web/commits/master)
-# Silverstripe Sample Project
-A skeleton project to bootstrap a [Silverstripe](https://www.silverstripe.org/) server to be deployed through `docker`/`dokku`
+
+
+# Make (your) Place
+A geographical mapping platform designed to be reconfigurable and redeployable. Based on [Silverstripe](https://www.silverstripe.org/) and deployed through [Docker](https://www.docker.com/).
 
 
 ## Features
-- A minimalistic [Bootstrap](https://getbootstrap.org) theme for Silverstripe & its blog
-- A Dockerfile ready to create an nginx/php5-fpm/composer image & install Silverstripe
-- Load all your config through environment variables
+- Geographical surveys, place questions on a map
+- Survey api to interact with your surveys outside of the site
+- Full CMS to configure and design your deployment's website
+- Customisable theme by docker variables
+- Emails send through Sendgrid's smtp
 
-## Notes
-- The image is based on [PHP Composer Image](https://openlab.ncl.ac.uk/gitlab/b30282237/composer-image)
+
+## Project Structure
+- Features are implemented as Silverstripe modules; root level folders each with their own MVC structure inside
+- JS & SCSS transpiling via [Webpack](https://webpack.js.org/) (placed in `/public`), see `scripts/build-assets` and `scripts/dev-runtime`
+- Server is split into 2 docker images, one to add all packages the other add project code, see `base.Dockerfile`
+- Server is based on [PHP Composer Image](https://openlab.ncl.ac.uk/gitlab/b30282237/composer-image) to provide `php5-fpm` & `nginx` stack with `php-composer` to install modules
+
+
+## Prerequisites
+- [Docker](https://www.docker.com/) and [docker-compose](https://docs.docker.com/compose/)
+- [Node Js](https://nodejs.org) for local development
+- A [Sendgrid](https://sendgrid.com/) api key for sending emails through their smtp
+
+
+## Setup
+1. Start up your containers
+```bash
+cd into/your/project
+npm install
+docker-compose up -d --build
+docker-compose ps
+```
+2. Start webpack watch to compile assets
+```bash
+bash scripts/dev-runtime
+```
+3. Visit `http://localhost:PORT` where PORT is the port of web, printed by `docker-compose ps`
+4. All code should be mapped into your container so saving and reloading will always be the latest version
+
+
+## Detailed Project Structure
+Folder | Contents
+------ | --------
+`_config` | Various configurations for the project including webpack setup and scss shared variables
+`assets` | Volumed mapped from container, where Silverstripe puts uplaoded assets
+`auth` | **Auth Module**, logic related to logging in and registering
+`docs` | Generated documentation for the API, generate with `scripts/apidoc`
+`interaction` | **Interaction Module**, logic related to voting and commenting on things
+`maps` | **Maps Module**, logic related to setting up and viewing configurable maps
+`mysite` | **Mysite Module**, shared logic between modules and the basis for others to use
+`node_modules` | Imported javascript modules, install with `npm install`
+`public` | Static files to be included in html, Webpack also transpiles into here
+`scripts` | Various scripts to ease development, from building the docker image or running Webpack
+`surveys` | **Survey Module**, logic realted to creating and rendering surveys for people to answer
+`themes` | Generic templates & styles for rendering pages server-side
+
 
 ## Environment variables
 Here are the environment variables the project uses and what they are used for. Required variables will fail the docker build if they are missing, non-required can be ignored but their relevant features will **not** work.
@@ -40,10 +87,3 @@ AWS_ACCESS_KEY_ID       | no        | Your [Amazon Web Services](https://aws.ama
 AWS_SECRET_ACCESS_KEY   | no        | Your [Amazon Web Services](https://aws.amazon.com/) access key
 FB_APP_ID               | no        | Your [Facebook](https://facebook.com) App ID
 FB_SECRET               | no        | Your [Facebook](https://facebook.com) Secret, used for OAuth
-
-
-
-## Todo
-- Finish CI to publish images to the gitlab registry
-- Export CI coverage straight to stdout rather than an intermediate file
-- Create cached Docker image for CI, you shouldn't have to `composer install` every push

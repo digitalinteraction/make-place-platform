@@ -3,9 +3,9 @@ const ora = require("ora")
 const chalk = require("chalk")
 const moment = require("moment")
 
-var spinner = ora("Spinning up")
 process.stdout.write('\033c');
 
+var spinner = ora("Spinning up")
 spinner.start()
 
 let config = [
@@ -36,8 +36,6 @@ let watching = webpack(config, (err, result) => {
       version: false
     }) + '\n\n\n')
   })
-  
-  
   
   console.log(chalk.cyan('  Waiting for changes ...'))
 })

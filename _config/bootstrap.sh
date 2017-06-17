@@ -14,13 +14,13 @@ framework/sake dev/build > build.log 2> build.log
 
 
 # Build the theme
-sed -i -e "s/\$primaryColour.*/\$primaryColour: ${PRIMARY_COL:-"#3886c9"};/" _config/vars.scss
-sed -i -e "s/\$secondaryColour.*/\$secondaryColour: ${SECONDARY_COL:-"#aaaab2"};/" _config/vars.scss
+sed -i -e "s/\$primaryColour.*/\$primaryColour: ${PRIMARY_COL:-"#3886c9"};/" _config/scss/vars.scss
+sed -i -e "s/\$secondaryColour.*/\$secondaryColour: ${SECONDARY_COL:-"#aaaab2"};/" _config/scss/vars.scss
 
 
 # Recompile the scss
-echo "Compiling styles"
-sh scripts/run-sass -f
+echo "Compiling Assets"
+sh scripts/build-assets > build.log
 
 
 # Configure smtp
@@ -36,4 +36,4 @@ echo "UseSTARTTLS=YES" >> /etc/ssmtp/ssmtp.conf
 # Configure php5-fpm
 sed -i -e "s/pm =.*/pm = ondemand/" /etc/php5/fpm/pool.d/www.conf
 sed -i -e "s/pm.max_children =.*/pm.max_children = 3/" /etc/php5/fpm/pool.d/www.conf
-service php5-fpm restart
+service php5-fpm restart > build.log
