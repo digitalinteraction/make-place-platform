@@ -1,7 +1,7 @@
 const baseConfig = require('./webpack.base.config')
 const merge = require('webpack-merge')
 const webpack = require('webpack')
-const path = require("path")
+const path = require('path')
 
 module.exports = merge(baseConfig, {
   watch: true,
@@ -23,6 +23,6 @@ module.exports = merge(baseConfig, {
     new webpack.optimize.CommonsChunkPlugin({
       name: 'manifest',
       chunks: ['vendor']
-    }),
+    })
   ]
 })

@@ -60,7 +60,6 @@ class LoginControllerTest extends FunctionalTest {
     public function testEmailSent() {
         
         $this->assertNotNull($this->controller->emailsent());
-        $this->assertTrue($this->controller->getIsSimplePage());
     }
     
     public function testActivateEmail() {

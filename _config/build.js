@@ -1,5 +1,5 @@
 const webpack = require('webpack')
-const config = require('./webpack.prod.config')
+const config = require('./js/webpack.prod.config')
 const ora = require("ora")
 const chalk = require("chalk")
 

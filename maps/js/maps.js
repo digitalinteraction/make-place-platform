@@ -1,13 +1,4 @@
-import _ from 'lodash'
-
-let data = [ 'A', 'B', 'C' ]
-
-let mapped = _.map(data, (d) => {
-  return 'Hello' + d
-})
-
-
-
+// import _ from 'lodash'
 
 async function wait () {
   await new Promise((resolve, reject) => {
@@ -17,8 +8,3 @@ async function wait () {
 }
 
 wait()
-
-console.log('here')
-
-
-console.log(mapped)

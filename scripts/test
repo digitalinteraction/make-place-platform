@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 
 # Setup in-memory SQLite database
 export DB_HOST=none DB_USER=none DB_PASS=none DB_NAME=db.sqlite DB_PATH=:memory: DB_TYPE=SQLite3Database SITE_ENV=dev HTTP_HOST=http://localhost REQUEST_METHOD=GET

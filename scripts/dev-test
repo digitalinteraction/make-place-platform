@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 
 # No longer uses input params
 # PARAMS="${@:1}"

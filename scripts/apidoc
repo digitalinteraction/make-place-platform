@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 
 apidoc -o docs
 cp themes/generic/images/favicon.png docs/img/favicon.ico
