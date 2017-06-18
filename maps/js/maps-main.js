@@ -5,6 +5,8 @@ import VueX from 'vuex'
 import MapsApp from './MapsApp.vue'
 import storeConfig from './store'
 
+import Loading from './components/LoadingComponent.vue'
+
 
 // Setup Vue plugins
 Vue.use(VueX)
@@ -22,6 +24,9 @@ Vue.use({
   }
 })
 
+
+// Global components
+Vue.component('loading', Loading)
 
 
 let store = new VueX.Store(storeConfig)

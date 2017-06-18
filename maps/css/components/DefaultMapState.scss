@@ -14,6 +14,14 @@
       @include button-style;
       font-size: 20px;
     }
+    
+    @include only-small {
+      top: inherit;
+      bottom: 96px;
+      left: 12px;
+      right: 12px;
+      text-align: center;
+    }
   }
   
   .actions-toggle {
@@ -37,11 +45,4 @@
     }
   }
   
-  .is-mobile .action-list {
-    top: inherit;
-    bottom: 96px;
-    left: 12px;
-    right: 12px;
-    text-align: center;
-  }
 }

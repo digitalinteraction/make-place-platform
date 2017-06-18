@@ -1,10 +1,12 @@
+
+
 .map-detail {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   margin: 48px auto;
-  width: 640px;
+  width: 620px;
   max-width: calc(100% - 12px);
   
   z-index: $zDetail;
@@ -16,6 +18,8 @@
   
   padding: 12px;
   
+  overflow: scroll;
+  
   background: rgba(255,255,255,0.95);
   
   @include only-small {
@@ -24,20 +28,81 @@
     width: inherit;
   }
   
-  // padding-top: 54px;
+  
+  
+  
+  transition: transform 0.3s, margin 0.3s;
+  
+  .content {
+    transform: scale(1);
+    transform-origin: top;
+    opacity: 1;
+    transition: transform 0.3s, opacity 0.3s, max-height 0.3s;
+    max-height: 100%;
+    overflow: hidden;
+  }
+  
+  
+  &.minified {
+    margin-top: 6px;
+    
+    .content {
+      opacity: 0;
+      transform: translateY(-50px);
+      max-height: 0;
+    }
+    
+    .header-bar {
+      margin-bottom: 0px;
+    }
+    
+  }
+  
+  
   max-height: calc(100% - 24px);
-  // overflow: scroll;
+  
   
   .header-bar {
     
-    // position: absolute;
-    // left: 0;
-    // right: 0;
-    // top: 0;
-    // padding: 12px;
+    position: relative;
+    z-index: 1;
+    background: white;
+    
+    @include primary-bottom;
     
     .title {
       margin: 0;
+      margin-right: 80px;
+    }
+    
+    
+    .buttons {
+      
+      position: absolute;
+      top: 0;
+      right: 0;
+      
+      .close-button, .minify-button {
+        width: 26px;
+        height: 26px;
+        background-size: contain;
+        background-repeat: no-repeat;
+        float: right;
+        
+        transform: scale(1);
+        transition: transform 0.3s;
+        
+        &:hover { transform: scale(1.1); }
+      }
+      
+      .close-button {
+        background-image: url(/public/images/buttons/close.svg);
+      }
+      
+      .minify-button {
+        background-image: url(/public/images/buttons/minify.svg);
+        margin-right: 14px;
+      }
     }
   }
   

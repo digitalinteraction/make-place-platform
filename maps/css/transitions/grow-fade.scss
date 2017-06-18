@@ -1,0 +1,7 @@
+.grow-fade-enter-active, .grow-fade-leave-active {
+  transition: opacity .2s, transform .2s;
+}
+.grow-fade-enter, .grow-fade-leave-to {
+  opacity: 0;
+  transform: scale(0.5);
+}

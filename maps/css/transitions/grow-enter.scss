@@ -1,0 +1,8 @@
+.grow-enter-active, .grow-leave-active {
+  transition: max-height 0.5s;
+  overflow: hidden;
+}
+
+.grow-enter, .grow-leave-to {
+  max-height: 0;
+}

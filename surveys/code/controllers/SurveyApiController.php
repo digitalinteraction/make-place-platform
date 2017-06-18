@@ -362,7 +362,7 @@ class SurveyApiController extends ApiController {
             "Response" => $response
         ]);
         
-        $name = ($member) ? $member->getName() : "Unknown";
+        $name = ($member) ? $member->FirstName : "Unknown";
         
         return $this->jsonResponse([
             "title" => "$name's Response",

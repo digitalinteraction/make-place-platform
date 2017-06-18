@@ -33,6 +33,11 @@
 
 
 
+// Custom styles
+.light-text { color: $lightTextColour; }
+[v-cloak] { display: none; }
+
+
 
 // Common Styles
 @mixin text-style {
@@ -64,10 +69,6 @@
   padding: $cardPadding;
   margin-bottom: $cardPadding;
   border-radius: 2px;
-}
-
-.light-text {
-  color: $lightTextColour;
 }
 
 @mixin button-style ($animated: true) {
