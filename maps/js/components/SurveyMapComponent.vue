@@ -15,6 +15,7 @@ export default {
     this.$store.commit('addAction', {
       title: this.config.actionMessage,
       colour: this.config.actionColour,
+      icon: 'plus',
       onClick: this.actionHandler
     })
     
