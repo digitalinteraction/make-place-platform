@@ -15,9 +15,9 @@ body {
   }
   
   
-  p { @extend .text-style; }
-  h1 { @extend .title-style; }
-  h2, h3, h4, h5, h6 { @extend .heading-style; }
+  p { @include text-style; }
+  h1 { @include title-style; }
+  h2, h3, h4, h5, h6 { @include heading-style; }
   
   a {
     color: $primaryColour;
@@ -45,7 +45,7 @@ body {
   
   
   .content-card {
-    @extend .card-style;
+    @include card-style;
     
     .title { margin: 0px; }
     &:first-child { margin-top: $cardPadding; }

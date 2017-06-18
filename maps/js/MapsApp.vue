@@ -46,15 +46,16 @@ export default {
   },
   components: { SurveyMapComponent },
   mounted() {
+    this.onResize()
+    window.addEventListener('resize', this.onResize)
+    
     this.loadConfig()
     this.$store.commit('setMapState', DefaultState)
-    
-    
-    
-    
-    
   },
   methods: {
+    onResize() {
+      this.isMobile = window.outerWidth < 767
+    },
     async loadConfig() {
       try {
         

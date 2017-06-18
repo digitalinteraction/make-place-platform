@@ -3,6 +3,8 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
   props: [ 'config' ],
   mounted() {
@@ -13,10 +15,19 @@ export default {
       onClick: this.actionHandler
     })
     
+    this.fetchResponses()
   },
   methods: {
     actionHandler() {
       console.log('Ouch!')
+    },
+    async fetchResponses() {
+      
+      let res = await axios.get(
+        `${this.$config.base}/api/survey/${this.config.surveyID}/responses`
+      )
+      
+      console.log(res.data)
     }
   }
 }

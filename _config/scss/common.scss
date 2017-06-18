@@ -2,7 +2,7 @@
  *      Reusable Styles
  */
 
-
+// Util to colour our buttons
 @mixin style-button ($colour, $percent: 5%) {
   background: $colour;
   border-color: darken($colour, 4%);
@@ -11,28 +11,54 @@
 }
 
 
-.text-style {
+
+
+
+// Responsive utils
+@mixin only-large {
+  @media only screen and (max-width:1200px) { @content; }
+}
+
+@mixin only-normal {
+  @media only screen and (max-width:992px) { @content; }
+}
+
+@mixin only-small {
+  @media only screen and (max-width:767px) { @content; }
+}
+
+@mixin only-mobile {
+  @media only screen and (max-width:480px) { @content; }
+}
+
+
+
+
+// Common Styles
+@mixin text-style {
   font-family: $openSans;
   font-size: 16px;
   font-weight: 500;
   color: $bodyTextColour;
 }
 
-.heading-style {
+@mixin heading-style {
   font-family: $openSans;
   font-style: oblique;
   font-weight: 600;
 }
 
-.title-style {
-  font-size: 36px;
+@mixin title-style {
+  font-size: 38px;
   font-family: $openSans;
   font-style: normal;
   font-weight: 700;
   color: $darkColour;
+  
+  @include only-small { font-size: 28px; }
 }
 
-.card-style {
+@mixin card-style {
   border: 1px solid $cardBorder;
   background: $cardBackground;
   padding: $cardPadding;
@@ -44,7 +70,7 @@
   color: $lightTextColour;
 }
 
-.button-style {
+@mixin button-style ($animated: true) {
   cursor: pointer;
   user-select: none;
   border-radius: 2em;
@@ -60,31 +86,33 @@
   
   margin-bottom: 0.5em;
   
-  transition: background-color 0.3s, transform 0.3s, border 0.3s;
   
   box-shadow: -1.5px -1.5px 0px rgba(0,0,0,0.1) inset;
   
-  transform: scale(1);
   
   
-  &:hover {
-    text-decoration: none;
-    transform: scale(1.03);
+  @if $animated {
+    transform: scale(1);
+    transition: background-color 0.3s, transform 0.3s, border 0.3s;
+    
+    &:hover { transform: scale(1.03); }
+    &:active { transform: scale(0.95); }
+    
+    &.with-icon .icon {
+      transition: transform 0.4s;
+      transform: scale(1);
+      
+      &:hover { transform: scale(1.08); }
+    }
   }
   
-  &:active {
-    transform: scale(0.95);
-  }
+  &:hover { text-decoration: none; }
   
-  &.full-width {
-    display: block;
-  }
+  &.full-width { display: block; }
   
   &.with-icon {
     position: relative;
     padding-left: 2.4em;
-    
-    &:hover .icon { transform: scale(1.08); }
     
     .icon {
       position: absolute;
@@ -93,9 +121,6 @@
       bottom: 0.3em;
       width: 1.8em;
       border-radius: 1em;
-      
-      transition: transform 0.4s;
-      transform: scale(1);
       
       background-size: contain;
       background-repeat: no-repeat;

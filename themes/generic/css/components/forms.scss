@@ -103,7 +103,7 @@ form {
   }
   
   input[type=submit] {
-    @extend .button-style;
+    @include button-style;
     @extend .green;
   }
   

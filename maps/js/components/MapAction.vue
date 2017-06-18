@@ -1,5 +1,5 @@
 <template lang="html">
-  <span @click.prevent="onClick" class="action with-icon" :class="colour">
+  <span @click="onClick" class="action with-icon animated" :class="colour">
     
     <!-- Our icon -->
     <span class="icon" :style="{'background-image': `url(${icon})`}"></span>
@@ -16,15 +16,9 @@
 export default {
   props: [ 'action' ],
   computed: {
-    title() {
-      return this.action.title || '??'
-    },
-    icon() {
-      return `/public/images/icons/${this.action.icon || 'info'}.svg`
-    },
-    colour() {
-      return this.action.colour || 'primary'
-    }
+    title() { return this.action.title || '??' },
+    icon() { return `/public/images/icons/${this.action.icon || 'info'}.svg` },
+    colour() { return this.action.colour || 'primary' }
   },
   methods: {
     onClick(e) {

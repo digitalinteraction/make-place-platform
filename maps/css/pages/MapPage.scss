@@ -1,54 +1,55 @@
 
 
 
-$zMainActions: 500;
-$zMobileActionToggle: 500;
+$zMainActions: 1500;
+$zMobileActionToggle: 1500;
+$zOverlay: 1400;
 
 
-
-.MapPage, #map-app, #map-base, .main {
+.MapPage, #map-app, #map-base {
   width: 100%;
   height: 100%;
   position: relative;
+}
+
+@mixin fill-parent {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+@mixin abs-fill {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
 }
 
 
 .MapPage {
   
   .main {
+    @include fill-parent;
     padding-bottom: 48px;
     
-    @media only screen and (max-width:767px) {
-      padding-bottom: 0px;
-    }
+    @include only-small { padding-bottom: 0px; }
   }
   
   footer {
     position: absolute;
-    left: 0; right: 0;
-    bottom: 0;
-  }
-  
-  
-  
-  .action {
-    @extend .button-style;
+    left: 0; right: 0; bottom: 0;
   }
   
   #map-base {
-    width: 100%;
-    height: 100%;
+    @include fill-parent;
     .leaflet-marker-icon:focus { outline: none; }
   }
   
-  
-  
-  // .map-state {
-  //   position: absolute;
-  //   left: 0; right: 0;
-  //   top: 0; bottom: 0;
-  //   display: block;
-  // }
+  .map-state {
+    @include abs-fill;
+    > { @include fill-parent; }
+  }
   
   
   .action-list {
@@ -59,27 +60,47 @@ $zMobileActionToggle: 500;
     z-index: $zMainActions;
     text-align: right;
     
+    transform-origin: center bottom;
+    
     .action {
-      font-size: 18px;
+      @include button-style;
+      font-size: 20px;
     }
   }
   
-  .mobile-action-toggle {
+  .actions-toggle {
+    @include button-style(false);
+    font-size: 20px;
+    
     position: absolute;
+    bottom: 32px;
+    
+    margin: 0px;
+    
     left: 12px;
-    bottom: 22px;
+    transform: translateX(0);
+    transition: left 0.3s, transform 0.3s;
     
     z-index: $zMobileActionToggle;
     
-    .action { }
+    &.toggled {
+      left: 50%;
+      transform: translateX(-50%);
+    }
   }
   
   .is-mobile .action-list {
     top: inherit;
-    bottom: 42px;
+    bottom: 86px;
     left: 12px;
     right: 12px;
     text-align: center;
+  }
+  
+  .full-overlay {
+    @include abs-fill;
+    z-index: $zOverlay;
+    background: rgba(0,0,0,0.3);
   }
   
   

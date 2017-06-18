@@ -1,23 +1,15 @@
 @mixin only-large {
-  @media only screen and (max-width:1200px) {
-    @content;
-  }
+  @media only screen and (max-width:1200px) { @content; }
 }
 
 @mixin only-normal {
-  @media only screen and (max-width:992px) {
-    @content;
-  }
+  @media only screen and (max-width:992px) { @content; }
 }
 
 @mixin only-small {
-  @media only screen and (max-width:767px) {
-    @content;
-  }
+  @media only screen and (max-width:767px) { @content; }
 }
 
 @mixin only-mobile {
-  @media only screen and (max-width:480px) {
-    @content;
-  }
+  @media only screen and (max-width:480px) { @content; }
 }

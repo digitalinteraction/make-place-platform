@@ -3,12 +3,26 @@
     
     <!-- <p>{{isMobile}}</p> -->
     
-    <div class="action-list">
-      <span v-for="(a,i) in actions">
-        <map-action :key="i" :action="a"></map-action> <br>
+    <transition name="grow-fade">
+      <div v-if="showActions" class="action-list">
+        <span v-for="(a,i) in actions">
+          <map-action :key="i" :action="a"></map-action> <br>
+        </span>
+      </div>
+    </transition>
+    
+    
+    <div v-if="isMobile">
+      <span class="actions-toggle action"
+        :class="[{'toggled': actionsToggled}, toggleClass]"
+        @click="toggleActions">
+        {{toggleTitle}}
       </span>
     </div>
     
+    <transition name="fade">
+      <div v-if="isMobile && actionsToggled" class="full-overlay"></div>
+    </transition>
     
     
   </div>
@@ -22,8 +36,22 @@ import MapAction from '../components/MapAction.vue'
 export default {
   props: [ 'isMobile' ],
   components: { MapAction },
+  data() {
+    return { actionsToggled: false }
+  },
   computed: {
-    actions() { return this.$store.state.actions }
+    actions() { return this.$store.state.actions },
+    showActions() {
+      if (this.isMobile) return this.actionsToggled
+      return true
+    },
+    toggleClass() { return this.actionsToggled ? 'red' : 'primary' },
+    toggleTitle() { return this.actionsToggled ? 'Cancel' : '...' }
+  },
+  methods: {
+    toggleActions() {
+      this.actionsToggled = !this.actionsToggled
+    }
   }
 }
 </script>

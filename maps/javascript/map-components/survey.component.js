@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 define([
     "jquery", "vue", "lodash", "leaflet", "utils",
     "text!templates/survey-response.vue",

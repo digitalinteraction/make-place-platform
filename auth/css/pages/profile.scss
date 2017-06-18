@@ -20,5 +20,5 @@
       text-align: center;
   }
   
-  .action { @extend .button-style; }
+  .action { @include button-style; }
 }
