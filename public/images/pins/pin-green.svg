@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" width="30" height="56.25" viewBox="0, 0, 30, 56.25">
+  <defs>
+    <radialGradient id="Gradient_1" gradientUnits="userSpaceOnUse" cx="3207" cy="1841.25" r="15" gradientTransform="matrix(1, 0, 0, 1, -3192, -1800)">
+      <stop offset="0" stop-color="#000000" stop-opacity="0.3"/>
+      <stop offset="1" stop-color="#000000" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <g id="Layer_1">
+    <path d="M15,56.25 C6.716,56.25 0,49.534 0,41.25 C0,32.966 6.716,26.25 15,26.25 C23.284,26.25 30,32.966 30,41.25 C30,49.534 23.284,56.25 15,56.25 z" fill="url(#Gradient_1)"/>
+    <path d="M15,-0 C23.284,-0 30,6.716 30,15 C29.995,15.398 30.002,15.258 29.993,15.419 C29.854,25.234 22.607,35.422 15,41.25 C7.291,35.112 0.165,25.617 0.007,15.419 C-0.002,15.258 0.005,15.398 0,15 C0,6.716 6.716,-0 15,-0 z" fill="#5ACF5A"/>
+    <path d="M15,23.75 C10.167,23.75 6.25,19.833 6.25,15 C6.25,10.167 10.167,6.25 15,6.25 C19.833,6.25 23.75,10.167 23.75,15 C23.75,19.833 19.833,23.75 15,23.75 z" fill="#FFFFFF"/>
+  </g>
+</svg>

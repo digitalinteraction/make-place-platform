@@ -4,6 +4,7 @@
 
 <script>
 import axios from 'axios'
+import L from 'leaflet'
 
 export default {
   props: [ 'config' ],
@@ -21,13 +22,49 @@ export default {
     actionHandler() {
       console.log('Ouch!')
     },
+    makeIcon(colour) {
+      return L.icon({
+        iconUrl: `/public/images/pins/pin-${colour}.svg`,
+        iconSize: [30, 56],
+        iconAnchor: [15, 40]
+      })
+    },
     async fetchResponses() {
       
       let res = await axios.get(
-        `${this.$config.base}/api/survey/${this.config.surveyID}/responses`
+        `${this.$config.api}/api/survey/${this.config.surveyID}/responses`
       )
       
-      console.log(res.data)
+      let posKey = this.config.positionQuestion
+      
+      // Loop responses and create pins
+      res.data.forEach((response) => {
+        
+        // Get the responses's position
+        let pos = response.values[posKey].value.geom
+        
+        // Generate an icon
+        let icon = this.makeIcon(this.config.pinColour || 'blue')
+        
+        // Create a marker
+        let marker = L.marker([pos.x, pos.y], { icon })
+        
+        // Listen for clicks
+        marker.on('click', (e) => {
+          this.responseClicked(response, e)
+        })
+        
+        // Add the marker
+        this.$store.state.clusterer.addLayer(marker)
+      })
+      
+      // console.log(res.data)
+    },
+    async responseClicked(response, e) {
+      console.log(response)
+      
+      // Transition to Detail state + render our response
+      
     }
   }
 }

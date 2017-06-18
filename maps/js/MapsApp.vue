@@ -88,6 +88,16 @@ export default {
           let url = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
           map.addLayer(new L.TileLayer(url))
         }
+        
+        
+        // Setup the clusterer
+        let clusterer = L.markerClusterGroup()
+        map.addLayer(clusterer)
+        
+        
+        // Store on the state
+        this.$store.commit('setMap', map)
+        this.$store.commit('setClusterer', clusterer)
       
       
         console.log(res.data)

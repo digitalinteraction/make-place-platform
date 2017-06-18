@@ -12,9 +12,9 @@ Vue.use(VueX)
 
 // Add config to all components
 let url = window.location.href
-let base = window.location.origin
+let api = window.location.origin
 if (url.substr(-1) !== '/') url += '/'
-let config = { url, base }
+let config = { url, api }
 
 Vue.use({
   install(Vue, options) {

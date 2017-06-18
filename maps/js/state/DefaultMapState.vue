@@ -16,7 +16,17 @@
       <span class="actions-toggle action"
         :class="[{'toggled': actionsToggled}, toggleClass]"
         @click="toggleActions">
-        {{toggleTitle}}
+        
+        <span v-if="actionsToggled">
+          <i class="fa fa-times" aria-hidden="true"></i>
+        </span>
+        <span v-else>
+          <!-- <i class="fa fa-ellipsis-h" aria-hidden="true"></i> -->
+          <!-- <i class="fa fa-caret-up" aria-hidden="true"></i> -->
+          <i class="fa fa-map-marker" aria-hidden="true"></i>
+        </span>
+        
+        <!-- {{toggleTitle}} -->
       </span>
     </div>
     
