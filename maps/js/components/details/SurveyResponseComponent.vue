@@ -9,9 +9,10 @@
       
       
       <!-- Voting ... -->
-      <voting :data-id="response.id"> What do you think? </voting>
+      <voting :data-id="response.id" data-type="SurveyResponse"> What do you think? </voting>
       
       <!-- Comments ... -->
+      <p> Donec id elit non mi porta gravida at eget metus. Aenean lacinia bibendum nulla sed consectetur. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Maecenas sed diam eget risus varius blandit sit amet non magna. </p>
       
       
     </div>

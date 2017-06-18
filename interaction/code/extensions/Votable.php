@@ -36,6 +36,11 @@ class Votable extends DataExtension {
             return abs($value) < 2;
         }
         
+        // FIXME: for now allow any vote for emojis
+        if ($this->owner->voteType() == "EMOJI") {
+          return true;
+        }
+        
         return false;
     }
 }

@@ -100,7 +100,7 @@ export default {
         this.$store.commit('setClusterer', clusterer)
       
       
-        console.log(res.data)
+        console.log('config', res.data)
       }
       catch (e) {
         console.log(e)
