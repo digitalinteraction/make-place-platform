@@ -1,0 +1,51 @@
+.map-detail {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  margin: 48px auto;
+  width: 640px;
+  max-width: calc(100% - 12px);
+  
+  z-index: $zDetail;
+  
+  @include card-style;
+  
+  border-width: 2px;
+  border: 2px solid #ccc;
+  
+  padding: 12px;
+  
+  background: rgba(255,255,255,0.95);
+  
+  @include only-small {
+    left: 0;
+    margin: 6px;
+    width: inherit;
+  }
+  
+  // padding-top: 54px;
+  max-height: calc(100% - 24px);
+  // overflow: scroll;
+  
+  .header-bar {
+    
+    // position: absolute;
+    // left: 0;
+    // right: 0;
+    // top: 0;
+    // padding: 12px;
+    
+    .title {
+      margin: 0;
+    }
+  }
+  
+  
+  // max-height: 100%;
+  //
+  // .content {
+  //   overflow: scroll;
+  //   -webkit-overflow-scrolling: touch;
+  // }
+}

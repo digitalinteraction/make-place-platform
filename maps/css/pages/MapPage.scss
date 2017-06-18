@@ -1,36 +1,13 @@
 
 
-
-$zMainActions: 1500;
-$zMobileActionToggle: 1500;
-$zOverlay: 1400;
-
-
-.MapPage, #map-app, #map-base {
-  width: 100%;
-  height: 100%;
-  position: relative;
-}
-
-@mixin fill-parent {
-  width: 100%;
-  height: 100%;
-  position: relative;
-}
-
-@mixin abs-fill {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
+.MapPage, #map-app, #map-base, .main {
+  @include fill-parent;
 }
 
 
 .MapPage {
   
   .main {
-    @include fill-parent;
     padding-bottom: 48px;
     
     @include only-small { padding-bottom: 0px; }
@@ -51,57 +28,12 @@ $zOverlay: 1400;
     > { @include fill-parent; }
   }
   
-  
-  .action-list {
-    position: absolute;
-    top: $cardPadding;
-    right: $cardPadding;
-    display: block;
-    z-index: $zMainActions;
-    text-align: right;
-    
-    transform-origin: center bottom;
-    
-    .action {
-      @include button-style;
-      font-size: 20px;
-    }
-  }
-  
-  .actions-toggle {
-    @include button-style(false);
-    font-size: 20px;
-    
-    position: absolute;
-    bottom: 32px;
-    
-    margin: 0px;
-    
-    left: 12px;
-    transform: translateX(0);
-    transition: left 0.3s, transform 0.3s;
-    
-    z-index: $zMobileActionToggle;
-    
-    &.toggled {
-      left: 50%;
-      transform: translateX(-50%);
-    }
-  }
-  
-  .is-mobile .action-list {
-    top: inherit;
-    bottom: 96px;
-    left: 12px;
-    right: 12px;
-    text-align: center;
-  }
-  
   .full-overlay {
     @include abs-fill;
     z-index: $zOverlay;
     background: rgba(0,0,0,0.3);
   }
+  
   
   
   

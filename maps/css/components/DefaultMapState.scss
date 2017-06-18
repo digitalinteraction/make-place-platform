@@ -1,0 +1,47 @@
+.default-map-state {
+  
+  .action-list {
+    position: absolute;
+    top: $cardPadding;
+    right: $cardPadding;
+    display: block;
+    z-index: $zMainActions;
+    text-align: right;
+    
+    transform-origin: center bottom;
+    
+    .action {
+      @include button-style;
+      font-size: 20px;
+    }
+  }
+  
+  .actions-toggle {
+    @include button-style(false);
+    font-size: 20px;
+    
+    position: absolute;
+    bottom: 32px;
+    
+    margin: 0px;
+    
+    left: 12px;
+    transform: translateX(0);
+    transition: left 0.3s, transform 0.3s;
+    
+    z-index: $zMobileActionToggle;
+    
+    &.toggled {
+      left: 50%;
+      transform: translateX(-50%);
+    }
+  }
+  
+  .is-mobile .action-list {
+    top: inherit;
+    bottom: 96px;
+    left: 12px;
+    right: 12px;
+    text-align: center;
+  }
+}

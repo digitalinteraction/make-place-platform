@@ -1,48 +1,45 @@
 
 
 
+// Common vars
+$zMainActions: 1500;
+$zMobileActionToggle: 1500;
+$zOverlay: 1400;
+$zDetail: 1600;
+
+$buttonSize: 48px;
 
 
+
+// Utils
+@mixin fill-parent {
+  width: 100%; height: 100%;
+  position: relative;
+}
+
+@mixin abs-fill {
+  position: absolute;
+  left: 0; right: 0;
+  top: 0; bottom: 0;
+}
+
+
+
+// Imports
 @import 'components/SurveyComponent';
+@import 'components/DetailMapState';
+@import 'components/DefaultMapState';
 
 @import 'pages/MapPage';
 
 
 
-$buttonSize: 48px;
 
+// Clock vue app until rendered
 [v-cloak] { display: none; }
 
 
-// Reusables
-.map-button-style {
-  @include button-style;
-  
-  box-shadow: 1px 1px 1px #666;
-  font-size: 20px;
-}
 
-.map-card-style {
-  @include card-style;
-  
-  padding: 12px;
-  border: 2px solid #ccc;
-  
-  margin: $cardPadding;
-  max-width: 100%;
-  overflow: scroll;
-  max-height: calc(100% - #{$cardPadding} - #{$cardPadding});
-}
-
-.mobile-button-style {
-  margin: 0px;
-  
-  width: $buttonSize;
-  height: $buttonSize;
-  
-  background-size: contain;
-  background-repeat: no-repeat;
-}
 
 
 // Transitions
@@ -54,69 +51,18 @@ $buttonSize: 48px;
 }
 
 .grow-fade-enter-active, .grow-fade-leave-active {
-  transition: opacity .2s ease, transform .2s ease;
+  transition: opacity .2s, transform .2s;
 }
 .grow-fade-enter, .grow-fade-leave-to {
   opacity: 0;
   transform: scale(0.5);
 }
 
+.fade-up-enter-active, .fade-up-leave-active {
+  transition: transform 0.5s, opacity 0.5s;
+}
 
-
-
-
-
-
-// Styles
-
-
-
-
-
-
-
-/* Small Devices: Phones */
-@media only screen and (max-width : 767px) {
-  html body.MapPage footer {
-    display: none;
-  }
-  
-  html body.MapPage #map-app {
-    
-    #map-detail {
-      
-      .survey-response {
-        label.name { font-size: 14px; }
-        p.value { font-size: 12px; }
-      }
-    }
-    
-    #map-controls, #map-detail {
-      right: 0;
-      left: 0;
-      margin: calc(#{$cardPadding} * 0.5);
-      width: inherit;
-      
-      .title { font-size: 28px; }
-    }
-    
-    #map-controls {
-      top: inherit;
-      bottom: calc(#{$buttonSize} + #{$cardPadding});
-      margin-bottom: calc(#{$cardPadding} * 2.5);
-    }
-    
-    
-    #map-actions {
-      top: inherit;
-      right: 0;
-      left: 0;
-      bottom: $buttonSize;
-      margin: #{$cardPadding} auto;
-      margin-bottom: calc(#{$cardPadding} * 2.5);
-      
-      p { font-size: 24px; }
-    }
-    
-  }
+.fade-up-enter, .fade-up-leave-to {
+  opacity: 0;
+  transform: scale(0.8);
 }
