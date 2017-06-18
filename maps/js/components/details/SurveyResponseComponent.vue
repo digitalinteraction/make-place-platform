@@ -9,6 +9,7 @@
       
       
       <!-- Voting ... -->
+      <voting :data-id="response.id"> What do you think? </voting>
       
       <!-- Comments ... -->
       
@@ -41,7 +42,8 @@ export default {
   methods: {
     async fetchResponse() {
       
-      await new Promise((resolve) => { setTimeout(resolve, 300) })
+      // A little delay to smooth the transition (api is too fast!?)
+      // await new Promise((resolve) => { setTimeout(resolve, 300) })
       
       let res = await axios.get(
         `${this.$config.api}/api/survey/${this.data.surveyId}/response/${this.data.id}`

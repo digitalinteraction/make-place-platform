@@ -23,7 +23,7 @@ let watching = webpack(config, (err, result) => {
   
   
   let now = moment().format('MMMM Do YYYY, h:mm:ss a')
-  console.log(chalk.bgGreen(chalk.black(' DONE ')) + ` - ${now}\n`)
+  console.log(chalk.bgGreen(chalk.black(' DONE ')) + ` ${now}\n`)
   
   result.stats.forEach(stat => {
     process.stdout.write(stat.toString({

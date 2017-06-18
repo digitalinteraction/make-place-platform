@@ -6,6 +6,7 @@ import MapsApp from './MapsApp.vue'
 import storeConfig from './store'
 
 import Loading from './components/LoadingComponent.vue'
+import Voting from './components/interaction/VotingComponent.vue'
 
 
 // Setup Vue plugins
@@ -27,6 +28,7 @@ Vue.use({
 
 // Global components
 Vue.component('loading', Loading)
+Vue.component('voting', Voting)
 
 
 let store = new VueX.Store(storeConfig)
