@@ -8,6 +8,7 @@ import storeConfig from './store'
 import Loading from './components/LoadingComponent.vue'
 import Voting from './components/interaction/VotingComponent.vue'
 import Emoji from './components/interaction/EmojiComponent.vue'
+import EmojiSummary from './components/interaction/EmojiSummaryComponent.vue'
 
 
 // Setup Vue plugins
@@ -31,6 +32,7 @@ Vue.use({
 Vue.component('loading', Loading)
 Vue.component('voting', Voting)
 Vue.component('emoji', Emoji)
+Vue.component('emoji-summary', EmojiSummary)
 
 
 let store = new VueX.Store(storeConfig)

@@ -75,7 +75,7 @@ class VoteApiController extends ApiController {
         // Check request parameters
         $errors = [];
         $value = $this->bodyVar("value", $errors);
-        if ($value && $target->checkValue($value, $errors) == false) {
+        if ($target->checkValue($value, $errors) == false) {
             $errors[] = "Invalid vote $value";
         }
         

@@ -26,10 +26,10 @@ class ApiController extends Controller {
     public function bodyVar($name, &$errors = []) {
         
         $post = $this->postVar($name);
-        if ($post != null) { return $post; }
+        if ($post !== null) { return $post; }
         
         $json = $this->jsonVar($name);
-        if ($json != null) { return $json; }
+        if ($json !== null) { return $json; }
         
         $errors[] = "Please provide '$name'";
         return null;
