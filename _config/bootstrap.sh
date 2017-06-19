@@ -19,8 +19,8 @@ sed -i -e "s/\$secondaryColour.*/\$secondaryColour: ${SECONDARY_COL:-"#aaaab2"};
 
 
 # Recompile the scss
-echo "Compiling Assets"
-sh scripts/build-assets > build.log
+echo "Compiling Sass"
+sh scripts/build-scss > build.log
 
 
 # Configure smtp

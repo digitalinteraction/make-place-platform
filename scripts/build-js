@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+node _config/build.js js

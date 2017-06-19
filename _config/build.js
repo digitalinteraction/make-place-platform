@@ -3,22 +3,27 @@ const webpack = require('webpack')
 const ora = require("ora")
 const chalk = require("chalk")
 
-let config = [
-  require('./js/webpack.prod.config'),
-  require('./scss/webpack.base.config')
-]
+let config = []
+
+if (process.argv.includes('js')) {
+  config.push(require('./js/webpack.prod.config'))
+}
+
+if (process.argv.includes('scss')) {
+  config.push(require('./scss/webpack.base.config'))
+}
 
 process.stdout.write('\033c');
 
-var spinner = ora("Compiling js & scss ...")
+var spinner = ora("Compiling assets ...")
 spinner.start()
 
 webpack(config, (err, result) => {
-  
+
   spinner.stop();
-  
+
   if (err) throw err;
-  
+
   result.stats.forEach(stat => {
     process.stdout.write(stat.toString({
       colors: true,

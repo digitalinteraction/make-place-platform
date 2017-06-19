@@ -4,7 +4,7 @@
 
 
 # Start from our base image
-FROM openlab.ncl.ac.uk:4567/make-place/web:base-2.2.3
+FROM openlab.ncl.ac.uk:4567/make-place/web:base-2.2.4
 
 
 # Add config files
@@ -34,3 +34,7 @@ COPY maps /app/maps
 COPY auth /app/auth
 COPY public /app/public
 COPY interaction /app/interaction
+
+
+# Build javascript
+RUN scripts/build-js > /dev/null
