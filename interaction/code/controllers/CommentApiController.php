@@ -109,7 +109,7 @@ class CommentApiController extends ApiController {
         $comments = Comment::get()->filter([
             "TargetClass" => $target->ClassName,
             "TargetID" => $target->ID
-        ]);
+        ])->sort('Created DESC');
         
         $json = [];
         foreach($comments as $comment) {

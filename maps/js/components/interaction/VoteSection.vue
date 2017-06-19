@@ -1,6 +1,6 @@
 <template lang="html">
   
-  <div class="voting">
+  <div class="vote-section">
     
     <h4 class="title"><slot></slot></h4>
     <div class="control">
@@ -20,6 +20,7 @@
     <p class="summary">
       <emoji-summary v-for="(v, i) in voteList" :key="i" :emoji="emojiSet[v.value]" :count="v.count">
       </emoji-summary>
+      <span v-if="voteList.length === 0"> No votes yet, be the first! </span>
     </p>
     
   </div>
@@ -106,19 +107,16 @@ export default {
           `${this.$config.api}/api/vote/on/${this.dataType}/${this.dataId}`
         )
         
-        
+        // Generate a map of vote-id to count of votes
         let votes = this.emojiList.reduce((map, emoji) => {
           map[emoji.id] = 0
           return map
         }, {})
         
+        
+        // Sum up the votes
         res.data.forEach(vote => {
-          
-          // Check a value exists if there is a mismatch with the server
-          if (!votes[vote.value]) votes[vote.value] = 0
-          
-          // Increment the votes on that value
-          votes[vote.value]++
+          if (votes[vote.value] !== undefined) votes[vote.value]++
         }, {})
         
         this.voteMap = votes

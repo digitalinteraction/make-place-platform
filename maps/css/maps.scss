@@ -7,8 +7,6 @@ $zMobileActionToggle: 1500;
 $zOverlay: 1400;
 $zDetail: 1600;
 
-$buttonSize: 48px;
-
 
 // Mixins
 @import 'mixins/abs-fill';
@@ -21,7 +19,8 @@ $buttonSize: 48px;
 @import 'components/DefaultMapState';
 @import 'components/SurveyResponseComponent';
 @import 'components/LoadingComponent';
-@import 'components/VotingComponent';
+@import 'components/VoteSectionComponent';
+@import 'components/CommentSectionComponent';
 
 // Pages
 @import 'pages/MapPage';

@@ -51,16 +51,9 @@ export default {
     title() { return this.customTitle || this.detail.title || 'Loading' }
   },
   methods: {
-    close() {
-      this.$store.commit('setMapState', DefaultMapState)
-    },
-    minify() {
-      this.minified = !this.minified
-    },
-    changeTitle(newTitle) {
-      console.log(newTitle)
-      this.customTitle = newTitle
-    }
+    close() { this.$store.commit('setMapState', DefaultMapState) },
+    minify() { this.minified = !this.minified },
+    changeTitle(newTitle) { this.customTitle = newTitle }
   }
 }
 </script>

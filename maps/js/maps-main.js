@@ -5,10 +5,14 @@ import VueX from 'vuex'
 import MapsApp from './MapsApp.vue'
 import storeConfig from './store'
 
-import Loading from './components/LoadingComponent.vue'
-import Voting from './components/interaction/VotingComponent.vue'
-import Emoji from './components/interaction/EmojiComponent.vue'
-import EmojiSummary from './components/interaction/EmojiSummaryComponent.vue'
+import Loading from './components/Loading.vue'
+import VoteSection from './components/interaction/VoteSection.vue'
+import Emoji from './components/interaction/Emoji.vue'
+import EmojiSummary from './components/interaction/EmojiSummary.vue'
+import CommentSection from './components/interaction/CommentSection.vue'
+import CommentComposer from './components/interaction/CommentComposer.vue'
+import Comment from './components/interaction/Comment.vue'
+import ProfileImage from './components/interaction/ProfileImage.vue'
 
 
 // Setup Vue plugins
@@ -30,9 +34,13 @@ Vue.use({
 
 // Global components
 Vue.component('loading', Loading)
-Vue.component('voting', Voting)
+Vue.component('vote-section', VoteSection)
 Vue.component('emoji', Emoji)
 Vue.component('emoji-summary', EmojiSummary)
+Vue.component('comment-section', CommentSection)
+Vue.component('comment-composer', CommentComposer)
+Vue.component('comment', Comment)
+Vue.component('profile-image', ProfileImage)
 
 
 let store = new VueX.Store(storeConfig)

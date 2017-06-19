@@ -26,7 +26,6 @@
           <i class="fa fa-map-marker" aria-hidden="true"></i>
         </span>
         
-        <!-- {{toggleTitle}} -->
       </span>
     </div>
     

@@ -6,7 +6,7 @@
 import axios from 'axios'
 import L from 'leaflet'
 import DetailMapState from '../state/DetailMapState.vue'
-import SurveyResponseComponent from './details/SurveyResponseComponent.vue'
+import SurveyResponse from './details/SurveyResponse.vue'
 
 export default {
   props: [ 'config' ],
@@ -67,7 +67,7 @@ export default {
       
       // Transition to Detail state + render our response
       this.$store.commit('setMapDetail', {
-        type: SurveyResponseComponent,
+        type: SurveyResponse,
         title: '',
         data: response
       })

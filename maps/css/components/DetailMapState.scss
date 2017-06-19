@@ -19,6 +19,7 @@
   padding: 12px;
   
   overflow: scroll;
+  -webkit-overflow-scrolling: touch;
   
   background: rgba(255,255,255,0.95);
   
@@ -59,7 +60,11 @@
   }
   
   
-  max-height: calc(100% - 24px);
+  max-height: calc(100% - 64px);
+  
+  @include only-mobile {
+    max-height: calc(100% - 12px);
+  }
   
   
   .header-bar {

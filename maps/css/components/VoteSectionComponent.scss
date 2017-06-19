@@ -21,7 +21,7 @@
 }
 
 
-.voting {
+.vote-section {
   
   margin-bottom: 18px;
   
@@ -70,33 +70,30 @@
     transform-origin: center bottom;
     transition: transform 0.2s;
     
-    // animation-name: emoji-appear;
-    // animation-duration: 0.2s;
-    // animation-fill-mode: forwards;
-    
-    &:hover {
-      cursor: pointer;
-      transform: scale(1.15);
-      // animation-name: emoji-hover;
-      // animation-fill-mode: forwards;
-      // animation: emoji-hover 0.3s forwards;
-    }
     
     .tip { display: none; }
     
-    &:hover .tip {
-      @include text-style;
-      font-size: 12px;
-      background: #000;
-      color: #fff;
-      position: absolute;
-      top: -24px;
-      border-radius: 4px;
-      display: block;
-      left: 50%;
-      transform: translateX(-50%);
-      padding: 2px 8px;
-      user-select: none;
+    
+    @include not-small {
+      &:hover {
+        cursor: pointer;
+        transform: scale(1.15);
+      }
+      
+      &:hover .tip {
+        @include text-style;
+        font-size: 12px;
+        background: #000;
+        color: #fff;
+        position: absolute;
+        top: -24px;
+        border-radius: 4px;
+        display: block;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 2px 8px;
+        user-select: none;
+      }
     }
     
     &.current {
@@ -124,6 +121,9 @@
   
   .summary {
     text-align: center;
+    font-weight: 700;
+    color: #555;
+    font-size: 12px;
   }
   
   
@@ -135,10 +135,6 @@
     }
     
     .count {
-      @include text-style;
-      font-weight: 700;
-      color: #555;
-      font-size: 12px;
       margin-left: -2px;
       margin-right: 8px;
     }
