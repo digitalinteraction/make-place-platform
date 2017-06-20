@@ -9,10 +9,20 @@
       
       
       <!-- Voting -->
-      <vote-section :data-id="response.id" data-type="SurveyResponse"> What do you think? </vote-section>
+      <vote-section v-if="config.canVote"
+        :data-id="response.id"
+        data-type="SurveyResponse">
+        {{config.voteTitle}}
+      </vote-section>
       
       <!-- Comments -->
-      <comment-section :data-id="response.id" data-type="SurveyResponse"> Comments </comment-section>
+      <comment-section v-if="config.canComment"
+        :data-id="response.id"
+        data-type="SurveyResponse"
+        :placeholder="config.commentPlaceholder"
+        :action="config.commentAction">
+        {{config.commentTitle}}
+      </comment-section>
       
       
     </div>
@@ -28,17 +38,17 @@
 import axios from 'axios'
 
 export default {
-  props: [ 'data' ],
+  props: [ 'options' ],
   data() {
-    return {
-      rendered: null
-    }
+    return { rendered: null }
   },
   computed: {
-    response() { return this.data }
+    response() { return this.options.response },
+    config() { return this.options.config }
   },
   mounted() {
     this.fetchResponse()
+    this.$emit('change-title', this.config.responseTitle)
   },
   methods: {
     async fetchResponse() {
@@ -47,13 +57,12 @@ export default {
       // await new Promise((resolve) => { setTimeout(resolve, 300) })
       
       let res = await axios.get(
-        `${this.$config.api}/api/survey/${this.data.surveyId}/response/${this.data.id}`
+        `${this.$config.api}/api/survey/${this.response.surveyId}/response/${this.response.id}`
       )
       
-      this.$emit('change-title', res.data.title)
+      // this.$emit('change-title', res.data.title)
       this.rendered = res.data.body
       
-      // console.log(res.data)
     }
   }
 }

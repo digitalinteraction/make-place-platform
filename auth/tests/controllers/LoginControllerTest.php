@@ -1,7 +1,6 @@
 <?php
 
 /** Tests Login Controller */
-/** @group whitelist */
 class LoginControllerTest extends FunctionalTest {
     
     protected $controller = null;

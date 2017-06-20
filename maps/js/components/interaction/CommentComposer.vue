@@ -9,7 +9,7 @@
       
       <textarea v-model="message" name="message" @keyup.enter.prevent="submitComment"></textarea>
       
-      <p class="placeholder" v-if="message.length < 1"> I think that ... </p>
+      <p class="placeholder" v-if="message.length < 1"> {{placeholder}} </p>
       
       <button class="send" @click="submitComment" :disabled="isSending || message.length < 3"> {{action}} </button>
       
@@ -24,7 +24,13 @@
 import axios from 'axios'
 
 export default {
-  props: [ 'dataId', 'dataType', 'parent' ],
+  props: {
+    dataId: Number,
+    dataType: String,
+    parent: Object,
+    placeholder: { type: String, default: 'I think that ...' },
+    action: { type: String, default: 'Send' }
+  },
   data() {
     return {
       message: '',
@@ -32,7 +38,7 @@ export default {
     }
   },
   computed: {
-    action() { return this.isSending ? 'Sending' : 'Send' }
+    actionTitle() { return this.isSending ? 'Sending' : this.action }
   },
   methods: {
     async submitComment() {

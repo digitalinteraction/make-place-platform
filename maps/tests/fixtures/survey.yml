@@ -18,3 +18,12 @@ SurveyMapComponent:
     componentA:
         Survey: =>Survey.surveyA
         PositionQuestion: 'position'
+        ResponseTitle: 'A Response'
+        ResponseMinimizable: true
+        ResponseShareable: false
+        VoteTitle: 'Voting'
+        CommentTitle: 'Comments'
+        CommentAction: 'Send'
+        CommentPlaceholder: '...'
+        VotingEnabled: true
+        CommentingEnabled: true

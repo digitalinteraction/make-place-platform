@@ -3,7 +3,12 @@
     
     <h3 class="title"><slot></slot></h3>
     
-    <comment-composer :data-id="dataId" :data-type="dataType" @commented="commented"></comment-composer>
+    <comment-composer @commented="commented"
+      :data-id="dataId"
+      :data-type="dataType"
+      :placeholder="placeholder"
+      :action="action">
+    </comment-composer>
     
     <!-- <loading v-if="!comments" type="short">Fetching Comments</loading> -->
     <div v-if="comments">
@@ -24,7 +29,7 @@
 import axios from 'axios'
 
 export default {
-  props: [ 'dataId', 'dataType' ],
+  props: [ 'dataId', 'dataType', 'placeholder', 'action' ],
   data() {
     return {
       comments: null
