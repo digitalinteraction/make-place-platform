@@ -1,6 +1,6 @@
 <?php
 
-/** ... */
+/** A component to add to a map to view and respond to a survey */
 class SurveyMapComponent extends MapComponent {
     
     private static $db = [

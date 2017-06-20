@@ -10,9 +10,9 @@
       
       
       <!-- The map's state component -->
-      <div v-if="$store.state.mapState" class="map-state">
-        <component :is="$store.state.mapState" :is-mobile="isMobile"></component>
-      </div>
+      <!-- <transition name="fade" appear mode="out-in"> -->
+      <component v-if="$store.state.mapState" :is="$store.state.mapState"  :is-mobile="isMobile"></component>
+      <!-- </transition> -->
       
     </div>
     
@@ -26,15 +26,14 @@
 <script>
 import axios from 'axios'
 import SurveyMapComponent from './components/SurveyMapComponent.vue'
-import DefaultState from './state/DefaultMapState.vue'
+import ContentMapComponent from './components/ContentMapComponent.vue'
+import DefaultMapState from './state/DefaultMapState.vue'
+import DetailMapState from './state/DetailMapState.vue'
 
 import L from 'leaflet'
 import LG from './libs/leaflet-google'
 import LC from './libs/leaflet-markercluster.min'
 
-let componentMap = {
-  SurveyMapComponent
-}
 
 export default {
   data() {
@@ -44,13 +43,18 @@ export default {
       componentConfig: null
     }
   },
-  components: { SurveyMapComponent },
+  components: {
+    SurveyMapComponent,
+    ContentMapComponent,
+    DefaultMapState,
+    DetailMapState
+  },
   mounted() {
     this.onResize()
     window.addEventListener('resize', this.onResize)
     
     this.loadConfig()
-    this.$store.commit('setMapState', DefaultState)
+    this.$store.commit('setMapState', DefaultMapState)
   },
   methods: {
     onResize() {

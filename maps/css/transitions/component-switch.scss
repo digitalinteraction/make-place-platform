@@ -1,0 +1,7 @@
+.component-switch-enter-active, .component-switch-leave-active {
+  transition: opacity 1.0s;
+}
+
+.component-switch-enter, .component-switch-leave-to {
+  opacity: 0;
+}
