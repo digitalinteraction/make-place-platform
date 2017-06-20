@@ -32,6 +32,7 @@ test:
     stage: test
     script:
         - cp -r /app/* .
+        - mv _config/bootstrap.sh bootstrap.sh && mv _config/cronjobs cronjobs && mv _config/phpunit.xml phpunit.xml
         - bash scripts/test
         # - docker run --rm $CONTAINER_BRANCH_IMAGE bash scripts/coverage
         # - docker push $CONTAINER_BRANCH_IMAGE
