@@ -4,7 +4,8 @@
 class MapComponent extends DataObject {
     
     private static $db = [
-        'Name' => 'Varchar(255)'
+        'Name' => 'Varchar(255)',
+        'Order' => 'Int'
     ];
     
     private static $has_one = [
@@ -13,7 +14,8 @@ class MapComponent extends DataObject {
     
     private static $summary_fields = [
         'Name' => 'Name',
-        'ClassName' => 'Component'
+        'ClassName' => 'Component',
+        'Page.Title' => 'Page'
     ];
     
     public function getCMSFields() {
@@ -25,6 +27,7 @@ class MapComponent extends DataObject {
         
         // Add the default fields
         $fields->addFieldsToTab('Root.Main', [
+            HeaderField::create("GeneralHeader", "Component Info"),
             TextField::create('Name', 'Name')
         ]);
         
@@ -34,21 +37,19 @@ class MapComponent extends DataObject {
         
         
         // If there are no subclasses, don't add more fields
-        if (count($types) == 0) {
-            return $fields;
-        }
+        if (count($types) == 0) { return $fields; }
         
         
         // Add the type field
         $fields->addFieldsToTab('Root.Main', [
             DropdownField::create('ClassName', 'Type', $types)
-                ->setDescription("You will need to save for this property to update")
+                ->setDescription("The type of component to add <br> NOTE: You will need to save for this property to update")
         ]);
         
         
-        if ($this->ID == null) {
-            return $fields;
-        }
+        // If not created, don't add any more fields
+        if ($this->ID == null) { return $fields; }
+        
         
         // Let the sub-types add their own fields
         $this->addExtraFields($fields);

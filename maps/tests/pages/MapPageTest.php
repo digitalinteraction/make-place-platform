@@ -1,6 +1,6 @@
 <?php
 
-/** ... */
+/** Tests MapPage */
 class MapPageTest extends FunctionalTest {
     
     // Load db objects from a file

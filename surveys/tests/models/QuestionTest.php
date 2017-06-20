@@ -126,7 +126,7 @@ class QuestionTest extends SapphireTest {
         $fields = $this->question->getCMSFields();
         
         // Find the field that should have been added
-        $extraField = $fields->fieldByName('Root.Main.TestField');
+        $extraField = $fields->fieldByName('Root.Question.TestField');
         
         // Check the field was added
         $this->assertNotNull($extraField, "Extrafields not added");

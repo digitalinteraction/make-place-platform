@@ -1,7 +1,7 @@
 <template lang="html">
   <div id="map-app" :class="{'is-mobile': isMobile}">
     
-    <p v-if="!page"> Loading ... </p>
+    <loading v-if="!page"> Loading Map </loading>
     
     <div v-else>
       

@@ -34,10 +34,40 @@ class SurveyMapComponentTest extends SapphireTest {
         
         $fields = $this->component->getCMSFields();
         
+        // Base fields
+        $this->assertNotNull($fields->fieldByName('Root.Main.SurveyCompHeader'));
         $this->assertNotNull($fields->fieldByName('Root.Main.SurveyID'));
-        $this->assertNotNull($fields->fieldByName('Root.Main.ActionMessage'));
-        $this->assertNotNull($fields->fieldByName('Root.Main.ActionColour'));
-        $this->assertNotNull($fields->fieldByName('Root.Main.PinColour'));
+        
+        // Geom questions
+        $this->assertNotNull($fields->fieldByName('Root.Survey.Geom.PositionQuestion'));
+        $this->assertNotNull($fields->fieldByName('Root.Survey.Geom.HighlightQuestion'));
+        
+        // Appearance Questions
+        $this->assertNotNull($fields->fieldByName('Root.Survey.Appearance.ActionMessage'));
+        $this->assertNotNull($fields->fieldByName('Root.Survey.Appearance.ActionColour'));
+        $this->assertNotNull($fields->fieldByName('Root.Survey.Appearance.PinColour'));
+    }
+    
+    public function testCMSSurveyFieldWithoutSurvey() {
+        
+        // Set the survey id to null
+        $this->component->SurveyID = null;
+        
+        // Get cms fields
+        $fields = $this->component->getCMSFields();
+        
+        // Base fields - Should have these
+        $this->assertNotNull($fields->fieldByName('Root.Main.SurveyCompHeader'));
+        $this->assertNotNull($fields->fieldByName('Root.Main.SurveyID'));
+        
+        // Geom questions - Shouldn't have these
+        $this->assertNull($fields->fieldByName('Root.Survey.Geom.PositionQuestion'));
+        $this->assertNull($fields->fieldByName('Root.Survey.Geom.HighlightQuestion'));
+        
+        // Appearance questions - Shouldn't have these
+        $this->assertNull($fields->fieldByName('Root.Survey.Appearance.ActionMessage'));
+        $this->assertNull($fields->fieldByName('Root.Survey.Appearance.ActionColour'));
+        $this->assertNull($fields->fieldByName('Root.Survey.Appearance.PinColour'));
     }
     
     

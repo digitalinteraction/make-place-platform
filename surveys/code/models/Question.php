@@ -1,7 +1,6 @@
 <?php
-/*
- *
- */
+
+/* A question being asked as part of a Survey */
 class Question extends DataObject {
     
     private static $db = [
@@ -9,11 +8,19 @@ class Question extends DataObject {
         "Handle" => "Varchar(255)",
         "Label" => "Varchar(255)",
         "Description" => "Varchar(255)",
-        "Placeholder" => "Varchar(255)"
+        "Placeholder" => "Varchar(255)",
+        "Order" => "Int"
     ];
     
     private static $has_one = [
         "Survey" => "Survey"
+    ];
+    
+    private static $summary_fields = [
+        'Name' => 'Name',
+        'ClassName' => 'type',
+        'Handle' => 'Handle',
+        'Label' => 'Label'
     ];
     
     
@@ -69,16 +76,26 @@ class Question extends DataObject {
         ]);
         
         
+        $classMessage = 'The type of question being asked. <br>'
+            . 'Different question types may add extra fields in the \'Question\' Tab <br>'
+            . 'NOTE: You will need to save the question for this to update';
+        
+        
         // Add the base fields
         $fields->addFieldsToTab('Root.Main', [
             HeaderField::create('InfoLabel', 'Question Info', 2),
             TextField::create('Name', 'Name'),
             ReadonlyField::create('Handle', 'Handle'),
-            TextField::create('Label', 'Label'),
-            TextField::create('Placeholder', 'Placeholder'),
-            TextareaField::create('Description', 'Description'),
+            
+            HeaderField::create('PresLabel', 'Question Presentation', 3),
+            TextField::create('Label', 'Label')
+                ->setDescription('How the question will be asked'),
+            TextField::create('Placeholder', 'Placeholder')
+                ->setDescription('The placeholder that\'ll appear in the field (optional)'),
+            TextareaField::create('Description', 'Description')
+                ->setDescription('A longer description of the question (optional)'),
             DropdownField::create('ClassName', 'Type', $this->availableTypes())
-                ->setDescription("You will need to save for this property to update")
+                ->setDescription($classMessage)
         ]);
         
         
@@ -92,7 +109,7 @@ class Question extends DataObject {
         if (count($extraFields) > 0) {
             
             // If the subclass does add fields, add a header and the fields
-            $fields->addFieldsToTab('Root.Main', array_merge(
+            $fields->addFieldsToTab('Root.Question', array_merge(
                 [HeaderField::create('PropertiesLabel', 'Question Properties', 2)],
                 $extraFields
             ));

@@ -65,6 +65,8 @@ export default {
     },
     async responseClicked(response, e) {
       
+      console.log('here!', response)
+      
       // Transition to Detail state + render our response
       this.$store.commit('setMapDetail', {
         type: SurveyResponse,

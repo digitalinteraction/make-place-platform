@@ -4,7 +4,8 @@ export default {
     actions: [],
     mapState: null,
     map: null,
-    clusterer: null
+    clusterer: null,
+    mapDetail: null
   },
   mutations: {
     addAction(state, newAction) { state.actions.push(newAction) },

@@ -7,7 +7,7 @@
     <!-- The composer form -->
     <div class="content">
       
-      <textarea v-model="message" name="message"></textarea>
+      <textarea v-model="message" name="message" @keyup.enter.prevent="submitComment"></textarea>
       
       <p class="placeholder" v-if="message.length < 1"> I think that ... </p>
       

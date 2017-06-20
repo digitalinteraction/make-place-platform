@@ -75,7 +75,7 @@ class SurveyTest extends SapphireTest {
         $this->assertNotNull($fields->fieldByName("Root.Main.SubmitTitle"));
         $this->assertNotNull($fields->fieldByName("Root.Main.ViewAuth"));
         $this->assertNotNull($fields->fieldByName("Root.Main.SubmitAuth"));
-        $this->assertNull($fields->fieldByName("Root.Main.Questions"));
+        $this->assertNull($fields->fieldByName("Root.Questions"));
     }
     
     public function testCmsFieldsWhenCreated() {
@@ -85,7 +85,16 @@ class SurveyTest extends SapphireTest {
         
         $fields = $s1->getCMSFields();
         
-        $this->assertNotNull($fields->fieldByName("Root.Main.Questions"));
+        $this->assertNull($fields->fieldByName("Root.Main.Questions"));
+    }
+    
+    public function testCmsFieldsWhenActive() {
+        
+        $s1 = Survey::create(["Name" => "My Survye", "ID" => 7, "Active" => true]);
+        
+        $fields = $s1->getCMSFields();
+        
+        $this->assertNull($fields->fieldByName("Root.Questions"));
     }
     
     
@@ -143,6 +152,7 @@ class SurveyTest extends SapphireTest {
         
         // Create a survey with some questions
         $survey = Survey::create(["Name" => "My Survey"]);
+        $survey->write();
         $survey->Questions()->addMany([
             Question::create(["Handle" => "first-question"]),
             Question::create(["Handle" => "second-question"])
@@ -151,6 +161,7 @@ class SurveyTest extends SapphireTest {
         
         // Generate the map and check it put the questions in
         $map = $survey->getQuestionMap();
+        
         $this->assertArrayHasKey("first-question", $map);
         $this->assertArrayHasKey("second-question", $map);
     }

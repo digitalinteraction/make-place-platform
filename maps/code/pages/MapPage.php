@@ -29,6 +29,18 @@ class MapPage extends Page {
     public function getCMSFields() {
     
         $fields = parent::getCMSFields();
+        
+        // A config for sortable components
+        $config = GridFieldConfig_RelationEditor::create()
+            ->removeComponentsByType('GridFieldAddExistingAutocompleter')
+            ->removeComponentsByType('GridFieldExportButton')
+            ->removeComponentsByType('GridFieldPrintButton')
+            ->removeComponentsByType('GridFieldDeleteAction')
+            ->removeComponentsByType('GridFieldFilterHeader')
+            ->addComponent(new GridFieldSortableRows('Order'))
+            ->addComponent(new GridFieldDeleteAction());
+        
+        $fields->removeByName('Content');
     
         $fields->addFieldsToTab('Root.Maps', [
             HeaderField::create('StartLabel', 'Initial Position'),
@@ -47,7 +59,7 @@ class MapPage extends Page {
                 'MapComponents',
                 'Components',
                 $this->MapComponents(),
-                GridFieldConfig_RelationEditor::create()
+                $config
             )
         ]);
     
@@ -110,5 +122,10 @@ class MapPage_Controller extends Page_Controller {
             //     'Colour' => 'red'
             // ]
         ]);
+    }
+    
+    
+    public function MapComponents() {
+        return parent::MapComponents()->sort('Order');
     }
 }

@@ -23,21 +23,40 @@ class SurveyMapComponent extends MapComponent {
     
     public function addExtraFields(FieldList $fields) {
         
+        $surveyList = Survey::get()->map()->toArray();
+        $actionColours = singleton('SurveyMapComponent')->dbObject('ActionColour')->enumValues();
+        $pinColours = singleton('SurveyMapComponent')->dbObject('PinColour')->enumValues();
+        
+        
         $fields->addFieldsToTab('Root.Main', [
-            DropdownField::create(
-                'SurveyID',
-                'Survey',
-                Survey::get()->map()->toArray()
-            ),
-            TextField::create('ActionMessage', 'Action'),
-            TextField::create('PositionQuestion', 'Position Question'),
-            TextField::create('HighlightQuestion', 'Highlight Question'),
-            DropdownField::create('ActionColour', 'Action Colour',
-                singleton('SurveyMapComponent')->dbObject('ActionColour')->enumValues()
-            ),
-            DropdownField::create('PinColour', 'Pin Colour',
-                singleton('SurveyMapComponent')->dbObject('PinColour')->enumValues()
-            )
+          HeaderField::create("SurveyCompHeader", "Survey Component", 2),
+            DropdownField::create( 'SurveyID', 'Survey', $surveyList)
+                ->setDescription("The survey to add to the map")
+        ]);
+        
+        if ($this->SurveyID == null) { return; }
+        
+        $geoQuestions = $this->Survey()->Questions()
+            ->filter('ClassName', 'GeoQuestion')
+            ->map('Handle', 'Name')
+            ->toArray();
+        $geoQuestions[''] = 'None';
+        
+        
+        $fields->addFieldsToTab('Root.Survey.Geom', [
+            DropdownField::create("PositionQuestion", 'Position Question', $geoQuestions)
+                ->setDescription("The question responsible for the survey's location"),
+            DropdownField::create("HighlightQuestion", 'Highlight Question', $geoQuestions)
+                ->setDescription("The question to display extra geometries when selected"),
+        ]);
+        
+        $fields->addFieldsToTab('Root.Survey.Appearance', [
+            TextField::create('ActionMessage', 'Action')
+                ->setDescription("The action to add a response from the map"),
+            DropdownField::create('ActionColour', 'Action Colour', $actionColours)
+                ->setDescription("The colour of the action on the map"),
+            DropdownField::create('PinColour', 'Pin Colour', $pinColours)
+                ->setDescription("The colour of the response pins")
         ]);
     }
     

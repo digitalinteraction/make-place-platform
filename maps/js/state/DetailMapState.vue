@@ -21,8 +21,8 @@
         
         <!-- If set, render the detail component -->
         <transition name="fade">
-          <div v-if="detail" class="content">
-            <component :is="detail.type" :data="detail.data" @change-title="changeTitle"></component>
+          <div v-if="$store.state.mapDetail" class="content">
+            <component :is="$store.state.mapDetail.type" :data="$store.state.mapDetail.data" @change-title="changeTitle"></component>
           </div>
         </transition>
         
