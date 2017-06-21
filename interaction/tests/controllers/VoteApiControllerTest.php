@@ -151,4 +151,50 @@ class VoteApiControllerTest extends FunctionalTest {
         
         $this->assertFalse((bool)$oldVote->Latest);
     }
+    
+    
+    /* Current Votes Tests */
+    public function testCurrentVote() {
+        
+        $this->member->logIn();
+        
+        $vote = $this->addVoteToTarget(1, true, $this->member->ID);
+        
+        $res = $this->get("{$this->apiBase}/on/MockVoteTarget/1/current");
+        
+        $this->assertEquals(200, $res->getStatusCode());
+    }
+    
+    public function testCurrentVoteReturnsValue() {
+        
+        $this->member->logIn();
+        
+        $vote = $this->addVoteToTarget(1, true, $this->member->ID);
+        
+        $res = $this->get("{$this->apiBase}/on/MockVoteTarget/1/current");
+        
+        $json = json_decode($res->getBody(), true);
+        
+        $this->assertEquals(1, $json['value']);
+    }
+    
+    public function testCurrentVoteRequiresAuth() {
+        
+        $vote = $this->addVoteToTarget(1, true, $this->member->ID);
+        
+        $res = $this->get("{$this->apiBase}/on/MockVoteTarget/1/current");
+        
+        $this->assertEquals(401, $res->getStatusCode());
+    }
+    
+    public function testCurrentVoteRequiresGet() {
+        
+        $this->member->logIn();
+        
+        $vote = $this->addVoteToTarget(1, true, $this->member->ID);
+        
+        $res = $this->post("{$this->apiBase}/on/MockVoteTarget/1/current", []);
+        
+        $this->assertEquals(400, $res->getStatusCode());
+    }
 }

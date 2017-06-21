@@ -1,7 +1,6 @@
 <?php
 
 /** Tests ContentMapComponent */
-/** @group whitelist */
 class ContentMapComponentTest extends SapphireTest {
     
     public function testExtraFields() {

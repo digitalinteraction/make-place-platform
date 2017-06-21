@@ -1,17 +1,12 @@
 <?php
 
-class MockApiController extends ContentController { }
+class MockApiController extends ContentController {
+    private static $extensions = [ 'JsonApiExtension' ];
+}
 
 
-/** ... */
+/** Tests JsonApiExtension */
 class JsonApiExtensionTest extends SapphireTest {
-    
-    public function setUpOnce() {
-        parent::setUpOnce();
-        
-        MockApiController::add_extension('JsonApiExtension');
-    }
-    
     
     public function testExtensionAdded() {
         
@@ -48,5 +43,16 @@ class JsonApiExtensionTest extends SapphireTest {
         
         $this->assertEquals(["Content-Type" => "application/json"], $response->getHeaders());
         $this->assertEquals($expected, $response->getBody());
+    }
+    
+    public function testJsonAuthError() {
+        
+        $object = MockApiController::create();
+        
+        $response = $object->jsonAuthError("Error Message");
+        
+        $this->assertEquals(["Content-Type" => "application/json"], $response->getHeaders());
+        $this->assertEquals("[\"Error Message\"]", $response->getBody());
+        $this->assertEquals(401, $response->getStatusCode());
     }
 }

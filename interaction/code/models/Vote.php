@@ -16,4 +16,6 @@ class Vote extends DataObject {
     private static $defaults = [
         "Latest" => true
     ];
+    
+    private static $excluded_fields = [ "none" ];
 }

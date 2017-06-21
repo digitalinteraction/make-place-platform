@@ -67,9 +67,25 @@ class CommentApiController extends ApiController {
      * @apiParam {int} id The id of the comment to get children of
      *
      * @apiSuccessExample {json} 200 OK
-     * {
-     *   "msg": "coming soon"
-     * }
+     * [
+     *   {
+     *     "id": 1,
+     *     "created": "2017-06-20 20:00:00",
+     *     "message": "Test!",
+     *     "deleted": false,
+     *     "targetID": 42,
+     *     "targetClass": "SurveyResponse",
+     *     "parentID": 11,
+     *     "member": {
+     *       "id": 1,
+     *       "created": "2017-04-06 16:03:33",
+     *       "firstName": "Geoff",
+     *       "surname": "Testington",
+     *       "profileImageID": 1337
+     *     },
+     *     "vote": 0
+     *   }
+     * ]
      */
     public function commentChildren() {
         
@@ -89,30 +105,47 @@ class CommentApiController extends ApiController {
     
     
     /**
-     * @api {get} api/comment/on/:targetType/$targetId/ Index
+     * @api {get} api/comment/on/:targetType/:targetId/ Index
      * @apiName CommentIndex
      * @apiGroup Comment
-     * @apiPermission Member
      *
-     * @apiDescription Gets the root level comments on a record of type 'classname'
+     * @apiDescription Gets the root level comments on a record of type 'targetType'
      *
-     * @apiParam {string} targetType The classname of the thing being commented on
-     * @apiParam {int} id The id of the record being commented on
+     * @apiParam {string} targetType The classname of the record being commented on
+     * @apiParam {int} targetId The id of the record being commented on
      *
      * @apiSuccessExample {json} 200 OK
-     * {
-     *   "msg": "coming soon"
-     * }
+     * [
+     *   {
+     *     "id": 1,
+     *     "created": "2017-06-20 20:00:00",
+     *     "message": "Test!",
+     *     "deleted": false,
+     *     "targetID": 42,
+     *     "targetClass": "SurveyResponse",
+     *     "parentID": null,
+     *     "member": {
+     *       "id": 1,
+     *       "created": "2017-04-06 16:03:33",
+     *       "firstName": "Geoff",
+     *       "surname": "Testington",
+     *       "profileImageID": 1337
+     *     },
+     *     "vote": 0
+     *   }
+     * ]
      */
     public function commentIndex($target) {
         
         $comments = Comment::get()->filter([
             "TargetClass" => $target->ClassName,
             "TargetID" => $target->ID
-        ])->sort('Created DESC');
+        ])->sort("Created DESC");
         
         $json = [];
         foreach($comments as $comment) {
+            
+            // Append the serialized comment
             $json[] = $comment->jsonSerialize();
         }
         
@@ -125,7 +158,7 @@ class CommentApiController extends ApiController {
      * @apiGroup Comment
      * @apiPermission Member
      *
-     * @apiDescription Adds a comment on a record of type 'classname'
+     * @apiDescription Adds a comment on a record of type 'targetType'
      *
      * @apiParam {string} targetType The classname of the thing being commented on
      * @apiParam {int} id The id of the record being commented on
@@ -133,7 +166,21 @@ class CommentApiController extends ApiController {
      *
      * @apiSuccessExample {json} 200 OK
      * {
-     *   "msg": "coming soon"
+     *   "id": 26,
+     *   "created": "2017-06-20 20:30:19",
+     *   "message": "Test!",
+     *   "deleted": null,
+     *   "targetID": 31,
+     *   "targetClass": "SurveyResponse",
+     *   "parentID": null,
+     *   "member": {
+     *     "id": 1,
+     *     "created": "2017-04-06 16:03:33",
+     *     "firstName": "Rob",
+     *     "surname": "Anderson",
+     *     "profileImageID": 4
+     *   },
+     *   "vote": 0
      * }
      */
     public function commentCreate($target) {

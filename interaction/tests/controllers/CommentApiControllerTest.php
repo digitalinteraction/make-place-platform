@@ -19,6 +19,7 @@ class MockNonCommentable extends DataObject { }
 
 
 /** Tests CommentApiController */
+/** @group whitelist */
 class CommentApiControllerTest extends FunctionalTest {
     
     public $usesDatabase = true;
@@ -32,7 +33,11 @@ class CommentApiControllerTest extends FunctionalTest {
         $this->target = MockCommentTarget::create();
         $this->target->write();
         
-        $this->member = Member::create(["Email" => "test@comment.api.controller"]);
+        $this->member = Member::create([
+            "Email" => "test@comment.api.controller",
+            "FirstName" => "Geoff",
+            "Surname" => "Testington"
+        ]);
         $this->member->write();
     }
     
@@ -67,7 +72,6 @@ class CommentApiControllerTest extends FunctionalTest {
         Comment::create(["TargetClass" => "MockCommentTarget", "TargetID" => "1"])->write();
         
         $res = $this->get("{$this->apiBase}/on/MockCommentTarget/1");
-        
         $json = json_decode($res->getBody(), true);
         
         $this->assertEquals(200, $res->getStatusCode());
@@ -88,6 +92,43 @@ class CommentApiControllerTest extends FunctionalTest {
         $res = $this->get("{$this->apiBase}/on/MockCommentTarget/999");
         
         $this->assertEquals(400, $res->getStatusCode());
+    }
+    
+    public function testCommentIndexEmbedsMember() {
+        
+        Comment::create([
+            "TargetClass" => "MockCommentTarget",
+            "TargetID" => "1",
+            "MemberID" => $this->member->ID
+        ])->write();
+        
+        $res = $this->get("{$this->apiBase}/on/MockCommentTarget/1");
+        $json = json_decode($res->getBody(), true);
+        
+        $this->assertTrue(isset($json[0]["member"]));
+    }
+    
+    public function testCommentIndexEmbedsVote() {
+        
+        Comment::create([
+            "TargetClass" => "MockCommentTarget",
+            "TargetID" => "1",
+            "MemberID" => $this->member->ID
+        ])->write();
+        
+        Vote::create([
+            "Value" => 1,
+            "TargetClass" => "MockCommentTarget",
+            "TargetID" => "1",
+            "MemberID" => $this->member->ID,
+            "Latest" => true
+        ])->write();
+        
+        $res = $this->get("{$this->apiBase}/on/MockCommentTarget/1");
+        $json = json_decode($res->getBody(), true);
+        
+        $this->assertTrue(isset($json[0]["vote"]));
+        $this->assertEquals($json[0]["vote"], 1);
     }
     
     

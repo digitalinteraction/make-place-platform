@@ -34,4 +34,9 @@ class JsonApiExtension extends Extension {
         ], $status);
     }
     
+    /** Returns a json authentication error response */
+    public function jsonAuthError($message = "You need to sign in to do that") {
+        
+        return $this->jsonResponse([$message], 401);
+    }
 }

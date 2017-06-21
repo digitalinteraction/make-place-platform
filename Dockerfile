@@ -38,3 +38,6 @@ COPY interaction /app/interaction
 
 # Build javascript
 RUN scripts/build-js > /dev/null
+
+# Build docs
+RUN scripts/build-docs > /dev/null

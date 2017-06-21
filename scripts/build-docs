@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+node_modules/.bin/apidoc -o docs \
+  -i interaction \
+  -i auth \
+  -i maps \
+  -i surveys
+cp themes/generic/images/favicon.png docs/img/favicon.ico

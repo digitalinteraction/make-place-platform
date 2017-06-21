@@ -1,6 +1,6 @@
 <?php
 
-/** ... */
+/** An extension for member to store registration information */
 class MemberRegisterExtension extends DataExtension {
     
     private static $belongs_to = array(
