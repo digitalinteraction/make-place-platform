@@ -21,8 +21,11 @@
         
         <!-- If set, render the detail component -->
         <transition name="fade">
-          <div v-if="$store.state.mapDetail" class="content">
-            <component :is="$store.state.mapDetail.type" :options="$store.state.mapDetail.options" @change-title="changeTitle"></component>
+          <div v-if="detail" class="content">
+            <component :is="detail.type"
+              :options="detail.options"
+              @change-title="changeTitle">
+            </component>
           </div>
         </transition>
         
@@ -40,13 +43,25 @@
 
 
 <script>
+import _ from 'lodash'
+import ContentDetail from '../components/detail/ContentDetail.vue'
+import SurveyFormDetail from '../components/detail/SurveyFormDetail.vue'
+import SurveyResponseDetail from '../components/detail/SurveyResponseDetail.vue'
+
 export default {
+  props: [ 'options' ],
+  components: { ContentDetail, SurveyFormDetail, SurveyResponseDetail },
   data() {
     return { minified: false, customTitle: null }
   },
   computed: {
-    detail() { return this.$store.state.mapDetail },
-    title() { return this.customTitle || this.detail.title || 'Loading' }
+    detail() {
+      let detail = this.options.detail
+      if (_.isString(detail)) detail = { type: detail }
+      detail.options = detail.options || {}
+      return detail
+    },
+    title() { return this.customTitle || this.options.title || 'Loading' }
   },
   methods: {
     close() { this.$store.commit('setMapState', 'DefaultMapState') },

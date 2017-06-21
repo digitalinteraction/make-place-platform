@@ -36,6 +36,7 @@ class JsonSerializableDataExtensionTest extends SapphireTest {
         
         $this->assertContains('id', $keys);
         $this->assertContains('created', $keys);
+        $this->assertContains('className', $keys);
         $this->assertContains('name', $keys);
     }
     

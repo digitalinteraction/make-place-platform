@@ -5,16 +5,21 @@ class ContentMapComponent extends MapComponent {
   
     private static $db = [
         'PopupTitle' => 'Varchar(255)',
-        'PopupContent' => 'HTMLText'
+        'PopupContent' => 'HTMLText',
+        'ActionColour' => 'Enum(array("primary", "secondary","blue", "green", "orange", "purple", "red"), "green")'
     ];
     
     private static $defaults = [
-        'Title' => 'Info'
+        'Title' => 'Info',
+        'ActionColour' => 'primary'
     ];
   
     public function addExtraFields(FieldList $fields) {
         
+        $actionColours = singleton('ContentMapComponent')->dbObject('ActionColour')->enumValues();
+        
         $fields->addFieldsToTab('Root.Main', [
+            DropdownField::create('ActionColour', 'Action Colour', $actionColours),
             TextField::create('PopupTitle', 'Popup Title'),
             HtmlEditorField::create('PopupContent', 'Content')
         ]);
@@ -26,7 +31,8 @@ class ContentMapComponent extends MapComponent {
         
         $data += [
             'popupTitle' => $this->PopupTitle,
-            'popupContent' => $this->PopupContent
+            'popupContent' => $this->PopupContent,
+            'actionColour' => $this->ActionColour
         ];
         
         return $data;

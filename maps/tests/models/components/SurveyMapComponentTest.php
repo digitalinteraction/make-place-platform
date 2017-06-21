@@ -115,9 +115,9 @@ class SurveyMapComponentTest extends SapphireTest {
     public function testAppearanceConfigData() {
         
         $expected = [
-            'actionColour' => 'green',
+            'actionColour' => 'primary',
             'actionMessage' => 'Add Response',
-            'pinColour' => 'blue',
+            'pinColour' => 'secondary',
             'responseTitle' => 'A Response',
             'responseMinimizable' => true,
             'responseShareable' => false,

@@ -23,6 +23,8 @@ class Question extends DataObject {
         'Label' => 'Label'
     ];
     
+    private static $excluded_fields = [ 'none' ];
+    
     
     protected $extraClasses = [];
     

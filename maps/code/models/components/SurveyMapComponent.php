@@ -4,9 +4,9 @@
 class SurveyMapComponent extends MapComponent {
     
     private static $db = [
-        'ActionColour' => 'Enum(array("blue", "green", "orange", "purple", "red"), "green")',
+        'ActionColour' => 'Enum(array("primary", "secondary","blue", "green", "orange", "purple", "red"), "green")',
         'ActionMessage' => 'Varchar(255)',
-        'PinColour' => 'Enum(array("blue", "green", "orange", "purple", "red"), "blue")',
+        'PinColour' => 'Enum(array("primary", "secondary","blue", "green", "orange", "purple", "red"), "green")',
         'PositionQuestion' => 'Varchar(255)',
         'HighlightQuestion' => 'Varchar(255)',
         
@@ -28,8 +28,8 @@ class SurveyMapComponent extends MapComponent {
     
     private static $defaults = [
         'ActionMessage' => 'Add Response',
-        'ActionColour' => 'green',
-        'PinColour' => 'blue',
+        'ActionColour' => 'primary',
+        'PinColour' => 'secondary',
         
         'ResponseTitle' => 'Survey Response',
         'ResponseMinimizable' => false,

@@ -3,29 +3,35 @@
 </template>
 
 <script>
-import Content from './details/Content.vue'
-
 export default {
   props: [ 'options' ],
   mounted() {
     this.$store.commit('addAction', {
       title: this.options.popupTitle,
       icon: 'info',
+      colour: this.options.actionColour,
       onClick: this.actionHandler
     })
   },
   methods: {
     actionHandler() {
       
-      // Set the detail
-      this.$store.commit('setMapDetail', {
-        type: Content,
-        title: this.options.popupTitle,
-        options: { content: this.options.popupContent }
-      })
+      // The detail component to render our content
+      let detail = {
+        type: 'ContentDetail',
+        options: {
+          content: this.options.popupContent
+        }
+      }
       
-      // Set the map state
-      this.$store.commit('setMapState', 'DetailMapState')
+      // Set the map state, with our detail embedded
+      this.$store.commit('setMapState', {
+        type: 'DetailMapState',
+        options: {
+          title: this.options.popupTitle,
+          detail: detail
+        }
+      })
     }
   }
 }

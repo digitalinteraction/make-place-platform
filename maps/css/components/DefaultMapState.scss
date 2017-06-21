@@ -1,3 +1,8 @@
+@keyframes position-action-mobile {
+  from { top: 40px; opacity: 0; }
+  to   { top: 0; opacity: 1.0; }
+}
+
 .default-map-state {
   
   .action-list {
@@ -8,7 +13,17 @@
     z-index: $zMainActions;
     text-align: right;
     
-    transform-origin: center bottom;
+    .action-holder {
+      position: relative;
+      
+      @include only-small {
+        animation: position-action-mobile 0.3s both;
+      }
+      
+      @for $i from 0 through 5 {
+        &:nth-child(#{$i}) { animation-delay: 0.07s * $i; }
+      }
+    }
     
     .action {
       @include button-style;

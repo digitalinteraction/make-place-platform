@@ -68,6 +68,7 @@ class JsonSerializableDataExtension extends DataExtension {
         // Start with the base properties
         $json = [
             'id' => $this->owner->ID,
+            'className' => $this->owner->ClassName,
             'created' => $this->owner->Created
         ];
         

@@ -1,5 +1,5 @@
 <template lang="html">
-  <!-- <p> Survey Map Component: {{config.actionMessage}} </p> -->
+  <!--  -->
 </template>
 
 <script>
@@ -20,7 +20,9 @@ export default {
     this.fetchResponses()
   },
   computed: {
-    responseApi() { return `${this.$config.api}/api/survey/${this.options.surveyID}/responses` }
+    surveyApi() {
+      return `${this.$config.api}/api/survey/${this.options.surveyID}`
+    }
   },
   methods: {
     makeIcon(colour) {
@@ -43,11 +45,25 @@ export default {
     },
     positionPicked(position) {
       
-      console.log(position)
+      // The detail to render the survey
+      let detail = {
+        type: 'SurveyFormDetail',
+        options: { position: position, surveyID: this.options.surveyID }
+      }
+      
+      // Push the map state to the store
+      this.$store.commit('setMapState', {
+        type: 'DetailMapState',
+        options: {
+          title: '',
+          detail: detail
+        }
+      })
+      
     },
     async fetchResponses() {
       
-      let res = await axios.get(this.responseApi)
+      let res = await axios.get(`${this.surveyApi}/responses`)
       
       let posKey = this.options.positionQuestion
       
@@ -56,6 +72,9 @@ export default {
         
         // Get the responses's position
         let pos = response.values[posKey].value.geom
+        
+        // Skip if the response doesn't have a geometry
+        if (!pos || !pos.x || !pos.y) { return }
         
         // Generate an icon
         let icon = this.makeIcon(this.options.pinColour || 'blue')

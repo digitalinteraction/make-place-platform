@@ -1,16 +1,14 @@
 <template lang="html">
   <div class="default-map-state">
     
-    <transition name="grow-fade">
-      <div v-if="showActions" class="action-list">
-        <span v-for="(a,i) in actions" class="action-holder">
-          <map-action :key="i" :action="a"></map-action> <br>
-        </span>
-      </div>
-    </transition>
+    <div v-if="showActions" class="action-list">
+      <span v-for="(a,i) in actions" class="action-holder">
+        <map-action :key="i" :action="a"></map-action> <br>
+      </span>
+    </div>
     
     
-    <div v-if="isMobile">
+    <div v-if="isMobile && actions.length > 0">
       <span class="actions-toggle action"
         :class="[{'toggled': actionsToggled}, toggleClass]"
         @click="toggleActions">

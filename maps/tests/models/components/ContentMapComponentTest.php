@@ -1,6 +1,7 @@
 <?php
 
 /** Tests ContentMapComponent */
+/** @group whitelist */
 class ContentMapComponentTest extends SapphireTest {
     
     public function testExtraFields() {
@@ -12,6 +13,7 @@ class ContentMapComponentTest extends SapphireTest {
         
         $this->assertNotNull($fields->fieldByName('Root.Main.PopupTitle'));
         $this->assertNotNull($fields->fieldByName('Root.Main.PopupContent'));
+        $this->assertNotNull($fields->fieldByName('Root.Main.ActionColour'));
     }
   
     public function testConfigData() {
@@ -23,7 +25,8 @@ class ContentMapComponentTest extends SapphireTest {
         
         $expected = [
             'popupTitle' => 'Title',
-            'popupContent' => 'Content'
+            'popupContent' => 'Content',
+            'actionColour' => 'primary'
         ];
         
         $data = $component->configData();
