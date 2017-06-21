@@ -5,14 +5,18 @@
     
     <div v-else>
       
-      <!-- Add components -->
-      <component v-for="(c,i) in components" :is="c.type" :key="i" :config="c"></component>
+      <!-- Add map components -->
+      <component v-for="(c,i) in components" :is="c.type" :key="i" :options="c"></component>
       
       
       <!-- The map's state component -->
-      <!-- <transition name="fade" appear mode="out-in"> -->
-      <component v-if="$store.state.mapState" :is="$store.state.mapState"  :is-mobile="isMobile"></component>
-      <!-- </transition> -->
+      <!-- <component v-if="$store.state.mapState" :is="$store.state.mapState"  :is-mobile="isMobile"></component> -->
+      
+      <component v-if="currentState"
+        :is="currentState.type"
+        :is-mobile="isMobile"
+        :options="currentState.options">
+      </component>
       
     </div>
     
@@ -27,8 +31,10 @@
 import axios from 'axios'
 import SurveyMapComponent from './components/SurveyMapComponent.vue'
 import ContentMapComponent from './components/ContentMapComponent.vue'
+
 import DefaultMapState from './state/DefaultMapState.vue'
 import DetailMapState from './state/DetailMapState.vue'
+import PickingMapState from './state/PickingMapState.vue'
 
 import L from 'leaflet'
 import LG from './libs/leaflet-google'
@@ -36,6 +42,13 @@ import LC from './libs/leaflet-markercluster.min'
 
 
 export default {
+  components: {
+    SurveyMapComponent,
+    ContentMapComponent,
+    DefaultMapState,
+    DetailMapState,
+    PickingMapState
+  },
   data() {
     return {
       isMobile: false,
@@ -43,18 +56,15 @@ export default {
       componentConfig: null
     }
   },
-  components: {
-    SurveyMapComponent,
-    ContentMapComponent,
-    DefaultMapState,
-    DetailMapState
+  computed: {
+    currentState() { return this.$store.state.mapState }
   },
   mounted() {
     this.onResize()
     window.addEventListener('resize', this.onResize)
     
     this.loadConfig()
-    this.$store.commit('setMapState', DefaultMapState)
+    this.$store.commit('setMapState', 'DefaultMapState')
   },
   methods: {
     onResize() {
@@ -106,9 +116,7 @@ export default {
       
         console.log('config', res.data)
       }
-      catch (e) {
-        console.log(e)
-      }
+      catch (e) { console.log(e) }
     }
   }
 }

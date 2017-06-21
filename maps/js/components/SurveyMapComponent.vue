@@ -5,26 +5,24 @@
 <script>
 import axios from 'axios'
 import L from 'leaflet'
-import DetailMapState from '../state/DetailMapState.vue'
-import SurveyResponse from './details/SurveyResponse.vue'
 
 export default {
-  props: [ 'config' ],
+  props: [ 'options' ],
   mounted() {
     
     this.$store.commit('addAction', {
-      title: this.config.actionMessage,
-      colour: this.config.actionColour,
+      title: this.options.actionMessage,
+      colour: this.options.actionColour,
       icon: 'plus',
       onClick: this.actionHandler
     })
     
     this.fetchResponses()
   },
+  computed: {
+    responseApi() { return `${this.$config.api}/api/survey/${this.options.surveyID}/responses` }
+  },
   methods: {
-    actionHandler() {
-      console.log('Ouch!')
-    },
     makeIcon(colour) {
       return L.icon({
         iconUrl: `/public/images/pins/pin-${colour}.svg`,
@@ -32,13 +30,26 @@ export default {
         iconAnchor: [15, 40]
       })
     },
+    actionHandler() {
+      
+      let state = {
+        type: 'PickingMapState',
+        options: {
+          onPick: this.positionPicked
+        }
+      }
+      
+      this.$store.commit('setMapState', state)
+    },
+    positionPicked(position) {
+      
+      console.log(position)
+    },
     async fetchResponses() {
       
-      let res = await axios.get(
-        `${this.$config.api}/api/survey/${this.config.surveyID}/responses`
-      )
+      let res = await axios.get(this.responseApi)
       
-      let posKey = this.config.positionQuestion
+      let posKey = this.options.positionQuestion
       
       // Loop responses and create pins
       res.data.forEach((response) => {
@@ -47,7 +58,7 @@ export default {
         let pos = response.values[posKey].value.geom
         
         // Generate an icon
-        let icon = this.makeIcon(this.config.pinColour || 'blue')
+        let icon = this.makeIcon(this.options.pinColour || 'blue')
         
         // Create a marker
         let marker = L.marker([pos.x, pos.y], { icon })
@@ -60,20 +71,34 @@ export default {
         // Add the marker
         this.$store.state.clusterer.addLayer(marker)
       })
-      
-      // console.log(res.data)
     },
     async responseClicked(response, e) {
       
+      let detail = {
+        type: 'SurveyResponse',
+        options: {
+          response: response,
+          config: this.options
+        }
+      }
+      
+      let state = {
+        type: 'SurveyResponse',
+        options: {
+          title: '',
+          detail: detail
+        }
+      }
+      
       // Transition to Detail state + render our response
       this.$store.commit('setMapDetail', {
-        type: SurveyResponse,
+        type: 'SurveyResponse',
         title: '',
-        options: { response: response, config: this.config }
+        options: { response: response, config: this.options }
       })
       
       // Transition to the detail state
-      this.$store.commit('setMapState', DetailMapState)
+      this.$store.commit('setMapState', 'DetailMapState')
     }
   }
 }

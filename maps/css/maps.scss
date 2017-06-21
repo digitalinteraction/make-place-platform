@@ -7,6 +7,11 @@ $zMobileActionToggle: 1500;
 $zOverlay: 1400;
 $zDetail: 1600;
 
+$zPickerMessage: 1500;
+$xPickerCancel: 1500;
+
+$popoverBorder: 2px solid #ccc;
+
 
 // Mixins
 @import 'mixins/abs-fill';
@@ -15,12 +20,16 @@ $zDetail: 1600;
 
 // Components
 @import 'components/SurveyComponent';
-@import 'components/DetailMapState';
-@import 'components/DefaultMapState';
 @import 'components/SurveyResponseComponent';
 @import 'components/LoadingComponent';
 @import 'components/VoteSectionComponent';
 @import 'components/CommentSectionComponent';
+@import 'components/FullOverlay';
+
+// States
+@import 'components/DetailMapState';
+@import 'components/DefaultMapState';
+@import 'components/PickingMapState';
 
 // Pages
 @import 'pages/MapPage';

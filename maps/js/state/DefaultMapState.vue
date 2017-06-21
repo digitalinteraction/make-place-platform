@@ -1,8 +1,6 @@
 <template lang="html">
   <div class="default-map-state">
     
-    <!-- <p>{{isMobile}}</p> -->
-    
     <transition name="grow-fade">
       <div v-if="showActions" class="action-list">
         <span v-for="(a,i) in actions" class="action-holder">

@@ -40,8 +40,6 @@
 
 
 <script>
-import DefaultMapState from './DefaultMapState.vue'
-
 export default {
   data() {
     return { minified: false, customTitle: null }
@@ -51,7 +49,7 @@ export default {
     title() { return this.customTitle || this.detail.title || 'Loading' }
   },
   methods: {
-    close() { this.$store.commit('setMapState', DefaultMapState) },
+    close() { this.$store.commit('setMapState', 'DefaultMapState') },
     minify() { this.minified = !this.minified },
     changeTitle(newTitle) { this.customTitle = newTitle }
   }

@@ -15,7 +15,7 @@
   @include card-style;
   
   border-width: 2px;
-  border: 2px solid #ccc;
+  border: $popoverBorder;
   
   padding: 12px;
   

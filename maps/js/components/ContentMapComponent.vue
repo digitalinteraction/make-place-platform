@@ -6,10 +6,10 @@
 import Content from './details/Content.vue'
 
 export default {
-  props: [ 'config' ],
+  props: [ 'options' ],
   mounted() {
     this.$store.commit('addAction', {
-      title: this.config.popupTitle,
+      title: this.options.popupTitle,
       icon: 'info',
       onClick: this.actionHandler
     })
@@ -20,8 +20,8 @@ export default {
       // Set the detail
       this.$store.commit('setMapDetail', {
         type: Content,
-        title: this.config.popupTitle,
-        options: { content: this.config.popupContent }
+        title: this.options.popupTitle,
+        options: { content: this.options.popupContent }
       })
       
       // Set the map state

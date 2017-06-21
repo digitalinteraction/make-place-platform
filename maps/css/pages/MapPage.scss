@@ -8,7 +8,7 @@
 .MapPage {
   
   .main {
-    padding-bottom: 48px;
+    padding-bottom: 46px;
     
     @include only-small { padding-bottom: 0px; }
   }
@@ -28,12 +28,6 @@
   .map-state {
     @include abs-fill;
     > { @include fill-parent; }
-  }
-  
-  .full-overlay {
-    @include abs-fill;
-    z-index: $zOverlay;
-    background: rgba(0,0,0,0.3);
   }
   
   
