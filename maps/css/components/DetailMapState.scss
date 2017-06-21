@@ -5,9 +5,10 @@
   top: 0;
   left: 0;
   right: 0;
-  margin: 48px auto;
+  margin: 48px auto 0px;
   width: 620px;
   max-width: calc(100% - 12px);
+  max-height: calc(100% - 12px);
   
   z-index: $zDetail;
   
@@ -32,7 +33,7 @@
   
   
   
-  transition: transform 0.3s, margin 0.3s;
+  transition: transform 0.3s, margin 0.3s, max-height 0.3s;
   
   .content {
     transform: scale(1);
@@ -46,6 +47,7 @@
   
   &.minified {
     margin-top: 6px;
+    max-height: 64px;
     
     .content {
       opacity: 0;
