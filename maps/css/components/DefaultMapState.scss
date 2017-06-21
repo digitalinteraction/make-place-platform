@@ -13,6 +13,7 @@
     .action {
       @include button-style;
       font-size: 18px;
+      
     }
     
     @include only-small {
@@ -27,6 +28,8 @@
   .actions-toggle {
     @include button-style(false);
     font-size: 20px;
+    
+    i { transform: scale(1.5); }
     
     position: absolute;
     bottom: 32px;

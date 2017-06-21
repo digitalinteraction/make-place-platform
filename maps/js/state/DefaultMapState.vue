@@ -5,7 +5,7 @@
     
     <transition name="grow-fade">
       <div v-if="showActions" class="action-list">
-        <span v-for="(a,i) in actions">
+        <span v-for="(a,i) in actions" class="action-holder">
           <map-action :key="i" :action="a"></map-action> <br>
         </span>
       </div>
@@ -21,8 +21,6 @@
           <i class="fa fa-times" aria-hidden="true"></i>
         </span>
         <span v-else>
-          <!-- <i class="fa fa-ellipsis-h" aria-hidden="true"></i> -->
-          <!-- <i class="fa fa-caret-up" aria-hidden="true"></i> -->
           <i class="fa fa-map-marker" aria-hidden="true"></i>
         </span>
         

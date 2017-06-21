@@ -46,6 +46,7 @@ export default {
     }
   },
   computed: {
+    voteApi() { return `${this.$config.api}/api/vote/on/${this.dataType}/${this.dataId}` },
     emojiList() {
       return Object.keys(this.emojiSet).map(id => {
         return this.emojiSet[id]
@@ -79,11 +80,7 @@ export default {
         var value = this.chosenEmoji === emoji.id ? 0 : emoji.id
         
         // Post to the api ...
-        let res = await axios.post(
-          `${this.$config.api}/api/vote/on/${this.dataType}/${this.dataId}`,
-          { value }
-        )
-        
+        let res = await axios.post(this.voteApi, { value })
         
         
         // Remove previous vote
@@ -103,9 +100,11 @@ export default {
     },
     async fetchVotes() {
       try {
-        let res = await axios.get(
-          `${this.$config.api}/api/vote/on/${this.dataType}/${this.dataId}`
-        )
+        
+        // Fetch current value
+        this.chosenEmoji = (await axios.get(`${this.voteApi}/current`)).data.value
+        
+        let res = await axios.get(this.voteApi)
         
         // Generate a map of vote-id to count of votes
         let votes = this.emojiList.reduce((map, emoji) => {
@@ -119,6 +118,7 @@ export default {
           if (votes[vote.value] !== undefined) votes[vote.value]++
         }, {})
         
+        // Set the votemap to update the ui
         this.voteMap = votes
       }
       catch (error) { console.log(error) }

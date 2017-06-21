@@ -33,13 +33,13 @@
   
   
   
-  transition: transform 0.3s, margin 0.3s, max-height 0.3s;
+  transition: margin 0.3s, max-height 0.3s;
   
   .content {
     transform: scale(1);
     transform-origin: top;
     opacity: 1;
-    transition: transform 0.3s, opacity 0.3s, max-height 0.3s;
+    transition: transform 0.3s, opacity 0.3s;
     max-height: 100%;
     overflow: hidden;
   }
@@ -47,12 +47,12 @@
   
   &.minified {
     margin-top: 6px;
-    max-height: 64px;
+    max-height: 74px;
+    overflow: hidden;
     
     .content {
       opacity: 0;
       transform: translateY(-50px);
-      max-height: 0;
     }
     
     .header-bar {
