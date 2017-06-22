@@ -41,7 +41,6 @@ export default {
       let other = await axios.get(this.surveyApi)
       
       let content = res.data.content
-      console.log(content)
       
       // Take the form bit out of the form
       content = content.replace(/(<form.*>|<\/form>)/g, '')
@@ -55,25 +54,30 @@ export default {
       
       // Maybe we'll just have to dynamically render the form w/ vue!?
       let data = new FormData(e.target)
-      let body = { fields: {} }
+      // let body = { fields: {} }
+      //
+      //
+      // // Get the values our of the form
+      // // Nests the 'field' values in an object rather than php array style
+      // for (let [key, value] of data.entries()) {
+      //   if (key.match(/^fields\[/)) {
+      //     body.fields[key.replace(/fields|\[|\]/g, '')] = value
+      //   }
+      //   else {
+      //     body[key] = value
+      //   }
+      // }
       
+      // // Add the position to the fields
+      // body.fields[this.options.component.positionQuestion] = {
+      //   x: this.options.position.lat,
+      //   y: this.options.position.lng
+      // }
       
-      // Get the values our of the form
-      // Nests the 'field' values in an object rather than php array style
-      for (let [key, value] of data.entries()) {
-        if (key.match(/^fields\[/)) {
-          body.fields[key.replace(/fields|\[|\]/g, '')] = value
-        }
-        else {
-          body[key] = value
-        }
-      }
+      let posField = this.options.component.positionQuestion
+      data.append(`fields[${posField}][x]`, this.options.position.lat)
+      data.append(`fields[${posField}][y]`, this.options.position.lng)
       
-      // Add the position to the fields
-      body.fields[this.options.component.positionQuestion] = {
-        x: this.options.position.lat,
-        y: this.options.position.lng
-      }
       
       
       try {
@@ -82,7 +86,7 @@ export default {
         this.submitting = true
         
         // Submit the response
-        let res = await axios.post(`${this.surveyApi}/submit`, body)
+        let res = await axios.post(`${this.surveyApi}/submit`, data)
         
         // remove the overlay
         this.submitting = false

@@ -20,17 +20,14 @@
 
 <script>
 export default {
-  props: [ 'user' ],
+  props: [ 'member' ],
   computed: {
+    firstName() { return this.member.firstName || ' ' },
+    surname() { return this.member.surname || ' ' },
     initials() {
-      let alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-      
-      let letters = ''
-      while (letters.length < 2) {
-        letters += alphabet[Math.floor(Math.random() * alphabet.length)]
-      }
-      
-      return letters
+      if (!this.member) return 'ME'
+      if (this.firstName + this.surname === '') return '?'
+      return this.firstName.charAt(0) + this.surname.charAt(0)
     }
   }
 }

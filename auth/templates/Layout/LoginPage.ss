@@ -1,5 +1,3 @@
-<% require css('auth/css/auth.css') %>
-
 <% if IsSimplePage %>
     
     <div class="container">

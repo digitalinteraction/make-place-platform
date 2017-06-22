@@ -10,14 +10,18 @@ export default {
   props: [ 'options' ],
   mounted() {
     
-    this.$store.commit('addAction', {
-      title: this.options.actionMessage,
-      colour: this.options.actionColour,
-      icon: 'plus',
-      onClick: this.actionHandler
-    })
+    if (this.options.canSubmit) {
+      this.$store.commit('addAction', {
+        title: this.options.actionMessage,
+        colour: this.options.actionColour,
+        icon: 'plus',
+        onClick: this.actionHandler
+      })
+    }
     
-    this.fetchResponses()
+    if (this.options.canView) {
+      this.fetchResponses()
+    }
   },
   computed: {
     surveyApi() {

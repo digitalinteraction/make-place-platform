@@ -1,5 +1,3 @@
-<% require css('auth/css/auth.css') %>
-
 <div class="container">
     
     <div class="row">
@@ -13,6 +11,7 @@
                     <a class="action blue" href="me/edit/">
                         Edit Profile
                     </a>
+                    <br>
                     <a class="action red" href="Security/logout/?BackURL=home%2F">
                         Logout
                     </a>

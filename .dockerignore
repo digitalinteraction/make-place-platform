@@ -1,12 +1,13 @@
 node_modules
 
-/assets
-/.sass-cache
-/cms
-/framework
-/lumberjack
-/reports
-/siteconfig
-/sortablegridfield
-/sqlite3
-/vendor
+assets
+.sass-cache
+blog
+cms
+framework
+lumberjack
+reports
+siteconfig
+sortablegridfield
+sqlite3
+vendor

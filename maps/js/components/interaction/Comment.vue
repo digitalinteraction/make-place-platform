@@ -2,7 +2,7 @@
   <div class="comment">
     
     <!-- The profile image of the commenter -->
-    <profile-image></profile-image>
+    <profile-image :member="comment.member"></profile-image>
     
     <!-- The content of the comment -->
     <div class="content">
@@ -28,7 +28,11 @@ import moment from 'moment'
 export default {
   props: [ 'dataId', 'dataType', 'comment' ],
   computed: {
-    author() { return 'Rob Anderson' },
+    author() {
+      let first = this.comment.member.firstName || ''
+      let surname = this.comment.member.surname || ''
+      return `${first} ${surname}`
+    },
     date() { return moment(this.comment.created).fromNow() }
   }
 }

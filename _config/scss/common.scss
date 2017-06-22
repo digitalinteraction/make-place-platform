@@ -121,7 +121,7 @@
   
   -webkit-font-smoothing: antialiased;
   
-  margin-bottom: 0.5em;
+  margin: 0 0.1em 0.5em;
   
   
   box-shadow: -1.5px -1.5px 0px rgba(0,0,0,0.1) inset;
@@ -132,7 +132,7 @@
     transform: scale(1);
     transition: background-color 0.3s, transform 0.3s, border 0.3s;
     
-    &:hover { transform: scale(1.03); }
+    &:hover, &:focus { transform: scale(1.03); outline: 0; text-decoration: none; }
     &:active { transform: scale(0.95); }
     
     &.with-icon .icon {
@@ -145,7 +145,6 @@
     }
   }
   
-  &:hover { text-decoration: none; }
   
   &.full-width { display: block; }
   

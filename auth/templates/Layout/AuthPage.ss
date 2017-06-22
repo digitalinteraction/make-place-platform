@@ -1,5 +1,3 @@
-<% require css('auth/css/auth.css') %>
-
 <div class="container">
 	
 	<article class="content-card">
