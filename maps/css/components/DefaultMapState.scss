@@ -21,7 +21,7 @@
       }
       
       @for $i from 0 through 5 {
-        &:nth-child(#{$i}) { animation-delay: 0.07s * $i; }
+        &:nth-child(#{$i}) { animation-delay: 0.06s * $i; }
       }
     }
     

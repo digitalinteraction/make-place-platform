@@ -5,12 +5,12 @@
       <p>Choose a position on the map</p>
     </div>
     
-    <span class="cancel-button red" @click="cancel" title="Cancel">
-      <i class="fa fa-times fa-fw" aria-hidden="true"></i>
+    <span class="cancel-button red" @click.stop.capture="cancel" title="Cancel">
+      <i class="fa fa-times" aria-hidden="true"></i>
     </span>
     
     <transition name="fade" appear>
-      <div class="full-overlay" @click="picked"></div>
+      <div class="full-overlay" @click.stop.capture="picked"></div>
     </transition>
     
   </div>

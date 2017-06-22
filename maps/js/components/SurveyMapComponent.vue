@@ -45,10 +45,17 @@ export default {
     },
     positionPicked(position) {
       
+      // Do nothing if no position was picked
+      if (!position) return
+      
       // The detail to render the survey
       let detail = {
         type: 'SurveyFormDetail',
-        options: { position: position, surveyID: this.options.surveyID }
+        options: {
+          position: position,
+          component: this.options,
+          onCreate: this.responseCreated
+        }
       }
       
       // Push the map state to the store
@@ -61,63 +68,74 @@ export default {
       })
       
     },
+    responseCreated(response) {
+      
+      if (this.options.positionQuestion) {
+        this.addResponsePin(response, this.options.positionQuestion)
+      }
+      this.$store.commit('resetMapState')
+    },
+    addResponsePin(response, posKey) {
+      
+      // Get the responses's position
+      let pos = response.values[posKey].value
+      
+      // Skip if the response doesn't have a geometry
+      if (!pos || !pos.geom || !pos.geom.x || !pos.geom.y) { return }
+      
+      // Generate an icon
+      let icon = this.makeIcon(this.options.pinColour || 'primary')
+      
+      // Create a marker
+      let marker = L.marker([pos.geom.x, pos.geom.y], { icon })
+      
+      // Listen for clicks
+      marker.on('click', (e) => {
+        this.responseClicked(response, e)
+      })
+      
+      // Add the marker
+      this.$store.state.clusterer.addLayer(marker)
+    },
     async fetchResponses() {
       
       let res = await axios.get(`${this.surveyApi}/responses`)
       
       let posKey = this.options.positionQuestion
       
+      // If not set (from the CMS) do nothing
+      if (!posKey) return
+      
       // Loop responses and create pins
       res.data.forEach((response) => {
         
-        // Get the responses's position
-        let pos = response.values[posKey].value.geom
-        
-        // Skip if the response doesn't have a geometry
-        if (!pos || !pos.x || !pos.y) { return }
-        
-        // Generate an icon
-        let icon = this.makeIcon(this.options.pinColour || 'blue')
-        
-        // Create a marker
-        let marker = L.marker([pos.x, pos.y], { icon })
-        
-        // Listen for clicks
-        marker.on('click', (e) => {
-          this.responseClicked(response, e)
-        })
-        
-        // Add the marker
-        this.$store.state.clusterer.addLayer(marker)
+        // Add a pin for it
+        this.addResponsePin(response, posKey)
       })
     },
-    async responseClicked(response, e) {
+    responseClicked(response, e) {
       
+      // The detail to render our form
       let detail = {
-        type: 'SurveyResponse',
+        type: 'SurveyResponseDetail',
         options: {
           response: response,
           config: this.options
         }
       }
       
-      let state = {
-        type: 'SurveyResponse',
+      
+      // Transition to the detail state
+      this.$store.commit('setMapState', {
+        type: 'DetailMapState',
         options: {
           title: '',
           detail: detail
         }
-      }
-      
-      // Transition to Detail state + render our response
-      this.$store.commit('setMapDetail', {
-        type: 'SurveyResponse',
-        title: '',
-        options: { response: response, config: this.options }
       })
       
-      // Transition to the detail state
-      this.$store.commit('setMapState', 'DetailMapState')
+      
+      // this.$store.commit('setMapState', 'DetailMapState')
     }
   }
 }
