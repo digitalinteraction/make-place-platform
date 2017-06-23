@@ -8,9 +8,9 @@ A geographical mapping platform designed to be reconfigurable and redeployable. 
 ## Features
 - Geographical surveys, place questions on a map
 - Survey api to interact with your surveys outside of the site
+- Commenting & Voting on survey responses
 - Full CMS to configure and design your deployment's website
 - Customisable theme by docker variables
-- Emails send through Sendgrid's smtp
 
 
 ## Project Structure
@@ -81,9 +81,3 @@ SITE_BASE               | no        | If the server is being run on a subdirecto
 G_RECAPTCHA_PUBLIC      | no        | Your [Google Recaptcha](https://www.google.com/recaptcha) public key
 G_RECAPTCHA_SECRET      | no        | Your [Google Recaptcha](https://www.google.com/recaptcha) secret key
 SENDGRID_API_KEY        | no        | Your [Sendgrid](https://sendgrid.com) Api key
-SHOULD_BACKUP           | no        | Whether to backup the database to Amazon S3 (If any value is set it will run the backup)
-AWS_USERNAME            | no        | Your [Amazon Web Services](https://aws.amazon.com/) username
-AWS_ACCESS_KEY_ID       | no        | Your [Amazon Web Services](https://aws.amazon.com/) secret key
-AWS_SECRET_ACCESS_KEY   | no        | Your [Amazon Web Services](https://aws.amazon.com/) access key
-FB_APP_ID               | no        | Your [Facebook](https://facebook.com) App ID
-FB_SECRET               | no        | Your [Facebook](https://facebook.com) Secret, used for OAuth

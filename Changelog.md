@@ -1,14 +1,51 @@
 # Changelog
-Coming soon ...
+The versions of Make Place and what features, bugs and tweaks were made for each.
+
+
+
+
+## 3.0.0
+Interactions and swish animations
+
+## Features
+- Dynamic Commenting and voting apis so you can comment on anythin in the database (providing it implements Commentable / Votable)
+- Frontend overhaul, we're now using webpack to compile easy-to-write javascript (es6) into supported javascript that works on nearly all browsers
+- Vuejs map page, the new map page uses vuejs to improve the previos js logic and improve the overall experience
+- Customisable the theme of each deployment through docker environment variables
+
+### Tweaks
+- Moved to sendgrid for sending emails, as clients don't trust random webservers
+- Vector-based map pins for criper images
+- Improved user flow when registering & better messages of what needs to be done along the way
+- Moved to node-sass to compile scss on startup
+- Reorderable Questions and MapComponents
+- Simplified and improved the admin experience improving titles and adding descriptive fields
+- General style improvements (new buttons!) using multifile-sass for a more organised project
+- Added new map detail icons to improve clarity
+
+### Fixes
+- LoginController checks BackUrl is on site to prevent spoofing
+- LoginController escapes values passed to active?email to prevent off-site scripting
+- Fixed ie styling bug with MapPage's detail showing scroll bars when it didn't need them
+
+
 
 
 ## 2.0.0
-Coming soon ...
-### Features
-- ?
+User management and media-based questions
 
-### Fixes
-- ...
+### Features
+- User management, register, login, edit your profile and reset your passowrd
+- Media based questions, ask your users to upload media as part of a survey (supports images, audio & video)
+- Different rendering tiles (OpenStreetMap vs Google)
+- Geo api integration to store all geometries in a centralized database
+- Api Documentation, so you know what the endpoints are and how you use them
+
+### Tweaks
+- Pass created dates to the Survey api to pre-date responses i.e. if they were created in the past and stored locally for a bit.
+- You can now add multiple components of the same time to a map
+- Extra relations from SurveyResponse to Geometries and media for fast access (not through the json-in-sql situation)
+
 
 
 
