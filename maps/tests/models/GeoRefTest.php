@@ -1,5 +1,6 @@
 <?php
 
+/** Tests GeoRef */
 class GeoRefTest extends SapphireTest {
     
     protected $geoRef = null;

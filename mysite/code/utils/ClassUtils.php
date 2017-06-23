@@ -1,8 +1,9 @@
 <?php
 
-/** ... */
+/** A utility to get parent classes and format them */
 class ClassUtils extends Object {
     
+    /** Get the subclasses of a given class, optionally provide a 'base' part to remove from each or if to exclude $class from the result */
     public static function getSubclasses($class, $base = null, $removeParent = false) {
         
         // Get our subclasses
@@ -24,6 +25,7 @@ class ClassUtils extends Object {
         return $subclasses;
     }
     
+    /** Formats a class name into a readable version, optionally removes a 'base' part from the end */
     public static function formatClass($class, $base = null) {
         
         // Give them readable names

@@ -1,6 +1,6 @@
 <?php
 
-/** ... */
+/** Tests SurveyPage */
 class SurveyPageTest extends SapphireTest {
     
     protected $page = null;

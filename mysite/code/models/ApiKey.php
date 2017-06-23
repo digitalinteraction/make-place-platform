@@ -1,7 +1,5 @@
 <?php
-/**
- *  Represents a key which a user can use to access the api
- */
+/** Represents a key which a user can use to access the api */
 class ApiKey extends DataObject {
     
     private static $extensions = [ 'SecureGeneratorExtension' ];
@@ -65,9 +63,7 @@ class ApiKey extends DataObject {
         return $fields;
     }
     
-    /**
-     * Event handler called before writing to the database.
-     */
+    /** Event handler called before writing to the database. */
     public function onBeforeWrite() {
         
         parent::onBeforeWrite();

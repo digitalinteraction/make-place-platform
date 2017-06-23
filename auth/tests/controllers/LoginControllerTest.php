@@ -1,6 +1,6 @@
 <?php
 
-/** Tests Login Controller */
+/** Tests LoginController */
 class LoginControllerTest extends FunctionalTest {
     
     protected $controller = null;
@@ -48,12 +48,6 @@ class LoginControllerTest extends FunctionalTest {
         $url = $this->controller->getBackURL();
         
         $this->assertEquals("home/", $url);
-    }
-    
-    public function testGetIsSimplePage() {
-        
-        $this->controller->useBasicPage = true;
-        $this->assertTrue($this->controller->getIsSimplePage());
     }
     
     

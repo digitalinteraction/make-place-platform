@@ -1,6 +1,6 @@
 <?php
 
-/** ... */
+/** A controller to render the current member's profile */
 class ProfileController extends ContentController {
     
     public $Content = "<p> Profile Controller </p>";

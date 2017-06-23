@@ -8,7 +8,9 @@ class Commentable extends DataExtension {
     ];
     
     
+    /** If the dataobject lets a member see its comments */
     public function canViewComments($member = null) { return false; }
     
+    /** If the dataobject lets a member add comments */
     public function canCreateComment($member = null) { return false; }
 }

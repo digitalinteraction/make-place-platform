@@ -10,7 +10,7 @@ class MockMapComponent extends MapComponent {
     }
 }
 
-/** ... */
+/** Tests MapComponent */
 class MapComponentTest extends SapphireTest {
     
     protected $component = null;

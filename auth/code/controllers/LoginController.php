@@ -1,13 +1,11 @@
 <?php
-/**
- *
- */
+/** A controller for handling login & registering logic */
 class LoginController extends ContentController {
     
     protected $ClassName = "LoginPage";
     protected $Title = "Login";
-    protected $useBasicPage = false;
     
+    /** URL actions on this controller */
     private static $allowed_actions = array(
         "LoginForm",
         "RegisterForm",
@@ -18,9 +16,7 @@ class LoginController extends ContentController {
     
     
     
-    /*
-     *  Page Lifecycle
-     */
+    //Page Lifecycle
     public function index() {
         
         $user = Member::currentUser();
@@ -57,14 +53,6 @@ class LoginController extends ContentController {
         return $url;
     }
     
-    
-    
-    
-    
-    public function getIsSimplePage() {
-        
-        return $this->useBasicPage;
-    }
     
     
     

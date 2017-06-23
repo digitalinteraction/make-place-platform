@@ -1,7 +1,5 @@
 <?php
-/**
- *  An extension to member to add custom fields and relations along with some permission checking methods
- */
+/** An extension to member to add custom fields and relations along with some permission checking methods */
 class MemberOAuthExtension extends DataExtension {
     
     private static $db = array(

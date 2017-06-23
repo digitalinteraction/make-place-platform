@@ -1,6 +1,6 @@
 <?php
 
-/** ... */
+/** Tests ProfileController */
 class ProfileControllerTest extends SapphireTest {
     
     /** @var ProfileController */

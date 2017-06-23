@@ -1,4 +1,3 @@
-
 <% require css('maps/css/leaflet.css') %>
 <% require css('maps/css/marker-cluster.css') %>
 

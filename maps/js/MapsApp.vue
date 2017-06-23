@@ -10,8 +10,6 @@
       
       
       <!-- The map's state component -->
-      <!-- <component v-if="$store.state.mapState" :is="$store.state.mapState"  :is-mobile="isMobile"></component> -->
-      
       <component v-if="currentState"
         :is="currentState.type"
         :is-mobile="isMobile"

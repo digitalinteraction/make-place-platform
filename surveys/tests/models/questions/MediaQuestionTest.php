@@ -18,11 +18,11 @@ class MediaQuestionTest extends SapphireTest {
         ]);
     }
     
-    public function testExtraFields() {
-        
-        $extras = $this->question->extraFields();
-        $this->assertEquals(2, count($extras));
-    }
+    // public function testExtraFields() {
+    //
+    //     $extras = $this->question->extraFields();
+    //     $this->assertEquals(2, count($extras));
+    // }
     
     
     /* Test rendering */

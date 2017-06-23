@@ -16,8 +16,9 @@
       </vote-section>
       
       <!-- Comments -->
-      <comment-section v-if="config.canComment"
+      <comment-section
         :data-id="response.id"
+        :can-comment="config.canComment"
         data-type="SurveyResponse"
         :placeholder="config.commentPlaceholder"
         :action="config.commentAction">

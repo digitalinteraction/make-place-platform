@@ -32,13 +32,16 @@ class Comment extends DataObject {
         
         // Fetch & nest associated vote
         $vote = Vote::get()->filter([
-            "TargetClass" => $this->TargetClassName,
+            "TargetClass" => $this->TargetClass,
             "TargetID" => $this->TargetID,
             "MemberID" => $this->MemberID,
             "Latest" => true
         ])->first();
-        $json["vote"] = $vote != null ? $vote->Value : 0;
         
+        // Add the vote value to the json
+        $json["vote"] = $vote ? $vote->Value : 0;
+        
+        // Return the customised json
         return $json;
     }
 }

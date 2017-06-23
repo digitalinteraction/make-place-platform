@@ -7,10 +7,6 @@ After:
 
 
 
-SiteConfig:
-  extensions:
-    - SurveySiteConfigExtension
-
 Filesystem:
   sync_blacklisted_patterns:
     - '/^surveymedia$/i'

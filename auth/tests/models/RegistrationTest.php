@@ -1,6 +1,6 @@
 <?php
 
-/** ... */
+/** Tests Registration */
 class RegistrationTest extends SapphireTest {
     
     public function testProvidePermissions() {

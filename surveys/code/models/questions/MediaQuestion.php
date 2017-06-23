@@ -13,26 +13,26 @@ class MediaQuestion extends Question {
     /* CMS Fields */
     public function extraFields() {
         
+        // NOTE: Don't add extra fields for now, they don't do anything at the moment
+        
         return [
-            DropdownField::create("MediaType", "Media Type",
-                singleton('MediaQuestion')->dbObject('MediaType')->enumValues()
-            ),
-            DropdownField::create("Strategy", "File Strategy",
-                singleton('MediaQuestion')->dbObject('Strategy')->enumValues()
-            )
+            // DropdownField::create("MediaType", "Media Type",
+            //     singleton('MediaQuestion')->dbObject('MediaType')->enumValues()
+            // ),
+            // DropdownField::create("Strategy", "File Strategy",
+            //     singleton('MediaQuestion')->dbObject('Strategy')->enumValues()
+            // )
         ];
     }
     
-    public function getType() {
-        return "file";
-    }
+    public function getType() { return "file"; }
     
-    public function getFieldName() {
-        return "{$this->Handle}";
-    }
+    public function getFieldName() { return "{$this->Handle}"; }
     
     
-    /* Rendering */
+    // Rendering
+    
+    /** Renders an response to this question */
     public function renderResponse($value) {
         
         $media = SurveyMedia::get()->byID($value);
@@ -65,10 +65,13 @@ class MediaQuestion extends Question {
     /* Value Management */
     public function validateValue($value) {
         
+        // Let the parent validate first
         $errors = parent::validateValue($value);
         if (count($errors)) return $errors;
-        if (!$value && $this->Required == false) { return []; }
         
+        
+        // If not set and not required, don't validate
+        if (!$value && $this->Required == false) { return []; }
         
         
         // If an id was passed, validate that
@@ -80,7 +83,6 @@ class MediaQuestion extends Question {
                 return [];
             }
         }
-        
         
         
         // Check we have the properties
@@ -116,8 +118,10 @@ class MediaQuestion extends Question {
     
     public function unpackValue($value) {
         
+        // If no value, do nothing
         if ($value == null) { return $value; }
         
+        // Get the value of the media
         $media = SurveyMedia::get()->byID($value);
         
         // TODO: actually unpack the value

@@ -3,11 +3,10 @@
 /**
  * Loosely based on
  * @link https://github.com/phptek/silverstripe-jsontext/blob/master/code/models/fieldtypes/JSONText.php
- *
- * @todo Modify field's queries to use native json for MYSql, https://dev.mysql.com/doc/refman/5.7/en/json.html
- * @todo Json not being stored between calls of jsonField?
  */
 
+// TODO: Modify field's queries to use native json for MYSql, https://dev.mysql.com/doc/refman/5.7/en/json.html
+// TODO: Json not being stored between calls of jsonField?
 
 
 /** A custom field to store a blob of json in the database (stored as a string) */
@@ -54,8 +53,6 @@ class JsonText extends StringField {
     
     /** A custom function to get the json value of the field */
     public function valueAsJson() {
-        
-        // var_dump($this);
         
         if ($this->jsonValue == null) {
             $this->jsonValue = json_decode($this->value, true);

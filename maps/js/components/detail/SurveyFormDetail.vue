@@ -36,48 +36,28 @@ export default {
   methods: {
     async fetchForm() {
       
+      // Fetch the survey form
       let res = await axios.get(`${this.surveyApi}/view`)
       
-      let other = await axios.get(this.surveyApi)
-      
-      let content = res.data.content
       
       // Take the form bit out of the form
-      content = content.replace(/(<form.*>|<\/form>)/g, '')
+      let content = res.data.content.replace(/(<form.*>|<\/form>)/g, '')
       
-      
+      // Change our title
       this.$emit('change-title', res.data.title)
+      
+      // Render the form
       this.renderedForm = content
     },
     async submitSurvey(e) {
       
-      
-      // Maybe we'll just have to dynamically render the form w/ vue!?
+      // Get the data from the form
       let data = new FormData(e.target)
-      // let body = { fields: {} }
-      //
-      //
-      // // Get the values our of the form
-      // // Nests the 'field' values in an object rather than php array style
-      // for (let [key, value] of data.entries()) {
-      //   if (key.match(/^fields\[/)) {
-      //     body.fields[key.replace(/fields|\[|\]/g, '')] = value
-      //   }
-      //   else {
-      //     body[key] = value
-      //   }
-      // }
       
-      // // Add the position to the fields
-      // body.fields[this.options.component.positionQuestion] = {
-      //   x: this.options.position.lat,
-      //   y: this.options.position.lng
-      // }
-      
+      // Append the position onto the form data
       let posField = this.options.component.positionQuestion
       data.append(`fields[${posField}][x]`, this.options.position.lat)
       data.append(`fields[${posField}][y]`, this.options.position.lng)
-      
       
       
       try {

@@ -1,10 +1,7 @@
 <?php
 
-/** ... */
+/** A page that renders a map and adds logic through MapComponents */
 class MapPage extends Page {
-    
-    
-    protected $AddButton = "Add Pin";
     
     private static $db = [
         'StartLat' => 'Decimal(16, 8)',
@@ -26,6 +23,7 @@ class MapPage extends Page {
     public static $page_fills_screen = false;
     
     
+    /** Used by silverstripe to render fields to edit an instance of MapPage */
     public function getCMSFields() {
     
         $fields = parent::getCMSFields();
@@ -68,15 +66,17 @@ class MapPage extends Page {
 }
 
 
-/** ... */
+/** A controller to render a MapPage */
 class MapPage_Controller extends Page_Controller {
     
+    
+    /** the url actions on the controller, calls a function of the same name */
     private static $allowed_actions = [
         'mapConfig'
     ];
     
     
-    
+    /** A endpoint relative to the page its on, exposes map config for js to render and compose logic */
     public function mapConfig() {
         
         $config = SiteConfig::current_site_config();
@@ -100,31 +100,17 @@ class MapPage_Controller extends Page_Controller {
         }
         
         
+        // Make the response json
         $this->getResponse()->addHeader("Content-Type", "application/json");
         $this->getResponse()->setBody(json_encode($json));
         
+        
+        // Return the response
         return $this->response;
     }
     
-    public function getActions() {
-        
-        return ArrayList::create([
-            [
-                'Name' => 'Add Pin',
-                'Icon' => 'fa-plus',
-                'Handle' => 'pin-button',
-                'Colour' => 'green'
-            ],
-            // [
-            //     'Name' => 'Something',
-            //     'Icon' => 'fa-meh-o',
-            //     'Handle' => 'meh-ooooo',
-            //     'Colour' => 'red'
-            // ]
-        ]);
-    }
     
-    
+    /** Overrides default relation to sort components by their order */
     public function MapComponents() {
         return parent::MapComponents()->sort('Order');
     }

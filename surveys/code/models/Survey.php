@@ -1,8 +1,5 @@
 <?php
-/*
- *  A set of questions to ask a user
- *  To be data-driven and re-usable
- */
+/* A set of questions to ask a user, configurable through the cms */
 class Survey extends DataObject {
     
     private static $db = [

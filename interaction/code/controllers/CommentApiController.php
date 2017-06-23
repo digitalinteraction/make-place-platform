@@ -28,8 +28,10 @@ class CommentApiController extends ApiController {
         return "!?";
     }
     
+    /** Entry point for comment endpoints (GET & POST) */
     public function comment() {
         
+        // Fetch the target using named parameters
         $errors = [];
         $target = $this->findObject(
             $this->request->param('TargetType'),
@@ -42,10 +44,12 @@ class CommentApiController extends ApiController {
             $errors[] = "Cannot comment on {$target->ClassName}";
         }
         
+        // Fail if there was errors
         if (count($errors)) {
             return $this->jsonResponse($errors, 400);
         }
         
+        // Proxy the request depending on the method
         if ($this->request->httpMethod() == "POST") {
             return $this->commentCreate($target);
         }
@@ -89,15 +93,18 @@ class CommentApiController extends ApiController {
      */
     public function commentChildren() {
         
+        // Fetch children comments
         $children = Comment::get()->filter([
             "ParentID" => $this->request->param("CommentID")
         ]);
         
+        // Format the comments
         $json = [];
         foreach ($children as $comment) {
             $json[] = $comment->jsonSerialize();
         }
         
+        // Return the comments
         return $this->jsonResponse($json);
     }
     
@@ -137,18 +144,19 @@ class CommentApiController extends ApiController {
      */
     public function commentIndex($target) {
         
+        // Fetch root level comments
         $comments = Comment::get()->filter([
             "TargetClass" => $target->ClassName,
             "TargetID" => $target->ID
         ])->sort("Created DESC");
         
+        // Format the comments as json
         $json = [];
         foreach($comments as $comment) {
-            
-            // Append the serialized comment
             $json[] = $comment->jsonSerialize();
         }
         
+        // Return the json comments
         return $this->jsonResponse($json);
     }
     
@@ -189,22 +197,25 @@ class CommentApiController extends ApiController {
         $this->checkApiAuth();
         $member = Member::currentUser();
         if (!$member) {
-            return $this->jsonResponse(["You need to log in to do that"], 401);
+            return $this->jsonAuthError();
         }
         
         // Check parameters were passed
         $errors = [];
         $message = $this->bodyVar("message", $errors);
         $parentId = $this->bodyVar("parentID");
+        
+        // Check the target lets comments
         if (!$target->canCreateComment($member)) {
             $errors[] = "Sorry, you can't do that";
         }
         
+        // If a parent is set, check it exists
         if ($parentId != null && Comment::get()->byID($parentId) == null) {
             $errors[] = "Parent comment does not exist";
         }
         
-        
+        // If anything went wrong, return the errors
         if (count($errors)) { return $this->jsonResponse($errors, 400); }
         
         
@@ -226,5 +237,4 @@ class CommentApiController extends ApiController {
         return $this->jsonResponse($comment->jsonSerialize());
     }
     
-    // ...
 }

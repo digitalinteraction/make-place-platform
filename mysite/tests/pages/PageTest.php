@@ -1,7 +1,6 @@
 <?php
-/*
- *  A Test case to run tests on Pages
- */
+
+/* Test Page */
 class PageTest extends SapphireTest {
     
     public function setUp() {

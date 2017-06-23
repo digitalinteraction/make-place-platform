@@ -26,9 +26,8 @@
     }
     
     .action {
-      @include button-style;
+      @include button-style(true);
       font-size: 18px;
-      
     }
     
     @include only-small {

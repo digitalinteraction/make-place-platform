@@ -2,7 +2,7 @@
 
 
 
-/** ... */
+/** A reference to a geometry in the geo api */
 class GeoRef extends DataObject {
     
     private static $db = [
@@ -18,14 +18,12 @@ class GeoRef extends DataObject {
     
     
     
+    /** Creates a request to the geo api */
     public static function geoRequest($endpoint) {
-        
         return CurlRequest::create(GEO_URL."/$endpoint", ["api_key" => GEO_KEY]);
     }
     
-    
-    
-    
+    /** Creates a geometry using the geo-api and makes a local reference to it */
     public static function makeRef($type, $dataType, $value, &$errors = []) {
         
         // If in test mode, return a fake value
@@ -72,6 +70,7 @@ class GeoRef extends DataObject {
     }
     
     
+    /** Fetches the value associated with this geo reference */
     public function fetchValue() {
         
         // If in test mode, mock it
@@ -85,22 +84,24 @@ class GeoRef extends DataObject {
         //     return self::$refCache[$this->Reference];
         // }
         
+        // Create and execute a request to the geo api
         $res = self::geoRequest("geo/{$this->Reference}")
             ->jsonResponse();
         
+        // If it succeeded, return that geo ref and cache the response
         if (CurlRequest::validApiResponse($res)) {
             self::$refCache[$this->Reference] = $res['data'];
             return self::$refCache[$this->Reference];
         }
         
+        // If it failed return null
         return null;
     }
     
     
     
-    
+    /** Converts georef to json */
     public function toJson() {
-        
         return [
             'ID' => $this->ID,
             'Value' => $this->fetchValue()

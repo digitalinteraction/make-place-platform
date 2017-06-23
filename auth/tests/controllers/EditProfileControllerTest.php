@@ -1,6 +1,6 @@
 <?php
 
-/** ... */
+/** Tests EditProfileController */
 class EditProfileControllerTest extends SapphireTest {
     
     /** @var EditProfileController */
@@ -9,6 +9,8 @@ class EditProfileControllerTest extends SapphireTest {
     /** @var Member */
     protected $member = null;
     
+    
+    // Test Lifecycle
     public function setUp() {
         parent::setUp();
         
@@ -16,13 +18,13 @@ class EditProfileControllerTest extends SapphireTest {
     }
     
     
+    // Initialisation Tests
     public function testInitFailsNotLoggedIn() {
         
         $this->setExpectedException(SS_HTTPResponse_Exception::class);
         
         $this->controller->init();
     }
-    
     
     public function testInitWithMember() {
         
@@ -44,7 +46,7 @@ class EditProfileControllerTest extends SapphireTest {
     
     
     
-    
+    // Properties Tests
     public function testLink() {
         
         $link = $this->controller->Link("test");

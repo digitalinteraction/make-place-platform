@@ -1,5 +1,6 @@
 <?php
 
+/** Tests BrandSiteConfigExtension */
 class BrandSiteConfigExtensionTest extends SapphireTest {
     
     public function testUpdateFields() {

@@ -1,3 +1,41 @@
+@mixin form-field-style {
+  
+  width: 100%;
+  background: #fff;
+  
+  border: 1px solid rgba(0,0,0,0);
+  border-bottom: 3px solid $primaryColour;
+  border-radius: 0px;
+  
+  margin-bottom: 18px;
+  padding: 6px 4px;
+  
+  color: #333;
+  font-weight: 400;
+  font-size: 20px;
+  
+  transition: border 0.3s ease, background-colour 0.3s ease, padding 0.3s ease;
+  
+  &:focus {
+    border-top-color: $primaryColour;
+    border-left-color: $primaryColour;
+    border-right-color: $primaryColour;
+  }
+  
+  @include placeholder {
+    font-style: italic;
+    color: $placeholderTextColour;
+  }
+  
+  &:focus {
+    outline: none;
+    border-color: $primaryColour;
+    background: #f7f7f7;
+    padding-left: 6px;
+  }
+}
+
+
 /* Forms */
 form {
   
@@ -39,34 +77,15 @@ form {
     font-size: 16px;
   }
   
-  
-  // General Styles
-  input.text, input.file, textarea, select {
-    width: 100%;
-    background: #fff;
-    border: 1px solid rgba(0,0,0,0);
-    border-bottom: 3px solid $primaryColour;
-    margin-bottom: 18px;
-    border-radius: 0px;
-    color: #333;
-    font-weight: 400;
-    
-    @include placeholder {
-      font-style: italic;
-      color: $placeholderTextColour;
-    }
-    
-    &:focus {
-      outline: none;
-      border-color: $primaryColour;
-      background: #f7f7f7;
-      padding-left: 6px;
-    }
+  input[type=text], input[type=file], input[type=password], input[type=number],
+  input[type=email], textarea, select {
+    @include form-field-style;
   }
   
-  input.file {
-    padding: 20px 3px;
+  input[type=file] {
+    font-size: 16px;
   }
+  
   
   input.checkbox, input[type=checkbox] {
     
@@ -83,28 +102,9 @@ form {
     height: 42px;
   }
   
-  input.text, textarea, select {
-    
-    padding: 6px 4px;
-    font-size: 20px;
-    
-    transition: border 0.3s ease, background-colour 0.3s ease, padding 0.3s ease;
-    
-    &:focus {
-      border-top-color: $primaryColour;
-      border-left-color: $primaryColour;
-      border-right-color: $primaryColour;
-    }
-  }
-  
-  input[type=text], input[type=password],
-  input[type=number], input[type=email], input[type=file] {
-    @extend .text;
-  }
-  
   input[type=submit] {
     @include button-style;
-    @extend .green;
+    @extend .primary;
   }
   
   .Actions {
@@ -116,9 +116,7 @@ form {
     position: relative;
     display: block;
     
-    select {
-      -webkit-appearance: none;
-    }
+    select { -webkit-appearance: none; }
     
     &:hover { cursor: hover; }
     

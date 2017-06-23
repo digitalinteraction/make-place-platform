@@ -1,17 +1,12 @@
 <?php
 
 class MockMapsSiteConfig extends DataObject {
-    
+    private static $extensions = [ 'MapsSiteConfigExtension' ];
 }
 
-/** ... */
+/** A Tests MapsSiteConfigExtension */
 class MapsSiteConfigExtensionTest extends SapphireTest {
     
-    public function setUpOnce() {
-        parent::setUpOnce();
-        
-        MockMapsSiteConfig::add_extension('MapsSiteConfigExtension');
-    }
     
     public function testExtensionAdded() {
         

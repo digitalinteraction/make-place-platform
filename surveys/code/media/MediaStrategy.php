@@ -1,6 +1,6 @@
 <?php
 
-/** ... */
+/** A way a MediaQuestion can store a file, subclasses implement thier own logic */
 class MediaStrategy extends Object {
     
     public static function get($type) {

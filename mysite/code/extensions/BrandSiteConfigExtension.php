@@ -1,6 +1,6 @@
 <?php
 
-/** ... */
+/** A SiteConfig extension to add the brand logo field */
 class BrandSiteConfigExtension extends DataExtension {
     
     private static $has_one = [

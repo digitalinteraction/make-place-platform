@@ -1,7 +1,7 @@
 <?php
 
 
-
+// Custom apidocjs definitions, allows re-use across different files
 /**
  * @apiDefine Member Member access only
  * Authentication requires a valid web session or a valid `apikey`
@@ -12,15 +12,10 @@
 /** A controller providing json-based api responses */
 class ApiController extends Controller {
     
-    private static $extensions = [
-        'JsonApiExtension', 'ApiAuthExtension'
-    ];
+    private static $extensions = [ 'JsonApiExtension', 'ApiAuthExtension' ];
     
     
-    
-    
-    
-    /* Utils*/
+    /* Utils */
     
     /** Gets a json or post var from the request or adds an error to the array */
     public function bodyVar($name, &$errors = []) {

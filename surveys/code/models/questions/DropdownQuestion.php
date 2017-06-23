@@ -1,7 +1,5 @@
 <?php
-/**
- *
- */
+/** A survey question that presents a dropdown to the user */
 class DropdownQuestion extends Question {
     
     private static $db = [
@@ -19,17 +17,18 @@ class DropdownQuestion extends Question {
     }
     
     
-    public function getRawOptions() {
     
+    // Utils
+    
+    /** Gets the options as an array */
+    public function getRawOptions() {
         return array_map('trim', explode(",", $this->Options));
     }
     
+    /** Gets the options as a key-valued array */
     public function getOptionsArray() {
         
-        $options = [];
-        
         $filter = URLSegmentFilter::create();
-        
         $options = ArrayList::create();
         
         foreach(explode(",", $this->Options) as $option) {
@@ -67,6 +66,8 @@ class DropdownQuestion extends Question {
     }
     
     public function jsonSerialize() {
+        
+        // Add options to out json output
         return array_merge(parent::jsonSerialize(), [
             "options" => $this->getOptionsArray()->toNestedArray()
         ]);

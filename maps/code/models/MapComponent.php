@@ -1,6 +1,6 @@
 <?php
 
-/** ... */
+/** The building blocks of the map, used to compose logic through the CMS */
 class MapComponent extends DataObject {
     
     private static $db = [
@@ -18,8 +18,10 @@ class MapComponent extends DataObject {
         'Page.Title' => 'Page'
     ];
     
+    /** Used by silverstripe to generate fields to edit the component */
     public function getCMSFields() {
         
+        // Start with a set of tabs
         $fields = FieldList::create([
             TabSet::create('Root', Tab::create('Main'))
         ]);
@@ -55,13 +57,16 @@ class MapComponent extends DataObject {
         $this->addExtraFields($fields);
         
         
+        // Return the generated fields
         return $fields;
     }
     
+    /** The title used by the cms */
     public function getTitle() {
         return $this->ClassName;
     }
     
+    /** Gets the available subclasses */
     public function availableTypes() {
         return ClassUtils::getSubclasses('MapComponent', 'MapComponent', true);
     }
@@ -71,7 +76,7 @@ class MapComponent extends DataObject {
         // Override in subclasses
     }
     
-    
+    /** The base config data to convert to json, subclassed add their own properties */
     public function configData() {
         return [
             'type' => $this->ClassName

@@ -1,6 +1,6 @@
 <?php
 
-/** ... */
+/** A page which renderes a survey on it */
 class SurveyPage extends Page {
     
     private static $has_one = [

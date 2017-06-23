@@ -15,9 +15,10 @@ class VoteApiController extends ApiController {
     ];
     
     
-    
+    /** Entry point to the voting api (GET & POST) */
     public function vote() {
         
+        // Fetch the target from named parameters
         $errors = [];
         $target = $this->findObject(
             $this->request->param("TargetType"),
@@ -116,7 +117,7 @@ class VoteApiController extends ApiController {
         $this->checkApiAuth();
         $member = Member::currentUser();
         if (!$member) {
-            return $this->jsonResponse(["You need to log in to do that"], 401);
+            return $this->jsonAuthError();
         }
         
         
@@ -139,6 +140,7 @@ class VoteApiController extends ApiController {
             "TargetID" => $target->ID,
             "TargetClass" => $target->ClassName
         ]);
+        
         
         // Update each vote
         foreach ($oldVotes as $vote) {

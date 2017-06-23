@@ -1,6 +1,6 @@
 <?php
 
-/** ... */
+/** A Question that asks about a geometry */
 class GeoQuestion extends Question {
     
     public $HiddenQuestion = true;
@@ -23,8 +23,11 @@ class GeoQuestion extends Question {
     
     public function validateValue($value) {
         
+        // Let the parent find errors first
         $errors = parent::validateValue($value);
         if (count($errors)) { return $errors; }
+        
+        // If not required and no value, don't bother validating
         if (!$value && $this->Required == false) { return []; }
         
         

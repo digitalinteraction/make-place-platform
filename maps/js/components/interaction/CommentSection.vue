@@ -4,6 +4,7 @@
     <h3 class="title"><slot></slot></h3>
     
     <comment-composer @commented="commented"
+      :can-comment="canComment"
       :data-id="dataId"
       :data-type="dataType"
       :placeholder="placeholder"
@@ -29,7 +30,7 @@
 import axios from 'axios'
 
 export default {
-  props: [ 'dataId', 'dataType', 'placeholder', 'action' ],
+  props: [ 'dataId', 'dataType', 'placeholder', 'action', 'canComment' ],
   data() {
     return {
       comments: null

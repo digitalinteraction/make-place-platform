@@ -1,7 +1,5 @@
 <?php
-/**
- *  Represents when someone has registered to become a member of the site
- */
+/** Represents when someone has registered to become a member of the site */
 class Registration extends DataObject implements PermissionProvider {
     
     private static $extensions = [ 'SecureGeneratorExtension' ];

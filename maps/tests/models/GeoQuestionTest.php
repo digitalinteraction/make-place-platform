@@ -1,6 +1,6 @@
 <?php
 
-/** Testing GeoQuestion */
+/** Tests GeoQuestion */
 class GeoQuestionTest extends SapphireTest {
     
     public $usesDatabase = true;

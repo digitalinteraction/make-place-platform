@@ -1,7 +1,5 @@
 <?php
-/**
- *  An Extension to provide a unique random hash salted per for a member
- */
+/** An Extension to provide a unique random hash salted for a member */
 class SecureGeneratorExtension extends Extension {
     
     /**
@@ -17,15 +15,15 @@ class SecureGeneratorExtension extends Extension {
         
         do {
             // Create a generator & generate a random string
-			$generator = new RandomGenerator();
-			$token = $generator->randomToken();
+            $generator = new RandomGenerator();
+            $token = $generator->randomToken();
             
             // Encrypt with the user's settings, making it more unique to the user
-			$hash = $member->encryptWithUserSettings($token);
+            $hash = $member->encryptWithUserSettings($token);
             
-		} while(DataObject::get_one($table, array(
+        } while(DataObject::get_one($table, array(
             "\"$table\".\"$field\"" => $hash
-		)));
+        )));
         
         // Return the hash
         return $hash;

@@ -6,7 +6,7 @@ class SurveyMapComponent extends MapComponent {
     private static $db = [
         'ActionColour' => 'Enum(array("primary", "secondary","blue", "green", "orange", "purple", "red"), "green")',
         'ActionMessage' => 'Varchar(255)',
-        'PinColour' => 'Enum(array("primary", "secondary","blue", "green", "orange", "purple", "red"), "green")',
+        'PinColour' => 'Enum(array("blue", "green", "orange", "purple", "red"), "green")',
         'PositionQuestion' => 'Varchar(255)',
         'HighlightQuestion' => 'Varchar(255)',
         

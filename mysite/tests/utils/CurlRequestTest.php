@@ -1,10 +1,6 @@
 <?php
 
-class MockCurlRequest extends CurlRequest {
-    
-    // ...
-}
-
+/** Tests CurlRequest */
 class CurlRequestTest extends SapphireTest {
     
     protected $request = null;
@@ -12,7 +8,7 @@ class CurlRequestTest extends SapphireTest {
     public function setUp() {
         parent::setUp();
         
-        $this->request = MockCurlRequest::create("127.0.0.1", ["key" => "value"]);
+        $this->request = CurlRequest::create("127.0.0.1", ["key" => "value"]);
     }
     
     public function testInit() {

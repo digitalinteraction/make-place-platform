@@ -107,7 +107,7 @@
   border-radius: 2px;
 }
 
-@mixin button-style ($animated: true) {
+@mixin button-style ($animated: false) {
   cursor: pointer;
   user-select: none;
   border-radius: 2em;
@@ -122,6 +122,8 @@
   -webkit-font-smoothing: antialiased;
   
   margin: 0 0.1em 0.5em;
+  
+  &:hover { text-decoration: none; }
   
   
   box-shadow: -1.5px -1.5px 0px rgba(0,0,0,0.1) inset;

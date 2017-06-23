@@ -30,9 +30,11 @@ class SurveyApiController extends ApiController {
         
         parent::init();
         
+        // Fetch the survey using a named parameter
         $surveyId = $this->request->param('SurveyID');
         $this->Survey = Survey::get()->byID($surveyId);
         
+        // Return a 404 if the survey doesn't exist
         if ($this->Survey == null) {
             return $this->httpError(404, "Survey not found");
         }
@@ -80,18 +82,20 @@ class SurveyApiController extends ApiController {
      */
     public function index($request) {
         
+        // Fetch the questions
         $questions = $this->Survey->getQuestionMap();
+        
+        // Serialize each question
         $fields = [];
         foreach ($questions as $handle => $question) {
             $fields[] = $question->jsonSerialize();
         }
         
+        //  Return the serialized questions
         return $this->jsonResponse([
             "name" => $this->Survey->Name,
             "questions" => $fields
         ]);
-        
-        return $this->Survey->Name . ': index';
     }
     
     /**

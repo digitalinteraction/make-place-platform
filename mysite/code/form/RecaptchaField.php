@@ -1,6 +1,6 @@
 <?php
 
-/** ... */
+/** A FormField that renders a captcha and provides logic to validate it */
 class RecaptchaField extends FormField {
     
     public function __construct($name, $title = null, $value = null) {
@@ -8,9 +8,7 @@ class RecaptchaField extends FormField {
         parent::__construct($name, $title, $value);
         
         // do not need a fallback title if none was defined.
-        if (empty($title)) {
-            $this->title = '';
-        }
+        if (empty($title)) { $this->title = ''; }
     }
     
     public function getPublicKey() {
@@ -18,7 +16,6 @@ class RecaptchaField extends FormField {
     }
     
     public function Field($properties = []) {
-    
         return $this->renderWith("RecaptchaField");
     }
     

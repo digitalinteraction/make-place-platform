@@ -70,6 +70,8 @@ class Question extends DataObject {
     
     
     /* Fields */
+    
+    /** Used by soilverstripe to generate a form to edit an instance in the cms */
     public function getCMSFields() {
         
         // Create the fields ourself
@@ -121,36 +123,42 @@ class Question extends DataObject {
         return $fields;
     }
     
+    /** The available subclasses to choose from */
     public function availableTypes() {
-        
         return ClassUtils::getSubclasses('Question', 'Question', true);
     }
     
+    /** Extra fields to add to the cms, subclasses override this to add their own fields */
     public function extraFields() {
-        
         return [];
     }
     
     
-    
     /* Rendering */
+    
+    /** Renders the question with a common holder around it, using RenderField for the actual form input */
     public function forTemplate() {
-        
         return $this->renderWith("QuestionHolder");
     }
     
+    /** Renders the field part of the questoin */
     public function renderField() {
         
+        // Get the avilable templats for this object's class
         $templates = SSViewer::get_templates_by_class(get_class($this));
         
+        // If there are tempates use the first one
         if (count($templates) > 0) {
             return $this->renderWith($templates[0]);
         }
         else {
+            
+            // Otherwise use the base template
             return $this->renderWith("Question");
         }
     }
     
+    /** Subclass hook to customise how values are rendered */
     public function renderResponse($value) {
         return $value;
     }
@@ -162,15 +170,11 @@ class Question extends DataObject {
     }
     
     public function getFieldName() {
-        
         return "fields[{$this->Handle}]";
     }
     
     public function getClasses() {
-        
-        $all =  array_merge(["control"], $this->extraClasses);
-        
-        return implode($all, " ");
+        return implode(array_merge(["control"], $this->extraClasses), " ");
     }
     
     

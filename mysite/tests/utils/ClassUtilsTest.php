@@ -13,7 +13,7 @@ class AReallyComplexMockClass extends MockClass { }
 
 
 
-/** ... */
+/** Tests ClassUtils */
 class ClassUtilsTest extends SapphireTest {
     
     protected $object = null;

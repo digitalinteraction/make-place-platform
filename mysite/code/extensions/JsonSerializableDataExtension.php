@@ -4,16 +4,17 @@
 class JsonSerializableDataExtension extends DataExtension {
     
     
+    /** Fields that the DataObject subclass does not want putting into json */
     public function excludedFields() {
-        
         return $this->traverseArrayProperty("excluded_fields", $this->owner->class);
     }
     
+    /** Fields that the DataObject only wants putting into json */
     public function includedFields() {
-        
         return $this->traverseArrayProperty("included_fields", $this->owner->class);
     }
     
+    /** Gets all the values of a class var by traversing up the heirachy */
     public function traverseArrayProperty($name, $class) {
         
         // Start with the class of our owner (the thing we're extending)
@@ -47,6 +48,8 @@ class JsonSerializableDataExtension extends DataExtension {
     }
     
     
+    // TODO: make this work with the json_encode, the issue is Sapphire's method injection doesn't recognise during json_encode
+    /** Serializes the DataObject to json using $excluded_fields or $included_fields */
     public function jsonSerialize() {
         
         $allFields = array_keys($this->owner->inheritedDatabaseFields());
@@ -77,6 +80,7 @@ class JsonSerializableDataExtension extends DataExtension {
             $json[lcfirst($field)] = $this->owner->$field;
         }
         
+        // If the owner implements 'customiseJson', call that to let them customise the json
         if (method_exists($this->owner, 'customiseJson')) {
             $json = $this->owner->customiseJson($json);
         }

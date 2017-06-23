@@ -1,6 +1,6 @@
 <?php
 
-/** ... */
+/** Tests MemberRegisterExtension */
 class MemberRegisterExtensionTest extends SapphireTest {
     
     public function testgetHasVerified() {

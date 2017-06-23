@@ -16,6 +16,7 @@ class JsonFieldExMockObject extends Object {
 }
 
 
+/** Tests JsonFieldExtension */
 class JsonFieldExtensionTest extends SapphireTest {
     
     protected $field = null;

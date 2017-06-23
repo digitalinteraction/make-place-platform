@@ -1,6 +1,6 @@
 <?php
 
-/** ... */
+/** Tests SurveyResponse */
 class SurveyResponseTest extends SapphireTest {
     
     protected static $fixture_file = "surveys/tests/fixtures/survey.yml";

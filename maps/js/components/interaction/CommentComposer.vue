@@ -5,13 +5,20 @@
     <profile-image></profile-image>
     
     <!-- The composer form -->
-    <div class="content">
-      
+    <div v-if="canComment" class="content">
       <textarea v-model="message" name="message" @keyup.enter.prevent="submitComment"></textarea>
       
       <p class="placeholder" v-if="message.length < 1"> {{placeholder}} </p>
       
       <button class="send" @click="submitComment" :disabled="isSending || message.length < 3"> {{action}} </button>
+    </div>
+    <div v-else class="content">
+      
+      <!-- <p>{{window}}</p> -->
+      
+      <p class="login-message">
+        <a class="bubble" :href="loginUrl">Log in</a> to vote and comment
+      </p>
       
     </div>
     
@@ -29,7 +36,8 @@ export default {
     dataType: String,
     parent: Object,
     placeholder: { type: String, default: 'I think that ...' },
-    action: { type: String, default: 'Send' }
+    action: { type: String, default: 'Send' },
+    canComment: { type: Boolean, default: false }
   },
   data() {
     return {
@@ -38,7 +46,8 @@ export default {
     }
   },
   computed: {
-    actionTitle() { return this.isSending ? 'Sending' : this.action }
+    actionTitle() { return this.isSending ? 'Sending' : this.action },
+    loginUrl() { return `/login?&BackURL=${encodeURIComponent(window.location.pathname)}` }
   },
   methods: {
     async submitComment() {
