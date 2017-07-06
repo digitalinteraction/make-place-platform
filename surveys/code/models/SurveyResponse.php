@@ -38,12 +38,13 @@ class SurveyResponse extends DataObject {
             
             if (isset($responses[$key])) {
                 
-                $value = $responses[$key];
+                $value = trim($responses[$key]);
                 
                 $values->push(ArrayData::create([
                     "Question" => $question,
                     "Key" => $key,
                     "Value" => $value,
+                    "HasResponse" => (bool)($value !== null && $value !== ""),
                     "Rendered" => $question->renderResponse($value)
                 ]));
             }

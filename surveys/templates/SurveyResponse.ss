@@ -1,6 +1,9 @@
 <div class="survey-response">
 <% loop Response.Values %>
-    <% if not Question.HiddenQuestion %>
+    
+    <%-- <p>$HasResponse</p> --%>
+    
+    <% if Value && not Question.HiddenQuestion %>
         <label class="key"> $Question.Label </label>
         <p class="value"> $Rendered </p>
     <% end_if %>

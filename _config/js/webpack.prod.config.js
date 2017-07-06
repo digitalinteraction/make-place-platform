@@ -5,6 +5,11 @@ const path = require('path')
 
 module.exports = merge(baseConfig, {
   plugins: [
+    new webpack.DefinePlugin({
+      'process.env': {
+        NODE_ENV: '"production"'
+      }
+    }),
     new webpack.optimize.UglifyJsPlugin({
       compress: { warnings: false },
       sourceMap: true

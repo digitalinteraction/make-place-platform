@@ -3,6 +3,21 @@ The versions of Make Place and what features, bugs and tweaks were made for each
 
 
 
+## 3.0.1
+Bug fixes, tweaks and small changes
+
+## Features
+- ...
+
+### Tweaks
+- ...
+
+## Fixes
+- ...
+
+
+---
+
 
 ## 3.0.0
 Interactions and swish animations
@@ -29,6 +44,7 @@ Interactions and swish animations
 - Fixed ie styling bug with MapPage's detail showing scroll bars when it didn't need them
 
 
+***
 
 
 ## 2.0.0
@@ -47,6 +63,7 @@ User management and media-based questions
 - Extra relations from SurveyResponse to Geometries and media for fast access (not through the json-in-sql situation)
 
 
+***
 
 
 ## 1.0.0

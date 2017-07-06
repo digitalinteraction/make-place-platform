@@ -31,7 +31,6 @@ export default {
   },
   mounted() {
     this.fetchForm()
-    console.log(this.options)
   },
   methods: {
     async fetchForm() {

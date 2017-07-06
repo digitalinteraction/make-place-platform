@@ -35,9 +35,10 @@ export default {
     return {
       chosenEmoji: null,
       voteMap: {},
+      isVoting: false,
       emojiSet: {
-        1: { id: 1, icon: '/public/images/emoji/up.svg', name: 'Agree' },
-        2: { id: 2, icon: '/public/images/emoji/down.svg', name: 'Disgree' },
+        1: { id: 1, icon: '/public/images/emoji/up-o.svg', name: 'Agree', masked: true },
+        2: { id: 2, icon: '/public/images/emoji/down-o.svg', name: 'Disgree', masked: true },
         3: { id: 3, icon: '/public/images/emoji/heart.svg', name: 'Love' },
         4: { id: 4, icon: '/public/images/emoji/wow.svg', name: 'Wow' },
         5: { id: 5, icon: '/public/images/emoji/happy.svg', name: 'Happy' },
@@ -74,6 +75,11 @@ export default {
       }
     },
     async performVote(emoji) {
+      
+      if (this.isVoting) return
+      
+      this.isVoting = true
+      
       try {
         
         // The value to submit, the id of the emoji or 0 if un-voting
@@ -97,6 +103,8 @@ export default {
         // Then remove it
       }
       catch (error) { console.log(error) }
+      
+      this.isVoting = false
     },
     async fetchVotes() {
       try {

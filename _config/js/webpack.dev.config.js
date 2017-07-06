@@ -7,6 +7,9 @@ module.exports = merge(baseConfig, {
   watch: true,
   devtool: '#cheap-module-eval-source-map',
   plugins: [
+    new webpack.DefinePlugin({
+      'process.env': { NODE_ENV: '"development"' }
+    }),
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
       minChunks: function(module, count) {

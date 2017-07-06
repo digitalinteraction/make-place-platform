@@ -17,7 +17,6 @@ class MockCommentTargetWithPerms extends DataObject {
 class MockNonCommentable extends DataObject { }
 
 
-
 /** Tests CommentApiController */
 class CommentApiControllerTest extends FunctionalTest {
     
@@ -193,6 +192,19 @@ class CommentApiControllerTest extends FunctionalTest {
         
         $this->assertEquals(400, $res->getStatusCode());
         $this->assertCount(1, $json);
+    }
+    
+    public function testCommentCreateTrimsWhitespace() {
+        
+        $this->member->logIn();
+        
+        $res = $this->post("{$this->apiBase}/on/MockCommentTarget/1", [
+            "message" => " \t Test \n "
+        ]);
+        
+        $json = json_decode($res->getBody(), true);
+        
+        $this->assertEquals("Test", $json["message"]);
     }
     
     

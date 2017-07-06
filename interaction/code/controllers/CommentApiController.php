@@ -221,7 +221,7 @@ class CommentApiController extends ApiController {
         
         // Create the comment
         $comment = Comment::create([
-            "Message" => $message,
+            "Message" => trim($message),
             "TargetClass" => $target->ClassName,
             "TargetID" => $target->ID,
             "MemberID" => Member::currentUserID(),

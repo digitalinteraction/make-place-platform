@@ -21,6 +21,7 @@ SiteConfig:
 DataObject:
   extensions:
     - JsonSerializableDataExtension
+    # - AdminModelExtension
 
 Member:
   extensions:

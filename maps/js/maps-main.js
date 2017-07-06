@@ -19,16 +19,20 @@ import ProfileImage from './components/interaction/ProfileImage.vue'
 Vue.use(VueX)
 
 
-// Add config to all components
-let url = window.location.href
+// Add config to all components + make sure url has no trailing slash
+let url = window.location.origin + window.location.pathname.replace(/\/$/, '')
 let api = window.location.origin
-if (url.substr(-1) !== '/') url += '/'
-let config = { url, api }
+
+
+// If at the root, use /home as that is the true root
+if (window.location.pathname === '/') { url += '/home' }
+
+
+console.log(window.location)
+console.log({url, api})
 
 Vue.use({
-  install(Vue, options) {
-    Vue.prototype.$config = config
-  }
+  install(Vue, options) { Vue.prototype.$config = { url, api } }
 })
 
 
