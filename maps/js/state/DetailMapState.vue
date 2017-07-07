@@ -4,30 +4,33 @@
     <!-- The detail popover -->
     <transition name="fade-up" appear>
       <div class="map-detail" :class="{minified}">
-        
-        <!-- The title bar -->
-        <div class="header-bar">
+        <div class="inner">
           
-          <!-- Title text -->
-          <h2 class="title"> {{title}} </h2>
-          
-          <!-- The detail buttons -->
-          <div class="buttons">
-            <span class="close-button" @click="close" title="Close"></span>
-            <span class="minify-button" @click="minify" title="Minify"></span>
+          <!-- The title bar -->
+          <div class="header-bar">
+            
+            <!-- Title text -->
+            <h2 class="title"> {{title}} </h2>
+            
+            <!-- The detail buttons -->
+            <div class="buttons">
+              <span class="close-button" @click="close" title="Close"></span>
+              <span class="minify-button" @click="minify" title="Minify"></span>
+            </div>
+            
           </div>
+          
+          <!-- If set, render the detail component -->
+          <transition name="fade">
+            <div v-if="detail" class="content">
+              <component :is="detail.type"
+                :options="detail.options"
+                @change-title="changeTitle">
+              </component>
+            </div>
+          </transition>
           
         </div>
-        
-        <!-- If set, render the detail component -->
-        <transition name="fade">
-          <div v-if="detail" class="content">
-            <component :is="detail.type"
-              :options="detail.options"
-              @change-title="changeTitle">
-            </component>
-          </div>
-        </transition>
         
       </div>
     </transition>

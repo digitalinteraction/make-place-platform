@@ -6,7 +6,7 @@
     
     <!-- The composer form -->
     <div v-if="canComment" class="content">
-      <textarea v-model="message" name="message" @keyup.enter.prevent="submitComment"></textarea>
+      <textarea v-model="message" maxlength="250" name="message" @keyup.enter.prevent="submitComment"></textarea>
       
       <p class="placeholder" v-if="message.length < 1"> {{placeholder}} </p>
       
