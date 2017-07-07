@@ -28,9 +28,6 @@ let api = window.location.origin
 if (window.location.pathname === '/') { url += '/home' }
 
 
-console.log(window.location)
-console.log({url, api})
-
 Vue.use({
   install(Vue, options) { Vue.prototype.$config = { url, api } }
 })

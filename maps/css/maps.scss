@@ -38,3 +38,13 @@ $xPickerCancel: 1600;
 @import 'transitions/grow-fade';
 @import 'transitions/fade';
 @import 'transitions/component-switch';
+
+
+@keyframes media-grow {
+  from { transform: scale(0.5); opacity: 0; }
+  to   { transform: scale(1.0); opactity: 1; }
+}
+
+.survey-response .media {
+  animation: media-grow;
+}

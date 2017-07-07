@@ -22,6 +22,7 @@ export default {
   },
   methods: {
     onClick(e) {
+      this.$emit('chosen')
       if (this.action.onClick) this.action.onClick(e)
     }
   }

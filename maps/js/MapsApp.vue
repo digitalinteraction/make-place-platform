@@ -10,11 +10,13 @@
       
       
       <!-- The map's state component -->
+      <!-- <keep-alive> -->
       <component v-if="currentState"
         :is="currentState.type"
         :is-mobile="isMobile"
         :options="currentState.options">
       </component>
+      <!-- </keep-alive> -->
       
     </div>
     

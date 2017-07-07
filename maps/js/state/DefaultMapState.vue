@@ -3,7 +3,7 @@
     
     <div v-if="showActions" class="action-list">
       <span v-for="(a,i) in actions" class="action-holder">
-        <map-action :key="i" :action="a"></map-action> <br>
+        <map-action :key="i" :action="a" @chosen="actionChosen"></map-action> <br>
       </span>
     </div>
     
@@ -54,6 +54,10 @@ export default {
   methods: {
     toggleActions() {
       this.actionsToggled = !this.actionsToggled
+    },
+    actionChosen() {
+      this.actionsToggled = false
+      // console.log('picked')
     }
   }
 }

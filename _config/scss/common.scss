@@ -6,7 +6,9 @@
 @mixin style-button ($colour, $percent: 5%) {
   background: $colour;
   border-color: darken($colour, 4%);
-  &:hover { background-color: darken($colour, $percent); }
+  @include not-small {
+    &:hover { background-color: darken($colour, $percent); }
+  }
   .icon { color: $colour; }
 }
 
@@ -134,7 +136,9 @@
     transform: scale(1);
     transition: background-color 0.3s, transform 0.3s, border 0.3s;
     
-    &:hover, &:focus { transform: scale(1.03); outline: 0; text-decoration: none; }
+    @include not-small {
+      &:hover, &:focus { transform: scale(1.03); outline: 0; text-decoration: none; }
+    }
     &:active { transform: scale(0.95); }
     
     &.with-icon .icon {
