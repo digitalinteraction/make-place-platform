@@ -42,7 +42,11 @@ generic. A parameterised silverstripe theme
 	
 	
 	<!-- The favicon -->
-	<link rel="shortcut icon" href="$ThemeDir/images/favicon.png" />
+	<% if SiteConfig.Favicon %>
+		<link rel="shortcut icon" href="$SiteConfig.Favicon.URL" />
+	<% else %>
+		<link rel="shortcut icon" href="$ThemeDir/images/favicon.png" />
+	<% end_if %>
 	
 </head>
 <body class="$ClassName $ShouldFillScreen" <% if $i18nScriptDirection %>dir="$i18nScriptDirection"<% end_if %>>

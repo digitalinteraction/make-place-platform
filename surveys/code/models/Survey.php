@@ -4,6 +4,7 @@ class Survey extends DataObject {
     
     private static $db = [
         "Name" => "Varchar(255)",
+        "Description" => "HTMLText",
         "Handle" => "Varchar(255)",
         "SubmitTitle" => "Varchar(255)",
         "ViewAuth" => 'Enum(array("Member","None"), "None")',
@@ -99,7 +100,11 @@ class Survey extends DataObject {
             DropdownField::create('ViewAuth', 'View Permissions', $viewAuth)
                 ->setDescription("The permission needed to view responses to this survey"),
             DropdownField::create('SubmitAuth', 'Permission to respond', $submitAuth )
-                ->setDescription("The permission needed to respond to this survey")
+                ->setDescription("The permission needed to respond to this survey"),
+            
+            HeaderField::Create("DescHeading", "Description"),
+            HtmlEditorField::create('Description', 'Description')
+                ->setDescription('A bit of content to display above a survey when it is being responded to')
         ]);
         
         if ($this->ID && $this->Active == false) {

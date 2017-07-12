@@ -72,6 +72,7 @@ class SurveyTest extends SapphireTest {
         
         $this->assertNotNull($fields->fieldByName("Root.Main.Name"));
         $this->assertNotNull($fields->fieldByName("Root.Main.Handle"));
+        $this->assertNotNull($fields->fieldByName("Root.Main.Description"));
         $this->assertNotNull($fields->fieldByName("Root.Main.SubmitTitle"));
         $this->assertNotNull($fields->fieldByName("Root.Main.ViewAuth"));
         $this->assertNotNull($fields->fieldByName("Root.Main.SubmitAuth"));

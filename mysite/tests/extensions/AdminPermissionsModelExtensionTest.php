@@ -5,7 +5,6 @@ class AdminPermTestObject extends DataObject {
 }
 
 /** Tests AdminPermissionsModelExtension */
-/** @group whitelist */
 class AdminPermissionsModelExtensionTest extends SapphireTest {
   
     public $usesDatabase = true;

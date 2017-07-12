@@ -13,8 +13,7 @@ class BrandSiteConfigExtensionTest extends SapphireTest {
         
         $extension->updateCMSFields($fields);
         
-        $field = $fields->fieldByName('Root.Main.BrandLogo');
-        
-        $this->assertNotNull($field);
+        $this->assertNotNull($fields->fieldByName('Root.Main.BrandLogo'));
+        $this->assertNotNull($fields->fieldByName('Root.Main.Favicon'));
     }
 }

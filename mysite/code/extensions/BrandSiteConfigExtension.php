@@ -4,13 +4,17 @@
 class BrandSiteConfigExtension extends DataExtension {
     
     private static $has_one = [
-        'BrandLogo' => 'Image'
+        'BrandLogo' => 'Image',
+        'Favicon' => 'Image'
     ];
     
     public function updateCMSFields(FieldList $fields) {
         
         $fields->addFieldsToTab('Root.Main', [
             UploadField::create('BrandLogo', 'Brand Logo')
+                ->setAllowedMaxFileNumber(1),
+            UploadField::create('Favicon', 'Favicon')
+                ->setAllowedMaxFileNumber(1)
         ]);
     }
 }

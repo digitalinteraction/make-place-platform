@@ -363,6 +363,7 @@ class SurveyApiController extends ApiController {
         $member = $response->Member();
         
         $rendered = $this->renderWith("SurveyResponse", [
+            "Survey" => $this->Survey,
             "Response" => $response
         ]);
         
