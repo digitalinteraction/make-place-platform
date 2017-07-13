@@ -1,6 +1,7 @@
 <?php
 
 /** Tests SurveyMapComponent */
+/** @group whitelist */
 class SurveyMapComponentTest extends SapphireTest {
     
     /** @var SurveyMapComponent */
@@ -18,6 +19,9 @@ class SurveyMapComponentTest extends SapphireTest {
         // Create a component to test
         $this->component = $this->objFromFixture('SurveyMapComponent', 'componentA');
         $this->member = Member::currentUser();
+        
+        // var_dump(Member::currentUserID());
+        // die();
     }
     
     public function testInit() {
@@ -62,16 +66,30 @@ class SurveyMapComponentTest extends SapphireTest {
         $this->assertNotNull($fields->fieldByName('Root.Survey.Appearance.ResponseSharable'));
     }
     
-    public function testCMSInteractionFields() {
+    public function testCMSVotingFields() {
         
         $fields = $this->component->getCMSFields();
         
-        $this->assertNotNull($fields->fieldByName("Root.Survey.Interaction.VoteTitle"));
-        $this->assertNotNull($fields->fieldByName("Root.Survey.Interaction.VotingEnabled"));
-        $this->assertNotNull($fields->fieldByName("Root.Survey.Interaction.CommentingEnabled"));
-        $this->assertNotNull($fields->fieldByName("Root.Survey.Interaction.CommentTitle"));
-        $this->assertNotNull($fields->fieldByName("Root.Survey.Interaction.CommentAction"));
-        $this->assertNotNull($fields->fieldByName("Root.Survey.Interaction.CommentPlaceholder"));
+        $this->assertNotNull($fields->fieldByName("Root.Survey.Voting.VoteTitle"));
+        
+        $this->assertNotNull($fields->fieldByName("Root.Survey.Voting.VotingViewPerms"));
+        $this->assertNotNull($fields->fieldByName("Root.Survey.Voting.VotingViewGroups"));
+        $this->assertNotNull($fields->fieldByName("Root.Survey.Voting.VotingMakePerms"));
+        $this->assertNotNull($fields->fieldByName("Root.Survey.Voting.VotingMakeGroups"));
+    }
+    
+    public function testCMSCommentsFields() {
+        
+        $fields = $this->component->getCMSFields();
+        
+        $this->assertNotNull($fields->fieldByName("Root.Survey.Comments.CommentTitle"));
+        $this->assertNotNull($fields->fieldByName("Root.Survey.Comments.CommentAction"));
+        $this->assertNotNull($fields->fieldByName("Root.Survey.Comments.CommentPlaceholder"));
+        
+        $this->assertNotNull($fields->fieldByName("Root.Survey.Comments.CommentViewPerms"));
+        $this->assertNotNull($fields->fieldByName("Root.Survey.Comments.CommentMakePerms"));
+        $this->assertNotNull($fields->fieldByName("Root.Survey.Comments.CommentViewGroups"));
+        $this->assertNotNull($fields->fieldByName("Root.Survey.Comments.CommentMakeGroups"));
     }
     
     public function testCMSSurveyFieldWithoutSurvey() {
@@ -154,15 +172,22 @@ class SurveyMapComponentTest extends SapphireTest {
         $this->assertArraySubset($expected, $data);
     }
     
-    public function testInteractionConfigDataSignedIn() {
-        
-        $expected = [
-            'canVote' => true,
-            'canComment' => true
-        ];
-        
-        $data = $this->component->configData();
-        
-        $this->assertArraySubset($expected, $data);
+    
+    /* Test Permissions */
+    public function testCheckPermsAnyone() {
+        $this->assertTrue($this->component->checkPerm('Anyone'));
+    }
+    
+    public function testCheckPermsNoOne() {
+        $this->assertFalse($this->component->checkPerm('NoOne'));
+    }
+    
+    public function testCheckPermsMember() {
+        $this->assertTrue($this->component->checkPerm('Member'));
+    }
+    
+    public function testCheckPermsMemberFails() {
+        $this->member->logOut();
+        $this->assertFalse($this->component->checkPerm('Member'));
     }
 }

@@ -14,16 +14,28 @@ class SurveyMapComponent extends MapComponent {
         'ResponseMinimizable' => 'Boolean',
         'ResponseSharable' => 'Boolean',
         
-        'VotingEnabled' => 'Boolean',
+        // 'VotingEnabled' => 'Boolean',
         'VoteTitle' => 'Varchar(255)',
-        'CommentingEnabled' => 'Boolean',
+        // 'CommentingEnabled' => 'Boolean',
         'CommentTitle' => 'Varchar(255)',
         'CommentPlaceholder' => 'Varchar(255)',
-        'CommentAction' => 'Varchar(255)'
+        'CommentAction' => 'Varchar(255)',
+        
+        'VotingViewPerms' => 'Enum(array("Anyone","Member","NoOne","Group"), "Member")',
+        'VotingMakePerms' => 'Enum(array("Member","NoOne","Group"), "Member")',
+        'CommentViewPerms' => 'Enum(array("Anyone","Member","NoOne","Group"), "Member")',
+        'CommentMakePerms' => 'Enum(array("Member","NoOne","Group"), "Member")'
     ];
     
     private static $has_one = [
         'Survey' => 'Survey'
+    ];
+    
+    private static $many_many = [
+        'VotingViewGroups' => 'Group',
+        'VotingMakeGroups' => 'Group',
+        'CommentViewGroups' => 'Group',
+        'CommentMakeGroups' => 'Group'
     ];
     
     private static $defaults = [
@@ -53,6 +65,19 @@ class SurveyMapComponent extends MapComponent {
                 ->setDescription("The survey to add to the map")
         ]);
         
+        
+        
+        // $fields->addFieldsToTab(
+        //     'Root',
+        //     $tab = new Tab('Something',
+        //         $drop = DropdownField::create('Droppy', 'Droppy', [ 'a' => 'A', 'b' => 'B', 'c' => 'C' ]),
+        //         $text = TextField::create('Test', 'Test')
+        //     )
+        // );
+        //
+        // $text->displayIf('Droppy')->isEqualTo('b');
+        
+        
         // If there is a survey, add survey-specific fields
         if ($this->SurveyID != null) {
             
@@ -62,6 +87,33 @@ class SurveyMapComponent extends MapComponent {
                 ->map('Handle', 'Name')
                 ->toArray();
             $geoQuestions[''] = 'None';
+            
+            
+            // Listboxfield values are escaped, use ASCII char instead of &raquo;
+            $groupsMap = array();
+            foreach(Group::get() as $group) {
+                $groupsMap[$group->ID] = $group->getBreadcrumbs(' > ');
+            }
+            asort($groupsMap);
+            
+            
+            // View permissions
+            $viewPerms = [
+                'Anyone' => 'Anyone',
+                'NoOne' => 'No one',
+                'Member' => 'Any Member',
+                'Group' => 'Groups (select below)'
+            ];
+            
+            
+            $makePerms = [
+                'NoOne' => 'No one',
+                'Member' => 'Any Member',
+                'Group' => 'Groups (select below)'
+            ];
+            
+            
+            
             
             // Add geometry question fields
             $fields->addFieldsToTab('Root.Survey.Geom', [
@@ -87,18 +139,44 @@ class SurveyMapComponent extends MapComponent {
             ]);
             
             // Add interaction fields
-            $fields->addFieldsToTab('Root.Survey.Interaction', [
-                HeaderField::create('VoteHeader', 'Voting', 3),
-                CheckboxField::create('VotingEnabled', 'Allow Voting'),
-                TextField::create('VoteTitle', 'Voting Title'),
+            $fields->addFieldsToTab('Root.Survey.Comments', [
                 
-                HeaderField::create('CommentHeader', 'Commenting', 3),
-                CheckboxField::create('CommentingEnabled', 'Allow Commenting'),
+                HeaderField::create('CommentInfoHeader', 'Customisation', 3),
                 TextField::create('CommentTitle', 'Commenting Title'),
                 TextField::create('CommentPlaceholder', 'Comment Placeholder'),
                 TextField::create('CommentAction', 'Commenting Action')
                     ->setDescription('The action to post a comment'),
+                
+                HeaderField::create('CommentPermsHeader', 'Permissions', 3),
+                DropdownField::create('CommentViewPerms', 'Who can view comments', $viewPerms),
+                $commentViewGroups = ListboxField::create('CommentViewGroups', 'View Groups', $groupsMap)
+                    ->setMultiple(true),
+                DropdownField::create('CommentMakePerms', 'Who can comment', $makePerms),
+                $commentMakeGroups = ListboxField::create('CommentMakeGroups', 'Make Groups', $groupsMap)
+                    ->setMultiple(true)
             ]);
+            
+            $fields->addFieldsToTab('Root.Survey.Voting', [
+                HeaderField::create('VoteInfoHeader', 'Customisation', 3),
+                // CheckboxField::create('VotingEnabled', 'Allow Voting'),
+                TextField::create('VoteTitle', 'Voting Title'),
+                
+                HeaderField::create('VotingPermsHeader', 'Permissions', 3),
+                DropdownField::create('VotingViewPerms', 'Who can view votes', $viewPerms),
+                $voteViewGroups = ListboxField::create('VotingViewGroups', 'View Groups', $groupsMap)
+                    ->setMultiple(true),
+                DropdownField::create('VotingMakePerms', 'Who can vote', $makePerms),
+                $voteMakeGroups = ListboxField::create('VotingMakeGroups', 'Make Groups', $groupsMap)
+                    ->setMultiple(true)
+            ]);
+            
+            
+            $voteViewGroups->displayIf('VotingViewPerms')->isEqualTo('Group');
+            $voteMakeGroups->displayIf('VotingMakePerms')->isEqualTo('Group');
+            
+            $commentViewGroups->displayIf('CommentViewPerms')->isEqualTo('Group');
+            $commentMakeGroups->displayIf('CommentMakePerms')->isEqualTo('Group');
+    
         }
     }
     
@@ -145,11 +223,49 @@ class SurveyMapComponent extends MapComponent {
         $data["canSubmit"] = $verified || $survey->SubmitAuth == "None";
         
         // Add vote & comments if verified
-        $data["canVote"] = (bool)($verified && $this->VotingEnabled);
-        $data["canComment"] = (bool)($verified && $this->CommentingEnabled);
+        // $data["canVote"] = (bool)($verified && $this->VotingEnabled);
+        // $data["canComment"] = (bool)($verified && $this->CommentingEnabled);
+        
+        $data["permissions"] = [
+            "voting" => [
+                "view" => $this->VotingViewPerms,
+                "make" => $this->VotingMakePerms
+            ],
+            "comments" => [
+                "view" => $this->CommentViewPerms,
+                "make" => $this->CommentMakePerms
+            ]
+        ];
+        
+        $data["canViewVotes"] = $this->checkPerm($this->VotingViewPerms, $this->VotingViewGroups());
+        $data["canMakeVotes"] = $this->checkPerm($this->VotingMakePerms, $this->VotingMakeGroups());
+        
+        $data["canViewComments"] = $this->checkPerm($this->CommentViewPerms, $this->CommentViewGroups());
+        $data["canMakeComments"] = $this->checkPerm($this->CommentMakePerms, $this->CommentMakeGroups());
         
         
         return $data;
+    }
+    
+    // 'VotingViewPerms' => 'Enum(array("Anyone","Members","NoOne","Group"), "Members")',
+    // 'VotingMakePerms' => 'Enum(array("Members","NoOne","Group"), "Members")',
+    // 'CommentViewPerms' => 'Enum(array("Anyone","Members","NoOne","Group"), "Members")',
+    // 'CommentMakePerms' => 'Enum(array("Members","NoOne","Group"), "Members")'
+    
+    public function checkPerm($permission, DataList $groups = null) {
+        
+        if ($permission == 'Anyone') return true;
+        if ($permission == 'NoOne') return false;
+        
+        $member = Member::currentUser();
+        
+        
+        if ($permission == 'Group') {
+            return $member != null && $member->inGroups($groups);
+        }
+        
+        
+        return $member != null && $member->getHasVerified();
     }
     
 }

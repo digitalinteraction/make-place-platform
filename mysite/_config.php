@@ -75,6 +75,9 @@ Email::setAdminEmail(ADMIN_EMAIL);
 define("GEO_URL", _envVar("GEO_URL"));
 define("GEO_KEY", _envVar("GEO_KEY"));
 
+// Permissions constants
+define("VIEW_PERMISSIONS", 'Enum(array("Anyone","Members","NoOne","Group"), "Members")');
+define("MAKE_PERMISSIONS", 'Enum(array("Members","NoOne","Group"), "Members")');
 
 // Define file-url mapping for using framework/sake
 global $_FILE_TO_URL_MAPPING;

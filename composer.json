@@ -13,7 +13,8 @@
         "facebook/graph-sdk" : "~5.0",
         "undefinedoffset/sortablegridfield": "^0.6.5",
         "silverstripe/sqlite3": "1.4.0",
-        "google/apiclient": "^2.0"
+        "google/apiclient": "^2.0",
+        "unclecheese/display-logic": "^1.5"
     },
     "require-dev": {
         "phpunit/PHPUnit": "~4.4@stable"

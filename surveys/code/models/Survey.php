@@ -9,7 +9,10 @@ class Survey extends DataObject {
         "SubmitTitle" => "Varchar(255)",
         "ViewAuth" => 'Enum(array("Member","None"), "None")',
         "SubmitAuth" => 'Enum(array("Member","None"), "Member")',
-        'Active' => 'Boolean'
+        'Active' => 'Boolean',
+        // 
+        // 'Viewing' => 'Enum(array("Anyone", "Members", "Disabled"), "Members")',
+        // 'Submitting' => 'Enum(array("Anyone", "Members", "Disabled"), "Members")'
     ];
     
     private static $has_many = [
