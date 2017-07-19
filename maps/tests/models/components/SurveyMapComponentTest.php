@@ -18,10 +18,11 @@ class SurveyMapComponentTest extends SapphireTest {
         
         // Create a component to test
         $this->component = $this->objFromFixture('SurveyMapComponent', 'componentA');
-        $this->member = Member::currentUser();
-        
-        // var_dump(Member::currentUserID());
-        // die();
+        $this->member = Member::get()->byID($this->logInWithPermission());
+    }
+    
+    public function tearDown() {
+        parent::tearDown();
     }
     
     public function testInit() {
@@ -189,5 +190,25 @@ class SurveyMapComponentTest extends SapphireTest {
     public function testCheckPermsMemberFails() {
         $this->member->logOut();
         $this->assertFalse($this->component->checkPerm('Member'));
+    }
+    
+    public function testCheckPermsGroups() {
+        
+        $gid = Group::create([ "Code" => "TestGroup" ])->write();
+        
+        $this->member->Groups()->add($gid);
+        
+        $groups = Group::get()->filter("Code", "TestGroup");
+        
+        $this->assertTrue($this->component->checkPerm('Group', $groups));
+    }
+    
+    public function testCheckPermsGroupsFails() {
+        
+        $gid = Group::create([ "Code" => "TestGroup" ])->write();
+        
+        $groups = Group::get()->filter("Code", "TestGroup");
+        
+        $this->assertFalse($this->component->checkPerm('Group', $groups));
     }
 }

@@ -11,13 +11,14 @@
           :key="e.id"
           :emoji="e"
           :current="e.id === chosenEmoji"
+          :enabled="canMakeVote"
           @chosen="choseEmoji">
         </emoji>
         
       </div>
     </div>
     
-    <p class="summary">
+    <p class="summary" v-if="canViewVotes">
       <emoji-summary v-for="(v, i) in voteList" :key="i" :emoji="emojiSet[v.value]" :count="v.count">
       </emoji-summary>
       <span v-if="voteList.length === 0"> No votes yet, be the first! </span>
@@ -47,6 +48,8 @@ export default {
     }
   },
   computed: {
+    canMakeVote() { return true },
+    canViewVotes() { return false },
     voteApi() { return `${this.$config.api}/api/vote/on/${this.dataType}/${this.dataId}` },
     emojiList() {
       return Object.keys(this.emojiSet).map(id => {

@@ -9,7 +9,7 @@
       
       
       <!-- Voting -->
-      <vote-section v-if="config.canVote"
+      <vote-section
         :data-id="response.id"
         data-type="SurveyResponse">
         {{config.voteTitle}}

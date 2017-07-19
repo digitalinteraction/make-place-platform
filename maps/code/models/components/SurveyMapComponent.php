@@ -247,11 +247,6 @@ class SurveyMapComponent extends MapComponent {
         return $data;
     }
     
-    // 'VotingViewPerms' => 'Enum(array("Anyone","Members","NoOne","Group"), "Members")',
-    // 'VotingMakePerms' => 'Enum(array("Members","NoOne","Group"), "Members")',
-    // 'CommentViewPerms' => 'Enum(array("Anyone","Members","NoOne","Group"), "Members")',
-    // 'CommentMakePerms' => 'Enum(array("Members","NoOne","Group"), "Members")'
-    
     public function checkPerm($permission, DataList $groups = null) {
         
         if ($permission == 'Anyone') return true;
