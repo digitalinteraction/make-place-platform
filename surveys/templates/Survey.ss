@@ -2,7 +2,9 @@
 <% require themedCSS('survey') %>
 
 <form id="form-$Handle" method="post" enctype="multipart/form-data" action="$SurveyUrl"  class="survey">
-
+    
+    <div class="general-description"> $Description </div>
+    
     <div class="question-list">
         <% loop $Questions %>
             $Me

@@ -2,21 +2,27 @@
 /* A set of questions to ask a user, configurable through the cms */
 class Survey extends DataObject {
     
+    private static $extensions = [ 'PermsFieldExtension' ];
+    
     private static $db = [
         "Name" => "Varchar(255)",
         "Description" => "HTMLText",
         "Handle" => "Varchar(255)",
         "SubmitTitle" => "Varchar(255)",
-        "ViewAuth" => 'Enum(array("Member","None"), "None")',
-        "SubmitAuth" => 'Enum(array("Member","None"), "Member")',
         'Active' => 'Boolean',
-        // 
-        // 'Viewing' => 'Enum(array("Anyone", "Members", "Disabled"), "Members")',
-        // 'Submitting' => 'Enum(array("Anyone", "Members", "Disabled"), "Members")'
+        
+        'ResponseViewPerms' => 'Enum(array("Anyone","Member","NoOne","Group"), "Member")',
+        'ResponseMakePerms' => 'Enum(array("Member","NoOne","Group"), "Member")'
     ];
     
     private static $has_many = [
-        "Questions" => "Question"
+        "Questions" => "Question",
+        "Responses" => "SurveyResponse"
+    ];
+    
+    private static $many_many = [
+        'ResponseViewGroups' => 'Group',
+        'ResponseMakeGroups' => 'Group'
     ];
     
     private static $defaults = [
@@ -75,8 +81,22 @@ class Survey extends DataObject {
         ]);
         
         
+        // Listboxfield values are escaped, use ASCII char instead of &raquo;
+        $groupsMap = array();
+        foreach(Group::get() as $group) {
+            $groupsMap[$group->ID] = $group->getBreadcrumbs(' > ');
+        }
+        asort($groupsMap);
+        
+        
+        // Get permission maps
+        $groupsMap = $this->groupsMap();
+        $viewPerms = $this->viewPerms();
+        $makePerms = $this->makePerms();
+        
+        
         // A config for sortable questions
-        $config = GridFieldConfig_RelationEditor::create()
+        $questionConfig = GridFieldConfig_RelationEditor::create()
             ->removeComponentsByType('GridFieldAddExistingAutocompleter')
             ->removeComponentsByType('GridFieldExportButton')
             ->removeComponentsByType('GridFieldPrintButton')
@@ -85,9 +105,17 @@ class Survey extends DataObject {
             ->addComponent(new GridFieldSortableRows('Order'))
             ->addComponent(new GridFieldDeleteAction());
         
+        $responseConfig = GridFieldConfig_RelationEditor::create()
+            ->removeComponentsByType('GridFieldAddExistingAutocompleter')
+            ->removeComponentsByType('GridFieldExportButton')
+            ->removeComponentsByType('GridFieldPrintButton')
+            ->removeComponentsByType('GridFieldDeleteAction')
+            ->removeComponentsByType('GridFieldAddNewButton')
+            ->removeComponentsByType('GridFieldFilterHeader');
         
-        $viewAuth = singleton('Survey')->dbObject('ViewAuth')->enumValues();
-        $submitAuth = singleton('Survey')->dbObject('SubmitAuth')->enumValues();
+        
+        // 'ResponseViewPerms' => 'Enum(array("Anyone","Member","NoOne","Group"), "Member")',
+        // 'ResponseMakePerms' => 'Enum(array("Member","NoOne","Group"), "Member")'
         
         // Add our fields
         $fields->addFieldsToTab('Root.Main', [
@@ -100,15 +128,18 @@ class Survey extends DataObject {
                 ->setDescription("NOTE: Once active questions cannot be changed"),
             
             HeaderField::Create("PermsHeading", "Permissions"),
-            DropdownField::create('ViewAuth', 'View Permissions', $viewAuth)
-                ->setDescription("The permission needed to view responses to this survey"),
-            DropdownField::create('SubmitAuth', 'Permission to respond', $submitAuth )
-                ->setDescription("The permission needed to respond to this survey"),
+            DropdownField::create('ResponseViewPerms', 'Who can view responses', $viewPerms),
+            $viewGroups = ListboxField::create('ResponseViewGroups', 'Groups', $groupsMap)->setMultiple(true),
+            DropdownField::create('ResponseMakePerms', 'Who can respond', $makePerms),
+            $makeGroups = ListboxField::create('ResponseMakeGroups', 'Groups', $groupsMap)->setMultiple(true),
             
             HeaderField::Create("DescHeading", "Description"),
             HtmlEditorField::create('Description', 'Description')
                 ->setDescription('A bit of content to display above a survey when it is being responded to')
         ]);
+        
+        $viewGroups->displayIf('ResponseViewPerms')->isEqualTo('Group');
+        $makeGroups->displayIf('ResponseMakePerms')->isEqualTo('Group');
         
         if ($this->ID && $this->Active == false) {
             $fields->addFieldsToTab('Root.Questions', [
@@ -116,7 +147,16 @@ class Survey extends DataObject {
                     'Questions',
                     'Questions',
                     $this->Questions(),
-                    $config
+                    $questionConfig
+                )
+            ]);
+            
+            $fields->addFieldsToTab('Root.Responses', [
+                GridField::create(
+                    'Responses',
+                    'Responses',
+                    $this->Responses(),
+                    $responseConfig
                 )
             ]);
         }

@@ -1,5 +1,5 @@
 <template lang="html">
-  <!--  -->
+  <!-- <pre> {{options}} </pre> -->
 </template>
 
 <script>

@@ -15,6 +15,10 @@ $clearHover: #286090;
 
 form.survey {
     
+    .general-description {
+        margin-bottom: 2.5em;
+    }
+    
     .question-list {
         
         
@@ -24,7 +28,7 @@ form.survey {
             
             .description {
                 position: relative;
-                top: - 18px;
+                top: -18px;
                 color: $textAltColour;
                 font-size: 14px;
                 margin: 3px 0px 10px;

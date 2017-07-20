@@ -7,10 +7,15 @@
       <!-- The response, rendered by the server -->
       <div class="response" v-html="rendered || '...'"></div>
       
+      <!-- <pre>{{config}}</pre> -->
+      
       
       <!-- Voting -->
       <vote-section
         :data-id="response.id"
+        :perms="config.permissions"
+        :can-view="config.canViewVotes"
+        :can-make="config.canMakeVotes"
         data-type="SurveyResponse">
         {{config.voteTitle}}
       </vote-section>
@@ -18,7 +23,9 @@
       <!-- Comments -->
       <comment-section
         :data-id="response.id"
-        :can-comment="config.canComment"
+        :perms="config.permissions"
+        :can-view="config.canViewComments"
+        :can-make="config.canMakeComments"
         data-type="SurveyResponse"
         :placeholder="config.commentPlaceholder"
         :action="config.commentAction">

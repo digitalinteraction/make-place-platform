@@ -4,21 +4,31 @@
     
     <h4 class="title"><slot></slot></h4>
     <div class="control">
-      <div class="holder">
+      <div class="holder" :class="{enabled: canMake}">
         
         <!-- Add our emoji -->
         <emoji v-for="e in emojiList"
           :key="e.id"
           :emoji="e"
           :current="e.id === chosenEmoji"
-          :enabled="canMakeVote"
+          :enabled="canMake"
           @chosen="choseEmoji">
         </emoji>
-        
       </div>
+      <p v-if="!canMake" class="disabled-msg">
+        <span v-if="perms.voting.make === 'NoOne'">
+          Voting has been turned off
+        </span>
+        <span v-else-if="perms.voting.make === 'Group'">
+          You don't have permission to vote
+        </span>
+        <span v-else>
+          <a href="/login" title="log in">Log in</a> to vote
+        </span>
+      </p>
     </div>
     
-    <p class="summary" v-if="canViewVotes">
+    <p class="summary" v-if="canView">
       <emoji-summary v-for="(v, i) in voteList" :key="i" :emoji="emojiSet[v.value]" :count="v.count">
       </emoji-summary>
       <span v-if="voteList.length === 0"> No votes yet, be the first! </span>
@@ -31,7 +41,7 @@
 import axios from 'axios'
 
 export default {
-  props: [ 'dataId', 'dataType' ],
+  props: [ 'dataId', 'dataType', 'perms', 'canView', 'canMake' ],
   data() {
     return {
       chosenEmoji: null,
@@ -48,8 +58,6 @@ export default {
     }
   },
   computed: {
-    canMakeVote() { return true },
-    canViewVotes() { return false },
     voteApi() { return `${this.$config.api}/api/vote/on/${this.dataType}/${this.dataId}` },
     emojiList() {
       return Object.keys(this.emojiSet).map(id => {

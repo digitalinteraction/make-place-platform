@@ -1,6 +1,6 @@
 <template lang="html">
   <span class="emoji"
-    :class="{current, masked: emoji.masked}"
+    :class="{current, masked: emoji.masked, enabled}"
     @click="chosen"
     :style="{'background-image': `url(${emoji.icon})`}">
     
@@ -17,9 +17,10 @@
 
 <script>
 export default {
-  props: [ 'emoji', 'current', 'masked' ],
+  props: [ 'emoji', 'current', 'masked', 'enabled' ],
   methods: {
     chosen(event) {
+      if (!this.enabled) return
       this.$emit('chosen', this.emoji.id, event)
     }
   }

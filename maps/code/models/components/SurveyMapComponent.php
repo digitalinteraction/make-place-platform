@@ -3,6 +3,8 @@
 /** A component to add to a map to view and respond to a survey */
 class SurveyMapComponent extends MapComponent {
     
+    private static $extensions = [ 'PermsFieldExtension' ];
+    
     private static $db = [
         'ActionColour' => 'Enum(array("primary", "secondary","blue", "green", "orange", "purple", "red"), "green")',
         'ActionMessage' => 'Varchar(255)',
@@ -89,29 +91,10 @@ class SurveyMapComponent extends MapComponent {
             $geoQuestions[''] = 'None';
             
             
-            // Listboxfield values are escaped, use ASCII char instead of &raquo;
-            $groupsMap = array();
-            foreach(Group::get() as $group) {
-                $groupsMap[$group->ID] = $group->getBreadcrumbs(' > ');
-            }
-            asort($groupsMap);
-            
-            
-            // View permissions
-            $viewPerms = [
-                'Anyone' => 'Anyone',
-                'NoOne' => 'No one',
-                'Member' => 'Any Member',
-                'Group' => 'Groups (select below)'
-            ];
-            
-            
-            $makePerms = [
-                'NoOne' => 'No one',
-                'Member' => 'Any Member',
-                'Group' => 'Groups (select below)'
-            ];
-            
+            // Get permission maps
+            $groupsMap = $this->groupsMap();
+            $viewPerms = $this->viewPerms();
+            $makePerms = $this->makePerms();
             
             
             
@@ -217,16 +200,12 @@ class SurveyMapComponent extends MapComponent {
         $member = Member::currentUser();
         $verified = $member ? $member->getHasVerified() : false;
         
-        
-        // Add auth config to the component
-        $data["canView"] = $verified || $survey->ViewAuth == "None";
-        $data["canSubmit"] = $verified || $survey->SubmitAuth == "None";
-        
-        // Add vote & comments if verified
-        // $data["canVote"] = (bool)($verified && $this->VotingEnabled);
-        // $data["canComment"] = (bool)($verified && $this->CommentingEnabled);
-        
+        // Add the permissions
         $data["permissions"] = [
+            "response" => [
+                "view" => $survey->ResponseViewPerms,
+                "make" => $survey->ResponseMakePerms
+            ],
             "voting" => [
                 "view" => $this->VotingViewPerms,
                 "make" => $this->VotingMakePerms
@@ -236,6 +215,10 @@ class SurveyMapComponent extends MapComponent {
                 "make" => $this->CommentMakePerms
             ]
         ];
+        
+        // Add processed permissions
+        $data["canView"] = $this->checkPerm($survey->ResponseViewPerms, $survey->ResponseViewGroups());
+        $data["canSubmit"] = $this->checkPerm($survey->ResponseMakePerms, $survey->ResponseMakeGroups());
         
         $data["canViewVotes"] = $this->checkPerm($this->VotingViewPerms, $this->VotingViewGroups());
         $data["canMakeVotes"] = $this->checkPerm($this->VotingMakePerms, $this->VotingMakeGroups());

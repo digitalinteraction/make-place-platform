@@ -4,7 +4,7 @@
 class SurveyResponse extends DataObject {
     
     private static $extensions = [
-        "JsonFieldExtension", "Commentable", "Votable"
+        "JsonFieldExtension", "Commentable", "Votable", "Deletable"
     ];
     
     public $HiddenQuestion = false;
@@ -21,6 +21,12 @@ class SurveyResponse extends DataObject {
     private static $many_many = [
         "Geometries" => "GeoRef",
         "Media" => "SurveyMedia"
+    ];
+    
+    private static $summary_fields = [
+        "ID" => "ID",
+        "Member.Name" => "Member",
+        "Deleted" => "Deleted"
     ];
     
     
@@ -82,6 +88,28 @@ class SurveyResponse extends DataObject {
             'memberId' => $this->MemberID,
             'values' => $values
         ];
+    }
+    
+    
+    
+    public function getCMSFields() {
+        
+        $fields = FieldList::create([TabSet::create('Root')]);
+        
+        // $fields = parent::getCMSFields();
+        
+        $responses = $this->jsonField('Responses');
+        
+        
+        $fields->addFieldsToTab('Root.Main', [
+            HeaderField::create("ResponseHeader", "Responses", 3),
+            LiteralField::create("Responses", "<pre>" . json_encode($responses, JSON_PRETTY_PRINT) . "</pre>")
+        ]);
+        
+        // $fields->fieldByName('Root.Main.Responses')->setReadonly(true);
+        // $fields->fieldByName('Root.Main.Member')->setReadonly(true);
+        
+        return $fields;
     }
     
     

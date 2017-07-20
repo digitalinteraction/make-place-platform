@@ -34,6 +34,7 @@
   .control {
     display: block;
     text-align: center;
+    position: relative;
     
     .holder {
       display: inline-block;
@@ -44,10 +45,22 @@
       height: 58px;
       border-radius: 28px;
       
+      &:not(.enabled) {
+        opacity: 0.3;
+      }
+    }
+    
+    .disabled-msg {
+      position: absolute;
+      top: 0;
+      left: 0; right: 0;
       
-      // @for $i from 1 to 10 {
-      //   .emoji:nth-child(#{$i}) { animation-delay: 0.1s + ($i * 0.05s); }
-      // }
+      text-align: center;
+      color: $darkColour;
+      font-weight: 600;
+      font-size: 20px;
+      padding: 0.8em 0;
+      text-shadow: 0 0 25px white;
     }
   }
   
@@ -81,24 +94,24 @@
     
     
     @include not-small {
-      &:hover {
+      &.enabled:hover {
         cursor: pointer;
         transform: scale(1.15);
-      }
-      
-      &:hover .tip {
-        @include text-style;
-        font-size: 12px;
-        background: #000;
-        color: #fff;
-        position: absolute;
-        top: -24px;
-        border-radius: 4px;
-        display: block;
-        left: 50%;
-        transform: translateX(-50%);
-        padding: 2px 8px;
-        user-select: none;
+        
+        .tip {
+          @include text-style;
+          font-size: 12px;
+          background: #000;
+          color: #fff;
+          position: absolute;
+          top: -24px;
+          border-radius: 4px;
+          display: block;
+          left: 50%;
+          transform: translateX(-50%);
+          padding: 2px 8px;
+          user-select: none;
+        }
       }
     }
     
