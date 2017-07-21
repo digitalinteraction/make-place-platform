@@ -18,6 +18,10 @@ class SurveyResponse extends DataObject {
         "Survey" => "Survey"
     ];
     
+    private static $has_many = [
+        "Comments" => "Comment.Target"
+    ];
+    
     private static $many_many = [
         "Geometries" => "GeoRef",
         "Media" => "SurveyMedia"
@@ -102,14 +106,25 @@ class SurveyResponse extends DataObject {
         
         $responses = $this->jsonField('Responses');
         
-        
         $fields->addFieldsToTab('Root.Main', [
-            HeaderField::create("ResponseHeader", "Responses", 3),
+            ReadonlyField::create("Member.Name")->setValue($this->Member()->Name),
+            $this->deletedField(),
+            LiteralField::create("ResponseLabel", "<strong>Values</strong>"),
             LiteralField::create("Responses", "<pre>" . json_encode($responses, JSON_PRETTY_PRINT) . "</pre>")
         ]);
         
-        // $fields->fieldByName('Root.Main.Responses')->setReadonly(true);
-        // $fields->fieldByName('Root.Main.Member')->setReadonly(true);
+        // $commentConfig = GridFieldConfig_Base::create()
+        //     ->addComponent(new GridFieldEditButton());
+        //
+        // $fields->addFieldsToTab('Root.Comments', [
+        //     GridField::create(
+        //         "Comments",
+        //         "Comments",
+        //         $this->Comments(),
+        //         $commentConfig
+        //     )
+        // ]);
+        
         
         return $fields;
     }

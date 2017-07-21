@@ -18,6 +18,7 @@ class MockNonCommentable extends DataObject { }
 
 
 /** Tests CommentApiController */
+/** @group whitelist */
 class CommentApiControllerTest extends FunctionalTest {
     
     public $usesDatabase = true;
@@ -127,6 +128,21 @@ class CommentApiControllerTest extends FunctionalTest {
         
         $this->assertTrue(isset($json[0]["vote"]));
         $this->assertEquals($json[0]["vote"], 1);
+    }
+    
+    public function testCommentIndexFiltersDeleted() {
+        
+        Comment::create(["TargetClass" => "MockCommentTarget", "TargetID" => "1"])->write();
+        Comment::create(["TargetClass" => "MockCommentTarget", "TargetID" => "1"])->write();
+        Comment::create([
+            "TargetClass" => "MockCommentTarget", "TargetID" => "1", "Deleted" => true
+        ])->write();
+        
+        $res = $this->get("{$this->apiBase}/on/MockCommentTarget/1");
+        $json = json_decode($res->getBody(), true);
+        
+        $this->assertEquals(200, $res->getStatusCode());
+        $this->assertCount(2, $json);
     }
     
     

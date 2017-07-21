@@ -307,7 +307,10 @@ class SurveyApiController extends ApiController {
      */
     public function getResponses() {
         
-        $responses = SurveyResponse::get()->filter("SurveyID", $this->Survey->ID);
+        $responses = SurveyResponse::get()->filter([
+            "SurveyID" => $this->Survey->ID,
+            "Deleted" => false
+        ]);
         
         if (!$this->checkPerm($this->Survey->ResponseViewPerms, $this->Survey->ResponseViewGroups())) {
             return $this->jsonResponse(["You can't do that"], 401);

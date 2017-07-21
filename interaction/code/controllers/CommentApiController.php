@@ -147,7 +147,8 @@ class CommentApiController extends ApiController {
         // Fetch root level comments
         $comments = Comment::get()->filter([
             "TargetClass" => $target->ClassName,
-            "TargetID" => $target->ID
+            "TargetID" => $target->ID,
+            "Deleted" => false
         ])->sort("Created DESC");
         
         // Format the comments as json

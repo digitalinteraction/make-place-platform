@@ -407,6 +407,20 @@ class SurveyApiControllerTest extends FunctionalTest {
         $this->assertEquals(401, $res->getStatusCode());
     }
     
+    public function testGetResponsesFiltersDeleted() {
+        
+        SurveyResponse::create([
+            "SurveyID" => $this->survey->ID,
+            "Deleted" => true
+        ])->write();
+        
+        $res = $this->get("{$this->apiBase}/1/responses");
+        
+        $json = json_decode($res->getBody(), true);
+        
+        $this->assertEquals(2, count($json));
+    }
+    
     
     
     /* Test viewing responses */

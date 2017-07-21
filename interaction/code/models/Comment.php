@@ -3,9 +3,10 @@
 /** A comment on something in the database */
 class Comment extends DataObject {
     
+    private static $extensions = [ "Deletable" ];
+    
     private static $db = [
-        "Message" => "Varchar(255)",
-        "Deleted" => "Datetime"
+        "Message" => "Varchar(255)"
     ];
     
     private static $has_one = [
@@ -18,6 +19,13 @@ class Comment extends DataObject {
     private static $defaults = [
         "Deleted" => false,
         "ParentID" => null
+    ];
+    
+    private static $summary_fields = [
+        "ID" => "ID",
+        "Member.Name" => "Member",
+        "Deleted" => "Deleted",
+        'Message' => 'Message'
     ];
     
     private static $excluded_fields = [ "none" ];
