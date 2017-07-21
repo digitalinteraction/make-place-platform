@@ -10,7 +10,7 @@
 /** A controller to handle actions around surveys */
 class SurveyApiController extends ApiController {
     
-    private static $extensions = [];
+    private static $extensions = [ 'PermsFieldExtension' ];
     
     private static $allowed_actions = [
         'index', 'submitSurvey', 'getResponses', 'viewResponse', 'viewSurvey', 'createGeom', 'createMedia'
@@ -261,15 +261,8 @@ class SurveyApiController extends ApiController {
      */
     public function viewSurvey() {
         
-        $memberId = Member::currentUserID();
-        $auth = $this->Survey->SubmitAuth;
-        
-        if ($auth == "Member" && $memberId == null) {
-            
-            return $this->jsonResponse([
-                'title' => "Please log in",
-                'content' => "<p>Sorry, you need to log in to do that!</p>"
-            ], 401);
+        if (!$this->checkPerm($this->Survey->ResponseMakePerms, $this->Survey->ResponseMakeGroups())) {
+            return $this->jsonResponse(["You can't do that"], 401);
         }
         
         return $this->jsonResponse([
@@ -316,14 +309,9 @@ class SurveyApiController extends ApiController {
         
         $responses = SurveyResponse::get()->filter("SurveyID", $this->Survey->ID);
         
-        $memberId = Member::currentUserID();
-        $auth = $this->Survey->ViewAuth;
-        
-        if ($auth == "Member" && $memberId == null) {
-            
-            return $this->jsonResponse(["You need to log in to do that"], 401);
+        if (!$this->checkPerm($this->Survey->ResponseViewPerms, $this->Survey->ResponseViewGroups())) {
+            return $this->jsonResponse(["You can't do that"], 401);
         }
-        
         
         $data = [];
         
@@ -507,10 +495,8 @@ class SurveyApiController extends ApiController {
             return Member::currentUserID();
         }
         
-        $auth = $this->Survey->SubmitAuth;
-        $memberId = Member::currentUserID();
-        
-        if ($auth === "Member" && $memberId == null) {
+        // Check permissions using the survey's permissions
+        if (!$this->checkPerm($this->Survey->ResponseMakePerms, $this->Survey->ResponseMakeGroups())) {
             $errors[] = "You need to be logged in to do that";
         }
         
@@ -520,7 +506,7 @@ class SurveyApiController extends ApiController {
             $errors[] = "Validation failed, please submit again";
         }
         
-        return count($errors) == 0 ? $memberId : null;
+        return count($errors) == 0 ? Member::currentUserID() : null;
     }
     
     /** Gets a question from the request using the given handle */

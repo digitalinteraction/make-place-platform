@@ -49,7 +49,6 @@ class MapPageTest extends FunctionalTest {
     }
     
     
-    
     public function testMapConfig() {
         
         $response = $this->controller->mapConfig();

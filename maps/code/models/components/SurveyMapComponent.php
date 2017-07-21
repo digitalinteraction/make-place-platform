@@ -68,18 +68,6 @@ class SurveyMapComponent extends MapComponent {
         ]);
         
         
-        
-        // $fields->addFieldsToTab(
-        //     'Root',
-        //     $tab = new Tab('Something',
-        //         $drop = DropdownField::create('Droppy', 'Droppy', [ 'a' => 'A', 'b' => 'B', 'c' => 'C' ]),
-        //         $text = TextField::create('Test', 'Test')
-        //     )
-        // );
-        //
-        // $text->displayIf('Droppy')->isEqualTo('b');
-        
-        
         // If there is a survey, add survey-specific fields
         if ($this->SurveyID != null) {
             
@@ -228,22 +216,6 @@ class SurveyMapComponent extends MapComponent {
         
         
         return $data;
-    }
-    
-    public function checkPerm($permission, DataList $groups = null) {
-        
-        if ($permission == 'Anyone') return true;
-        if ($permission == 'NoOne') return false;
-        
-        $member = Member::currentUser();
-        
-        
-        if ($permission == 'Group') {
-            return $member != null && $member->inGroups($groups);
-        }
-        
-        
-        return $member != null && $member->getHasVerified();
     }
     
 }

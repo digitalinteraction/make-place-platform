@@ -1,7 +1,6 @@
 <?php
 
 /** Tests SurveyMapComponent */
-/** @group whitelist */
 class SurveyMapComponentTest extends SapphireTest {
     
     /** @var SurveyMapComponent */

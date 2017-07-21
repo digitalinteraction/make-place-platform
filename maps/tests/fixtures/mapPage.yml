@@ -1,6 +1,11 @@
+Survey:
+    someSurvey:
+        Name: 'A Survey'
+
 SurveyMapComponent:
     surveyComp:
         Name: 'Survey'
+        Survey: =>Survey.someSurvey
 
 MapPage:
     map:

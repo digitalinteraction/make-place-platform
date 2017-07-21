@@ -74,9 +74,15 @@ class SurveyTest extends SapphireTest {
         $this->assertNotNull($fields->fieldByName("Root.Main.Handle"));
         $this->assertNotNull($fields->fieldByName("Root.Main.Description"));
         $this->assertNotNull($fields->fieldByName("Root.Main.SubmitTitle"));
-        $this->assertNotNull($fields->fieldByName("Root.Main.ViewAuth"));
-        $this->assertNotNull($fields->fieldByName("Root.Main.SubmitAuth"));
+        
+        
         $this->assertNull($fields->fieldByName("Root.Questions"));
+        
+        
+        $this->assertNotNull($fields->fieldByName("Root.Main.ResponseViewPerms"));
+        $this->assertNotNull($fields->fieldByName("Root.Main.ResponseViewGroups"));
+        $this->assertNotNull($fields->fieldByName("Root.Main.ResponseMakePerms"));
+        $this->assertNotNull($fields->fieldByName("Root.Main.ResponseMakeGroups"));
     }
     
     public function testCmsFieldsWhenCreated() {

@@ -31,14 +31,7 @@ class SurveyApiControllerTest extends FunctionalTest {
         parent::setUp();
         
         
-        $this->member = Member::create([
-            "Email" => "test@gmail.com"
-        ]);
-        $this->member->write();
-        
-        $this->logInAs($this->member);
-        
-        
+        $this->member = Member::get()->byID($this->logInWithPermission());
         $this->survey = $this->objFromFixture("Survey", "surveyA");
     }
     
@@ -154,7 +147,7 @@ class SurveyApiControllerTest extends FunctionalTest {
     
     public function testSubmitWithoutAuth() {
         
-        $this->survey->SubmitAuth = "None";
+        $this->survey->ResponseMakePerms = "Anyone";
         $this->survey->write();
         
         $this->member->logOut();
@@ -370,9 +363,7 @@ class SurveyApiControllerTest extends FunctionalTest {
         $this->member->logOut();
         
         $res = $this->get("{$this->apiBase}/1/view");
-        $json = json_decode($res->getBody(), true);
-        
-        $this->assertEquals("Please log in", $json["title"]);
+        $this->assertEquals(401, $res->getStatusCode());
     }
     
     public function testViewNullResponse() {
@@ -407,8 +398,7 @@ class SurveyApiControllerTest extends FunctionalTest {
     
     public function testGetResponsesRequiresAuthWhenSet() {
         
-        $this->survey->ViewAuth = "Member";
-        $this->survey->write();
+        $this->survey->ResponseViewPerms = "Member";
         
         $this->member->logOut();
         

@@ -18,7 +18,7 @@ class PermsFieldExtension extends Extension {
             'Group' => 'Groups (select below)'
         ];
     }
-  
+    
     public function groupsMap() {
         
         // Listboxfield values are escaped, use ASCII char instead of &raquo;
@@ -28,6 +28,22 @@ class PermsFieldExtension extends Extension {
         }
         asort($map);
         return $map;
+    }
+    
+    public function checkPerm($permission, DataList $groups = null) {
+        
+        if ($permission == 'Anyone') return true;
+        if ($permission == 'NoOne') return false;
+        
+        $member = Member::currentUser();
+        
+        
+        if ($permission == 'Group') {
+            return $member != null && $member->inGroups($groups);
+        }
+        
+        
+        return $member != null && $member->getHasVerified();
     }
   
   
