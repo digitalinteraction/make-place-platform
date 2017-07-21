@@ -10,7 +10,7 @@ env | sed 's/^\(.\)/export \1/' >> /app/.cron_env
 
 
 # Build the database
-framework/sake dev/build > build.log 2> build.log
+# framework/sake dev/build > build.log 2> build.log
 
 
 # Build the theme
