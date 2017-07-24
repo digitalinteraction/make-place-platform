@@ -13,7 +13,7 @@
     </comment-composer>
     <p v-else class="disabled-msg">
       <span v-if="perms.comments.make === 'NoOne'">
-        Comments have been turned off
+        Comments have been disabled
       </span>
       <span v-else-if="perms.comments.make === 'Group'">
         You don't have permission to comment

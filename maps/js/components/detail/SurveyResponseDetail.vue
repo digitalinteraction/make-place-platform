@@ -1,6 +1,8 @@
 <template lang="html">
   <div class="survey-response">
     
+    {{response.id}}
+    
     <loading v-if="!rendered"> Fetching Response </loading>
     <div v-else>
       
@@ -54,23 +56,27 @@ export default {
     response() { return this.options.response },
     config() { return this.options.config }
   },
+  watch: {
+    options() {
+      this.setup()
+    }
+  },
   mounted() {
-    this.fetchResponse()
-    this.$emit('change-title', this.config.responseTitle)
+    this.setup()
   },
   methods: {
+    setup() {
+      this.rendered = null
+      this.fetchResponse()
+      this.$emit('change-title', this.config.responseTitle)
+    },
     async fetchResponse() {
-      
-      // A little delay to smooth the transition (api is too fast!?)
-      // await new Promise((resolve) => { setTimeout(resolve, 300) })
       
       let res = await axios.get(
         `${this.$config.api}/api/survey/${this.response.surveyId}/response/${this.response.id}`
       )
       
-      // this.$emit('change-title', res.data.title)
       this.rendered = res.data.body
-      
     }
   }
 }

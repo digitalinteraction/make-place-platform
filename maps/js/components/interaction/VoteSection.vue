@@ -17,7 +17,7 @@
       </div>
       <p v-if="!canMake" class="disabled-msg">
         <span v-if="perms.voting.make === 'NoOne'">
-          Voting has been turned off
+          Voting has been disabled
         </span>
         <span v-else-if="perms.voting.make === 'Group'">
           You don't have permission to vote

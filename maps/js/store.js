@@ -6,7 +6,8 @@ export default {
     mapState: null,
     map: null,
     clusterer: null,
-    mapDetail: null
+    mapDetail: null,
+    highlight: null
   },
   mutations: {
     addAction(state, newAction) { state.actions.push(newAction) },
@@ -20,6 +21,11 @@ export default {
     },
     setMap(state, map) { state.map = map },
     setClusterer(state, clusterer) { state.clusterer = clusterer },
-    setMapDetail(state, detail) { state.mapDetail = detail }
+    setMapDetail(state, detail) { state.mapDetail = detail },
+    setHighlight(state, highlight) {
+      if (state.highlight) { state.highlight.remove() }
+      if (highlight) highlight.addTo(state.map)
+      state.highlight = highlight
+    }
   }
 }

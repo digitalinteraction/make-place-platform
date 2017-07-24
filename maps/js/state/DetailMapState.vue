@@ -20,15 +20,13 @@
             
           </div>
           
-          <!-- If set, render the detail component -->
-          <transition name="fade">
-            <div v-if="detail" class="content">
-              <component :is="detail.type"
-                :options="detail.options"
-                @change-title="changeTitle">
-              </component>
-            </div>
-          </transition>
+          <!-- Render the detail component -->
+          <div class="content" :class="options.detail.type">
+            <component :is="options.detail.type"
+              :options="options.detail.options"
+              @change-title="changeTitle">
+            </component>
+          </div>
           
         </div>
         
@@ -59,15 +57,21 @@ export default {
   },
   computed: {
     detail() {
-      let detail = this.options.detail
-      if (_.isString(detail)) detail = { type: detail }
-      detail.options = detail.options || {}
-      return detail
+      console.log(this.options.detail)
+      return this.options.detail
     },
     title() { return this.customTitle || this.options.title || 'Loading' }
   },
+  watch: {
+    options() {
+      this.minified = false
+    }
+  },
   methods: {
-    close() { this.$store.commit('setMapState', 'DefaultMapState') },
+    close() {
+      this.$store.commit('setMapState', 'DefaultMapState')
+      if (this.options.onClose) this.options.onClose()
+    },
     minify() { this.minified = !this.minified },
     changeTitle(newTitle) { this.customTitle = newTitle }
   }

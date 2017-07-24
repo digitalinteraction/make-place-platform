@@ -6,6 +6,8 @@
 import axios from 'axios'
 import L from 'leaflet'
 
+import SurveyResponseDetail from './detail/SurveyResponseDetail.vue'
+
 export default {
   props: [ 'options' ],
   mounted() {
@@ -119,6 +121,24 @@ export default {
     },
     responseClicked(response, e) {
       
+      let highlight = null
+      
+      if (this.options.highlightQuestion && response.values[this.options.highlightQuestion]) {
+        let value = response.values[this.options.highlightQuestion].value
+        
+        if (value.type === 'LINESTRING' && value.geom) {
+          
+          let points = value.geom.map(({x, y}) => { return [x, y] })
+          
+          highlight = L.polyline(points, {
+            color: '#3886c9',
+            weight: 5
+          })
+        }
+      }
+      
+      this.$store.commit('setHighlight', highlight)
+      
       // The detail to render our form
       let detail = {
         type: 'SurveyResponseDetail',
@@ -134,12 +154,10 @@ export default {
         type: 'DetailMapState',
         options: {
           title: '',
-          detail: detail
+          detail: detail,
+          onClose: () => { this.$store.commit('setHighlight', null) }
         }
       })
-      
-      
-      // this.$store.commit('setMapState', 'DetailMapState')
     }
   }
 }

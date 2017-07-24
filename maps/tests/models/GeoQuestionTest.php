@@ -1,6 +1,7 @@
 <?php
 
 /** Tests GeoQuestion */
+/** @group whitelist */
 class GeoQuestionTest extends SapphireTest {
     
     public $usesDatabase = true;
@@ -111,6 +112,37 @@ class GeoQuestionTest extends SapphireTest {
         $errors = $this->question->validateValue("10");
     
         // Check there were no issues
+        $this->assertEquals(1, count($errors));
+    }
+    
+    public function testValidateLinestring() {
+        
+        $this->question->GeoType = "LINESTRING";
+        
+        $errors = $this->question->validateValue([
+            [ "x" => 1, "y" => 2 ]
+        ]);
+        
+        $this->assertEquals(0, count($errors));
+    }
+    
+    public function testValidateLinestringIsArray() {
+        
+        $this->question->GeoType = "LINESTRING";
+        
+        $errors = $this->question->validateValue("Not an array");
+        
+        $this->assertEquals(1, count($errors));
+    }
+    
+    public function testValidateLinestringIsPoints() {
+        
+        $this->question->GeoType = "LINESTRING";
+        
+        $errors = $this->question->validateValue([
+            "Not a point"
+        ]);
+        
         $this->assertEquals(1, count($errors));
     }
     

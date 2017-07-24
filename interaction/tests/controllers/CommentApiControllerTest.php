@@ -18,7 +18,6 @@ class MockNonCommentable extends DataObject { }
 
 
 /** Tests CommentApiController */
-/** @group whitelist */
 class CommentApiControllerTest extends FunctionalTest {
     
     public $usesDatabase = true;

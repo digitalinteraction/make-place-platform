@@ -62,6 +62,25 @@ class GeoQuestion extends Question {
         
         // if $this->Type == "LINESTRING"
         // -> Check for x & y array
+        if ($this->GeoType == "LINESTRING") {
+            
+            // Make sure its an array
+            if (!is_array($value)) {
+                $errors[] = "'{$this->Handle}' must be an array";
+            }
+            else {
+                
+                // Make sure each elem has an x & y
+                foreach ($value as $i => $point) {
+                    if (!$this->validPoint($point)) {
+                        $errors[] = "{$this->Handle}[$i] must have an x & y coord";
+                    }
+                }
+                
+            }
+            
+            
+        }
         
         // ...
         
@@ -105,6 +124,12 @@ class GeoQuestion extends Question {
             $ref = GeoRef::get()->byID($value);
             $response->Geometries()->add($ref);
         }
+    }
+    
+    
+    
+    private function validPoint($point) {
+        return isset($point['x']) && isset($point['y']) && is_numeric($point['x']) && is_numeric($point['y']);
     }
     
 }
