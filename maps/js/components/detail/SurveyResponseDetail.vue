@@ -1,16 +1,11 @@
 <template lang="html">
   <div class="survey-response">
     
-    {{response.id}}
-    
     <loading v-if="!rendered"> Fetching Response </loading>
     <div v-else>
       
       <!-- The response, rendered by the server -->
       <div class="response" v-html="rendered || '...'"></div>
-      
-      <!-- <pre>{{config}}</pre> -->
-      
       
       <!-- Voting -->
       <vote-section
