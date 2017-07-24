@@ -39,7 +39,7 @@ class GeoQuestionTest extends SapphireTest {
     
     
     
-    /* Test Validation */
+    /* Test Point Validation */
     public function testNonRequiredValidation() {
         
         $this->question->Required = false;
@@ -115,22 +115,37 @@ class GeoQuestionTest extends SapphireTest {
         $this->assertEquals(1, count($errors));
     }
     
+    
+    /** Test Linestring Validation */
     public function testValidateLinestring() {
         
         $this->question->GeoType = "LINESTRING";
         
         $errors = $this->question->validateValue([
-            [ "x" => 1, "y" => 2 ]
+            "points" => [
+                [ "x" => 1, "y" => 2 ]
+            ]
         ]);
         
         $this->assertEquals(0, count($errors));
     }
     
-    public function testValidateLinestringIsArray() {
+    public function testValidateLinestringRequiresPoints() {
         
         $this->question->GeoType = "LINESTRING";
         
-        $errors = $this->question->validateValue("Not an array");
+        $errors = $this->question->validateValue("No points");
+        
+        $this->assertEquals(1, count($errors));
+    }
+    
+    public function testValidateLinestringRequiresPointsArray() {
+        
+        $this->question->GeoType = "LINESTRING";
+        
+        $errors = $this->question->validateValue([
+            "points" => "Not an array"
+        ]);
         
         $this->assertEquals(1, count($errors));
     }
@@ -140,7 +155,7 @@ class GeoQuestionTest extends SapphireTest {
         $this->question->GeoType = "LINESTRING";
         
         $errors = $this->question->validateValue([
-            "Not a point"
+            "points" => [ "Not a point" ]
         ]);
         
         $this->assertEquals(1, count($errors));

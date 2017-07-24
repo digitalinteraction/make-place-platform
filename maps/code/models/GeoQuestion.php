@@ -65,13 +65,13 @@ class GeoQuestion extends Question {
         if ($this->GeoType == "LINESTRING") {
             
             // Make sure its an array
-            if (!is_array($value)) {
-                $errors[] = "'{$this->Handle}' must be an array";
+            if (!isset($value['points']) || !is_array($value['points'])) {
+                $errors[] = "Please provide 'points' for '{$this->Handle}' as an array";
             }
             else {
                 
                 // Make sure each elem has an x & y
-                foreach ($value as $i => $point) {
+                foreach ($value['points'] as $i => $point) {
                     if (!$this->validPoint($point)) {
                         $errors[] = "{$this->Handle}[$i] must have an x & y coord";
                     }
