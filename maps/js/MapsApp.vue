@@ -68,7 +68,7 @@ export default {
   },
   methods: {
     onResize() {
-      this.isMobile = window.outerWidth < 767
+      this.isMobile = window.outerWidth <= 767
     },
     async loadConfig() {
       try {

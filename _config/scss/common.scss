@@ -36,19 +36,19 @@
 
 
 @mixin not-large {
-  @media only screen and (min-width:1200px) { @content; }
+  @media only screen and (min-width:1101px) { @content; }
 }
 
 @mixin not-normal {
-  @media only screen and (min-width:992px) { @content; }
+  @media only screen and (min-width:993px) { @content; }
 }
 
 @mixin not-small {
-  @media only screen and (min-width:767px) { @content; }
+  @media only screen and (min-width:768px) { @content; }
 }
 
 @mixin not-mobile {
-  @media only screen and (min-width:480px) { @content; }
+  @media only screen and (min-width:481px) { @content; }
 }
 
 
