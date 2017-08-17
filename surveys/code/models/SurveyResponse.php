@@ -46,7 +46,7 @@ class SurveyResponse extends DataObject {
             
             $key = $question->Handle;
             
-            if (isset($responses[$key])) {
+            if (isset($responses[$key]) && $question->ClassName !== 'HiddenQuestion') {
                 
                 $value = trim($responses[$key]);
                 

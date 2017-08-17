@@ -2,27 +2,35 @@
 The versions of Make Place and what features, bugs and tweaks were made for each.
 
 
+## 3.1.2
+- Hidden question's responses won't get rendered
+
+## 3.1.1
+- Fixed ipad-sized map styling issues
+- Removed some debug code
+
+
+## 3.1.0
+
+### Features
+- More detailed authentication controls for surveys, each option as (member, specific groups, no-one or anyone)
+  - Who can see responses
+  - Who can respond
+  - Who can see comments
+  - Who can make comments
+  - Who can see votes
+  - Who can make votes
+- Linestrings are now validated in the api
+
 
 ## 3.0.1
-Bug fixes, tweaks and small changes
-
-## Features
-- ...
-
-### Tweaks
-- ...
-
-## Fixes
-- ...
-
-
----
+- Fixed minimisation issues
 
 
 ## 3.0.0
 Interactions and swish animations
 
-## Features
+### Features
 - Dynamic Commenting and voting apis so you can comment on anythin in the database (providing it implements Commentable / Votable)
 - Frontend overhaul, we're now using webpack to compile easy-to-write javascript (es6) into supported javascript that works on nearly all browsers
 - Vuejs map page, the new map page uses vuejs to improve the previos js logic and improve the overall experience

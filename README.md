@@ -42,6 +42,15 @@ bash scripts/dev-runtime
 4. All code should be mapped into your container so saving and reloading will always be the latest version
 
 
+## Deploying Image
+```bash
+
+# Deploy to openlab.ncl.ac.uk/gitlab
+scripts/build-img 3.1.2
+
+```
+
+
 ## Detailed Project Structure
 Folder | Contents
 ------ | --------
