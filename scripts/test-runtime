@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# Script runtime to run unit tests, should be run inside the container, e.g.
+# docker-compose exec web scripts/test-runtime
+
 # No longer uses input params
 # PARAMS="${@:1}"
 

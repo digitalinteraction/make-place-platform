@@ -1,7 +1,6 @@
 <?php
 
 /** Tests GeoQuestion */
-/** @group whitelist */
 class GeoQuestionTest extends SapphireTest {
     
     public $usesDatabase = true;

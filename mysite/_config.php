@@ -1,6 +1,14 @@
 <?php
 
 
+/*
+ * An entrypoint php file which sets up various things
+ *  - Sets up the database connection using docker environment variables
+ *  - Maps docker environment variables to php constants
+ *  - Sets up other silverstripe things
+ */
+
+
 /** A helper method to get an environment variable or a default value */
 function _envVar($name, $default = null) {
     return isset($_SERVER[$name]) ? $_SERVER[$name] : $default;

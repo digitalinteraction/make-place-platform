@@ -15,6 +15,7 @@ class ProfileController extends ContentController {
         
         parent::init();
         
+        // 404 if there's no user
         if (Member::currentUserID() == null) {
             return $this->httpError(404);
         }

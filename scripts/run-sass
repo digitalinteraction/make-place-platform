@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+# DEPRECATED: old script to compile the scss using sass
+
 # Runs sass to compile our scss files into css
 sass --scss --style compressed \
     themes/generic/css/generic.scss:themes/generic/css/generic.css \

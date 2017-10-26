@@ -19,14 +19,17 @@ class LoginController extends ContentController {
     //Page Lifecycle
     public function index() {
         
+        // Redirect away if already logged in & verified
         $user = Member::currentUser();
-        
         if ($user != null && $user->getHasVerified()) {
             return $this->redirect($this->getBackURL());
         }
         
+        
+        // Get the type of page to render from the session (which tab to show)
         $this->LoginMode = Session::get('LoginMode');
         
+        // Default the type to login
         if ($this->LoginMode == null) {
             $this->LoginMode = 'Login';
         }
@@ -62,6 +65,7 @@ class LoginController extends ContentController {
      */
     public function emailsent() {
         
+        // Get the email from the get vars
         $email = $this->request->getVar("email");
         if (!$email) $email = "";
         
@@ -175,6 +179,7 @@ class LoginController extends ContentController {
     
     public function submitRegister(array $data, Form $form) {
         
+        // Remember we're registering (so it can go back to the correct tab on page reload)
         Session::set('LoginMode', 'Register');
         
         
@@ -305,19 +310,25 @@ class LoginController extends ContentController {
     
     public function submitLogin(array $data, Form $form) {
         
+        // Get data from the form submission
         $email = $data['Email'];
         $password = $data['Password'];
         $remember = isset($data['Remember']);
         $back = isset($data['ReturnLink']) ? $data['ReturnLink'] : 'home/';
         
+        
+        // Remember we're loggin in for the next page load
         Session::set('LoginMode', 'Login');
         
         
+        // Error if no email
         if ($email == null) {
             $form->sessionMessage('Please enter your email', 'warn');
             return $this->redirectBack();
         }
         
+        
+        // Error if no password
         if ($password == null) {
             $form->sessionMessage('Please enter your password', 'warn');
             return $this->redirectBack();

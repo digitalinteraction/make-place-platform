@@ -1,3 +1,5 @@
 #!/usr/bin/env bash
 
+# Script to run the development runtime
+
 node _config/dev-runtime.js

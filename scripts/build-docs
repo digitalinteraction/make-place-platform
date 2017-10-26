@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+# Builds the api documentation
+
 node_modules/.bin/apidoc -o docs \
   -i interaction \
   -i auth \

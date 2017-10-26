@@ -17,7 +17,7 @@ A geographical mapping platform designed to be reconfigurable and redeployable. 
 - Features are implemented as Silverstripe modules; root level folders each with their own MVC structure inside
 - JS & SCSS transpiling via [Webpack](https://webpack.js.org/) (placed in `/public`), see `scripts/build-assets` and `scripts/dev-runtime`
 - Server is split into 2 docker images, one to add all packages the other add project code, see `base.Dockerfile`
-- Server is based on [PHP Composer Image](https://openlab.ncl.ac.uk/gitlab/b30282237/composer-image) to provide `php5-fpm` & `nginx` stack with `php-composer` to install modules
+- Server is based on [PHP Composer Image](https://openlab.ncl.ac.uk/gitlab/rob/composer-image) to provide `php5-fpm` & `nginx` stack with `php-composer` to install modules
 
 
 ## Prerequisites

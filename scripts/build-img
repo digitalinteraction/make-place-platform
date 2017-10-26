@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+# Builds the docker image using arguement 1 as the tag
+
 if [ -z "$1" ]
 then
     echo "Please pass tag"

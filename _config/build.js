@@ -1,7 +1,7 @@
 const webpack = require('webpack')
 // const config = require('./js/webpack.prod.config')
-const ora = require("ora")
-const chalk = require("chalk")
+const ora = require('ora')
+const chalk = require('chalk')
 
 let config = []
 
@@ -13,16 +13,15 @@ if (process.argv.includes('scss')) {
   config.push(require('./scss/webpack.base.config'))
 }
 
-process.stdout.write('\033c');
-
-var spinner = ora("Compiling assets ...")
+var spinner = ora('Compiling assets ...')
 spinner.start()
 
-webpack(config, (err, result) => {
+let compiler = webpack(config)
 
-  spinner.stop();
+compiler.run((err, result) => {
 
-  if (err) throw err;
+  spinner.stop()
+  if (err) throw err
 
   result.stats.forEach(stat => {
     process.stdout.write(stat.toString({

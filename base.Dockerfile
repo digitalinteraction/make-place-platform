@@ -6,7 +6,7 @@
 
 
 # Start with a php-fpm-nginx-composer image
-FROM openlab.ncl.ac.uk:4567/b30282237/composer-image:1.0.4
+FROM openlab.ncl.ac.uk:4567/rob/composer-image:1.0.4
 
 
 # Run the node setup

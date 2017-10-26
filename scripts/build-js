@@ -1,3 +1,5 @@
 #!/usr/bin/env bash
 
+# One-time builds the js
+
 node _config/build.js js
