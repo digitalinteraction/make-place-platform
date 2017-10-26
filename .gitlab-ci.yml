@@ -30,6 +30,8 @@ stages:
 test:
     image: $CONTAINER_BASE_IMAGE
     stage: test
+    tags:
+        - docker
     script:
         - cp -r /app/* .
         - mv _config/bootstrap.sh bootstrap.sh && mv _config/cronjobs cronjobs && mv _config/phpunit.xml phpunit.xml
