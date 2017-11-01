@@ -68,7 +68,7 @@ class SurveyResponse extends DataObject {
         return $this->Member()->getName() . "'s Response";
     }
     
-    public function toJson() {
+    public function toJson($pluck = null) {
         
         $rawValues = $this->jsonField('Responses');
         $values = [];
@@ -79,10 +79,12 @@ class SurveyResponse extends DataObject {
             
             $value = isset($rawValues[$question->Handle]) ? $rawValues[$question->Handle] : '';
             
-            $values[$question->Handle] = [
-                "name" => $question->Name,
-                "value" => $question->unpackValue($value)
-            ];
+            if ($pluck === null || in_array($question->Handle, $pluck)) {
+                $values[$question->Handle] = [
+                    "name" => $question->Name,
+                    "value" => $question->unpackValue($value)
+                ];
+            }
         }
         
         return [

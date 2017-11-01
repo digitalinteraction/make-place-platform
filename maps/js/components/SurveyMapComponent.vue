@@ -105,12 +105,12 @@ export default {
     },
     async fetchResponses() {
       
-      let res = await axios.get(`${this.surveyApi}/responses`)
-      
-      let posKey = this.options.positionQuestion
-      
       // If not set (from the CMS) do nothing
+      let posKey = this.options.positionQuestion
       if (!posKey) return
+      
+      // Fetch responses, only plucking the position key
+      let res = await axios.get(`${this.surveyApi}/responses?pluck=${posKey}`)
       
       // Loop responses and create pins
       res.data.forEach((response) => {

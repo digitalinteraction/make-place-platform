@@ -278,6 +278,9 @@ class SurveyApiController extends ApiController {
      *
      * @apiDescription Gets the responses to a survey
      *
+     * @apiParam {int} id The id of the survey to fetch responses for (passed in the url)
+     * @apiParam {string} pluck The keys of values to pluck from the response (csv)
+     *
      * @apiSuccessExample 200 OK
      * [
      *   {
@@ -316,10 +319,13 @@ class SurveyApiController extends ApiController {
             return $this->jsonResponse(["You can't do that"], 401);
         }
         
+        $pluck = $this->getVar('pluck');
+        if (is_string($pluck)) { $pluck = explode(',', $pluck); }
+        
         $data = [];
         
         foreach ($responses as $r) {
-            $data[] = $r->toJson();
+            $data[] = $r->toJson($pluck);
         }
         
         return $this->jsonResponse($data);
