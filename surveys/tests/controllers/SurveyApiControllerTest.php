@@ -421,6 +421,27 @@ class SurveyApiControllerTest extends FunctionalTest {
         $this->assertEquals(2, count($json));
     }
     
+    public function testGetResponsesPlucks() {
+        
+        $res = $this->get("{$this->apiBase}/1/responses?pluck=question-a");
+        $json = json_decode($res->getBody(), true);
+        
+        $this->assertEquals(2, count($json));
+        
+        $this->assertFalse(isset($json[0]["values"]["question-b"]));
+    }
+    
+    public function testGetResponsesPlucksMultiple() {
+        
+        $res = $this->get("{$this->apiBase}/1/responses?pluck=question-a,question-b");
+        $json = json_decode($res->getBody(), true);
+        
+        $this->assertEquals(2, count($json));
+        
+        $this->assertTrue(isset($json[0]["values"]["question-a"]));
+        $this->assertTrue(isset($json[0]["values"]["question-b"]));
+    }
+    
     
     
     /* Test viewing responses */
