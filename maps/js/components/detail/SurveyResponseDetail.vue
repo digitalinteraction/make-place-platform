@@ -41,6 +41,7 @@
 
 <script>
 import axios from 'axios'
+import L from 'leaflet'
 
 export default {
   props: [ 'options' ],
@@ -67,11 +68,39 @@ export default {
     },
     async fetchResponse() {
       
-      let res = await axios.get(
-        `${this.$config.api}/api/survey/${this.response.surveyId}/response/${this.response.id}`
-      )
+      let base = `${this.$config.api}/api/survey/${this.response.surveyId}/response/${this.response.id}`
       
-      this.rendered = res.data.body
+      let [ viewRes, dataRes ] = await Promise.all([
+        axios.get(base + '/view'),
+        axios.get(base)
+      ])
+      
+      let fullResponse = dataRes.data
+      this.rendered = viewRes.data.body
+      
+      
+      // If we have a highlight question, render the highlight
+      if (this.options.highlight && fullResponse.values[this.options.highlight]) {
+        let value = fullResponse.values[this.options.highlight].value
+        
+        
+        // Render the highlight depending on the type
+        let highlight = null
+        if (value.type === 'LINESTRING' && value.geom) {
+          
+          // If a linestring, create a path
+          let points = value.geom.map(({x, y}) => { return [x, y] })
+          highlight = L.polyline(points, {
+            color: '#3886c9',
+            weight: 5
+          })
+        }
+        
+        // Commit the highlight to be rendered
+        this.$store.commit('setHighlight', highlight)
+      }
+      
+      
     }
   }
 }

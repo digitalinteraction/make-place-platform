@@ -13,7 +13,7 @@ class SurveyApiController extends ApiController {
     private static $extensions = [ 'PermsFieldExtension' ];
     
     private static $allowed_actions = [
-        'index', 'submitSurvey', 'getResponses', 'viewResponse', 'viewSurvey', 'createGeom', 'createMedia'
+        'index', 'submitSurvey', 'getResponses', 'viewResponse', 'getSingleResponse', 'viewSurvey', 'createGeom', 'createMedia'
     ];
     
     private static $url_handlers = [
@@ -21,7 +21,8 @@ class SurveyApiController extends ApiController {
         'submit' => 'submitSurvey',
         'view' => 'viewSurvey',
         'responses' => 'getResponses',
-        'response/$ResponseID' => 'viewResponse',
+        'response/$ResponseID/view' => 'viewResponse',
+        'response/$ResponseID' => 'getSingleResponse',
         'geo' => 'createGeom',
         'media' => 'createMedia'
     ];
@@ -332,7 +333,7 @@ class SurveyApiController extends ApiController {
     }
     
     /**
-     * @api {get} api/survey/:id/response/:id View Response
+     * @api {get} api/survey/:id/response/:id/view View Response
      * @apiName SurveyResponseView
      * @apiGroup Survey
      *
@@ -370,6 +371,33 @@ class SurveyApiController extends ApiController {
             "title" => "$name's Response",
             "body" => $rendered->getValue()
         ]);
+    }
+    
+    /**
+     * @api {get} api/survey/:id/response/:id Get Response
+     * @apiName SurveyResponseGet
+     * @apiGroup Survey
+     *
+     * @apiDescription Gets a single SurveyResponse as json
+     *
+     * @apiSuccessExample {json} 200 OK
+     * {
+     * }
+     *
+     * @apiUse SurveyNotFound
+     */
+    public function getSingleResponse() {
+        
+        $response = SurveyResponse::get()->filter([
+            'ID' => $this->request->param('ResponseID'),
+            'SurveyID' => $this->Survey->ID,
+        ])->first();
+        
+        if ($response == null) {
+            return $this->jsonResponse(["Response not found"], 404);
+        }
+        
+        return $this->jsonResponse($response->toJson());
     }
     
     /**

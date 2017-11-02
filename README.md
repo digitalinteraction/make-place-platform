@@ -46,7 +46,7 @@ bash scripts/dev-runtime
 ```bash
 
 # Deploy to openlab.ncl.ac.uk/gitlab
-scripts/build-img 3.1.2
+scripts/build-img 3.1.4
 
 ```
 

@@ -447,7 +447,7 @@ class SurveyApiControllerTest extends FunctionalTest {
     /* Test viewing responses */
     public function testViewResponseRoute() {
         
-        $res = $this->get("{$this->apiBase}/1/response/1");
+        $res = $this->get("{$this->apiBase}/1/response/1/view");
         
         $this->assertEquals(200, $res->getStatusCode());
     }
@@ -463,6 +463,34 @@ class SurveyApiControllerTest extends FunctionalTest {
         ];
         
         $this->assertNotNull($expected, array_keys($json));
+    }
+    
+    
+    
+    /* Test fetching response */
+    public function testGetResponseRoute() {
+        
+        $res = $this->get("{$this->apiBase}/1/response/1");
+        
+        $this->assertEquals(200, $res->getStatusCode());
+    }
+    
+    public function testGetResponse() {
+        
+        $res = $this->get("{$this->apiBase}/1/response/1");
+        $json = json_decode($res->getBody(), true);
+        
+        $expected = [
+            "id" => 1,
+            "surveyId" => 1,
+            "memberId" => 1,
+            "values" => [
+                "question-a" => [ "name" => "Question A", "value" => "abc" ],
+                "question-b" => [ "name" => "Question B", "value" => "123" ],
+            ]
+        ];
+        
+        $this->assertArraySubset($expected, $json);
     }
     
     

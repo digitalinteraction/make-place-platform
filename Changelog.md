@@ -1,6 +1,13 @@
 # Changelog
 The versions of Make Place and what features, bugs and tweaks were made for each.
 
+## 3.1.4
+- Fixed bug with highlighted geometries on the map
+  - Moved `api/survey/:id/response/:id` to `api/survey/:id/response/:id/view`
+  - Added `api/survey/:id/response/:id` to return the response json
+
+## 3.1.3
+- Improved map performance, `api/survey/:id/responses` accepts `?pluck=a,b,c` to only retrieve specific responses
 
 ## 3.1.2
 - Hidden question's responses won't get rendered

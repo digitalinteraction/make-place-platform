@@ -121,30 +121,13 @@ export default {
     },
     responseClicked(response, e) {
       
-      let highlight = null
-      
-      if (this.options.highlightQuestion && response.values[this.options.highlightQuestion]) {
-        let value = response.values[this.options.highlightQuestion].value
-        
-        if (value.type === 'LINESTRING' && value.geom) {
-          
-          let points = value.geom.map(({x, y}) => { return [x, y] })
-          
-          highlight = L.polyline(points, {
-            color: '#3886c9',
-            weight: 5
-          })
-        }
-      }
-      
-      this.$store.commit('setHighlight', highlight)
-      
       // The detail to render our form
       let detail = {
         type: 'SurveyResponseDetail',
         options: {
           response: response,
-          config: this.options
+          config: this.options,
+          highlight: this.options.highlightQuestion
         }
       }
       
