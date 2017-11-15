@@ -68,6 +68,9 @@ class GeoQuestion extends Question {
             if (!isset($value['points']) || !is_array($value['points'])) {
                 $errors[] = "Please provide 'points' for '{$this->Handle}' as an array";
             }
+            else if (count($value['points']) < 2) {
+                $errors[] = "A LINESTRING needs at least 2 points";
+            }
             else {
                 
                 // Make sure each elem has an x & y

@@ -122,7 +122,8 @@ class GeoQuestionTest extends SapphireTest {
         
         $errors = $this->question->validateValue([
             "points" => [
-                [ "x" => 1, "y" => 2 ]
+                [ "x" => 1, "y" => 2 ],
+                [ "x" => 3, "y" => 4 ]
             ]
         ]);
         
@@ -155,6 +156,19 @@ class GeoQuestionTest extends SapphireTest {
         
         $errors = $this->question->validateValue([
             "points" => [ "Not a point" ]
+        ]);
+        
+        $this->assertEquals(1, count($errors));
+    }
+    
+    public function testValidateLinestringMinPoints() {
+        
+        $this->question->GeoType = "LINESTRING";
+        
+        $errors = $this->question->validateValue([
+            "points" => [
+                [ "x" => 50, "y" => 2 ]
+            ]
         ]);
         
         $this->assertEquals(1, count($errors));
