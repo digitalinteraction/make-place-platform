@@ -27,6 +27,13 @@ silverstripe.log
 .sass-cache
 
 
+# Compiled Assets
+/public/css/*.css
+/public/css/*.css.map
+/public/js/*.js
+/public/js/*.js.map
+
+
 # Ignore environment files
 *.env
 
