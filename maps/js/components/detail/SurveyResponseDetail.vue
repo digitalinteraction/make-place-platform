@@ -9,6 +9,7 @@
       
       <!-- Voting -->
       <vote-section
+        v-if="config.votingEnabled"
         :data-id="response.id"
         :perms="config.permissions"
         :can-view="config.canViewVotes"
@@ -19,6 +20,7 @@
       
       <!-- Comments -->
       <comment-section
+        v-if="config.commentingEnabled"
         :data-id="response.id"
         :perms="config.permissions"
         :can-view="config.canViewComments"

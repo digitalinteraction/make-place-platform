@@ -16,9 +16,9 @@ class SurveyMapComponent extends MapComponent {
         'ResponseMinimizable' => 'Boolean',
         'ResponseSharable' => 'Boolean',
         
-        // 'VotingEnabled' => 'Boolean',
+        'VotingEnabled' => 'Boolean',
         'VoteTitle' => 'Varchar(255)',
-        // 'CommentingEnabled' => 'Boolean',
+        'CommentingEnabled' => 'Boolean',
         'CommentTitle' => 'Varchar(255)',
         'CommentPlaceholder' => 'Varchar(255)',
         'CommentAction' => 'Varchar(255)',
@@ -113,6 +113,7 @@ class SurveyMapComponent extends MapComponent {
             $fields->addFieldsToTab('Root.Survey.Comments', [
                 
                 HeaderField::create('CommentInfoHeader', 'Customisation', 3),
+                CheckboxField::create('CommentingEnabled', 'Allow people to comment'),
                 TextField::create('CommentTitle', 'Commenting Title'),
                 TextField::create('CommentPlaceholder', 'Comment Placeholder'),
                 TextField::create('CommentAction', 'Commenting Action')
@@ -129,7 +130,7 @@ class SurveyMapComponent extends MapComponent {
             
             $fields->addFieldsToTab('Root.Survey.Voting', [
                 HeaderField::create('VoteInfoHeader', 'Customisation', 3),
-                // CheckboxField::create('VotingEnabled', 'Allow Voting'),
+                CheckboxField::create('VotingEnabled', 'Allow people to Vote'),
                 TextField::create('VoteTitle', 'Voting Title'),
                 
                 HeaderField::create('VotingPermsHeader', 'Permissions', 3),
@@ -174,6 +175,8 @@ class SurveyMapComponent extends MapComponent {
             'responseShareable' => $this->ResponseShareable,
             
             'voteTitle' => $this->VoteTitle,
+            'votingEnabled' => $this->VotingEnabled,
+            'commentingEnabled' => $this->CommentingEnabled,
             'commentTitle' => $this->CommentTitle,
             'commentAction' => $this->CommentAction,
             'commentPlaceholder' => $this->CommentPlaceholder,
