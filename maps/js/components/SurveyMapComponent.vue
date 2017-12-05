@@ -6,8 +6,6 @@
 import axios from 'axios'
 import L from 'leaflet'
 
-import SurveyResponseDetail from './detail/SurveyResponseDetail.vue'
-
 export default {
   props: [ 'options' ],
   mounted() {

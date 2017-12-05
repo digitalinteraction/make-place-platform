@@ -32,7 +32,7 @@ module.exports = merge(baseConfig, {
       chunks: ['vendor']
     }),
     new webpack.SourceMapDevToolPlugin({
-      filename: '[name].js.map',
+      filename: 'js/[name].js.map',
       exclude: [/vendor/, /manifest/]
     })
   ]

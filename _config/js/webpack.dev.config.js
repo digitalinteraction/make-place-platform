@@ -3,6 +3,8 @@ const merge = require('webpack-merge')
 const webpack = require('webpack')
 const path = require('path')
 
+const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
+
 module.exports = merge(baseConfig, {
   watch: true,
   devtool: '#cheap-module-eval-source-map',
@@ -10,6 +12,8 @@ module.exports = merge(baseConfig, {
     new webpack.DefinePlugin({
       'process.env': { NODE_ENV: '"development"' }
     }),
+    new webpack.NoEmitOnErrorsPlugin(),
+    new FriendlyErrorsPlugin(),
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
       minChunks: function(module, count) {

@@ -1,4 +1,3 @@
-import axios from 'axios'
 import Vue from 'vue'
 import VueX from 'vuex'
 
@@ -46,7 +45,8 @@ Vue.component('profile-image', ProfileImage)
 
 let store = new VueX.Store(storeConfig)
 
-let app = new Vue({
+/* eslint-disable no-new */
+new Vue({
   el: '#map-app',
   store: store,
   template: '<MapsApp/>',

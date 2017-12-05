@@ -7,7 +7,7 @@ module.exports = {
     ecmaVersion: 2017
   },
   env: {
-    browser: true,
+    browser: true
   },
   extends: 'standard',
   // required to lint *.vue files
@@ -26,12 +26,15 @@ module.exports = {
     'padded-blocks': 'off',
     'brace-style': ["error", "stroustrup", { "allowSingleLine": true } ],
     'no-multiple-empty-lines': 'off',
-    'no-unused-vars': 'off',
-    'space-before-function-paren': ['error', 'never']
+    'no-unused-vars': 'warn',
+    'space-before-function-paren': ['error', {
+      'anonymous': 'never',
+      'named': 'never',
+      'asyncArrow': 'always'
+    }],
   },
   
-  // Custom globals
+  // Custom globals ... don't use globals
   "globals": {
-    // "grecaptcha": true,
   }
 }

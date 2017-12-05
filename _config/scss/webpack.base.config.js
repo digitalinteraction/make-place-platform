@@ -2,7 +2,7 @@ const path = require('path')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 
 const extractSass = new ExtractTextPlugin({
-  filename: '[name].css'
+  filename: 'css/[name].css'
 })
 
 function resolve(dir) { return path.join(__dirname, '..', '..', dir) }
@@ -13,11 +13,12 @@ let cssOptions = {
   sourceMap: true
 }
 
-let scssOptions = Object.assign({
+let scssOptions = {
   data: '@import "_config/scss/vars"; @import "_config/scss/common";',
   outputStyle: 'compact',
+  includePaths: [ 'node_modules' ],
   sourceMap: true
-})
+}
 
 
 module.exports = {
@@ -31,8 +32,8 @@ module.exports = {
     ]
   },
   output: {
-    filename: '[name].css',
-    path: resolve('public/css')
+    filename: 'css/[name].css',
+    path: resolve('public')
   },
   devtool: '#source-map',
   module: {

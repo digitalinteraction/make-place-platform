@@ -37,8 +37,8 @@ import DetailMapState from './state/DetailMapState.vue'
 import PickingMapState from './state/PickingMapState.vue'
 
 import L from 'leaflet'
-import LG from './libs/leaflet-google'
-import LC from './libs/leaflet-markercluster.min'
+import './libs/leaflet-google'
+import './libs/leaflet-markercluster.min'
 
 
 export default {

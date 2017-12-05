@@ -44,7 +44,6 @@
 
 
 <script>
-import _ from 'lodash'
 import ContentDetail from '../components/detail/ContentDetail.vue'
 import SurveyFormDetail from '../components/detail/SurveyFormDetail.vue'
 import SurveyResponseDetail from '../components/detail/SurveyResponseDetail.vue'

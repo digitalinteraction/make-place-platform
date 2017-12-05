@@ -1,29 +1,20 @@
 const webpack = require('webpack')
-const ora = require("ora")
-const chalk = require("chalk")
-const moment = require("moment")
+const chalk = require('chalk')
 
-process.stdout.write('\033c');
+process.stdout.write('\x1Bc')
 
-var spinner = ora("Spinning up")
-spinner.start()
+console.log('Spinning up ...')
 
 let config = [
   require('./js/webpack.dev.config'),
   require('./scss/webpack.base.config')
 ]
 
-let watching = webpack(config, (err, result) => {
+webpack(config, (err, result) => {
   
-  spinner.stop();
+  process.stdout.write('\x1Bc')
   
-  process.stdout.write('\033c');
-  
-  if (err) throw err;
-  
-  
-  let now = moment().format('MMMM Do YYYY, h:mm:ss a')
-  console.log(chalk.bgGreen(chalk.black(' DONE ')) + ` ${now}\n`)
+  if (err) throw err
   
   result.stats.forEach(stat => {
     process.stdout.write(stat.toString({

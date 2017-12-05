@@ -1,4 +1,5 @@
 const path = require('path')
+const config = require('../config')
 const vueConfig = require('./vue-loader.config')
 
 function resolve(dir) { return path.join(__dirname, '..', '..', dir) }
@@ -6,16 +7,20 @@ function resolve(dir) { return path.join(__dirname, '..', '..', dir) }
 
 module.exports = {
   entry: {
-    maps: resolve('maps/js/maps-main.js'),
-    auth: resolve('auth/js/auth-main.js')
+    maps: [ 'babel-polyfill', resolve('maps/js/maps-main.js') ],
+    auth: [ 'babel-polyfill', resolve('auth/js/auth-main.js') ]
   },
   output: {
-    filename: '[name].js',
-    path: resolve('public/js')
+    path: config.build.assetsRoot,
+    filename: 'js/[name].js',
+    publicPath: process.env.NODE_ENV === 'production'
+      ? config.build.assetsPublicPath
+      : config.dev.assetsPublicPath
   },
   resolve: {
+    extensions: ['.js', '.vue', '.json'],
     alias: {
-      'vue$': 'vue/dist/vue.esm.js',
+      'vue$': 'vue/dist/vue.esm.js'
     }
   },
   module: {
@@ -25,7 +30,6 @@ module.exports = {
         loader: 'eslint-loader',
         exclude: /node_modules/,
         enforce: 'pre',
-        // include: [resolve('src')],
         options: {
           formatter: require('eslint-friendly-formatter')
         }
