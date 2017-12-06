@@ -10,6 +10,7 @@
       <!-- Voting -->
       <vote-section
         v-if="config.votingEnabled"
+        :type="config.voteType"
         :data-id="response.id"
         :perms="config.permissions"
         :can-view="config.canViewVotes"

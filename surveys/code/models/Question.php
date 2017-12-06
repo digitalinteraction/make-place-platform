@@ -100,6 +100,7 @@ class Question extends DataObject {
                 ->setDescription('A longer description of the question (optional)'),
             DropdownField::create('ClassName', 'Type', $this->availableTypes())
                 ->setDescription($classMessage)
+                ->setEmptyString('Please select')
         ]);
         
         

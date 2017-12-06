@@ -29,14 +29,16 @@
 
 <script>
 import axios from 'axios'
-import SurveyMapComponent from './components/SurveyMapComponent.vue'
-import ContentMapComponent from './components/ContentMapComponent.vue'
+import SurveyMapComponent from './components/SurveyMapComponent'
+import ContentMapComponent from './components/ContentMapComponent'
+import HeatMapComponent from './components/HeatMapComponent'
 
-import DefaultMapState from './state/DefaultMapState.vue'
-import DetailMapState from './state/DetailMapState.vue'
-import PickingMapState from './state/PickingMapState.vue'
+import DefaultMapState from './state/DefaultMapState'
+import DetailMapState from './state/DetailMapState'
+import PickingMapState from './state/PickingMapState'
 
 import L from 'leaflet'
+import 'leaflet.heat'
 import './libs/leaflet-google'
 import './libs/leaflet-markercluster.min'
 
@@ -45,6 +47,7 @@ export default {
   components: {
     SurveyMapComponent,
     ContentMapComponent,
+    HeatMapComponent,
     DefaultMapState,
     DetailMapState,
     PickingMapState
@@ -53,7 +56,8 @@ export default {
     return {
       isMobile: false,
       page: null,
-      componentConfig: null
+      componentConfig: null,
+      components: []
     }
   },
   computed: {

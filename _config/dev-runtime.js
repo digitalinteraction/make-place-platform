@@ -1,8 +1,6 @@
 const webpack = require('webpack')
 const chalk = require('chalk')
 
-process.stdout.write('\x1Bc')
-
 console.log('Spinning up ...')
 
 let config = [

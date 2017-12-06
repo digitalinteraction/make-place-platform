@@ -18,6 +18,7 @@ class SurveyMapComponent extends MapComponent {
         
         'VotingEnabled' => 'Boolean',
         'VoteTitle' => 'Varchar(255)',
+        'VoteType' => 'Varchar(255)',
         'CommentingEnabled' => 'Boolean',
         'CommentTitle' => 'Varchar(255)',
         'CommentPlaceholder' => 'Varchar(255)',
@@ -50,6 +51,7 @@ class SurveyMapComponent extends MapComponent {
         'ResponseSharable' => false,
         
         'VoteTitle' => 'What do you think?',
+        'VoteType' => 'BASIC',
         'CommentTitle' => 'Comments',
         'CommentAction' => 'Send'
     ];
@@ -62,9 +64,10 @@ class SurveyMapComponent extends MapComponent {
         
         
         $fields->addFieldsToTab('Root.Main', [
-          HeaderField::create("SurveyCompHeader", "Survey Component", 2),
+            HeaderField::create("SurveyCompHeader", "Survey Component", 2),
             DropdownField::create( 'SurveyID', 'Survey', $surveyList)
                 ->setDescription("The survey to add to the map")
+                ->setEmptyString('Not Selected')
         ]);
         
         
@@ -76,7 +79,6 @@ class SurveyMapComponent extends MapComponent {
                 ->filter('ClassName', 'GeoQuestion')
                 ->map('Handle', 'Name')
                 ->toArray();
-            $geoQuestions[''] = 'None';
             
             
             // Get permission maps
@@ -89,9 +91,11 @@ class SurveyMapComponent extends MapComponent {
             // Add geometry question fields
             $fields->addFieldsToTab('Root.Survey.Geom', [
                 DropdownField::create("PositionQuestion", 'Position Question', $geoQuestions)
-                    ->setDescription("The question responsible for the survey's location"),
+                    ->setDescription("The question responsible for the survey's location")
+                    ->setEmptyString('Not Selected'),
                 DropdownField::create("HighlightQuestion", 'Highlight Question', $geoQuestions)
-                    ->setDescription("The question to display extra geometries when selected"),
+                    ->setDescription("The question to display extra geometries when selected")
+                    ->setEmptyString('Not Selected'),
             ]);
             
             // Add appearance fields
@@ -132,6 +136,7 @@ class SurveyMapComponent extends MapComponent {
                 HeaderField::create('VoteInfoHeader', 'Customisation', 3),
                 CheckboxField::create('VotingEnabled', 'Allow people to Vote'),
                 TextField::create('VoteTitle', 'Voting Title'),
+                DropdownField::create('VoteType', 'VoteType', Votable::$voting_types),
                 
                 HeaderField::create('VotingPermsHeader', 'Permissions', 3),
                 DropdownField::create('VotingViewPerms', 'Who can view votes', $viewPerms),
@@ -153,46 +158,26 @@ class SurveyMapComponent extends MapComponent {
     }
     
     
-    public function configData() {
+    public function customiseJson($json) {
         
-        // Start with the base config
-        $data = parent::configData();
+        $json = parent::customiseJson($json);
         
+        // Grab our related survey
         $survey = $this->Survey();
-        
-        
-        // Add the survey id to the config
-        $data += [
-            'surveyID' => $survey->ID,
-            'actionColour' => $this->ActionColour,
-            'actionMessage' => $this->ActionMessage,
-            'pinColour' => $this->PinColour,
-            'positionQuestion' => $this->PositionQuestion,
-            
-            'responseTitle' => $this->ResponseTitle,
-            'responseTitle' => $this->ResponseTitle,
-            'responseMinimizable' => $this->ResponseMinimizable,
-            'responseShareable' => $this->ResponseShareable,
-            
-            'voteTitle' => $this->VoteTitle,
-            'votingEnabled' => $this->VotingEnabled,
-            'commentingEnabled' => $this->CommentingEnabled,
-            'commentTitle' => $this->CommentTitle,
-            'commentAction' => $this->CommentAction,
-            'commentPlaceholder' => $this->CommentPlaceholder,
-        ];
-        
-        if ($this->HighlightQuestion != null) {
-            $data['highlightQuestion'] = $this->HighlightQuestion;
-        }
         
         
         // Get the current member and check they're verified
         $member = Member::currentUser();
         $verified = $member ? $member->getHasVerified() : false;
         
+        // Unset values that we format
+        unset($json['votingViewPerms']);
+        unset($json['votingMakePerms']);
+        unset($json['commentViewPerms']);
+        unset($json['commentMakePerms']);
+        
         // Add the permissions
-        $data["permissions"] = [
+        $json["permissions"] = [
             "response" => [
                 "view" => $survey->ResponseViewPerms,
                 "make" => $survey->ResponseMakePerms
@@ -208,17 +193,17 @@ class SurveyMapComponent extends MapComponent {
         ];
         
         // Add processed permissions
-        $data["canView"] = $this->checkPerm($survey->ResponseViewPerms, $survey->ResponseViewGroups());
-        $data["canSubmit"] = $this->checkPerm($survey->ResponseMakePerms, $survey->ResponseMakeGroups());
+        $json["canView"] = $this->checkPerm($survey->ResponseViewPerms, $survey->ResponseViewGroups());
+        $json["canSubmit"] = $this->checkPerm($survey->ResponseMakePerms, $survey->ResponseMakeGroups());
         
-        $data["canViewVotes"] = $this->checkPerm($this->VotingViewPerms, $this->VotingViewGroups());
-        $data["canMakeVotes"] = $this->checkPerm($this->VotingMakePerms, $this->VotingMakeGroups());
+        $json["canViewVotes"] = $this->checkPerm($this->VotingViewPerms, $this->VotingViewGroups());
+        $json["canMakeVotes"] = $this->checkPerm($this->VotingMakePerms, $this->VotingMakeGroups());
         
-        $data["canViewComments"] = $this->checkPerm($this->CommentViewPerms, $this->CommentViewGroups());
-        $data["canMakeComments"] = $this->checkPerm($this->CommentMakePerms, $this->CommentMakeGroups());
+        $json["canViewComments"] = $this->checkPerm($this->CommentViewPerms, $this->CommentViewGroups());
+        $json["canMakeComments"] = $this->checkPerm($this->CommentMakePerms, $this->CommentMakeGroups());
         
         
-        return $data;
+        return $json;
     }
     
 }

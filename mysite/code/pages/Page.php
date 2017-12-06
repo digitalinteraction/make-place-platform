@@ -16,6 +16,12 @@ class Page extends SiteTree {
     /** Whether the page should show the sidebar option in the CMS (set in subclasses) */
     public static $allows_sidebar = true;
     
+    /** The fields to include in json serialization */
+    private static $included_fields = [
+        'Title', 'URLSegment', 'MenuTitle', 'Content'
+    ];
+
+    
     
     
     /** Whether the rendered page should fill the screen */

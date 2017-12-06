@@ -68,6 +68,10 @@ class JsonSerializableDataExtension extends DataExtension {
             );
         }
         
+        $mappings = [
+            'URLSegment' => 'urlSegment'
+        ];
+        
         // Start with the base properties
         $json = [
             'id' => $this->owner->ID,
@@ -77,7 +81,12 @@ class JsonSerializableDataExtension extends DataExtension {
         
         // Add each value using our keys
         foreach($keys as $field) {
-            $json[lcfirst($field)] = $this->owner->$field;
+            if (isset($mappings[$field])) {
+                $json[$mappings[$field]] = $this->owner->$field;
+            }
+            else {
+                $json[lcfirst($field)] = $this->owner->$field;
+            }
         }
         
         // If the owner implements 'customiseJson', call that to let them customise the json

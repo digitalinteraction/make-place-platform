@@ -6,6 +6,8 @@
 import axios from 'axios'
 import L from 'leaflet'
 
+import EventBus from '../buses/mapBus'
+
 export default {
   props: [ 'options' ],
   mounted() {
@@ -74,7 +76,9 @@ export default {
     },
     responseCreated(response) {
       
-      if (this.options.positionQuestion) {
+      EventBus.$emit('responseCreated', response)
+       
+      if (this.options.positionQuestion && this.options.canView) {
         this.addResponsePin(response, this.options.positionQuestion)
       }
       this.$store.commit('resetMapState')

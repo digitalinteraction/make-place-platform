@@ -24,17 +24,4 @@ class ContentMapComponent extends MapComponent {
             HtmlEditorField::create('PopupContent', 'Content')
         ]);
     }
-  
-    public function configData() {
-        
-        $data = parent::configData();
-        
-        $data += [
-            'popupTitle' => $this->PopupTitle,
-            'popupContent' => $this->PopupContent,
-            'actionColour' => $this->ActionColour
-        ];
-        
-        return $data;
-    }
 }

@@ -20,6 +20,11 @@ class MapPage extends Page {
         'StartZoom' => 15
     ];
     
+    /** The fields to include in json serialization */
+    private static $included_fields = [
+        'StartLat', 'StartLng', 'StartZoom', 'Tileset'
+    ];
+    
     public static $page_fills_screen = false;
     
     
@@ -63,6 +68,23 @@ class MapPage extends Page {
     
         return $fields;
     }
+    
+    
+    
+    public function customiseJson($json) {
+        
+        if (isset($json['startLat'])) {
+            $json['startLat'] = (float)$json['startLat'];
+        }
+        
+        if (isset($json['startLng'])) {
+            $json['startLng'] = (float)$json['startLng'];
+        }
+        
+        $json['googleMapsKey'] = SiteConfig::current_site_config()->MapApiKey;
+        
+        return $json;
+    }
 }
 
 
@@ -83,20 +105,13 @@ class MapPage_Controller extends Page_Controller {
         
         // Add our base values
         $json = [
-            'page' => [
-                'title' => $this->Title,
-                'startLat' => $this->StartLat,
-                'startLng' => $this->StartLng,
-                'startZoom' => $this->StartZoom,
-                'tileset' => $this->Tileset,
-                'googleMapsKey' => $config->MapApiKey
-            ],
+            'page' => $this->jsonSerialize(),
             'components' => []
         ];
         
         // Add values for each component
         foreach ($this->MapComponents() as $component) {
-            $json['components'][] = $component->configData();
+            $json['components'][] = $component->jsonSerialize();
         }
         
         

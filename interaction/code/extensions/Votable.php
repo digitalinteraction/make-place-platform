@@ -10,13 +10,17 @@ class Votable extends DataExtension {
     /**
      * The different ways which things can be voted on
      *
-     * BASIC - An up or down vote
+     * BASIC - An agree or disagree
+     * ARROW - An up or down vote
      * EMOJI - An emoji reaction
      *
      * @return [type] [description]
      */
-    private static $voting_types = [
-        "BASIC", "EMOJI"
+    public static $voting_types = [
+        "BASIC" => "Agree/Disagree",
+        "ARROW" => "Up/Down Arrows",
+        "EMOJI" => "Emoji",
+        // "HEART" => "Favourite"
     ];
     
     

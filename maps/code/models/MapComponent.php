@@ -18,6 +18,9 @@ class MapComponent extends DataObject {
         'Page.Title' => 'Page'
     ];
     
+    private static $excluded_fields = [ 'none' ];
+    
+    
     /** Used by silverstripe to generate fields to edit the component */
     public function getCMSFields() {
         
@@ -77,9 +80,8 @@ class MapComponent extends DataObject {
     }
     
     /** The base config data to convert to json, subclassed add their own properties */
-    public function configData() {
-        return [
-            'type' => $this->ClassName
-        ];
+    public function customiseJson($json) {
+        $json['type'] = $this->ClassName;
+        return $json;
     }
 }

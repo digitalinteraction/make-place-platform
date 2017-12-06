@@ -29,9 +29,14 @@
     </div>
     
     <p class="summary" v-if="canView">
-      <emoji-summary v-for="(v, i) in voteList" :key="i" :emoji="emojiSet[v.value]" :count="v.count">
-      </emoji-summary>
-      <span v-if="voteList.length === 0"> No votes yet, be the first! </span>
+      <span v-if="type ==='ARROW'">
+        Total score: {{voteMap[1] - voteMap[-1]}}
+      </span>
+      <span v-else>
+        <emoji-summary v-for="(v, i) in voteList" :key="i" :emoji="iconSet[v.value]" :count="v.count">
+        </emoji-summary>
+        <span v-if="voteList.length === 0"> No votes yet, be the first! </span>
+      </span>
     </p>
     
   </div>
@@ -40,28 +45,45 @@
 <script>
 import axios from 'axios'
 
+const IconSets = {
+  BASIC: [
+    { id: -1, icon: '/public/images/emoji/disagree-o.svg', name: 'Disagree', masked: true },
+    { id: 1, icon: '/public/images/emoji/agree-o.svg', name: 'Agree', masked: true }
+  ],
+  ARROW: [
+    { id: -1, icon: '/public/images/emoji/down-o.svg', name: 'Downvote', masked: true },
+    { id: 1, icon: '/public/images/emoji/up-o.svg', name: 'Upvote', masked: true }
+  ],
+  EMOJI: [
+    { id: 1, icon: '/public/images/emoji/agree-o.svg', name: 'Agree', masked: true },
+    { id: 2, icon: '/public/images/emoji/disagree-o.svg', name: 'Disgree', masked: true },
+    { id: 3, icon: '/public/images/emoji/heart.svg', name: 'Love' },
+    { id: 4, icon: '/public/images/emoji/wow.svg', name: 'Wow' },
+    { id: 5, icon: '/public/images/emoji/happy.svg', name: 'Happy' },
+    { id: 6, icon: '/public/images/emoji/sad.svg', name: 'Sad' }
+  ],
+  HEART: [
+    { id: 1, icon: '/public/images/emoji/heart.svg', name: 'Favourite' }
+  ]
+}
+
 export default {
-  props: [ 'dataId', 'dataType', 'perms', 'canView', 'canMake' ],
+  props: [ 'dataId', 'type', 'dataType', 'perms', 'canView', 'canMake' ],
   data() {
     return {
       chosenEmoji: null,
       voteMap: {},
       isVoting: false,
-      emojiSet: {
-        1: { id: 1, icon: '/public/images/emoji/up-o.svg', name: 'Agree', masked: true },
-        2: { id: 2, icon: '/public/images/emoji/down-o.svg', name: 'Disgree', masked: true },
-        3: { id: 3, icon: '/public/images/emoji/heart.svg', name: 'Love' },
-        4: { id: 4, icon: '/public/images/emoji/wow.svg', name: 'Wow' },
-        5: { id: 5, icon: '/public/images/emoji/happy.svg', name: 'Happy' },
-        6: { id: 6, icon: '/public/images/emoji/sad.svg', name: 'Sad' }
-      }
+      iconSet: IconSets[this.type || 'BASIC'].reduce((map, icon) => {
+        return Object.assign(map, { [icon.id]: icon })
+      }, {})
     }
   },
   computed: {
     voteApi() { return `${this.$config.api}/api/vote/on/${this.dataType}/${this.dataId}` },
     emojiList() {
-      return Object.keys(this.emojiSet).map(id => {
-        return this.emojiSet[id]
+      return Object.keys(this.iconSet).map(id => {
+        return this.iconSet[id]
       })
     },
     voteList() {
@@ -79,7 +101,7 @@ export default {
   methods: {
     choseEmoji(id, event) {
       
-      let chosen = this.emojiSet[id]
+      let chosen = this.iconSet[id]
       
       if (chosen) {
         this.performVote(chosen)
