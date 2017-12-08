@@ -61,6 +61,7 @@ class SurveyMapComponentTest extends SapphireTest {
         $this->assertNotNull($fields->fieldByName('Root.Survey.Appearance.ActionColour'));
         $this->assertNotNull($fields->fieldByName('Root.Survey.Appearance.PinColour'));
         
+        $this->assertNotNull($fields->fieldByName('Root.Survey.Appearance.RenderResponses'));
         $this->assertNotNull($fields->fieldByName('Root.Survey.Appearance.ResponseTitle'));
         $this->assertNotNull($fields->fieldByName('Root.Survey.Appearance.ResponseMinimizable'));
         $this->assertNotNull($fields->fieldByName('Root.Survey.Appearance.ResponseShareable'));

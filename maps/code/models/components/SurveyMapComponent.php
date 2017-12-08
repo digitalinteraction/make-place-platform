@@ -12,6 +12,7 @@ class SurveyMapComponent extends MapComponent {
         'PositionQuestion' => 'Varchar(255)',
         'HighlightQuestion' => 'Varchar(255)',
         
+        'RenderResponses' => 'Boolean',
         'ResponseTitle' => 'Varchar(255)',
         'ResponseMinimizable' => 'Boolean',
         'ResponseShareable' => 'Boolean',
@@ -100,17 +101,21 @@ class SurveyMapComponent extends MapComponent {
             
             // Add appearance fields
             $fields->addFieldsToTab('Root.Survey.Appearance', [
+                HeaderField::create('ResponseTitle', 4),
+                CheckboxField::create('RenderResponses', 'Show responses?'),
+                TextField::create('ResponseTitle', 'Response Title')
+                    ->setDescription("The title displayed when viewing a response to the survey"),
+                CheckboxField::create('ResponseMinimizable', 'If a response can be minimized'),
+                CheckboxField::create('ResponseShareable', 'If a response can be shared'),
+                
+                
+                HeaderField::create('Pins', 4),
                 TextField::create('ActionMessage', 'Action')
                     ->setDescription("The action to add a response from the map"),
                 DropdownField::create('ActionColour', 'Action Colour', $actionColours)
                     ->setDescription("The colour of the action on the map"),
                 DropdownField::create('PinColour', 'Pin Colour', $pinColours)
-                    ->setDescription("The colour of the response pins"),
-                
-                TextField::create('ResponseTitle', 'Response Title')
-                    ->setDescription("The title displayed when viewing a response to the survey"),
-                CheckboxField::create('ResponseMinimizable', 'If a response can be minimized'),
-                CheckboxField::create('ResponseShareable', 'If a response can be shared')
+                    ->setDescription("The colour of the response pins")
             ]);
             
             // Add interaction fields

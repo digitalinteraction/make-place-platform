@@ -78,7 +78,7 @@ export default {
       
       EventBus.$emit('responseCreated', response)
        
-      if (this.options.positionQuestion && this.options.canView) {
+      if (this.options.renderResponses && this.options.positionQuestion && this.options.canView) {
         this.addResponsePin(response, this.options.positionQuestion)
       }
       this.$store.commit('resetMapState')
@@ -115,11 +115,13 @@ export default {
       let res = await axios.get(`${this.surveyApi}/responses?pluck=${posKey}`)
       
       // Loop responses and create pins
-      res.data.forEach((response) => {
-        
-        // Add a pin for it
-        this.addResponsePin(response, posKey)
-      })
+      if (this.options.renderResponses) {
+        res.data.forEach((response) => {
+          
+          // Add a pin for it
+          this.addResponsePin(response, posKey)
+        })
+      }
     },
     responseClicked(response, e) {
       
