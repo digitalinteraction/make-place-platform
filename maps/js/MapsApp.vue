@@ -116,9 +116,6 @@ export default {
         // Store on the state
         this.$store.commit('setMap', map)
         this.$store.commit('setClusterer', clusterer)
-      
-      
-        console.log('config', res.data)
       }
       catch (e) { console.log(e) }
     }

@@ -1,4 +1,10 @@
 node_modules
+.git
+.gitlab-ci.yml
+base.Dockerfile
+Dockerfile
+Changelog.md
+README.md
 
 .sass-cache
 assets

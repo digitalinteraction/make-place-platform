@@ -5,27 +5,20 @@
 
 
 # Start with a php-fpm-nginx-composer image
-FROM openlab.ncl.ac.uk:4567/rob/composer-image:1.0.4
+FROM openlab.ncl.ac.uk:4567/rob/composer-image:1.1.0
 
-# Expose port 80 to serve html on
-EXPOSE 80
-
-# Add Sqlite3 & node packages
-RUN curl -sL https://deb.nodesource.com/setup_8.x | bash - \
-  && apt-get -y update \
-  && apt-get -y upgrade -y \
-  && DEBIAN_FRONTEND=noninteractive apt-get -y install sqlite3 php5-sqlite nodejs \
+# Setup composer & node, then add some www-data owned direcotires
+RUN curl -sL https://deb.nodesource.com/setup_8.x | bash - > /dev/null \
+  && apt-get -qq -y update \
+  && apt-get -qq -y upgrade -y \
+  && DEBIAN_FRONTEND=noninteractive apt-get -qq -y install sqlite3 php5-sqlite nodejs \
   && rm -rf /var/lib/apt/lists/* \
   && mkdir -p /app/silverstripe-cache \
   && mkdir -p /app/assets/surveymedia \
   && mkdir -p /backup/db \
   && touch /app/silverstripe.log \
-  && chown www-data /app/silverstripe.log \
-  && chown www-data /app/assets \
-  && chown www-data /app/assets/surveymedia \
-  && chown www-data /app/silverstripe-cache \
-  && chown www-data /backup \
-  && chown www-data /backup/db
+  && chown -R www-data /app/ \
+  && chown -R www-data /backup
 
 # Add package configuration files
 COPY ["package.json", "composer.json", "/app/"]

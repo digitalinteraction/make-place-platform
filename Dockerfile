@@ -7,30 +7,14 @@
 FROM openlab.ncl.ac.uk:4567/make-place/web:base-2.3.1
 
 
-# Add config files
-COPY _config/default.nginx /etc/nginx/sites-available/default
-COPY [".eslintrc.js", ".babelrc", "/app/"]
+# Add files to the build
+COPY . /app/
 
 
 # Add composer & cronjobs files
-COPY _config/ /app/_config
 RUN mv _config/bootstrap.sh bootstrap.sh \
-  && mv _config/cronjobs cronjobs \
   && mv _config/phpunit.xml phpunit.xml \
-  && crontab -u root cronjobs && rm cronjobs
-
-
-# Add my code to the build
-COPY scripts /app/scripts
-COPY docs /app/docs
-COPY mysite /app/mysite
-COPY themes /app/themes
-COPY surveys /app/surveys
-COPY maps /app/maps
-COPY auth /app/auth
-COPY public /app/public
-COPY interaction /app/interaction
-
-
-# Build javascript & docs
-RUN scripts/build-js && scripts/build-docs > /dev/null
+  && mv _config/default.nginx /etc/nginx/sites-available/default \
+  && crontab -u root _config/cronjobs \
+  && scripts/build-js > /dev/null \
+  && scripts/build-docs > /dev/null

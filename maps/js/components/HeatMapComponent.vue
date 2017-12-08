@@ -24,16 +24,11 @@ export default {
       max: this.options.maxIntensity || 1.0
     }
     
-    let heatPoints = this.options.points.map(heat => {
-      console.log(heat.weight)
-      return [
-        heat.pos.geom.x,
-        heat.pos.geom.y,
-        heat.weight || this.heatOpts.max / 2
-      ]
-    })
-    
-    
+    let heatPoints = this.options.points.map(heat => [
+      heat.pos.geom.x,
+      heat.pos.geom.y,
+      heat.weight || this.heatOpts.max / 2
+    ])
     
     this.heatLayer = L.heatLayer(heatPoints, this.heatOpts)
     

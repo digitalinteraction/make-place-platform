@@ -56,7 +56,6 @@ export default {
   },
   computed: {
     detail() {
-      console.log(this.options.detail)
       return this.options.detail
     },
     title() { return this.customTitle || this.options.title || 'Loading' }
