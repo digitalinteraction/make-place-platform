@@ -114,9 +114,8 @@ class SurveyMapComponentTest extends SapphireTest {
     /* Test Config Data */
     public function testBaseJson() {
         
-        // NOTE: not sure why we're logged in at this point ...
         $this->member->logOut();
-        
+
         
         $expected = [
             'type' => 'SurveyMapComponent',

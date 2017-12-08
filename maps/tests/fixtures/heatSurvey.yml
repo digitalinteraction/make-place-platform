@@ -1,0 +1,48 @@
+GeoQuestion:
+  position:
+    Name: Position
+    Handle: position
+    GeoType: POINT
+    DataType: 0
+
+NumberQuestion:
+  weight:
+    Name: Weight
+    Handle: weight
+
+Survey:
+  a:
+    Name: 'Heat Survey'
+    Handle: 'heat-survey'
+    ResponseViewPerms: 'Anyone'
+    ResponseMakePerms: 'Member'
+    Questions: =>GeoQuestion.position,=>NumberQuestion.weight
+
+HeatMapComponent:
+  a:
+    Survey: =>Survey.a
+    PositionQuestion: position
+    WeightQuestion: weight
+    Radius: 30
+    Blur: 20
+    MaxIntensity: 100
+    MinOpacity: 0.2
+
+SurveyResponse:
+  a:
+    Survey: =>Survey.a
+    Responses: '{ "position": 1, "weight": 100 }'
+  b:
+    Survey: =>Survey.a
+    Responses: '{ "position": 2, "weight": 0 }'
+  c:
+    Survey: =>Survey.a
+    Responses: '{ "position": null, "weight": 10 }'
+
+GeoRef:
+  a:
+    Reference: 1
+  b:
+    Reference: 2
+  c:
+    Reference: 3
