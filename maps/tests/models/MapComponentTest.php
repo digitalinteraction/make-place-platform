@@ -83,12 +83,12 @@ class MapComponentTest extends SapphireTest {
     
     
     
-    public function testDefaultConfigData() {
+    public function testDefaultJson() {
         
         $expected = [
             'type' => 'MapComponent'
         ];
         
-        $this->assertEquals($expected, $this->component->configData());
+        $this->assertArraySubset($expected, $this->component->jsonSerialize());
     }
 }

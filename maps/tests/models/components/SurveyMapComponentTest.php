@@ -63,7 +63,7 @@ class SurveyMapComponentTest extends SapphireTest {
         
         $this->assertNotNull($fields->fieldByName('Root.Survey.Appearance.ResponseTitle'));
         $this->assertNotNull($fields->fieldByName('Root.Survey.Appearance.ResponseMinimizable'));
-        $this->assertNotNull($fields->fieldByName('Root.Survey.Appearance.ResponseSharable'));
+        $this->assertNotNull($fields->fieldByName('Root.Survey.Appearance.ResponseShareable'));
     }
     
     public function testCMSVotingFields() {
@@ -111,7 +111,7 @@ class SurveyMapComponentTest extends SapphireTest {
     
     
     /* Test Config Data */
-    public function testConfigData() {
+    public function testBaseJson() {
         
         // NOTE: not sure why we're logged in at this point ...
         $this->member->logOut();
@@ -125,12 +125,12 @@ class SurveyMapComponentTest extends SapphireTest {
             'positionQuestion' => 'position'
         ];
         
-        $data = $this->component->configData();
+        $data = $this->component->jsonSerialize();
         
         $this->assertArraySubset($expected, $data);
     }
     
-    public function testAppearanceConfigData() {
+    public function testAppearanceJson() {
         
         $expected = [
             'actionColour' => 'primary',
@@ -141,12 +141,12 @@ class SurveyMapComponentTest extends SapphireTest {
             'responseShareable' => false,
         ];
         
-        $data = $this->component->configData();
+        $data = $this->component->jsonSerialize();
         
         $this->assertArraySubset($expected, $data);
     }
     
-    public function testInteractionConfigData() {
+    public function testInteractionJson() {
         
         $expected = [
             'voteTitle' => 'Voting',
@@ -155,19 +155,19 @@ class SurveyMapComponentTest extends SapphireTest {
             'commentPlaceholder' => '...'
         ];
         
-        $data = $this->component->configData();
+        $data = $this->component->jsonSerialize();
         
         $this->assertArraySubset($expected, $data);
     }
     
-    public function testConfigDataSignedIn() {
+    public function testJsonSignedIn() {
         
         $expected = [
             'canView' => true,
             'canSubmit' => true,
         ];
         
-        $data = $this->component->configData();
+        $data = $this->component->jsonSerialize();
         
         $this->assertArraySubset($expected, $data);
     }

@@ -14,7 +14,7 @@ class SurveyMapComponent extends MapComponent {
         
         'ResponseTitle' => 'Varchar(255)',
         'ResponseMinimizable' => 'Boolean',
-        'ResponseSharable' => 'Boolean',
+        'ResponseShareable' => 'Boolean',
         
         'VotingEnabled' => 'Boolean',
         'VoteTitle' => 'Varchar(255)',
@@ -48,7 +48,7 @@ class SurveyMapComponent extends MapComponent {
         
         'ResponseTitle' => 'Survey Response',
         'ResponseMinimizable' => false,
-        'ResponseSharable' => false,
+        'ResponseShareable' => false,
         
         'VoteTitle' => 'What do you think?',
         'VoteType' => 'BASIC',
@@ -110,7 +110,7 @@ class SurveyMapComponent extends MapComponent {
                 TextField::create('ResponseTitle', 'Response Title')
                     ->setDescription("The title displayed when viewing a response to the survey"),
                 CheckboxField::create('ResponseMinimizable', 'If a response can be minimized'),
-                CheckboxField::create('ResponseSharable', 'If a response can be shared')
+                CheckboxField::create('ResponseShareable', 'If a response can be shared')
             ]);
             
             // Add interaction fields

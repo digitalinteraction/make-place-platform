@@ -20,7 +20,7 @@ class ContentMapComponentTest extends SapphireTest {
         $this->assertNotNull($fields->fieldByName('Root.Main.ActionColour'));
     }
   
-    public function testConfigData() {
+    public function testJson() {
         
         // Create a component with configuration
         $component = ContentMapComponent::create([
@@ -36,6 +36,6 @@ class ContentMapComponentTest extends SapphireTest {
         ];
         
         // Check its config data is correct
-        $this->assertArraySubset($expected, $component->configData());
+        $this->assertArraySubset($expected, $component->jsonSerialize());
     }
 }
