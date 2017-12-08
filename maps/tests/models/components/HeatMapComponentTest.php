@@ -1,7 +1,6 @@
 <?php
 
 /** Tests HeatMapComponent */
-/** @group whitelist */
 class HeatMapComponentTest extends SapphireTest {
     
     /** @var HeatMapComponent */

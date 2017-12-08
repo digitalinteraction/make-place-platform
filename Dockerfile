@@ -4,7 +4,7 @@
 
 
 # Start from our base image
-FROM openlab.ncl.ac.uk:4567/make-place/web:base-2.3.0
+FROM openlab.ncl.ac.uk:4567/make-place/web:base-2.3.1
 
 
 # Add config files
@@ -16,12 +16,8 @@ COPY [".eslintrc.js", ".babelrc", "/app/"]
 COPY _config/ /app/_config
 RUN mv _config/bootstrap.sh bootstrap.sh \
   && mv _config/cronjobs cronjobs \
-  && mv _config/phpunit.xml phpunit.xml
-# RUN mkdir _config && mv vars.scss _config/vars.scss && mv common.scss _config/common.scss
-
-
-# Start cron jobs
-RUN crontab -u root cronjobs && rm cronjobs
+  && mv _config/phpunit.xml phpunit.xml \
+  && crontab -u root cronjobs && rm cronjobs
 
 
 # Add my code to the build
@@ -36,8 +32,5 @@ COPY public /app/public
 COPY interaction /app/interaction
 
 
-# Build javascript
-RUN scripts/build-js > /dev/null
-
-# Build docs
-RUN scripts/build-docs > /dev/null
+# Build javascript & docs
+RUN scripts/build-js && scripts/build-docs > /dev/null

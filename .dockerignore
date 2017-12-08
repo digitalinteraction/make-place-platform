@@ -1,13 +1,16 @@
 node_modules
 
-assets
 .sass-cache
+assets
 blog
 cms
+display_logic
 framework
 lumberjack
 reports
 siteconfig
 sortablegridfield
 sqlite3
+tagfield
 vendor
+secrets.env
