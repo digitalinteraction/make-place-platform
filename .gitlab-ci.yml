@@ -16,16 +16,8 @@ variables:
 
 stages:
     - test
-    - deploy
-    
+    - build
 
-# build_base_image:
-#     image: docker:latest
-#     when: manual
-#     stage: deploy
-#     script:
-#         - docker build -t $CONTAINER_BASE_IMAGE -f base.Dockerfile .
-#         - docker push $CONTAINER_BASE_IMAGE
 
 test:
     image: $CONTAINER_BASE_IMAGE
@@ -39,12 +31,27 @@ test:
         # - docker run --rm $CONTAINER_BRANCH_IMAGE bash scripts/coverage
         # - docker push $CONTAINER_BRANCH_IMAGE
 
+build-master:
+  image: docker:latest
+  stage: build
+  tags:
+    - dind
+  script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+    - docker build --pull -t "$CI_REGISTRY_IMAGE" .
+    - docker push "$CI_REGISTRY_IMAGE"
+  only:
+    - master
 
-# publish_image:
-#     image: docker:latest
-#     when: manual
-#     stage: deploy
-#     script:
-#         - docker pull $CONTAINER_BRANCH_IMAGE
-#         - docker tag $CONTAINER_TEST_IMAGE $CONTAINER_RELEASE_IMAGE
-#         - docker push $CONTAINER_RELEASE_IMAGE
+
+build:
+  image: docker:latest
+  stage: build
+  tags:
+    - dind
+  script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+    - docker build --pull -t "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG" .
+    - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG"
+  except:
+    - master
