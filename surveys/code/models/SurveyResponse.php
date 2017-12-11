@@ -66,7 +66,7 @@ class SurveyResponse extends DataObject {
     public function getTitle() {
         
         return $this->Member()->getName() . "'s Response";
-    } 
+    }
     
     public function toJson($pluck = null, $questions = null) {
         
@@ -83,7 +83,7 @@ class SurveyResponse extends DataObject {
         
         foreach ($questions as $question) {
             
-            $value = isset($rawValues[$question->Handle]) ? $rawValues[$question->Handle] : '';
+            $value = isset($rawValues[$question->Handle]) ? $rawValues[$question->Handle] : null;
             
             if ($pluck === null || in_array($question->Handle, $pluck)) {
                 $values[$question->Handle] = [

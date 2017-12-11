@@ -81,7 +81,7 @@ class ResponsesService {
   responseCreated(response) {
     
     // Do nothing if if there are no states
-    if (this.requests.has(response.surveyId)) return
+    if (!this.requests.has(response.surveyId)) return
     
     // Get the state
     let request = this.requests.get(response.surveyId)

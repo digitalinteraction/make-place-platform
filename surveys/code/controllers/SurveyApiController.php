@@ -212,7 +212,8 @@ class SurveyApiController extends ApiController {
         // Let the questions pack their value
         $packedValues = [];
         foreach ($questionMap as $field => $question) {
-            $packedValues[$field] = $question->packValue(isset($fields[$field]) ? $fields[$field] : null);
+            $value = isset($fields[$field]) && $fields[$field] !== '' ? $fields[$field] : null;
+            $packedValues[$field] = $question->packValue($value);
         }
         
         

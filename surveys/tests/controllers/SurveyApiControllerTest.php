@@ -33,6 +33,14 @@ class SurveyApiControllerTest extends FunctionalTest {
         
         $this->member = Member::get()->byID($this->logInWithPermission());
         $this->survey = $this->objFromFixture("Survey", "surveyA");
+        
+        GeoRef::$testMode = true;
+    }
+    
+    public function tearDown() {
+        parent::tearDown();
+        
+        GeoRef::$testMode = false;
     }
     
     public function testFixtures() {
@@ -537,7 +545,7 @@ class SurveyApiControllerTest extends FunctionalTest {
     
     public function testCreateGeomSuccess() {
         
-        // Don"t actually go creating a geo record
+        // Don't actually go creating a geo record
         GeoRef::$testMode = true;
         
         $params = $this->survey->generateFormData([

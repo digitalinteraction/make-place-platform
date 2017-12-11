@@ -37,7 +37,6 @@ services:
       SITE_ENV: dev
       DEFAULT_USER: admin
       DEFAULT_PASS: password
-      PATH: '$PATH:/app/scripts'
       GEO_URL: geo:3000
       GEO_KEY: 4DJ3Nws3h5zj73aKWUQIOavpVAVqeAaV
       PRIMARY_COL: '#836953'
