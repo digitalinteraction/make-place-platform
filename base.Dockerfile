@@ -20,8 +20,8 @@ RUN curl -sL https://deb.nodesource.com/setup_8.x | bash - > /dev/null \
   && chown -R www-data /app/ \
   && chown -R www-data /backup
 
-# Add package configuration file, TODO: Should add package-lock.json & composer.lock
-COPY ["package.json", "composer.json", "/app/"]
+# Add package configuration files
+COPY ["package.json", "package-lock.json", "composer.json", "composer.lock", "/app/"]
 
 # Install packages & setup
 RUN /composer.phar -q install && npm install -s
