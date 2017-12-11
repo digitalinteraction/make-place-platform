@@ -101,6 +101,28 @@ class GeoRef extends DataObject {
     
     
     
+    public static function cacheAll() {
+        
+        if (self::$testMode) return;
+        
+        // Fetch all geometries we can
+        $res = GeoRef::geoRequest('geo')->jsonResponse();
+        
+        // If the request failed, stop
+        if (!CurlRequest::validApiResponse($res)) {
+            return;
+        }
+        
+        // Cache each georef
+        foreach ($res['data'] as $geo) {
+            self::$refCache[$geo["id"]] = $geo;
+        }
+    }
+    
+    // public static function
+    
+    
+    
     /** Converts georef to json */
     public function toJson() {
         return [

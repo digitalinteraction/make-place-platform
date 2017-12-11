@@ -66,17 +66,19 @@ class SurveyResponse extends DataObject {
     public function getTitle() {
         
         return $this->Member()->getName() . "'s Response";
-    }
+    } 
     
-    public function toJson($pluck = null) {
+    public function toJson($pluck = null, $questions = null) {
         
         $rawValues = $this->jsonField('Responses');
         $values = [];
         
-        $questions = $this->Survey()->Questions();
-        
-        if (is_array($pluck)) {
-            $questions = $questions->filter([ 'Handle' => $pluck ]);
+        if (!$questions) {
+            $questions = $this->Survey()->Questions();
+            
+            if (is_array($pluck)) {
+                $questions = $questions->filter([ 'Handle' => $pluck ]);
+            }
         }
         
         foreach ($questions as $question) {

@@ -311,6 +311,9 @@ class SurveyApiController extends ApiController {
      */
     public function getResponses() {
         
+        // Cache all geo-references
+        GeoRef::cacheAll();
+        
         $responses = SurveyResponse::get()->filter([
             "SurveyID" => $this->Survey->ID,
             "Deleted" => false
@@ -320,13 +323,19 @@ class SurveyApiController extends ApiController {
             return $this->jsonResponse(["You can't do that"], 401);
         }
         
-        $pluck = $this->getVar('pluck');
-        if (is_string($pluck)) { $pluck = explode(',', $pluck); }
+        $questions = $this->Survey->Questions();
         
+        $pluck = $this->getVar('pluck');
+        if (is_string($pluck)) {
+            $pluck = explode(',', $pluck);
+            $questions = $questions->filter('Handle', $pluck);
+        }
+        
+        $questions = $questions->toArray();
         $data = [];
         
         foreach ($responses as $r) {
-            $data[] = $r->toJson($pluck);
+            $data[] = $r->toJson($pluck, $questions);
         }
         
         return $this->jsonResponse($data);
