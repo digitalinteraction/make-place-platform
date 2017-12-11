@@ -5,7 +5,7 @@
 <script>
 import L from 'leaflet'
 
-import EventBus from '../buses/mapBus'
+import responsesService from '../services/responses'
 
 export default {
   props: [ 'options' ],
@@ -24,31 +24,53 @@ export default {
       max: this.options.maxIntensity || 1.0
     }
     
-    let heatPoints = this.options.points.map(heat => [
-      heat.pos.geom.x,
-      heat.pos.geom.y,
-      heat.weight || this.heatOpts.max / 2
-    ])
+    let posQ = this.options.positionQuestion
+    let weightQ = this.options.weightQuestion
+    let defaultWeight = this.heatOpts.max / 2
     
-    this.heatLayer = L.heatLayer(heatPoints, this.heatOpts)
     
-    this.$store.state.map.addLayer(this.heatLayer)
+    let questions = []
+    if (posQ) questions.push(posQ)
+    if (weightQ) questions.push(weightQ)
     
-    EventBus.$on('responseCreated', (response) => {
-      let posQ = this.options.positionQuestion
-      let weightQ = this.options.weightQuestion
-      
-      let x = response.values[posQ].value.geom.x
-      let y = response.values[posQ].value.geom.y
-      
-      let weight = this.heatOpts.max / 2
-      if (weightQ) {
-        weight = response.values[weightQ].value
+    if (questions.length === 0) return
+    
+    responsesService.request(this.options.surveyID, questions, {
+      fetched: (responses) => {
+        let heatPoints = this.pointsFromResponses(responses, posQ, weightQ, defaultWeight)
+        this.heatLayer = L.heatLayer(heatPoints, this.heatOpts)
+        this.$store.state.map.addLayer(this.heatLayer)
+      },
+      redraw: (responses) => {
+        let heatPoints = this.pointsFromResponses(responses, posQ, weightQ, defaultWeight)
+        this.heatLayer.setLatLngs(heatPoints)
+      },
+      created: (response) => {
+        let point = this.latLngFromResponse(response, posQ, weightQ, defaultWeight)
+        if (point) {
+          this.heatLayer.addLatLng(point)
+        }
       }
-      
-      this.heatLayer.addLatLng(new L.LatLng(x, y, weight))
-      
     })
+  },
+  methods: {
+    latLngFromResponse(response, posQ, weightQ, defaultWeight) {
+      let pos = response.values[posQ].value
+      if (pos === null) return null
+      return new L.LatLng(
+        response.values[posQ].value.geom.x,
+        response.values[posQ].value.geom.y,
+        weightQ ? response.values[weightQ].value || defaultWeight : defaultWeight
+      )
+    },
+    pointsFromResponses(responses, posQ, weightQ, defaultWeight) {
+      let points = []
+      responses.forEach(r => {
+        let point = this.latLngFromResponse(r, posQ, weightQ, defaultWeight)
+        if (point) points.push(point)
+      })
+      return points
+    }
   }
 }
 </script>

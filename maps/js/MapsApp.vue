@@ -1,22 +1,26 @@
 <template lang="html">
   <div id="map-app" :class="{'is-mobile': isMobile}">
     
-    <loading v-if="!page"> Loading Map </loading>
+    <transition name="response-loader">
+      <div v-if="!page || fetchingResponses" class="loading-data">
+        <loading> Loading Map </loading>
+      </div>
+    </transition>
     
-    <div v-else>
+    <!-- <loading v-if="!page"> Loading Map </loading> -->
+    
+    <div v-if="page">
       
       <!-- Add map components -->
       <component v-for="(c,i) in components" :is="c.type" :key="i" :options="c"></component>
       
       
       <!-- The map's state component -->
-      <!-- <keep-alive> -->
       <component v-if="currentState"
         :is="currentState.type"
         :is-mobile="isMobile"
         :options="currentState.options">
       </component>
-      <!-- </keep-alive> -->
       
     </div>
     
@@ -37,10 +41,12 @@ import DefaultMapState from './state/DefaultMapState'
 import DetailMapState from './state/DetailMapState'
 import PickingMapState from './state/PickingMapState'
 
+import responsesService from './services/responses'
+
 import L from 'leaflet'
 import 'leaflet.heat'
-import './libs/leaflet-google'
-import './libs/leaflet-markercluster.min'
+import 'leaflet.gridlayer.googlemutant'
+import 'leaflet.markercluster'
 
 
 export default {
@@ -57,7 +63,8 @@ export default {
       isMobile: false,
       page: null,
       componentConfig: null,
-      components: []
+      components: [],
+      fetchingResponses: true
     }
   },
   computed: {
@@ -69,6 +76,11 @@ export default {
     
     this.loadConfig()
     this.$store.commit('setMapState', 'DefaultMapState')
+    
+    responsesService.start()
+    responsesService.listenForWork((eventName) => {
+      this.fetchingResponses = eventName === 'start'
+    })
   },
   methods: {
     onResize() {

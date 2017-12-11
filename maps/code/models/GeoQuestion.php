@@ -106,7 +106,7 @@ class GeoQuestion extends Question {
     
     public function unpackValue($value) {
         
-        if ($value == null) { return $value; }
+        if ($value == null || $value == '') { return null; }
         
         // Get GeoRef from id value
         $ref = GeoRef::get()->byID($value);

@@ -2,7 +2,9 @@
   <p class="loading" :class="type" v-if="show">
     <i class="fa fa-2x fa-spin fa-cog" aria-hidden="true"></i>
     <br>
-    <slot></slot>
+    <span class="text">
+      <slot></slot>
+    </span>
   </p>
 </template>
 

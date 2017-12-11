@@ -75,6 +75,10 @@ class SurveyResponse extends DataObject {
         
         $questions = $this->Survey()->Questions();
         
+        if (is_array($pluck)) {
+            $questions = $questions->filter([ 'Handle' => $pluck ]);
+        }
+        
         foreach ($questions as $question) {
             
             $value = isset($rawValues[$question->Handle]) ? $rawValues[$question->Handle] : '';

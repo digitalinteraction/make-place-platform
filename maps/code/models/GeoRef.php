@@ -81,9 +81,9 @@ class GeoRef extends DataObject {
         
         // Check in the cache for a value
         // TODO: Not tested, so leaving it out for now
-        // if (isset(self::$refCache[$this->Reference])) {
-        //     return self::$refCache[$this->Reference];
-        // }
+        if (isset(self::$refCache[$this->Reference])) {
+            return self::$refCache[$this->Reference];
+        }
         
         // Create and execute a request to the geo api
         $res = self::geoRequest("geo/{$this->Reference}")

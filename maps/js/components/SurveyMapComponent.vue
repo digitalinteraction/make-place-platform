@@ -3,10 +3,9 @@
 </template>
 
 <script>
-import axios from 'axios'
-import L from 'leaflet'
 
-import EventBus from '../buses/mapBus'
+import L from 'leaflet'
+import responsesService from '../services/responses'
 
 export default {
   props: [ 'options' ],
@@ -21,9 +20,24 @@ export default {
       })
     }
     
-    if (this.options.canView) {
-      this.fetchResponses()
-    }
+    let posKey = this.options.positionQuestion
+    
+    // If not set (from the CMS) do nothing
+    if (!this.options.canView || !posKey || !this.options.renderResponses) return
+    
+    // Register to get responses
+    responsesService.request(this.options.surveyID, [posKey], {
+      fetched: (responses) => {
+        responses.forEach(r => this.addResponsePin(r, posKey))
+      },
+      redraw: (responses) => {
+        console.log('redraw', responses)
+      },
+      created: (response) => {
+        this.addResponsePin(response, posKey)
+      }
+    })
+    
   },
   computed: {
     surveyApi() {
@@ -76,7 +90,7 @@ export default {
     },
     responseCreated(response) {
       
-      EventBus.$emit('responseCreated', response)
+      responsesService.responseCreated(response)
        
       if (this.options.renderResponses && this.options.positionQuestion && this.options.canView) {
         this.addResponsePin(response, this.options.positionQuestion)
@@ -104,24 +118,6 @@ export default {
       
       // Add the marker
       this.$store.state.clusterer.addLayer(marker)
-    },
-    async fetchResponses() {
-      
-      // If not set (from the CMS) do nothing
-      let posKey = this.options.positionQuestion
-      if (!posKey) return
-      
-      // Fetch responses, only plucking the position key
-      let res = await axios.get(`${this.surveyApi}/responses?pluck=${posKey}`)
-      
-      // Loop responses and create pins
-      if (this.options.renderResponses) {
-        res.data.forEach((response) => {
-          
-          // Add a pin for it
-          this.addResponsePin(response, posKey)
-        })
-      }
     },
     responseClicked(response, e) {
       

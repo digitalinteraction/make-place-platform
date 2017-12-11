@@ -30,4 +30,37 @@
     > { @include fill-parent; }
   }
   
+  #map-app {
+    position: relative;
+    
+    .loading-data {
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      z-index: $zDetail;
+      background-color: rgba(0,0,0,0.2);
+      
+      .loading {
+        position: relative;
+        top: 50%;
+        transform: translateY(-50%);
+        margin: 0;
+        font-size: 3em;
+        
+        .text {
+          text-shadow: 0 0 25px rgba(255,255,255,0.2);
+        }
+      }
+    }
+  }
+  
+}
+
+.response-loader-enter-active, .response-loader-leave-active {
+  transition: opacity .5s
+}
+.response-loader-enter, .response-loader-leave-to {
+  opacity: 0
 }
