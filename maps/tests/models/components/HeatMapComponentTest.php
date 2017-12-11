@@ -63,13 +63,4 @@ class HeatMapComponentTest extends SapphireTest {
         
         $this->assertArraySubset($expected, $this->component->jsonSerialize());
     }
-    
-    public function testJsonEmbedsResponses() {
-        
-        $json = $this->component->jsonSerialize();
-        
-        $this->assertArrayHasKey('points', $json);
-        
-        $this->assertCount(2, $json['points']);
-    }
 }

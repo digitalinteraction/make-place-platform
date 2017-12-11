@@ -83,27 +83,6 @@ class HeatMapComponent extends MapComponent implements CMSPreviewable {
             'Deleted' => false
         ]);
         
-        $json['points'] = [];
-        
-        // $toPluck = [ $this->PositionQuestion ];
-        // if ($this->WeightQuestion) {
-        //     $toPluck[] = $this->WeightQuestion;
-        // }
-        //
-        // foreach ($responses as $r) {
-        //     $data = $r->toJson($toPluck)["values"];
-        //
-        //     $pos = $data[$this->PositionQuestion]['value'];
-        //
-        //     if ($pos === '') continue;
-        //
-        //     $point = [ 'pos' => $pos ];
-        //     if ($this->WeightQuestion != null) {
-        //         $point['weight'] = (float)$data[$this->WeightQuestion]['value'];
-        //     }
-        //     $json['points'][] = $point;
-        // }
-        
         return $json;
     }
     
