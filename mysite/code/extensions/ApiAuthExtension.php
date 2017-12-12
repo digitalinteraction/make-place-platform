@@ -5,10 +5,8 @@ class ApiAuthExtension extends Extension {
     
     public function checkApiAuth() {
         
-        
         // Get session from get var
         $apikey = $this->owner->request->getVar("apikey");
-        
         
         // If not set, fail
         if ($apikey == null) { return false; }
@@ -23,6 +21,12 @@ class ApiAuthExtension extends Extension {
         
         // If null, fail
         if ($key == null) { return false; }
+        
+        
+        // TODO: Add headers for apikeys
+        // if ($key->Domains) {
+        //     $this->owner->response->addHeader('Access-Control-Allow-Origin', $key->Domains);
+        // }
         
         
         // Fetch the owner of the apikey

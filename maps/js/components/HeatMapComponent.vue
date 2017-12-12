@@ -46,7 +46,6 @@ export default {
         this.heatLayer.setLatLngs(heatPoints)
       },
       created: (response) => {
-        console.log('...')
         let point = this.latLngFromResponse(response, posQ, weightQ, defaultWeight)
         if (point) {
           this.heatLayer.addLatLng(point)

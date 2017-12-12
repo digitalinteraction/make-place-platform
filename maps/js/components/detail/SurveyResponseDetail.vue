@@ -89,7 +89,7 @@ export default {
         
         // Render the highlight depending on the type
         let highlight = null
-        if (value.type === 'LINESTRING' && value.geom) {
+        if (value && value.type === 'LINESTRING' && value.geom) {
           
           // If a linestring, create a path
           let points = value.geom.map(({x, y}) => { return [x, y] })

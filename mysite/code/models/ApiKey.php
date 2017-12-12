@@ -9,6 +9,7 @@ class ApiKey extends DataObject {
         "Name" => "Varchar(50)",
         "Key" => "Varchar(255)",
         "Active" => "Boolean",
+        "Domains" => "Varchar(255)"
     ];
     
     /* The ApiKey's to-one relations */
