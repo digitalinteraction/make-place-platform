@@ -36,6 +36,7 @@ import axios from 'axios'
 import SurveyMapComponent from './components/SurveyMapComponent'
 import ContentMapComponent from './components/ContentMapComponent'
 import HeatMapComponent from './components/HeatMapComponent'
+import TemporalFilterMapComponent from './components/TemporalFilterMapComponent'
 
 import DefaultMapState from './state/DefaultMapState'
 import DetailMapState from './state/DetailMapState'
@@ -54,6 +55,7 @@ export default {
     SurveyMapComponent,
     ContentMapComponent,
     HeatMapComponent,
+    TemporalFilterMapComponent,
     DefaultMapState,
     DetailMapState,
     PickingMapState

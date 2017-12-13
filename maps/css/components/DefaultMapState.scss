@@ -5,6 +5,65 @@
 
 .default-map-state {
   
+  .controls-wrapper {
+    position: absolute;
+    top: $cardPadding;
+    bottom: $cardPadding;
+    left: $cardPadding;
+    max-width: calc(100% - #{$cardPadding} - #{$cardPadding});
+    width: 420px;
+    
+    .header {
+      position: relative;
+      
+      h3 {
+        margin: 0;
+        margin-right: 2em;
+        line-height: 54px;
+        margin-left: 0.5em;
+        
+        button {
+          position: absolute;
+          top: 0;
+          right: 0;
+          padding: 0;
+          border: none;
+          background: #fff;
+          width: 54px;
+          background-color: white;
+          font-size: 1.5em;
+          
+          &:focus { outline: none; }
+        }
+      }
+      
+    }
+    
+    .inner {
+      position: relative;
+      min-height: 320px;
+      background-color: #fff;
+      z-index: $zControls;
+      max-height: 100%;
+      transition: right 0.3s, background-color 0.3s 0.1s;
+      
+      
+      right: 0;
+    }
+    
+    &:not(.active) .inner {
+      right: calc(100% - 54px + #{$cardPadding});
+      background-color: rgba(0,0,0,0);
+      
+      .header button {
+        box-shadow: 0 0 5px rgba(0,0,0,0.1);
+      }
+    }
+    
+    
+    
+  }
+  
   .action-list {
     position: absolute;
     top: $cardPadding;
