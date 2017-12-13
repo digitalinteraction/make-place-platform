@@ -3,6 +3,8 @@
   to   { top: 0; opacity: 1.0; }
 }
 
+$controlsDuration: 0.4s;
+
 .default-map-state {
   
   .controls-wrapper {
@@ -31,9 +33,14 @@
           background: #fff;
           width: 54px;
           background-color: white;
-          font-size: 1.5em;
+          font-size: 1.3em;
           
           &:focus { outline: none; }
+          
+          i {
+            transition: $controlsDuration transform;
+            transform: none;
+          }
         }
       }
       
@@ -45,10 +52,16 @@
       background-color: #fff;
       z-index: $zControls;
       max-height: 100%;
-      transition: right 0.3s, background-color 0.3s 0.1s;
+      transition: right $controlsDuration, background-color 0.3s 0.1s;
       
       
       right: 0;
+      
+      
+      .groups {
+        opacity: 1;
+        transition: $controlsDuration opacity;
+      }
     }
     
     &:not(.active) .inner {
@@ -57,6 +70,14 @@
       
       .header button {
         box-shadow: 0 0 5px rgba(0,0,0,0.1);
+        
+        i {
+          transform: rotate(-180deg);
+        }
+      }
+      
+      .groups {
+        opacity: 0
       }
     }
     

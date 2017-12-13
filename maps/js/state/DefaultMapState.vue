@@ -8,7 +8,7 @@
             Controls
             <button @click="toggleControls">
               <transition name="fade">
-                <i v-if="showControls" class="fa fa-angle-left"></i>
+                <i v-if="showControls" class="fa fa-long-arrow-left"></i>
                 <i v-else class="fa fa-cog"></i>
               </transition>
             </button>
