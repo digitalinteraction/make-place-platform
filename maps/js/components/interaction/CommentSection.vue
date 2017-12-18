@@ -67,5 +67,16 @@ export default {
 
 
 
-<style lang="css">
+<style lang="scss">
+
+.comment-section {
+  
+  .disabled-msg {
+    padding: 0.5em;
+    border-left: 3px solid $primaryColour;
+    font-size: 18px;
+    color: $lightTextColour;
+  }
+}
+
 </style>

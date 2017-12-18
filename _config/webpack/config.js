@@ -7,7 +7,9 @@ module.exports = {
     env: { NODE_ENV: '"production"' },
     
     assetsRoot: resolve('public'),
-    assetsPublicPath: '/public/'
+    assetsPublicPath: '/public/',
+    
+    productionSourceMap: true
   },
   dev: {
     env: { NODE_ENV: '"development"' },

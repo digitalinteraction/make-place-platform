@@ -82,5 +82,74 @@ export default {
 
 
 
-<style lang="css">
+<style lang="scss">
+
+@import "maps/sass/mixins/comments.scss";
+
+.comment-composer {
+  @include comment-content;
+  @include comment-bottom;
+  
+  textarea {
+    -webkit-appearance: none;
+    border-radius: 4px;
+    border: 2px solid #dadada;
+    margin: 0px;
+    height: 64px;
+    width: 100%;
+    resize: none;
+    padding: 6px;
+    font-size: 16px;
+    padding-right: 68px;
+    
+    transition: border-color 0.3s ease;
+    
+    &:focus {
+      outline: 0;
+      border-color: $primaryColour;
+    }
+  }
+  
+  .placeholder {
+    position: absolute;
+    pointer-events: none;
+    top: 8px;
+    left: 8px;
+    color: $placeholderTextColour;
+    font-style: italic;
+    font-size: 16px;
+  }
+  
+  
+  .send {
+    @include reset-style;
+    @include text-style();
+    
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    color: white;
+    padding: 4px 12px;
+    border-radius: 4px;
+    
+    background: $primaryColour;
+    opacity: 1.0;
+    
+    transition: background-color 0.1s, opacity 0.1s;
+    
+    
+    &:disabled {
+      background: #ccc; opacity: 0.5;
+      opacity: 0.5;
+    }
+  }
+  
+  .login-message {
+    font-size: 20px;
+    margin: 24px 0;
+    text-align: center;
+    color: #888;
+  }
+}
+
 </style>

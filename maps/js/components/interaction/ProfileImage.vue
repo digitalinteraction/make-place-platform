@@ -33,5 +33,20 @@ export default {
 }
 </script>
 
-<style lang="css">
+<style lang="scss">
+
+.profile-image {
+  
+  svg {
+    height: 62px;
+    width: 62px;
+  }
+  
+  text {
+    @include text-style;
+    font-size: 10px;
+    fill: white;
+  }
+}
+
 </style>

@@ -1,0 +1,34 @@
+$profleImageSize: 68px;
+$mobileProfleImageSize: 52px;
+
+@mixin comment-content() {
+  position: relative;
+  
+  .profile-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    
+    svg { height: $profleImageSize; width: $profleImageSize; }
+  }
+  
+  .content {
+    margin-left: $profleImageSize + 8px;
+    min-height: $profleImageSize;
+    position: relative;
+  }
+  
+  @include only-mobile {
+    .profile-image svg { height: $mobileProfleImageSize; width: $mobileProfleImageSize}
+    .content {
+      margin-left: $mobileProfleImageSize + 8px;
+      min-height: $mobileProfleImageSize;
+    }
+  }
+}
+
+@mixin comment-bottom {
+  margin-bottom: 1em;
+  padding-bottom: 1em;
+  border-bottom: 1px solid $lightGrey;
+}

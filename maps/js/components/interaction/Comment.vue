@@ -40,5 +40,43 @@ export default {
 
 
 
-<style lang="css">
+<style lang="scss">
+
+@import "maps/sass/mixins/comments.scss";
+
+@keyframes comment-appear {
+  0% { transform: translateY(-20px); opacity: 0; }
+  100% { transform: translate(0); opacity: 1; }
+}
+
+.comment {
+  @include comment-content;
+  
+  animation-name: comment-appear;
+  animation-duration: 0.6s;
+  animation-fill-mode: both;
+  
+  @for $i from 0 through 10 {
+    &:nth-child(#{$i}) { animation-delay: 0.1s * $i; }
+  }
+  
+  &:not(:last-child) {
+    @include comment-bottom;
+  }
+  
+  .heading {
+    margin-bottom: 0;
+    font-weight: 700;
+    font-size: 16px;
+    color: $darkColour;
+    
+    .date { float: right; }
+  }
+    
+  .message {
+    margin-bottom: 0;
+  }
+}
+
+
 </style>
