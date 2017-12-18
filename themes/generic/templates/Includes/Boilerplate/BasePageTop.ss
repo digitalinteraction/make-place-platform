@@ -22,10 +22,8 @@ generic. A parameterised silverstripe theme
 	$MetaTags(false)
 	
 	<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700+Jaldi" rel="stylesheet">
-	<% require themedCSS('bootstrap.min') %>
-	<% require themedCSS('font-awesome.min') %>
 	
-	<% require css('public/css/styles.css') %>
+	<% require css('public/css/theme.css') %>
 	
 	
 	<%-- Js to go to the top of the stack --%>
@@ -33,11 +31,6 @@ generic. A parameterised silverstripe theme
 	<%-- Webpack compiled --%>
 	<% require javascript('public/js/manifest.js') %>
 	<% require javascript('public/js/vendor.js') %>
-	
-	<%-- Our scripts --%>
-	<% require javascript('themes/generic/javascript/jquery.min.js') %>
-	<% require javascript('themes/generic/javascript/script.js') %>
-	<% require javascript('themes/generic/javascript/bootstrap.min.js') %>
 	
 	
 	

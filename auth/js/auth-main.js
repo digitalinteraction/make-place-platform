@@ -1,1 +1,1 @@
-// console.log('Hello, Auth!')
+console.log('Hello, Auth!')

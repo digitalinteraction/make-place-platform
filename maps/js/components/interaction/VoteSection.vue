@@ -45,25 +45,27 @@
 <script>
 import axios from 'axios'
 
+const emojiPath = file => `/static/img/emoji/${file}`
+
 const IconSets = {
   BASIC: [
-    { id: -1, icon: '/public/images/emoji/disagree-o.svg', name: 'Disagree', masked: true },
-    { id: 1, icon: '/public/images/emoji/agree-o.svg', name: 'Agree', masked: true }
+    { id: -1, icon: emojiPath('disagree-o.svg'), name: 'Disagree', masked: true },
+    { id: 1, icon: emojiPath('agree-o.svg'), name: 'Agree', masked: true }
   ],
   ARROW: [
-    { id: -1, icon: '/public/images/emoji/down-o.svg', name: 'Downvote', masked: true },
-    { id: 1, icon: '/public/images/emoji/up-o.svg', name: 'Upvote', masked: true }
+    { id: -1, icon: emojiPath('down-o.svg'), name: 'Downvote', masked: true },
+    { id: 1, icon: emojiPath('up-o.svg'), name: 'Upvote', masked: true }
   ],
   EMOJI: [
-    { id: 1, icon: '/public/images/emoji/agree-o.svg', name: 'Agree', masked: true },
-    { id: 2, icon: '/public/images/emoji/disagree-o.svg', name: 'Disgree', masked: true },
-    { id: 3, icon: '/public/images/emoji/heart.svg', name: 'Love' },
-    { id: 4, icon: '/public/images/emoji/wow.svg', name: 'Wow' },
-    { id: 5, icon: '/public/images/emoji/happy.svg', name: 'Happy' },
-    { id: 6, icon: '/public/images/emoji/sad.svg', name: 'Sad' }
+    { id: 1, icon: emojiPath('agree-o.svg'), name: 'Agree', masked: true },
+    { id: 2, icon: emojiPath('disagree-o.svg'), name: 'Disgree', masked: true },
+    { id: 3, icon: emojiPath('heart.svg'), name: 'Love' },
+    { id: 4, icon: emojiPath('wow.svg'), name: 'Wow' },
+    { id: 5, icon: emojiPath('happy.svg'), name: 'Happy' },
+    { id: 6, icon: emojiPath('sad.svg'), name: 'Sad' }
   ],
   HEART: [
-    { id: 1, icon: '/public/images/emoji/heart.svg', name: 'Favourite' }
+    { id: 1, icon: emojiPath('heart.svg'), name: 'Favourite' }
   ]
 }
 

@@ -1,7 +1,9 @@
-import _ from 'lodash'
 import Vue from 'vue'
+import VueX from 'vuex'
 
-export default {
+Vue.use(VueX)
+
+export default new VueX.Store({
   state: {
     actions: [],
     mapState: null,
@@ -27,7 +29,7 @@ export default {
       state.mapState = { type: 'DefaultMapState', options: {} }
     },
     setMapState(state, mapState) {
-      if (_.isString(mapState)) {
+      if (typeof mapState === 'string') {
         mapState = { type: mapState }
       }
       mapState.options = mapState.options || {}
@@ -54,4 +56,4 @@ export default {
       state.highlight = highlight
     }
   }
-}
+})

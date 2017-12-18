@@ -47,7 +47,7 @@ export default {
   methods: {
     makeIcon(colour) {
       return L.icon({
-        iconUrl: `/public/images/pins/pin-${colour}.svg`,
+        iconUrl: `/static/img/pins/pin-${colour}.svg`,
         iconSize: [30, 56],
         iconAnchor: [15, 40]
       })

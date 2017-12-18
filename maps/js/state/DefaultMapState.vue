@@ -70,7 +70,7 @@ export default {
   data() {
     return {
       actionsToggled: false,
-      showControls: !this.isMobile
+      showControls: false
     }
   },
   computed: {

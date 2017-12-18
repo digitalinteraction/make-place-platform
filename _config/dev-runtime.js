@@ -3,10 +3,7 @@ const chalk = require('chalk')
 
 console.log('Spinning up ...')
 
-let config = [
-  require('./js/webpack.dev.config'),
-  require('./scss/webpack.base.config')
-]
+const config = require('./webpack/webpack.dev.config')
 
 webpack(config, (err, result) => {
   
@@ -14,17 +11,15 @@ webpack(config, (err, result) => {
   
   if (err) throw err
   
-  result.stats.forEach(stat => {
-    process.stdout.write(stat.toString({
-      colors: true,
-      modules: false,
-      children: false,
-      chunks: false,
-      chunkModules: false,
-      hash: false,
-      version: false
-    }) + '\n\n\n')
-  })
+  process.stdout.write(result.toString({
+    colors: true,
+    modules: false,
+    children: false,
+    chunks: false,
+    chunkModules: false,
+    hash: false,
+    version: false
+  }) + '\n\n\n')
   
   console.log(chalk.cyan('  Waiting for changes ...'))
 })

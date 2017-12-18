@@ -15,6 +15,6 @@ COPY . /app/
 RUN mv _config/bootstrap.sh bootstrap.sh \
   && mv _config/phpunit.xml phpunit.xml \
   && mv _config/default.nginx /etc/nginx/sites-available/default \
-  && crontab -u root _config/cronjobs \
-  && scripts/build-js > /dev/null \
-  && scripts/build-docs > /dev/null
+  && crontab -u root _config/cronjobs
+  # && scripts/build-js > /dev/null \
+  # && scripts/build-docs > /dev/null

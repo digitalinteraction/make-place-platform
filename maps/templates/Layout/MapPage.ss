@@ -1,5 +1,5 @@
-<% require css('maps/css/leaflet.css') %>
-<% require css('maps/css/marker-cluster.css') %>
+<% require css('public/css/maps.css') %>
+<%-- <% require javascript('public/js/maps.js') %> --%>
 
 <div id="map-app" v-cloak></div>
 

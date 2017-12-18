@@ -12,12 +12,7 @@ server {
     error_page 404 /assets/error-404.html;
     error_page 500 /assets/error-500.html;
     
-    location ^~ /assets/ {
-        sendfile on;
-        try_files $uri =404;
-    }
-    
-    location ^~ /public/ {
+    location ^~ /(public|static|assets)/ {
         sendfile on;
         try_files $uri =404;
     }

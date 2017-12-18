@@ -28,10 +28,7 @@ silverstripe.log
 
 
 # Compiled Assets
-/public/css/*.css
-/public/css/*.css.map
-/public/js/*.js
-/public/js/*.js.map
+/public/*/*.*
 
 
 # Ignore environment files

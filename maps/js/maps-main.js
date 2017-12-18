@@ -1,17 +1,22 @@
 import Vue from 'vue'
 import VueX from 'vuex'
 
-import MapsApp from './MapsApp.vue'
-import storeConfig from './store'
+import MapsApp from './MapsApp'
+import Store from './store'
 
-import Loading from './components/Loading.vue'
-import VoteSection from './components/interaction/VoteSection.vue'
-import Emoji from './components/interaction/Emoji.vue'
-import EmojiSummary from './components/interaction/EmojiSummary.vue'
-import CommentSection from './components/interaction/CommentSection.vue'
-import CommentComposer from './components/interaction/CommentComposer.vue'
-import Comment from './components/interaction/Comment.vue'
-import ProfileImage from './components/interaction/ProfileImage.vue'
+import Loading from './components/Loading'
+import VoteSection from './components/interaction/VoteSection'
+import Emoji from './components/interaction/Emoji'
+import EmojiSummary from './components/interaction/EmojiSummary'
+import CommentSection from './components/interaction/CommentSection'
+import CommentComposer from './components/interaction/CommentComposer'
+import Comment from './components/interaction/Comment'
+import ProfileImage from './components/interaction/ProfileImage'
+
+import 'leaflet/dist/leaflet.css'
+import 'leaflet.markercluster/dist/MarkerCluster.Default.css'
+
+import '../sass/maps.scss'
 
 
 // Setup Vue plugins
@@ -43,12 +48,9 @@ Vue.component('comment', Comment)
 Vue.component('profile-image', ProfileImage)
 
 
-let store = new VueX.Store(storeConfig)
-
 /* eslint-disable no-new */
 new Vue({
   el: '#map-app',
-  store: store,
-  template: '<MapsApp/>',
-  components: { MapsApp }
+  store: Store,
+  render: h => h(MapsApp)
 })
