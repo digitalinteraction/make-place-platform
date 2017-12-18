@@ -58,9 +58,18 @@ $controlsDuration: 0.4s;
       right: 0;
       
       
-      .groups {
+      .group-list {
         opacity: 1;
         transition: $controlsDuration opacity;
+        
+        .group {
+          
+          h4 {
+            
+          }
+          
+          
+        }
       }
     }
     
@@ -76,7 +85,7 @@ $controlsDuration: 0.4s;
         }
       }
       
-      .groups {
+      .group-list {
         opacity: 0
       }
     }

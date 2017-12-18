@@ -14,9 +14,14 @@
             </button>
           </h3>
         </div>
-        <div class="groups">
-          <div v-for="(group, name) in $store.state.controls">
-            <pre> {{name}}: {{group}} </pre>
+        <div class="group-list">
+          <div v-for="(group, name) in $store.state.controls" class="group">
+            <h5 v-text="name"></h5>
+            <component v-for="(control, i) in group"
+              :is="control.type"
+              :options="control.options"
+              :key="i">
+            </component>
           </div>
         </div>
       </div>
@@ -57,9 +62,11 @@
 <script>
 import MapAction from '../components/MapAction.vue'
 
+import TemporalFilter from '../components/control/TemporalFilter.vue'
+
 export default {
   props: [ 'isMobile' ],
-  components: { MapAction },
+  components: { MapAction, TemporalFilter },
   data() {
     return {
       actionsToggled: false,
