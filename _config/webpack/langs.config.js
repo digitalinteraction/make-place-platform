@@ -6,6 +6,7 @@ const isProduction = process.env.NODE_ENV === 'production'
 const shouldExtract = isProduction
 const shouldSourceMap = true
 
+console.log('IS_PROD', isProduction)
 
 exports.css = {
   minimize: process.env.NODE_ENV === 'production',

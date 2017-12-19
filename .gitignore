@@ -28,7 +28,7 @@ silverstripe.log
 
 
 # Compiled Assets
-/public/*/*.*
+/public/**/*.*
 
 
 # Ignore environment files

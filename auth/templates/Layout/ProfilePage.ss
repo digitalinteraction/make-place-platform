@@ -1,3 +1,5 @@
+<% require css('public/css/auth.css') %>
+
 <div class="container">
     
     <div class="row">

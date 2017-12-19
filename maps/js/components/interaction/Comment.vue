@@ -23,7 +23,7 @@
 
 
 <script>
-import moment from 'moment'
+import moment from 'moment-mini'
 
 export default {
   props: [ 'dataId', 'dataType', 'comment' ],

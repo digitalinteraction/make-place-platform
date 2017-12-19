@@ -342,6 +342,11 @@ class LoginController extends ContentController {
             return $this->redirectBack();
         }
         
+        if (!Permission::check('VERIFIED', 'any', $member)) {
+            $form->sessionMessage('Your account has not been verified, please check your email');
+            return $this->redirectBack();
+        }
+        
         $member->login($remember);
         
         return $this->redirect($back);

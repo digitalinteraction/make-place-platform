@@ -1,1 +1,1 @@
-console.log('Hello, Auth!')
+import '../sass/auth.scss'
