@@ -170,5 +170,153 @@ export default {
 }
 </script>
 
-<style lang="css">
+<style lang="scss">
+
+@import 'maps/sass/maps-common.scss';
+
+@keyframes emoji-select {
+  33%   { transform: scale(1.3); }
+  100%  { transform: scale(1.0); }
+}
+
+@keyframes grow-border {
+  from  { border-width: 0px; }
+  to    { border-width: 4px; }
+}
+
+.vote-section {
+  
+  margin-bottom: 18px;
+  
+  .title {
+    text-align: center;
+    font-size: 16px;
+    margin-top: 2em;
+  }
+  
+  .control {
+    display: block;
+    text-align: center;
+    position: relative;
+    
+    .holder {
+      display: inline-block;
+      background-color: transparentize($primaryColour, 0.90);
+      box-shadow: 0px 0.5px 2px rgba(0,0,0,0.5);
+      margin: 0;
+      padding: 8px;
+      height: 58px;
+      border-radius: 28px;
+      
+      &:not(.enabled) {
+        opacity: 0.3;
+      }
+    }
+    
+    .disabled-msg {
+      position: absolute;
+      top: 0;
+      left: 0; right: 0;
+      
+      text-align: center;
+      color: $darkColour;
+      font-weight: 600;
+      font-size: 20px;
+      padding: 0.8em 0;
+      text-shadow: 0 0 25px white;
+    }
+  }
+  
+  .emoji {
+    display: block;
+    position: relative;
+    float: left;
+    width: 42px;
+    height: 42px;
+    
+    background-size: contain;
+    background-repeat: no-repeat;
+    
+    &:not(:last-child) {
+      margin-right: 6px;
+    }
+    
+    transform: scale(1);
+    transform-origin: center bottom;
+    transition: transform 0.2s;
+    
+    .tip { display: none; }
+    
+    &.masked {
+      background-color: $primaryColour;
+      border-radius: 50%;
+    }
+    
+    @include not-small {
+      &.enabled:hover {
+        cursor: pointer;
+        transform: scale(1.15);
+        
+        .tip {
+          @include text-style;
+          font-size: 12px;
+          background: #000;
+          color: #fff;
+          position: absolute;
+          top: -24px;
+          border-radius: 4px;
+          display: block;
+          left: 50%;
+          transform: translateX(-50%);
+          padding: 2px 8px;
+          user-select: none;
+        }
+      }
+    }
+    &.current {
+      animation-name: emoji-select;
+      animation-fill-mode: both;
+      animation-duration: 0.3s;
+      animation-delay: 0.0s;
+    }
+    .backdrop {
+      position: absolute;
+      left: -3px;
+      right: -3px;
+      top: -3px;
+      bottom: -3px;
+      border-radius: 50%;
+      border: 0px solid $secondaryColour;
+      animation-name: grow-border;
+      animation-duration: 0.3s;
+      animation-fill-mode: both;
+    }
+  }
+  
+  .summary {
+    text-align: center;
+    font-weight: 700;
+    color: #555;
+    font-size: 12px;
+  }
+  
+  
+  .emoji-summary {
+    img {
+      width: 14px;
+      height: 14px;
+      
+      &.masked {
+        background-color: $primaryColour;
+        border-radius: 50%;
+      }
+    }
+    .count {
+      margin-left: -2px;
+      margin-right: 6px;
+    }
+  }
+  
+}
+
 </style>

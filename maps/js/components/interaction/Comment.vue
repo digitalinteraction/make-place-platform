@@ -42,7 +42,7 @@ export default {
 
 <style lang="scss">
 
-@import "maps/sass/mixins/comments.scss";
+@import 'maps/sass/maps-common.scss';
 
 @keyframes comment-appear {
   0% { transform: translateY(-20px); opacity: 0; }

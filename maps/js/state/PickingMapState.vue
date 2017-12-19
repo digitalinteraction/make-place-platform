@@ -52,5 +52,67 @@ export default {
 
 
 
-<style lang="css">
+<style lang="scss">
+
+@import 'maps/sass/maps-common.scss';
+
+@keyframes position-cancel {
+  from { bottom: -40px; }
+  to   { bottom: 0; }
+}
+
+@keyframes position-message {
+  from { top: -40px; opacity: 0; }
+  to   { top: 0; opacity: 1.0; }
+}
+
+.picking-state {
+  .message {
+    z-index: $zPickerMessage;
+    animation: position-message 0.3s both;
+    position: absolute;
+    left: 0;
+    right: 0;
+    background: white;
+    max-width: calc(100% - 12px);
+    width: 540px;
+    margin: 12px auto;
+    border-radius: 4px;
+    
+    @include only-small {
+      margin: 6px;
+      width: 100%;
+    }
+    
+    p {
+      text-align: center;
+      font-size: 18px;
+      margin: 0.5em;
+    }
+  }
+  
+  .cancel-button {
+    @include button-style(false);
+    
+    animation: position-cancel 0.3s both;
+    @include only-small { animation-duration: 0.0s; }
+    
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-bottom: 32px;
+    z-index: $xPickerCancel;
+    bottom: 0;
+    
+    font-size: 20px;
+    
+    i { transform: scale(1.5); }
+  }
+  
+  .full-overlay {
+    cursor: crosshair;
+  }
+  
+}
+
 </style>

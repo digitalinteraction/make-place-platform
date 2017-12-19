@@ -111,5 +111,5 @@ export default {
 
 
 
-<style lang="css">
+<style lang="scss">
 </style>

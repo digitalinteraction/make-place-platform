@@ -1,35 +1,11 @@
 
-
-
 // Common vars
-$zMainActions: 1500;
-$zControls: 1500;
-$zMobileActionToggle: 1500;
-$zOverlay: 1400;
-$zDetail: 1600;
-
-$zPickerMessage: 1500;
-$xPickerCancel: 1600;
-
-
-// Mixins
-@import 'mixins/abs-fill';
-@import 'mixins/fill-parent';
-@import 'mixins/primary-bottom';
+@import 'maps-common';
 
 // Components
-@import 'components/SurveyComponent';
-@import 'components/SurveyResponseComponent';
-@import 'components/LoadingComponent';
-@import 'components/VoteSectionComponent';
-@import 'components/CommentSectionComponent';
+@import 'components/SurveyResponse';
 @import 'components/FullOverlay';
 @import 'components/MarkerClusterer';
-
-// States
-@import 'components/DetailMapState';
-@import 'components/DefaultMapState';
-@import 'components/PickingMapState';
 
 // Pages
 @import 'pages/MapPage';
@@ -40,13 +16,3 @@ $xPickerCancel: 1600;
 @import 'transitions/grow-fade';
 @import 'transitions/fade';
 @import 'transitions/component-switch';
-
-
-@keyframes media-grow {
-  from { transform: scale(0.5); opacity: 0; }
-  to   { transform: scale(1.0); opactity: 1; }
-}
-
-.survey-response .media {
-  animation: media-grow;
-}

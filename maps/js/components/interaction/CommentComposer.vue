@@ -84,7 +84,7 @@ export default {
 
 <style lang="scss">
 
-@import "maps/sass/mixins/comments.scss";
+@import 'maps/sass/maps-common.scss';
 
 .comment-composer {
   @include comment-content;
