@@ -7,6 +7,8 @@ const rm = require('rimraf')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 
+process.env.NODE_ENV = 'production'
+
 const config = require('./webpack/webpack.prod.config')
 
 let spinner = ora('Compiling Sass ...')

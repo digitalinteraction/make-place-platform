@@ -4,12 +4,10 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin')
 
 const isProduction = process.env.NODE_ENV === 'production'
 const shouldExtract = isProduction
-const shouldSourceMap = true
-
-console.log('IS_PROD', isProduction)
+const shouldSourceMap = false
 
 exports.css = {
-  minimize: process.env.NODE_ENV === 'production',
+  minimize: isProduction,
   sourceMap: shouldSourceMap
 }
 

@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-
-# One time build the sass
-
-node _config/build.js scss

@@ -3,6 +3,8 @@ const chalk = require('chalk')
 
 console.log('Spinning up ...')
 
+process.env.NODE_ENV = 'development'
+
 const config = require('./webpack/webpack.dev.config')
 
 webpack(config, (err, result) => {
