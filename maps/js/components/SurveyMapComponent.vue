@@ -92,9 +92,6 @@ export default {
       
       responsesService.responseCreated(response)
        
-      if (this.options.renderResponses && this.options.positionQuestion && this.options.canView) {
-        this.addResponsePin(response, this.options.positionQuestion)
-      }
       this.$store.commit('resetMapState')
     },
     addResponsePin(response, posKey) {

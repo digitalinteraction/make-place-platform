@@ -4,7 +4,7 @@
 
 
 # Start from our base image
-FROM openlab.ncl.ac.uk:4567/make-place/web:base-2.3.2
+FROM openlab.ncl.ac.uk:4567/make-place/web:base-2.3.3
 
 
 # Add files to the build
@@ -15,6 +15,6 @@ COPY . /app/
 RUN mv _config/bootstrap.sh bootstrap.sh \
   && mv _config/phpunit.xml phpunit.xml \
   && mv _config/default.nginx /etc/nginx/sites-available/default \
-  && crontab -u root _config/cronjobs
-  # && scripts/build-js > /dev/null \
-  # && scripts/build-docs > /dev/null
+  && crontab -u root _config/cronjobs \
+  && npm run build > /dev/null \
+  && scripts/build-docs > /dev/null

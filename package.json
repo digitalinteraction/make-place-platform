@@ -40,6 +40,7 @@
     "axios": "^0.16.2",
     "bootstrap": "^3.3.7",
     "font-awesome": "^4.7.0",
+    "jquery": "^3.2.1",
     "leaflet": "^1.0.3",
     "leaflet.gridlayer.googlemutant": "^0.6.4",
     "leaflet.heat": "^0.2.0",
