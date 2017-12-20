@@ -1,6 +1,15 @@
 # Changelog
 The versions of Make Place and what features, bugs and tweaks were made for each.
 
+## 3.2.0
+
+### Features
+- Heatmaps, render survey's responses with a heatmap
+  - Choose the question to position the heat
+  - Optionally choose a question to weight the values
+  - Customise the size, opacity and weight values through the CMS
+- Different vote styles, agree/disagree or up/down voting
+
 ## 3.1.4
 - Fixed bug with highlighted geometries on the map
   - Moved `api/survey/:id/response/:id` to `api/survey/:id/response/:id/view`
