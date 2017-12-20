@@ -1,6 +1,6 @@
 {
   "name": "web-mp",
-  "version": "1.0.0",
+  "version": "3.2.0",
   "description": "A Geographical survey mapping platform based on the Silverstripe framework",
   "main": "index.js",
   "directories": {
