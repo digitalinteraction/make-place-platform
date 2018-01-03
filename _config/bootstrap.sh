@@ -14,13 +14,13 @@ env | sed 's/^\(.\)/export \1/' >> /app/.cron_env
 
 
 # Build the theme
-sed -i -e "s/\$primaryColour.*/\$primaryColour: ${PRIMARY_COL:-"#3886c9"};/" _config/scss/vars.scss
-sed -i -e "s/\$secondaryColour.*/\$secondaryColour: ${SECONDARY_COL:-"#aaaab2"};/" _config/scss/vars.scss
+# sed -i -e "s/\$primaryColour.*/\$primaryColour: ${PRIMARY_COL:-"#3886c9"};/" _config/scss/vars.scss
+# sed -i -e "s/\$secondaryColour.*/\$secondaryColour: ${SECONDARY_COL:-"#aaaab2"};/" _config/scss/vars.scss
 
 
 # Recompile the scss
 echo "Compiling Sass"
-npm run sass > build.log
+# npm run sass > build.log
 
 
 # Configure smtp

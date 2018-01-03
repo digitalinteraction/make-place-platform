@@ -1,6 +1,9 @@
 # Changelog
 The versions of Make Place and what features, bugs and tweaks were made for each.
 
+## 3.2.1
+- Removed colour re-compilation (for now)
+
 ## 3.2.0
 
 ### Features
