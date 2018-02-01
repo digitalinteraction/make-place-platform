@@ -14,9 +14,9 @@ const resolve = filepath => path.join(__dirname, '../..', filepath)
 
 module.exports = {
   entry: {
-    theme: [ resolve('themes/generic/js/theme-main.js') ],
-    maps: [ 'babel-polyfill', resolve('maps/js/maps-main.js') ],
-    auth: [ 'babel-polyfill', resolve('auth/js/auth-main.js') ]
+    theme: resolve('themes/generic/js/theme-main.js'),
+    maps: resolve('maps/js/maps-main.js'),
+    auth: resolve('auth/js/auth-main.js')
   },
   output: {
     path: config.build.assetsRoot,

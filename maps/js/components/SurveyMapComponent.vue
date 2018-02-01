@@ -9,6 +9,11 @@ import responsesService from '../services/responses'
 
 export default {
   props: [ 'options' ],
+  data() {
+    return {
+      markers: []
+    }
+  },
   mounted() {
     
     if (this.options.canSubmit) {
@@ -27,11 +32,11 @@ export default {
     
     // Register to get responses
     responsesService.request(this.options.surveyID, [posKey], {
-      fetched: (responses) => {
+      resolve: (responses) => {
+        let clusterer = this.$store.state.clusterer
+        this.markers.forEach(m => clusterer.removeLayer(m))
+        this.markers = []
         responses.forEach(r => this.addResponsePin(r, posKey))
-      },
-      redraw: (responses) => {
-        console.log('redraw', responses)
       },
       created: (response) => {
         this.addResponsePin(response, posKey)
@@ -114,6 +119,7 @@ export default {
       })
       
       // Add the marker
+      this.markers.push(marker)
       this.$store.state.clusterer.addLayer(marker)
     },
     responseClicked(response, e) {

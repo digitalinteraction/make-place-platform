@@ -8,10 +8,10 @@ class ResponseListener {
   
   /** Creates a new listener with an arg object */
   constructor(arg) {
-    this.fetched = arg.fetched || (() => {})
-    this.redraw = arg.redraw || (() => {})
-    this.created = arg.created || (() => {})
-    this.calls = 0
+    const nop = () => {}
+    this.resolve = arg.resolve || nop
+    // this.redraw = arg.redraw || nop
+    this.created = arg.created || nop
   }
 }
 
@@ -26,6 +26,7 @@ class RequestState {
     this.fields = []
     this.listeners = []
     this.state = 'pending'
+    this.responses = []
   }
   
   /** Adds a listener to the state */
@@ -35,11 +36,18 @@ class RequestState {
   }
   
   /** Resolves the state, updating the listeners */
-  resolve(responses) {
-    this.listeners.forEach(l => {
-      l.calls++ ? l.redraw(responses) : l.fetched(responses)
-    })
+  resolve(responses, filters) {
+    this.responses = responses
+    this.invalidate(filters)
     this.state = 'resolved'
+  }
+  
+  /** Refilters the responses and resolves the listeners again */
+  invalidate(filters) {
+    let filtered = this.responses.filter(response => {
+      return filters.every(f => f(response))
+    })
+    this.listeners.forEach(l => l.resolve(filtered))
   }
   
   /** Ends the state, marking it as failed */
@@ -58,6 +66,7 @@ class ResponsesService {
     this.requests = new Map()
     this.inProgress = false
     this.listeners = []
+    this.filters = []
   }
   
   /** Start the listener, ticking every x milliseconds */
@@ -104,6 +113,17 @@ class ResponsesService {
     this.listeners.forEach(l => l(...args))
   }
   
+  /** Register a filter  */
+  registerFilter(id, filter) {
+    this.filters[id] = filter
+  }
+  
+  /** Cause responses to be refiltered and resolved again */
+  invalidate() {
+    let filters = Object.values(this.filters)
+    this.requests.forEach(request => request.invalidate(filters))
+  }
+  
   
   
   
@@ -147,8 +167,13 @@ class ResponsesService {
       // Perform the request
       let res = await axios.get(`/api/survey/${request.surveyId}/responses`, { params })
       
+      // Add dates to each response
+      res.data.forEach(r => {
+        r.created = new Date(r.created)
+      })
+      
       // Resolve the request
-      request.resolve(res.data)
+      request.resolve(res.data, Object.values(this.filters))
     }
     catch (error) {
       

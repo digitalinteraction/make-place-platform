@@ -6,12 +6,11 @@
 export default {
   props: [ 'options' ],
   mounted() {
+    console.log(this.options)
     this.$store.commit('addControl', {
       group: 'Temporal',
       type: 'TemporalFilter',
-      options: {
-        mode: this.options.mode
-      }
+      options: this.options
     })
   }
 }

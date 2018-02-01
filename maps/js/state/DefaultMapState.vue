@@ -1,7 +1,7 @@
 <template lang="html">
   <div class="default-map-state">
     
-    <div v-if="hasControls" class="controls-wrapper" :class="{ active: showControls }">
+    <div v-show="hasControls" class="controls-wrapper" :class="{ active: showControls }">
       <div class="inner">
         <div class="header">
           <h3>
@@ -16,12 +16,13 @@
         </div>
         <div class="group-list">
           <div v-for="(group, name) in $store.state.controls" class="group">
-            <h5 v-text="name"></h5>
-            <component v-for="(control, i) in group"
-              :is="control.type"
-              :options="control.options"
-              :key="i">
-            </component>
+            <keep-alive>
+              <component v-for="(control, i) in group"
+                :is="control.type"
+                :options="control.options"
+                :key="i">
+              </component>
+            </keep-alive>
           </div>
         </div>
       </div>
@@ -161,7 +162,7 @@ $controlsDuration: 0.4s;
       z-index: $zControls;
       max-height: 100%;
       transition: right $controlsDuration, background-color 0.3s 0.1s;
-      
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
       
       right: 0;
       
@@ -169,8 +170,11 @@ $controlsDuration: 0.4s;
       .group-list {
         opacity: 1;
         transition: $controlsDuration opacity;
+        margin: 0 1em;
         
         .group {
+          
+          margin-bottom: 1em;
           
           h4 {
             
@@ -184,6 +188,7 @@ $controlsDuration: 0.4s;
     &:not(.active) .inner {
       right: calc(100% - 54px + #{$cardPadding});
       background-color: rgba(0,0,0,0);
+      box-shadow: none;
       
       .header button {
         box-shadow: 0 0 5px rgba(0,0,0,0.1);

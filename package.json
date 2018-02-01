@@ -47,6 +47,7 @@
     "leaflet.markercluster": "^1.2.0",
     "moment-mini": "^2.19.4",
     "vue": "^2.3.4",
+    "vuejs-datepicker": "^0.9.25",
     "vuex": "^2.3.1"
   },
   "devDependencies": {

@@ -35,13 +35,11 @@ export default {
     
     if (questions.length === 0) return
     
+    this.heatLayer = L.heatLayer([], this.heatOpts)
+    this.$store.state.map.addLayer(this.heatLayer)
+    
     responsesService.request(this.options.surveyID, questions, {
-      fetched: (responses) => {
-        let heatPoints = this.pointsFromResponses(responses, posQ, weightQ, defaultWeight)
-        this.heatLayer = L.heatLayer(heatPoints, this.heatOpts)
-        this.$store.state.map.addLayer(this.heatLayer)
-      },
-      redraw: (responses) => {
+      resolve: (responses) => {
         let heatPoints = this.pointsFromResponses(responses, posQ, weightQ, defaultWeight)
         this.heatLayer.setLatLngs(heatPoints)
       },
