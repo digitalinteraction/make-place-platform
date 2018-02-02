@@ -4,7 +4,7 @@
     
     <h4 class="title"><slot></slot></h4>
     <div class="control">
-      <div class="holder" :class="{enabled: canMake}">
+      <div class="holder primary-alpha-background" :class="{enabled: canMake}">
         
         <!-- Add our emoji -->
         <emoji v-for="e in emojiList"
@@ -201,7 +201,6 @@ export default {
     
     .holder {
       display: inline-block;
-      background-color: transparentize($primaryColour, 0.90);
       box-shadow: 0px 0.5px 2px rgba(0,0,0,0.5);
       margin: 0;
       padding: 8px;
@@ -248,7 +247,6 @@ export default {
     .tip { display: none; }
     
     &.masked {
-      background-color: $primaryColour;
       border-radius: 50%;
     }
     
@@ -286,7 +284,8 @@ export default {
       top: -3px;
       bottom: -3px;
       border-radius: 50%;
-      border: 0px solid $secondaryColour;
+      border-width: 0px;
+      border-style: solid;
       animation-name: grow-border;
       animation-duration: 0.3s;
       animation-fill-mode: both;
@@ -307,7 +306,6 @@ export default {
       height: 14px;
       
       &.masked {
-        background-color: $primaryColour;
         border-radius: 50%;
       }
     }

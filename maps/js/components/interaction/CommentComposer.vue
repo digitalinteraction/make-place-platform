@@ -6,11 +6,11 @@
     
     <!-- The composer form -->
     <div v-if="canComment" class="content">
-      <textarea v-model="message" maxlength="250" name="message" @keyup.enter.prevent="submitComment"></textarea>
+      <textarea v-model="message" maxlength="250" name="message" @keyup.enter.prevent="submitComment" class="primary-focus-border"></textarea>
       
       <p class="placeholder" v-if="message.length < 1"> {{placeholder}} </p>
       
-      <button class="send" @click="submitComment" :disabled="isSending || message.length < 3"> {{action}} </button>
+      <button class="send primary-background" @click="submitComment" :disabled="isSending || message.length < 3"> {{action}} </button>
     </div>
     <div v-else class="content">
       
@@ -106,7 +106,6 @@ export default {
     
     &:focus {
       outline: 0;
-      border-color: $primaryColour;
     }
   }
   
@@ -132,7 +131,6 @@ export default {
     padding: 4px 12px;
     border-radius: 4px;
     
-    background: $primaryColour;
     opacity: 1.0;
     
     transition: background-color 0.1s, opacity 0.1s;

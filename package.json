@@ -8,7 +8,7 @@
   },
   "scripts": {
     "build": "node _config/build.js",
-    "sass": "node _config/runSass.js",
+    "themed-sass": "node _config/runSass.js",
     "dev": "node _config/dev-runtime.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint --ext .js,.vue src"

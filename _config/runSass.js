@@ -18,6 +18,9 @@ spinner.start()
 const newPath = path.join(__dirname, '../public/_tmp')
 config.output.path = newPath
 
+// Only use the theme input
+config.entry = { theme: config.entry.theme }
+
 // Use different plugins
 config.plugins = [
   new ExtractTextPlugin('../css/[name].css'),

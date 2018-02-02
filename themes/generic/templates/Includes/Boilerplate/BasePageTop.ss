@@ -23,6 +23,7 @@ generic. A parameterised silverstripe theme
 	
 	<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700+Jaldi" rel="stylesheet">
 	
+	<% require css('public/css/common.css') %>
 	<% require css('public/css/theme.css') %>
 	
 	

@@ -1,6 +1,6 @@
 <template lang="html">
   <span class="emoji"
-    :class="{current, masked: emoji.masked, enabled}"
+    :class="classes"
     @click="chosen"
     :style="{'background-image': `url(${emoji.icon})`}">
     
@@ -8,7 +8,7 @@
       {{emoji.name}}
     </span>
     
-    <span v-if="current" class="backdrop"></span>
+    <span v-if="current" class="backdrop secondary-border"></span>
     
   </span>
 </template>
@@ -18,6 +18,16 @@
 <script>
 export default {
   props: [ 'emoji', 'current', 'masked', 'enabled' ],
+  computed: {
+    classes() {
+      return {
+        current: this.current,
+        masked: this.emoji.masked,
+        'primary-background': this.emoji.masked,
+        enabled: this.enabled
+      }
+    }
+  },
   methods: {
     chosen(event) {
       if (!this.enabled) return

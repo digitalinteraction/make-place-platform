@@ -11,7 +11,7 @@
       :placeholder="placeholder"
       :action="action">
     </comment-composer>
-    <p v-else class="disabled-msg">
+    <p v-else class="disabled-msg primary-border">
       <span v-if="perms.comments.make === 'NoOne'">
         Comments have been disabled
       </span>
@@ -73,7 +73,11 @@ export default {
   
   .disabled-msg {
     padding: 0.5em;
-    border-left: 3px solid $primaryColour;
+    border-left-style: solid;
+    border-left-width: 3px;
+    border-right-color: white;
+    border-top-color: white;
+    border-bottom-color: white;
     font-size: 18px;
     color: $lightTextColour;
   }

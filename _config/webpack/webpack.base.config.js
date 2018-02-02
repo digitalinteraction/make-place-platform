@@ -15,6 +15,7 @@ const resolve = filepath => path.join(__dirname, '../..', filepath)
 module.exports = {
   entry: {
     theme: resolve('themes/generic/js/theme-main.js'),
+    common: resolve('themes/generic/js/common-main.js'),
     maps: resolve('maps/js/maps-main.js'),
     auth: resolve('auth/js/auth-main.js')
   },
