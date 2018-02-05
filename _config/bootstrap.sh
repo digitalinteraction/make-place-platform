@@ -31,6 +31,7 @@ echo "AuthUser=apikey" >> /etc/ssmtp/ssmtp.conf
 echo "AuthPass=${SENDGRID_API_KEY}" >> /etc/ssmtp/ssmtp.conf
 echo "AuthMethod=LOGIN" >> /etc/ssmtp/ssmtp.conf
 echo "UseSTARTTLS=YES" >> /etc/ssmtp/ssmtp.conf
+echo "FromLineOverride=YES" >> /etc/ssmtp/ssmtp.conf
 
 
 # Configure php5-fpm
