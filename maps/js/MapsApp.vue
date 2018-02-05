@@ -102,9 +102,6 @@ export default {
         this.page = config.page
         this.components = config.components
         
-        console.log(this.components)
-        
-        
         // Create our map
         let map = L.map('map-base', {
           attributionControl: config.page.tileset !== 'Google'

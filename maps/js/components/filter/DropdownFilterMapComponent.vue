@@ -6,7 +6,6 @@
 export default {
   props: [ 'options' ],
   mounted() {
-    console.log('...')
     this.$store.commit('addControl', {
       group: 'Dropdown',
       type: 'DropdownFilter',
