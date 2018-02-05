@@ -1,6 +1,15 @@
 # Changelog
 The versions of Make Place and what features, bugs and tweaks were made for each.
 
+## 3.3.1
+- Fixed emailing from lines not being set
+
+## 3.3.0
+- Added filtering capability
+  - Responses on the map use a service to fetch them
+  - Filters can be registered to that service, which're applied when the data loads
+- Implemented TemporalFilter, to filter all responses in a time-based way
+
 ## 3.2.1
 - Removed colour re-compilation (for now)
 
