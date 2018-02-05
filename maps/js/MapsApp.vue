@@ -66,7 +66,7 @@ export default {
       page: null,
       componentConfig: null,
       components: [],
-      fetchingResponses: true
+      fetchingResponses: false
     }
   },
   computed: {
