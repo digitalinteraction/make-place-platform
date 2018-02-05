@@ -63,11 +63,13 @@
 <script>
 import MapAction from '../components/MapAction.vue'
 
-import TemporalFilter from '../components/control/TemporalFilter.vue'
+import TemporalFilter from '../components/control/TemporalFilter'
+import TextFilter from '../components/control/TextFilter'
+import DropdownFilter from '../components/control/DropdownFilter'
 
 export default {
   props: [ 'isMobile' ],
-  components: { MapAction, TemporalFilter },
+  components: { MapAction, TemporalFilter, TextFilter, DropdownFilter },
   data() {
     return {
       actionsToggled: false,
@@ -159,6 +161,7 @@ $controlsDuration: 0.4s;
       position: relative;
       min-height: 320px;
       background-color: #fff;
+      overflow: scroll;
       z-index: $zControls;
       max-height: 100%;
       transition: right $controlsDuration, background-color 0.3s 0.1s;

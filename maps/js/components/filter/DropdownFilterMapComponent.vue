@@ -1,15 +1,15 @@
 <template lang="html">
-  <!--  -->
+  <!-- Dropdown Filter Map Component -->
 </template>
 
 <script>
 export default {
   props: [ 'options' ],
   mounted() {
-    console.log(this.options)
+    console.log('...')
     this.$store.commit('addControl', {
-      group: 'Temporal',
-      type: 'TemporalFilter',
+      group: 'Dropdown',
+      type: 'DropdownFilter',
       options: this.options
     })
   }

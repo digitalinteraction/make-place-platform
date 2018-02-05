@@ -9,7 +9,7 @@ services:
     container_name: mp_web
     build: .
     ports:
-      - 80
+      - 8080:80
     links:
       - mysql
       - geo

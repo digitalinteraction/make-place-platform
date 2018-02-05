@@ -4,7 +4,7 @@
 class TemporalFilterMapComponent extends MapComponent {
     
     private static $db = [
-        'Mode' => 'Enum(array("DayOfWeek", "DateRange", "Recentness"), "DayOfWeek")'
+        'Mode' => 'Enum(array("DayOfWeek", "DateRange", "Recentness", "TimeOfDay"), "DayOfWeek")'
     ];
     
     public function addExtraFields(FieldList $fields) {

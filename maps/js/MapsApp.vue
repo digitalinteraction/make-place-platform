@@ -36,7 +36,10 @@ import axios from 'axios'
 import SurveyMapComponent from './components/SurveyMapComponent'
 import ContentMapComponent from './components/ContentMapComponent'
 import HeatMapComponent from './components/HeatMapComponent'
-import TemporalFilterMapComponent from './components/TemporalFilterMapComponent'
+
+import TemporalFilterMapComponent from './components/filter/TemporalFilterMapComponent'
+import TextFilterMapComponent from './components/filter/TextFilterMapComponent'
+import DropdownFilterMapComponent from './components/filter/DropdownFilterMapComponent'
 
 import DefaultMapState from './state/DefaultMapState'
 import DetailMapState from './state/DetailMapState'
@@ -56,6 +59,8 @@ export default {
     ContentMapComponent,
     HeatMapComponent,
     TemporalFilterMapComponent,
+    TextFilterMapComponent,
+    DropdownFilterMapComponent,
     DefaultMapState,
     DetailMapState,
     PickingMapState
@@ -96,6 +101,8 @@ export default {
         let config = res.data
         this.page = config.page
         this.components = config.components
+        
+        console.log(this.components)
         
         
         // Create our map
