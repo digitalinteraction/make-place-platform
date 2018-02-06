@@ -14,17 +14,15 @@
             </button>
           </h3>
         </div>
-        <div class="group-list">
-          <div v-for="(group, name) in $store.state.controls" class="group">
-            <keep-alive>
-              <component v-for="(control, i) in group"
-                :is="control.type"
-                :options="control.options"
-                :key="i">
-              </component>
-            </keep-alive>
+        <keep-alive>
+          <div class="controls-list">
+            <component v-for="(control, i) in $store.state.controls"
+              :is="control.type"
+              :options="control.options"
+              :key="i">
+            </component>
           </div>
-        </div>
+        </keep-alive>
       </div>
     </div>
     
@@ -66,10 +64,11 @@ import MapAction from '../components/MapAction.vue'
 import TemporalFilter from '../components/control/TemporalFilter'
 import TextFilter from '../components/control/TextFilter'
 import DropdownFilter from '../components/control/DropdownFilter'
+import SurveyFilter from '../components/control/SurveyFilter'
 
 export default {
   props: [ 'isMobile' ],
-  components: { MapAction, TemporalFilter, TextFilter, DropdownFilter },
+  components: { MapAction, TemporalFilter, TextFilter, DropdownFilter, SurveyFilter },
   data() {
     return {
       actionsToggled: false,
@@ -97,7 +96,6 @@ export default {
     },
     actionChosen() {
       this.actionsToggled = false
-      // console.log('picked')
     }
   }
 }
@@ -170,20 +168,13 @@ $controlsDuration: 0.4s;
       right: 0;
       
       
-      .group-list {
+      .controls-list {
         opacity: 1;
         transition: $controlsDuration opacity;
         margin: 0 1em;
         
-        .group {
-          
-          margin-bottom: 1em;
-          
-          h4 {
-            
-          }
-          
-          
+        h5 {
+          margin: 1em 0 0.4em;
         }
       }
     }
@@ -201,8 +192,8 @@ $controlsDuration: 0.4s;
         }
       }
       
-      .group-list {
-        opacity: 0
+      .controls-list {
+        opacity: 0;
       }
     }
     

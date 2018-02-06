@@ -20,4 +20,10 @@ class TextFilterMapComponent extends MapComponent {
             ]);
         }
     }
+    
+    public function customiseJson($json) {
+        $json = parent::customiseJson($json);
+        $json['question'] = $this->serializedQuestion();
+        return $json;
+    }
 }

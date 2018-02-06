@@ -1,8 +1,8 @@
 <template lang="html">
-  <option-set class="control dropdown-filter"
+  <option-set class="control survey-filter"
     :label="options.label"
-    v-model="chosenOptions"
-    :options="options.question.options"
+    v-model="chosenSurveys"
+    :options="surveys"
     @input="updateFilter">
   </option-set>
 </template>
@@ -15,24 +15,28 @@ export default {
   components: { OptionSet },
   props: [ 'options' ],
   data() {
-    return {
-      chosenOptions: []
+    return { chosenSurveys: [] }
+  },
+  computed: {
+    surveys() {
+      return Object.keys(this.options.surveys)
+        .map(name => ({
+          key: name,
+          value: this.options.surveys[name] }))
+        .filter(option =>
+          responseService.isRequested(option.value)
+        )
     }
   },
   mounted() {
     responseService.registerFilter(this.options.id, response => {
-      return this.performFilter(response)
+      if (this.chosenSurveys.length === 0) return true
+      return this.chosenSurveys.includes(response.surveyId)
     })
   },
   methods: {
     updateFilter() {
       responseService.invalidate()
-    },
-    performFilter(response) {
-      if (response.surveyId !== this.options.surveyID) return true
-      if (this.chosenOptions.length === 0) return true
-      let value = response.values[this.options.question.handle].value
-      return this.chosenOptions.includes(value)
     }
   }
 }

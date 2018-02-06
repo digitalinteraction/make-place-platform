@@ -11,17 +11,16 @@ export default new VueX.Store({
     clusterer: null,
     mapDetail: null,
     highlight: null,
-    controls: {}
+    controls: []
   },
   mutations: {
     addAction(state, newAction) {
       state.actions.push(newAction)
     },
     addControl(state, control) {
-      if (!control.group || !control.type) return
-      if (!state.controls[control.group]) Vue.set(state.controls, control.group, [])
+      if (!control.type) return
       control.options = control.options || {}
-      state.controls[control.group].push(control)
+      state.controls.push(control)
     },
     
     

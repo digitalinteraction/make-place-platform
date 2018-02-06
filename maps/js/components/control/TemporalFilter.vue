@@ -1,11 +1,12 @@
 <template lang="html">
   <div class="control temporal-filter" :class="options.mode">
     <template v-if="options.mode === 'DayOfWeek'">
-      <h5> Filter by Day of the week </h5>
-      <label v-for="(day, i) in days">
-        <input type="checkbox" v-model="chosenDays" :value="i" @change="updateFilter">
-        {{day}}
-      </label>
+      <option-set
+        label="Filter by Day of the week"
+        :options="days"
+        v-model="chosenDays"
+        @input="updateFilter">
+      </option-set>
     </template>
     <template v-else-if="options.mode === 'DateRange'">
       <h5> Filter by date range </h5>
@@ -34,17 +35,24 @@
 <script>
 import responseService from '../../services/responses'
 import Datepicker from 'vuejs-datepicker'
+import OptionSet from '../OptionSet'
 
-const DayNames = [
-  'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'
+const DaysMap = [
+  { key: 'Monday', value: 1 },
+  { key: 'Tuesday', value: 2 },
+  { key: 'Wednesday', value: 3 },
+  { key: 'Thursday', value: 4 },
+  { key: 'Friday', value: 5 },
+  { key: 'Saturday', value: 6 },
+  { key: 'Sunday', value: 0 }
 ]
 
 export default {
-  components: { Datepicker },
+  components: { Datepicker, OptionSet },
   props: [ 'options' ],
   data() {
     return {
-      days: DayNames,
+      days: DaysMap,
       chosenDays: [],
       startDate: null,
       endDate: null,

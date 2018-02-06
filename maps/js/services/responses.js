@@ -10,7 +10,6 @@ class ResponseListener {
   constructor(arg) {
     const nop = () => {}
     this.resolve = arg.resolve || nop
-    // this.redraw = arg.redraw || nop
     this.created = arg.created || nop
   }
 }
@@ -78,7 +77,7 @@ class ResponsesService {
   request(surveyId, fields, listener) {
     
     // If we aren't already listening, create a state
-    if (!this.requests.has(surveyId)) {
+    if (!this.isRequested(surveyId)) {
       this.requests.set(surveyId, new RequestState(surveyId))
     }
     
@@ -122,6 +121,11 @@ class ResponsesService {
   invalidate() {
     let filters = Object.values(this.filters)
     this.requests.forEach(request => request.invalidate(filters))
+  }
+  
+  /** If a survey has been requested */
+  isRequested(surveyId) {
+    return this.requests.has(surveyId)
   }
   
   

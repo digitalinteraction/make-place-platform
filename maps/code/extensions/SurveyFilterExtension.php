@@ -38,4 +38,13 @@ class SurveyFilterExtension extends DataExtension {
             ->setEmptyString('Not Selected');
     }
     
+    public function serializedQuestion() {
+        if ($this->owner->QuestionID !== null) {
+            return $this->owner->Question()->jsonSerialize();
+        }
+        else {
+            return null;
+        }
+    }
+    
 }

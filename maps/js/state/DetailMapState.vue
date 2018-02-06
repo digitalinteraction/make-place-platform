@@ -21,9 +21,9 @@
           </div>
           
           <!-- Render the detail component -->
-          <div class="content" :class="options.detail.type">
-            <component :is="options.detail.type"
-              :options="options.detail.options"
+          <div class="content" v-if="detail" :class="detail.type">
+            <component :is="detail.type"
+              :options="detail.options"
               @change-title="changeTitle">
             </component>
           </div>

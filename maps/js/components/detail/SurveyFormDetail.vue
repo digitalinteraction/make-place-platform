@@ -28,8 +28,12 @@ export default {
       return `${this.$config.api}/api/survey/${this.options.component.surveyID}`
     }
   },
-  mounted() {
+  activated() {
     this.fetchForm()
+  },
+  deactivated() {
+    this.renderedForm = null
+    this.submitting = false
   },
   methods: {
     async fetchForm() {

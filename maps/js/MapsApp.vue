@@ -16,11 +16,13 @@
       
       
       <!-- The map's state component -->
-      <component v-if="currentState"
-        :is="currentState.type"
-        :is-mobile="isMobile"
-        :options="currentState.options">
-      </component>
+      <keep-alive>
+        <component v-if="currentState"
+          :is="currentState.type"
+          :is-mobile="isMobile"
+          :options="currentState.options">
+        </component>
+      </keep-alive>
       
     </div>
     
@@ -40,6 +42,7 @@ import HeatMapComponent from './components/HeatMapComponent'
 import TemporalFilterMapComponent from './components/filter/TemporalFilterMapComponent'
 import TextFilterMapComponent from './components/filter/TextFilterMapComponent'
 import DropdownFilterMapComponent from './components/filter/DropdownFilterMapComponent'
+import SurveyFilterMapComponent from './components/filter/SurveyFilterMapComponent'
 
 import DefaultMapState from './state/DefaultMapState'
 import DetailMapState from './state/DetailMapState'
@@ -61,6 +64,7 @@ export default {
     TemporalFilterMapComponent,
     TextFilterMapComponent,
     DropdownFilterMapComponent,
+    SurveyFilterMapComponent,
     DefaultMapState,
     DetailMapState,
     PickingMapState

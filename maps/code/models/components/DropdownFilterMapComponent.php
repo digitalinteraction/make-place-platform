@@ -22,16 +22,8 @@ class DropdownFilterMapComponent extends MapComponent {
     }
     
     public function customiseJson($json) {
-        
         $json = parent::customiseJson($json);
-        
-        if ($this->QuestionID !== null) {
-            $json['question'] = $this->Question()->jsonSerialize();
-        }
-        else {
-            $json['dropdownOptions'] = null;
-        }
-        
+        $json['question'] = $this->serializedQuestion();
         return $json;
     }
 }
