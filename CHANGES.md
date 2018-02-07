@@ -1,6 +1,9 @@
 # Changelog
 The versions of Make Place and what features, bugs and tweaks were made for each.
 
+## 3.5.0
+- HeatMapComponent now renders linestrings as well as single points
+
 ## 3.4.0
 - Added more filter types
   - Filter by survey
