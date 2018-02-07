@@ -159,7 +159,7 @@ $controlsDuration: 0.4s;
       position: relative;
       min-height: 320px;
       background-color: #fff;
-      overflow: scroll;
+      overflow: auto;
       z-index: $zControls;
       max-height: 100%;
       transition: right $controlsDuration, background-color 0.3s 0.1s;
