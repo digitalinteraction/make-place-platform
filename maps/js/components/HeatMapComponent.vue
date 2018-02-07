@@ -44,28 +44,30 @@ export default {
         this.heatLayer.setLatLngs(heatPoints)
       },
       created: (response) => {
-        let point = this.latLngFromResponse(response, posQ, weightQ, defaultWeight)
-        if (point) {
-          this.heatLayer.addLatLng(point)
-        }
+        this.latLngsFromResponse(response, posQ, weightQ, defaultWeight)
+          .forEach(p => this.heatLayer.addLatLng(p))
       }
     })
   },
   methods: {
-    latLngFromResponse(response, posQ, weightQ, defaultWeight) {
-      let pos = response.values[posQ].value
-      if (pos === null) return null
-      return new L.LatLng(
-        response.values[posQ].value.geom.x,
-        response.values[posQ].value.geom.y,
-        weightQ ? response.values[weightQ].value || defaultWeight : defaultWeight
-      )
+    latLngsFromResponse(response, posQ, weightQ, defaultWeight) {
+      let answer = response.values[posQ].value
+      if (answer === null) return []
+      
+      let weight = weightQ ? response.values[weightQ].value || defaultWeight : defaultWeight
+      
+      if (answer.type === 'POINT') {
+        return [ new L.LatLng(answer.geom.x, answer.geom.y, weight) ]
+      }
+      else if (answer.type === 'LINESTRING') {
+        return answer.geom.map(geom => new L.LatLng(geom.x, geom.y, weight))
+      }
+      return []
     },
     pointsFromResponses(responses, posQ, weightQ, defaultWeight) {
       let points = []
       responses.forEach(r => {
-        let point = this.latLngFromResponse(r, posQ, weightQ, defaultWeight)
-        if (point) points.push(point)
+        points = points.concat(this.latLngsFromResponse(r, posQ, weightQ, defaultWeight))
       })
       return points
     }
