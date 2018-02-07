@@ -1,6 +1,12 @@
 # Changelog
 The versions of Make Place and what features, bugs and tweaks were made for each.
 
+## 3.4.0
+- Added more filter types
+  - Filter by survey
+  - Filter by a TextQuestion on a survey
+  - Filter by a DropdownQuestion on a survey
+
 ## 3.3.1
 - Fixed emailing from lines not being set
 
