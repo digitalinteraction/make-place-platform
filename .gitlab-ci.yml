@@ -4,14 +4,11 @@ variables:
     CONTAINER_BASE_IMAGE: $CI_REGISTRY_IMAGE:base-2.3.2
     CONTAINER_BRANCH_IMAGE: $CI_REGISTRY_IMAGE:$CI_BUILD_REF_NAME
     CONTAINER_RELEASE_IMAGE: $CI_REGISTRY_IMAGE:$VERSION_NUMBER
-    DOCKER_DRIVER: overlay
-    GITLAB_USER: gitlab-ci-token
-    
-
-# before_script:
-#     - docker login -u $GITLAB_USER -p $CI_BUILD_TOKEN $CI_REGISTRY
+    DOCKER_DRIVER: overlay2
 
 
+services
+    - docker:dind
 
 
 stages:
@@ -32,7 +29,7 @@ test:
         # - docker push $CONTAINER_BRANCH_IMAGE
 
 build-master:
-  image: docker:dind
+  image: docker:latest
   stage: build
   tags:
     - dind
@@ -45,7 +42,7 @@ build-master:
 
 
 build:
-  image: docker:dind
+  image: docker:latest
   stage: build
   tags:
     - dind
