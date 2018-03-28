@@ -32,7 +32,7 @@ test:
         # - docker push $CONTAINER_BRANCH_IMAGE
 
 build-master:
-  image: docker:latest
+  image: docker:dind
   stage: build
   tags:
     - dind
@@ -45,7 +45,7 @@ build-master:
 
 
 build:
-  image: docker:latest
+  image: docker:dind
   stage: build
   tags:
     - dind
