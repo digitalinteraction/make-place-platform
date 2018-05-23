@@ -14,48 +14,46 @@
             $Title
         </h1>
         
-        
-        <%-- OAuth --%>
-        <%-- <div class="oauth">
-            
-            <h4> Sign in with: </h4>
-            
-            <a class="facebook-auth" href="oauth/fb/login?BackURL=$BackURL.URLATT">
-                <i class="fa fa-facebook-official" aria-hidden="true"></i>
-                Facebook
-            </a>
-        </div> --%>
-        
-        <%-- <p class="or-section"> or </p> --%>
-        
-        <div class="form-tabs">
-            
-            <ul class="nav nav-tabs" role="tablist">
+        <% if not SiteConfig.LoginDisabled && SiteConfig.RegisterDisabled %>
+            <hr>
+            $LoginForm
+        <% else_if not SiteConfig.RegisterDisabled && SiteConfig.LoginDisabled %>
+            <hr>
+            <h3> Register </h3>
+            $RegisterForm
+        <% else_if not SiteConfig.RegisterDisabled && not SiteConfig.LoginDisabled %>
+            <div class="form-tabs">
                 
-                <li role="presentation" class="<% if LoginMode = Login %>active<% end_if %>">
-                    <a href="#login" aria-controls="login" role="tab" data-toggle="tab"> Login </a>
-                </li>
+                <ul class="nav nav-tabs" role="tablist">
+                    
+                    <li role="presentation" class="<% if LoginMode = Login %>active<% end_if %>">
+                        <a href="#login" aria-controls="login" role="tab" data-toggle="tab"> Login </a>
+                    </li>
+                    
+                    <li role="presentation" class="<% if LoginMode = Register %>active<% end_if %>">
+                        <a href="#register" aria-controls="register" role="tab" data-toggle="tab"> Register </a>
+                    </li>
+                    
+                </ul>
                 
-                <li role="presentation" class="<% if LoginMode = Register %>active<% end_if %>">
-                    <a href="#register" aria-controls="register" role="tab" data-toggle="tab"> Register </a>
-                </li>
-                
-            </ul>
-            
-            <!-- Tab panes -->
-            <div class="tab-content">
-                
-                <div role="tabpanel" class="tab-pane <% if LoginMode = Login %>active<% end_if %>" id="login">
-                    $LoginForm
-                </div>
-                
-                <div role="tabpanel" class="tab-pane <% if LoginMode = Register %>active<% end_if %>" id="register">
-                    $RegisterForm
+                <!-- Tab panes -->
+                <div class="tab-content">
+                    
+                    <div role="tabpanel" class="tab-pane <% if LoginMode = Login %>active<% end_if %>" id="login">
+                        $LoginForm
+                    </div>
+                    
+                    <div role="tabpanel" class="tab-pane <% if LoginMode = Register %>active<% end_if %>" id="register">
+                        $RegisterForm
+                    </div>
+                    
                 </div>
                 
             </div>
-            
-        </div>
+        <% else %>
+            <hr>
+            <h4 class="text-center"> Sorry, Login is currently unavailable </h4>
+        <% end_if %>
         
     </article>
     

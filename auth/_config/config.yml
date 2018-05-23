@@ -5,6 +5,9 @@ After:
   - 'cms/*'
 ---
 
+SiteConfig:
+  extensions:
+    - AuthSiteConfigExtension
 
 Member:
   extensions:
