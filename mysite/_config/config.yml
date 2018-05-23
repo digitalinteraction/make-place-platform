@@ -11,6 +11,11 @@ After:
 SSViewer:
   theme: 'generic'
 
+# Add the calendar to the DateField
+DateField:
+  default_config:
+    showcalendar: true
+
 
 # Custom configuration for PHP Classes
 SiteConfig:

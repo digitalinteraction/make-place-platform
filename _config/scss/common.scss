@@ -104,7 +104,7 @@
 @mixin card-style {
   border: 1px solid $cardBorder;
   background: $cardBackground;
-  padding: $cardPadding;
+  padding: 1.5 * $cardPadding;
   margin-bottom: $cardPadding;
   border-radius: 2px;
 }

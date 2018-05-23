@@ -79,6 +79,8 @@ define('FB_SECRET', _envVar('FB_SECRET', 'NO_FB_SECRET_ID_PROVIDED'));
 define("ADMIN_EMAIL", _envVar("ADMIN_EMAIL", "noreply@openlab.ncl.ac.uk"));
 Email::setAdminEmail(ADMIN_EMAIL);
 
+define("CONTACT_EMAIL", _envVar("CONTACT_EMAIL", "openlab-admin@ncl.ac.uk"));
+
 // Geo Config
 define("GEO_URL", _envVar("GEO_URL"));
 define("GEO_KEY", _envVar("GEO_KEY"));
