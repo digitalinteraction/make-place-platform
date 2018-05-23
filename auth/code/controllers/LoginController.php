@@ -27,7 +27,7 @@ class LoginController extends ContentController {
         
         
         // Get the type of page to render from the session (which tab to show)
-        $this->LoginMode = Session::get('LoginMode');
+        $this->LoginMode = ConsentedSession::get('LoginMode');
         
         // Default the type to login
         if ($this->LoginMode == null) {
@@ -144,7 +144,10 @@ class LoginController extends ContentController {
      */
     public function RegisterForm() {
         
-        $registerMessage = "<label> By registering you agree to our <a href='/terms' target='_blank'>Terms & Conditions</a>.</label>";
+        $terms = "<a href='/terms' target='_blank'>Terms &amp; Conditions</a>";
+        $privacy = "<a href='/privacy' target='_blank'>Privacy Policy</a>";
+        
+        $registerMessage = "<br><label> By registering you agree to our $terms and $privacy</label>";
         
         // The fields of the form
         $fields = FieldList::create([
@@ -180,7 +183,7 @@ class LoginController extends ContentController {
     public function submitRegister(array $data, Form $form) {
         
         // Remember we're registering (so it can go back to the correct tab on page reload)
-        Session::set('LoginMode', 'Register');
+        ConsentedSession::set('LoginMode', 'Register');
         
         
         // Get the fields from the request
@@ -290,7 +293,6 @@ class LoginController extends ContentController {
                 ->setAttribute('placeholder', 'me@example.com'),
             PasswordField::create('Password', 'Password')
                 ->setAttribute('placeholder', '••••••••'),
-            CheckboxField::create('Remember','Remember me next time'),
             HiddenField::create('ReturnLink','ReturnLink')->setValue($this->getBackURL()),
             LiteralField::create('Forgot', $forgotten)
         ));
@@ -313,12 +315,11 @@ class LoginController extends ContentController {
         // Get data from the form submission
         $email = $data['Email'];
         $password = $data['Password'];
-        $remember = isset($data['Remember']);
         $back = isset($data['ReturnLink']) ? $data['ReturnLink'] : 'home/';
         
         
         // Remember we're loggin in for the next page load
-        Session::set('LoginMode', 'Login');
+        ConsentedSession::set('LoginMode', 'Login');
         
         
         // Error if no email
@@ -347,7 +348,7 @@ class LoginController extends ContentController {
             return $this->redirectBack();
         }
         
-        $member->login($remember);
+        $member->login(true);
         
         return $this->redirect($back);
     }
