@@ -84,13 +84,31 @@ class Page_Controller extends ContentController {
 
 
     /** Called when an instance is created */
-    // public function init() {
-    //
-    //     // Call super
-    //     parent::init();
-    //
-    //     // Custom code called whenever a page is rendered
-    //     // ...
-    //
-    // }
+    public function init() {
+        
+        // Call super
+        parent::init();
+        
+        // Custom code called whenever a page is rendered
+        // ...
+        
+        // Check for member consent
+        $member = Member::currentUser();
+        if ($member) {
+            
+            // Work out if the current user neets to consent
+            $hasConsent = $member->getHasConsent();
+            
+            // Don't consent if going to a terms/privacy page
+            $showConsent = $this->ClassName !== 'TermsPage'
+                && $this->ClassName !== 'PrivacyPage';
+            
+            // If required, redirect to the consent page
+            if (!$hasConsent && $showConsent) {
+                return $this->redirect('/consent');
+            }
+        }
+        
+        return $this;
+    }
 }

@@ -218,6 +218,8 @@ class LoginController extends ContentController {
         $member->Email = $email;
         $member->FirstName = $firstName;
         $member->Surname = $lastName;
+        $member->ConsentStatus = 'Signup';
+        $member->ConsentUpdated = date('Y-m-d');
         $member->changePassword($password);
         
         

@@ -7,4 +7,10 @@ class ConsentMemberExtension extends DataExtension {
       'ConsentUpdated' => 'Date',
       'ConsentStatus' => 'Enum(array("Signup","Accept","Reject",),"Signup")'
     ];
+    
+    public function getHasConsent() {
+        $consent = SiteConfig::current_site_config()->ConsentEffectiveDate;
+        return strtotime($this->owner->ConsentUpdated) >= strtotime($consent)
+            && $this->owner->ConsentStatus !== 'Reject';
+    }
 }

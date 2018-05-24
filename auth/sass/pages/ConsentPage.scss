@@ -1,7 +1,14 @@
 .ConsentPage {
-  font-size: 1.3em;
-}
-
-.Actions {
-  text-align: center;
+  p {
+    font-size: 1.2em;
+    
+    a {
+      text-decoration: underline;
+    }
+  }
+  
+  #Form_ConsentForm .Actions {
+    margin-top: 2em;
+    text-align: center;
+  }
 }
