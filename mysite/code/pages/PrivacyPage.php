@@ -4,8 +4,6 @@
 class PrivacyPage extends Page {
     
     private static $db = [
-        'EffectiveDate' => 'Date',
-        'ContactInfo' => 'HTMLText',
         'SummaryContent' => 'HTMLText'
     ];
     
@@ -19,8 +17,6 @@ class PrivacyPage extends Page {
         $fields = parent::getCMSFields();
         
         $fields->addFieldsToTab('Root.Privacy', [
-            DateField::create('EffectiveDate', 'When the terms were last updated'),
-            HtmlEditorField::create('ContactInfo', 'Contact Info'),
             HtmlEditorField::create('SummaryContent', 'Summary Info')
         ]);
         

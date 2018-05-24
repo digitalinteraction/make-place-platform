@@ -352,4 +352,10 @@ class LoginController extends ContentController {
         
         return $this->redirect($back);
     }
+    
+    
+    
+    public function consent() {
+        
+    }
 }

@@ -64,10 +64,10 @@
             <p>The personal data that we collect from you may be transferred to, and stored at, a destination outside the European Economic Area ("EEA"). It may also be processed by staff operating outside the EEA who work for us or for one of our suppliers. By submitting your personal data, you agree to this transfer, storing or processing. We will take all steps reasonably necessary to ensure that your data is treated securely and in accordance with this privacy policy.</p>
             
             <h4 id="contact-information">Contact information</h4>
-            <div>$ContactInfo</div>
+            <div>$SiteConfig.ConsentContactInfo</div>
             
             <h4 id="effective-date">Effective date</h4>
-            <p>$EffectiveDate.Long</p>
+            <p>$SiteConfig.ConsentEffectiveDate.Long</p>
             
         </div>
     </article>

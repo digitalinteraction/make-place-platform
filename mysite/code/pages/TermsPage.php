@@ -3,11 +3,6 @@
 /** A page to show the terms & conditions */
 class TermsPage extends Page {
     
-    private static $db = [
-        'EffectiveDate' => 'Date',
-        'ContactInfo' => 'HTMLText'
-    ];
-    
     private static $defaults = [
         'ShowInMenus' => 0,
         'ShowInSearch' => 0
@@ -16,14 +11,7 @@ class TermsPage extends Page {
     public function getCMSFields() {
         
         $fields = parent::getCMSFields();
-        
-        $fields->addFieldsToTab('Root.Terms', [
-            DateField::create('EffectiveDate', 'When the terms were last updated'),
-            HtmlEditorField::create('ContactInfo', 'Contact Information')
-        ]);
-        
         $fields->removeByName('Content');
-        
         return $fields;
     }
 }

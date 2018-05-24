@@ -84,10 +84,10 @@
             <p>Any and all notices to be given by either one of us to the other pursuant to or in connection with these Terms of Use shall be deemed sufficiently given when forwarded by e-mail in each case addressed to you at the e-mail address you have given us or to us at the e-mail address displayed on the Service.</p>
             
             <h4 id="contact-information">Contact information</h4>
-            <div>$ContactInfo</div>
+            <div>$SiteConfig.ConsentContactInfo</div>
             
             <h4 id="effective-date">Effective date</h4>
-            <p>$EffectiveDate.Long</p>
+            <p>$SiteConfig.ConsentEffectiveDate.Long</p>
             
         </div>
     </article>
