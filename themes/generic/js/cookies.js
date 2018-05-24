@@ -29,7 +29,7 @@ const cookieConsentConfig = {
   content: {
     allow: 'Allow Cookies',
     dismiss: 'Disable Cookies',
-    message: 'We use cookies on this website, this includes using Google Analytics and our own custom tools to understand how you use the site. The information we store is for research purposes and to provide the best experience we can.'
+    message: 'We use cookies on this website to analyse traffic, remember your preferences, and optimise your experience.'
   },
   onStatusChange(status, hasChanged) {
     if (status === 'allow') {
