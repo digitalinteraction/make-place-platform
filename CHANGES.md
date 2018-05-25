@@ -1,6 +1,17 @@
 # Changelog
 The versions of Make Place and what features, bugs and tweaks were made for each.
 
+## 3.6.0
+- Added consent workflow
+  - Your consent to the terms is stored per user, whether you accepted and when it was
+  - Added `/consent` page to change your consent at any time
+  - Any page on the site will redirect to consent if a user has not consented to the latest terms
+- Added templated `Terms` and `Privacy` pages so instances can quickly add them
+- Changed cookies to be opt-in, Google Analytics will **only** be enabled if the user consents
+
+## 3.5.1
+- Fixed minor scrollbars bug
+
 ## 3.5.0
 - HeatMapComponent now renders linestrings as well as single points
 
