@@ -11,7 +11,8 @@
     "themed-sass": "node _config/runSass.js",
     "dev": "node _config/dev-runtime.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "eslint --ext .js,.vue src"
+    "lint": "eslint --ext .js,.vue src",
+    "test2": "bash scripts/build-img $npm_package_version"
   },
   "apidoc": {
     "name": "Make Place",
