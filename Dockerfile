@@ -4,7 +4,7 @@
 
 
 # Start from our base image
-FROM openlab.ncl.ac.uk:4567/make-place/web:base-2.3.4
+FROM openlab.ncl.ac.uk:4567/make-place/web:base-2.4.0
 
 
 # Add files to the build
