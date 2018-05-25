@@ -6,15 +6,15 @@
         
         <% if $CurrentMember.getHasConsent %>
             
-            <p> Thank you for consenting to our terms and privacy policy. We want to be as open as posible so you can review your consent at any time below. </p>
+            <p> Thank you for consenting to our terms and privacy policy. We want to be as open as possible, so you can review and change your consent at any time below. </p>
             
         <% else_if $CurrentMember.ConsentStatus == "Reject" %>
             
-            <p> You have rejected our policies and can now no longer use our site. If you have changed your mind, you can do that below. </p>
+            <p> You have rejected our policies and can now no longer use our site. If you have changed your mind, you can do so below. </p>
             
         <% else %>
             
-            <p> Our terms and privacy have recently changed since you last reviewed them. We want to be open about the information we store and how we process that information. </p>
+            <p> Our terms and privacy have changed since you last reviewed them. We want to be open about the information we store and how we process that information. </p>
             
         <% end_if %>
         
