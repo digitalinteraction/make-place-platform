@@ -26,7 +26,9 @@
                 <% end_if %>
             <% end_with %>
             
-            <a class="link" label="Your Consent" href="/consent">Consent</a>
+            <% if CurrentMember %>
+                <a class="link" label="Your Consent" href="/consent">Consent</a>
+            <% end_if %>
             
             <% end_cached %>
             
