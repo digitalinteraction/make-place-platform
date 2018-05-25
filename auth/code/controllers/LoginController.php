@@ -201,7 +201,6 @@ class LoginController extends ContentController {
         if ($existing != null && $existing->getHasVerified()) {
             
             // If they do, pretend we sent an email to that address
-            // TODO: what if they created an account before but didn't verify it?
             return $this->redirect("login/emailsent/?email=$encodedEmail");
         }
         else if ($existing && !$existing->getHasVerified()){
@@ -346,18 +345,12 @@ class LoginController extends ContentController {
         }
         
         if (!Permission::check('VERIFIED', 'any', $member)) {
-            $form->sessionMessage('Your account has not been verified, please check your email');
+            $form->sessionMessage('Your account has not been verified, please check your email', 'warn');
             return $this->redirectBack();
         }
         
         $member->login(true);
         
         return $this->redirect($back);
-    }
-    
-    
-    
-    public function consent() {
-        
     }
 }

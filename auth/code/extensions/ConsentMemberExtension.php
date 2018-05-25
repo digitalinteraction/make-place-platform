@@ -13,4 +13,10 @@ class ConsentMemberExtension extends DataExtension {
         return strtotime($this->owner->ConsentUpdated) >= strtotime($consent)
             && $this->owner->ConsentStatus !== 'Reject';
     }
+    
+    public function updateCMSFields(FieldList $fields) {
+        
+        $fields->removeByName('ConsentUpdated');
+        $fields->removeByName('ConsentStatus');
+    }
 }
