@@ -10,7 +10,7 @@
             
         <% else_if $CurrentMember.ConsentStatus == "Reject" %>
             
-            <p> You have rejected our policies and can now no longer use our site. If you have changed your mind, you can do so below. </p>
+            <p> You have rejected our terms and can now no longer use our site. If you have changed your mind, you can do so below. </p>
             
         <% else %>
             

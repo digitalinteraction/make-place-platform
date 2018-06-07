@@ -60,7 +60,7 @@ class ConsentController extends ContentController {
     
     public function getAdminLink() {
         $email = 'openlab-admin@ncl.ac.uk';
-        return "<a href='mailto:$email'>$email</a>";
+        return "<a href='mailto:$email?subject=make.place'>$email</a>";
     }
     
     public function getTermsLink() {
