@@ -3,11 +3,12 @@ The versions of Make Place and what features, bugs and tweaks were made for each
 
 ## 3.6.0
 - Added consent workflow
-  - Your consent to the terms is stored per user, whether you accepted and when it was
+  - Consent to the terms is stored per member, whether you accepted and when you submitted that
   - Added `/consent` page to change your consent at any time
-  - Any page on the site will redirect to consent if a user has not consented to the latest terms
-- Added templated `Terms` and `Privacy` pages so instances can quickly add them
-- Changed cookies to be opt-in, Google Analytics will **only** be enabled if the user consents
+  - Any page on the site will redirect to `/consent` if a member has not consented to the latest terms
+  - Added `ConsentEffectiveDate` in `/admin/settings` for when the terms were last revised, updating which will trigger re-consent from members
+- Added templated `Terms` and `Privacy` pages so deployments can quickly add them
+- Changed cookies to be opt-in, Google Analytics will **only** be enabled if the member consents
 
 ## 3.5.1
 - Fixed minor scrollbars bug
