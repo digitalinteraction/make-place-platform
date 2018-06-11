@@ -1,6 +1,9 @@
 # Changelog
 The versions of Make Place and what features, bugs and tweaks were made for each.
 
+## 3.6.1
+- Tweaked the wording on the consent page
+
 ## 3.6.0
 - Added consent workflow
   - Consent to the terms is stored per member, whether you accepted and when you submitted that
