@@ -1,6 +1,9 @@
 # Changelog
 The versions of Make Place and what features, bugs and tweaks were made for each.
 
+## 3.6.2
+- Sass assets are only rebuild when a variable changes (speeding up boot time)
+
 ## 3.6.1
 - Tweaked the wording on the consent page
 
