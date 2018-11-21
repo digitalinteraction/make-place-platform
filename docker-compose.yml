@@ -56,7 +56,7 @@ services:
     
   geo:
     container_name: mp_geo
-    image: 'openlab.ncl.ac.uk:4567/make-place/geo:1.1.1'
+    image: mkpl/geography:1.1.1
     ports:
       - 3000:3000
     expose:
