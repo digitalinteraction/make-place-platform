@@ -8,5 +8,7 @@ then
     exit 1
 fi
 
-docker build ${@:2} -t "openlab.ncl.ac.uk:4567/make-place/web:$1" .
-docker push "openlab.ncl.ac.uk:4567/make-place/web:$1"
+TAG="mkpl/php-platform:$1"
+
+docker build ${@:2} -t $TAG .
+docker push $TAG
