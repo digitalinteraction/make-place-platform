@@ -1,9 +1,7 @@
  # ...
 
 variables:
-    CONTAINER_BASE_IMAGE: $CI_REGISTRY_IMAGE:base-2.4.0
-    CONTAINER_BRANCH_IMAGE: $CI_REGISTRY_IMAGE:$CI_BUILD_REF_NAME
-    CONTAINER_RELEASE_IMAGE: $CI_REGISTRY_IMAGE:$VERSION_NUMBER
+    CONTAINER_BASE_IMAGE: mkpl/php-platform:base-2.4.0
     DOCKER_DRIVER: overlay2
 
 
@@ -25,8 +23,6 @@ test:
         - cp -r /app/* .
         - mv _config/bootstrap.sh bootstrap.sh && mv _config/cronjobs cronjobs && mv _config/phpunit.xml phpunit.xml
         - bash scripts/test
-        # - docker run --rm $CONTAINER_BRANCH_IMAGE bash scripts/coverage
-        # - docker push $CONTAINER_BRANCH_IMAGE
 
 build-master:
   image: docker:latest
