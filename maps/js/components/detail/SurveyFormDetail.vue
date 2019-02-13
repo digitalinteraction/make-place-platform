@@ -2,8 +2,11 @@
   <div class="survey-form" style="margin: 24px 0">
     <loading v-if="!renderedForm"> Fetching Survey </loading>
     <div v-else>
-      <loading v-if="submitting" type="overlay"> Sending Response </loading>
-      <form @submit.prevent="submitSurvey" class="survey">
+      <loading v-if="state === 'working'" type="overlay"> Sending Response </loading>
+      <p v-else-if="state === 'error'">
+        Something went wrong, please <a href="#" @click.prevent="reset">try again</a>.
+      </p>
+      <form v-else @submit.prevent="submitSurvey" class="survey">
         <div v-html="renderedForm"></div>
       </form>
     </div>
@@ -20,7 +23,7 @@ export default {
   data() {
     return {
       renderedForm: null,
-      submitting: false
+      state: 'input'
     }
   },
   computed: {
@@ -33,9 +36,12 @@ export default {
   },
   deactivated() {
     this.renderedForm = null
-    this.submitting = false
+    this.state = 'input'
   },
   methods: {
+    reset() {
+      this.state = 'input'
+    },
     async fetchForm() {
       
       // Fetch the survey form
@@ -52,6 +58,8 @@ export default {
       this.renderedForm = content
     },
     async submitSurvey(e) {
+      if (this.state === 'working') return
+      this.state = 'working'
       
       // Get the data from the form
       let data = new FormData(e.target)
@@ -64,24 +72,20 @@ export default {
       
       try {
         
-        // Add the overlay
-        this.submitting = true
-        
         // Submit the response
         let res = await axios.post(`${this.surveyApi}/submit`, data)
-        
-        // remove the overlay
-        this.submitting = false
         
         // Emit the new response
         if (this.options.onCreate) {
           this.options.onCreate(res.data)
         }
+        
+        this.state = 'input'
       }
       catch (error) {
         console.log(error)
+        this.state = 'error'
       }
-      
     }
   }
 }

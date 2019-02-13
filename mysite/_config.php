@@ -39,7 +39,7 @@ i18n::set_locale(_envVar('LOCALE', 'en_GB'));
 
 
 // Add a log file where errors will be stored
-SS_Log::add_writer(new SS_LogFileWriter(_envVar('LOG_FILE', '../silverstripe.log')), SS_Log::WARN, '<=');
+SS_Log::add_writer(new SS_LogFileWriter('/app/logs/warn.log'), SS_Log::WARN, '<=');
 
 
 

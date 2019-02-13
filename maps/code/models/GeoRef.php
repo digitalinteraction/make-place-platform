@@ -65,7 +65,7 @@ class GeoRef extends DataObject {
             
             // TODO: need to push values individually
             $errors = CurlRequest::apiResponseErrors($res);
-            SS_Log::message('GeoRef Errors: ', implode(',', $errors));
+            SS_Log::log('GeoRef Errors: ', implode(',', $errors), SS_Log::ERR);
             return null;
         }
     }

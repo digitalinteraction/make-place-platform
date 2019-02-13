@@ -24,6 +24,7 @@ services:
       - ./surveys:/app/surveys
       - ./auth:/app/auth
       - ./maps:/app/maps
+      - ./logs:/app/logs
       - ./public:/app/public
       - ./interaction:/app/interaction
       - ./_config/phpunit.xml:/app/phpunit.xml:ro
@@ -64,5 +65,5 @@ services:
     links:
       - mysql
     environment:
-      SQL_URL: mysql://user:secret@mysql/make-geo
+      SQL_URL: mysql://user:secret@mysql/geo
       NODE_ENV: dev
