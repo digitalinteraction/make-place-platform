@@ -5,13 +5,12 @@
 
 
 # Start with a php-fpm-nginx-composer image
-FROM openlab.ncl.ac.uk:4567/rob/composer-image:1.1.0
+FROM openlab.ncl.ac.uk:4567/rob/composer-image:1.1.1
 
 # Setup composer & node, then add some www-data owned direcotires
-RUN curl -sL https://deb.nodesource.com/setup_8.x | bash - > /dev/null \
-  && apt-get -qq -y update \
-  && apt-get -qq -y upgrade -y \
-  && DEBIAN_FRONTEND=noninteractive apt-get -qq -y install sqlite3 php5-sqlite nodejs \
+RUN curl -sL https://deb.nodesource.com/setup_10.x | bash - > /dev/null \
+  && apt-get -qq update \
+  && DEBIAN_FRONTEND=noninteractive apt-get -q -y install sqlite3 php5-sqlite nodejs \
   && rm -rf /var/lib/apt/lists/* \
   && mkdir -p /app/silverstripe-cache \
   && mkdir -p /app/assets/surveymedia \
