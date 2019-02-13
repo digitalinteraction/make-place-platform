@@ -1,50 +1,24 @@
  # ...
 
 variables:
-    CONTAINER_BASE_IMAGE: mkpl/php-platform:base-2.4.0
-    DOCKER_DRIVER: overlay2
+  CONTAINER_BASE_IMAGE: mkpl/php-platform:base-2.4.0
+  DOCKER_DRIVER: overlay2
 
 
 services:
-    - docker:dind
+  - docker:dind
 
 
 stages:
-    - test
-    - build
+  - test
 
 
 test:
-    image: $CONTAINER_BASE_IMAGE
-    stage: test
-    tags:
-        - docker
-    script:
-        - cp -r /app/* .
-        - mv _config/bootstrap.sh bootstrap.sh && mv _config/cronjobs cronjobs && mv _config/phpunit.xml phpunit.xml
-        - bash scripts/test
-
-build-master:
-  image: docker:latest
-  stage: build
+  image: $CONTAINER_BASE_IMAGE
+  stage: test
   tags:
-    - dind
+    - docker
   script:
-    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
-    - docker build --pull -t "$CI_REGISTRY_IMAGE" .
-    - docker push "$CI_REGISTRY_IMAGE"
-  only:
-    - master
-
-
-build:
-  image: docker:latest
-  stage: build
-  tags:
-    - dind
-  script:
-    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
-    - docker build --pull -t "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG" .
-    - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG"
-  except:
-    - master
+    - cp -r /app/* .
+    - mv _config/bootstrap.sh bootstrap.sh && mv _config/cronjobs cronjobs && mv _config/phpunit.xml phpunit.xml
+    - bash scripts/test
