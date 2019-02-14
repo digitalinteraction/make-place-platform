@@ -1,7 +1,7 @@
  # ...
 
 variables:
-  CONTAINER_BASE_IMAGE: mkpl/php-platform:base-2.4.1
+  CONTAINER_BASE_IMAGE: mkpl/php-platform:base-2.4.2
   DOCKER_DRIVER: overlay2
 
 

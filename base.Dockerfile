@@ -5,7 +5,7 @@
 
 
 # Start with a php-fpm-nginx-composer image
-FROM openlab.ncl.ac.uk:4567/rob/composer-image:1.1.1
+FROM openlab.ncl.ac.uk:4567/rob/composer-image:1.1.2
 
 # Setup composer & node, then add some www-data owned direcotires
 RUN curl -sL https://deb.nodesource.com/setup_10.x | bash - > /dev/null \

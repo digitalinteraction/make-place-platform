@@ -1,6 +1,12 @@
 # Changelog
 The versions of Make Place and what features, bugs and tweaks were made for each.
 
+## 3.6.4
+- Fixed docker build issue
+
+## 3.6.3 (broken build)
+- Fixed a bug when creating a map pin fails and the interface locks up
+
 ## 3.6.2
 - Sass assets are only rebuild when a variable changes (speeding up boot time)
 

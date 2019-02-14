@@ -4,7 +4,7 @@
 
 
 # Start from our base image
-FROM mkpl/php-platform:base-2.4.1
+FROM mkpl/php-platform:base-2.4.2
 
 
 # Add files to the build
