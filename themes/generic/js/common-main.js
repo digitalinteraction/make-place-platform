@@ -1,3 +1,5 @@
+import 'core-js/stable'
+import 'regenerator-runtime/runtime'
 
 // Import css & sass so they get extracted to /public/css/theme.css
 import 'font-awesome/css/font-awesome.min.css'

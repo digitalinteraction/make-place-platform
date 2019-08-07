@@ -7,13 +7,13 @@ const webpack = require('webpack')
 const chalk = require('chalk')
 const rm = require('rimraf')
 
-const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 
 process.env.NODE_ENV = 'production'
 const config = require('./webpack/webpack.prod.config')
 
-const varsHashPath = join(__dirname, '../assets/vars.hash')
+const varsHashPath = join(__dirname, '../public/vars.hash')
 const readVarsHash = () => readFileSync(varsHashPath, 'utf8')
 const readVars = () => readFileSync(join(__dirname, 'scss/vars.scss'), 'utf8')
 
@@ -67,7 +67,10 @@ config.entry = { theme: config.entry.theme }
 
 // Use different plugins
 config.plugins = [
-  new ExtractTextPlugin('../css/[name].css'),
+  new MiniCssExtractPlugin({
+    filename: '../css/[name].css',
+    chunkFilename: '../css/[id].css'
+  }),
   new OptimizeCSSPlugin({
     cssProcessorOptions: { safe: true }
   })

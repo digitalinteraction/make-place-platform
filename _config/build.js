@@ -12,19 +12,8 @@ spinner.start()
 let compiler = webpack(config)
 
 compiler.run((err, result) => {
-
   spinner.stop()
   if (err) throw err
-
-  process.stdout.write(result.toString({
-    colors: true,
-    modules: false,
-    children: false,
-    chunks: false,
-    chunkModules: false,
-    hash: false,
-    version: false
-  }) + '\n\n')
 
   console.log(chalk.cyan('  Build complete.\n'))
 })

@@ -20,3 +20,4 @@ sqlite3
 tagfield
 vendor
 secrets.env
+public

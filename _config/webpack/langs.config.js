@@ -1,9 +1,7 @@
-
-const ExtractTextPlugin = require('extract-text-webpack-plugin')
-
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
 const isProduction = process.env.NODE_ENV === 'production'
-const shouldExtract = isProduction
+// const shouldExtract = isProduction
 const shouldSourceMap = false
 
 exports.css = {
@@ -19,10 +17,14 @@ exports.scss = {
 }
 
 exports.vue = {
-  loaders: {
-    css: makeVueStyleLoader(),
-    scss: makeVueStyleLoader('sass', exports.scss)
-  }
+  // loaders: {
+  //   css: makeVueStyleLoader(),
+  //   scss: makeVueStyleLoader('sass', exports.scss)
+  // }
+}
+
+exports.cssExtractor = {
+  hmr: process.env.NODE_ENV === 'development'
 }
 
 
@@ -30,7 +32,7 @@ exports.vue = {
 function makeVueStyleLoader(name = null, options = null) {
   
   // Start a stack of loaders, starting with css
-  let loaderStack = [
+  const loaderStack = [
     { loader: 'css-loader', options: exports.css }
   ]
   
@@ -42,16 +44,20 @@ function makeVueStyleLoader(name = null, options = null) {
     })
   }
   
+  loaderStack.push('postcss-loader')
+  
   // If we are extracting, return a loader that extracts to a external file
-  if (shouldExtract) {
-    return ExtractTextPlugin.extract({
-      use: loaderStack,
-      fallback: 'vue-style-loader'
+  if (isProduction) {
+    loaderStack.unshift({
+      loader: MiniCssExtractPlugin.loader,
+      options: exports.cssExtractor
     })
   }
   else {
     
     // If not extracting, use a stack with vue-style-loader at the start
-    return ['vue-style-loader'].concat(loaderStack)
+    loaderStack.unshift('vue-style-loader')
   }
+  
+  return loaderStack
 }

@@ -1,5 +1,3 @@
-import 'babel-polyfill'
-
 import Vue from 'vue'
 import VueX from 'vuex'
 
@@ -27,7 +25,7 @@ Vue.use(VueX)
 
 // Add config to all components + make sure url has no trailing slash
 let url = window.location.origin + window.location.pathname.replace(/\/$/, '')
-let api = window.location.origin
+const api = window.location.origin
 
 
 // If at the root, use /home as that is the true root

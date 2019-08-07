@@ -32,6 +32,7 @@ module.exports = {
       'named': 'never',
       'asyncArrow': 'always'
     }],
+    'prefer-const': 'warn'
   },
   
   // Custom globals ... don't use globals

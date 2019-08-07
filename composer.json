@@ -1,6 +1,6 @@
 {
-    "name": "My Fancy Silverstripe Project",
-    "description": "A Silverstripe project to be deploted through docker",
+    "name": "openlab/make-place",
+    "description": "A Silverstripe project to be deployed through docker",
     "require": {
         "php": ">=5.3.3",
         "silverstripe/cms": "3.4.1",

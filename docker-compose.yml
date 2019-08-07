@@ -39,7 +39,7 @@ services:
       DEFAULT_USER: admin
       DEFAULT_PASS: password
       GEO_URL: geo:3000
-      GEO_KEY: 4DJ3Nws3h5zj73aKWUQIOavpVAVqeAaV
+      GEO_KEY: not_secret
       PRIMARY_COL: '#836953'
     
   mysql:

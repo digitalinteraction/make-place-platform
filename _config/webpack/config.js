@@ -1,20 +1,9 @@
-const path = require('path')
-
-const resolve = filepath => path.join(__dirname, '../..', filepath)
 
 module.exports = {
   build: {
-    env: { NODE_ENV: '"production"' },
-    
-    assetsRoot: resolve('public'),
-    assetsPublicPath: '/public/',
-    
-    productionSourceMap: false
+    env: { NODE_ENV: '"production"' }
   },
   dev: {
-    env: { NODE_ENV: '"development"' },
-    
-    assetsPublicPath: '/public/'
-    
+    env: { NODE_ENV: '"development"' }
   }
 }

@@ -32,6 +32,10 @@ A geographical mapping platform designed to be reconfigurable and redeployable. 
 cd into/your/project
 docker-compose up -d --build
 docker-compose ps
+
+# You'll need to setup the geo database and run migrations
+# use the geo in docker-compose for whats required
+# see: https://openlab.ncl.ac.uk/gitlab/make-place/geo#dev-notes
 ```
 2. Start webpack watch to compile assets
 ```bash
@@ -48,10 +52,13 @@ We use a CI to continually run tests and build the `latest` version whenever you
 ```bash
 # (optional) If you have changed composer or npm packages run this
 #            and update your Dockerfile to reference the new base
-scripts/build-image base-3.1.4 -f base.Dockerfile
+docker build -f base.Dockerfile -t mkpl/php-platform:base-$VERSION .
+docker push mkpl/php-platform:base-$VERSION
 
 # Build and push image to openlab.ncl.ac.uk/gitlab
-scripts/build-img 3.1.4
+docker build -t mkpl/php-platform:$VERSION .
+docker push mkpl/php-platform:$VERSION
+
 ```
 
 ## Detailed Project Structure
