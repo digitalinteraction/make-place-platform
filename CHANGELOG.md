@@ -1,6 +1,12 @@
 # Changelog
 The versions of Make Place and what features, bugs and tweaks were made for each.
 
+## 3.7.0
+- Sub-pages on map pages now have hash routes, e.g. '/page/#/view/1234'
+  - You can deep link to specific responses / surveys
+  - When viewing a response it pans to it
+- (Internal) Upgraded and simplified the buildchain with webpack 4
+
 ## 3.6.4
 - Fixed docker build issue
 
