@@ -11,7 +11,13 @@ export default new VueX.Store({
     clusterer: null,
     mapDetail: null,
     highlight: null,
-    controls: []
+    controls: [],
+    isMobile: false,
+    page: null,
+    mapComponents: null
+  },
+  getters: {
+    mapComponent: state => id => state.mapComponents.find(comp => comp.id === id)
   },
   mutations: {
     addAction(state, newAction) {
@@ -53,6 +59,17 @@ export default new VueX.Store({
       }
       if (highlight) highlight.addTo(state.map)
       state.highlight = highlight
+    },
+    
+    setIsMobile(state, newIsMobile) {
+      state.isMobile = newIsMobile
+    },
+    
+    setPage(state, newPage) {
+      state.page = newPage
+    },
+    setMapComponents(state, newMapComponents) {
+      state.mapComponents = newMapComponents
     }
   }
 })

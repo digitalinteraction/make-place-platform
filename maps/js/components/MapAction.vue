@@ -1,5 +1,5 @@
 <template lang="html">
-  <span @click="onClick" class="action with-icon animated" :class="colour">
+  <span @click="onClick" class="map-action with-icon animated" :class="colour">
     
     <!-- Our icon -->
     <span class="icon" :style="{'background-image': `url(${icon})`}"></span>
@@ -31,5 +31,8 @@ export default {
 
 
 
-<style lang="css">
+<style lang="scss">
+.map-action {
+  @include button-style;
+}
 </style>
