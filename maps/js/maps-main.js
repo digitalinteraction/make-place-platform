@@ -1,8 +1,8 @@
 import Vue from 'vue'
-import VueX from 'vuex'
 
 import MapsApp from './MapsApp'
-import Store from './store'
+import store from './store'
+import router from './router'
 
 import Loading from './components/Loading'
 import VoteSection from './components/interaction/VoteSection'
@@ -17,10 +17,6 @@ import 'leaflet/dist/leaflet.css'
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css'
 
 import '../sass/maps.scss'
-
-
-// Setup Vue plugins
-Vue.use(VueX)
 
 
 // Add config to all components + make sure url has no trailing slash
@@ -51,6 +47,7 @@ Vue.component('profile-image', ProfileImage)
 /* eslint-disable no-new */
 new Vue({
   el: '#map-app',
-  store: Store,
+  store: store,
+  router: router,
   render: h => h(MapsApp)
 })

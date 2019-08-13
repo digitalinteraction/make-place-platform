@@ -1,56 +1,61 @@
 <template lang="html">
-  <div class="picking-state">
-    
+  <div class="map-picker-view">
+    <!-- A message to prompt the user to pick a position -->
     <div class="message">
       <p>Choose a position on the map</p>
     </div>
     
-    <span class="cancel-button red" @click.stop.capture="cancel" title="Cancel">
-      <i class="fa fa-times" aria-hidden="true"></i>
+    <!-- A button to cancel the picking and go back -->
+    <span
+      class="cancel-button red"
+      @click.stop.capture="onCancel"
+      title="Cancel"
+    >
+      <i class="fa fa-times" />
     </span>
     
+    <!-- An overlay to darken the background to focus the user -->
     <transition name="fade" appear>
-      <div class="full-overlay" @click.stop.capture="picked"></div>
+      <div class="full-overlay" @click.stop.capture="onPick"></div>
     </transition>
-    
   </div>
 </template>
 
-
-
 <script>
+export const allowedModes = ['survey']
+
 export default {
-  props: [ 'options' ],
+  computed: {
+    mode() {
+      return this.$route.query.mode
+    }
+  },
+  mounted() {
+    if (!allowedModes.includes(this.mode)) return this.$router.replace('/')
+  },
   methods: {
-    cancel() {
-      
-      // Reset the map state
-      this.$store.commit('resetMapState')
-      
-      // Use our callback with null
-      if (this.options.onPick) {
-        this.options.onPick(null)
-      }
+    onCancel() {
+      this.$router.push({ name: 'default' })
     },
-    picked(e) {
+    onPick(e) {
+      // Work out the lat & long from the click event
+      const { lat, lng } = this.$store.state.map.mouseEventToLatLng(e)
       
-      // Localise the position from screen to map coords
-      let map = this.$store.state.map
-      let local = map.mouseEventToLatLng(e)
-      
-      // Reset back to the base state
-      this.$store.commit('resetMapState')
-      
-      // Use our callback
-      if (this.options.onPick) {
-        this.options.onPick(local)
+      // If in 'survey' mode, navigate to the form
+      // > with the lat and lng as query string parameters
+      if (this.mode === 'survey') {
+        this.$router.push({
+          name: 'survey-form',
+          params: {
+            id: this.$route.query.component
+          },
+          query: { lat, lng }
+        })
       }
     }
   }
 }
 </script>
-
-
 
 <style lang="scss">
 
@@ -66,7 +71,7 @@ export default {
   to   { top: 0; opacity: 1.0; }
 }
 
-.picking-state {
+.map-picker-view {
   .message {
     z-index: $zPickerMessage;
     animation: position-message 0.3s both;

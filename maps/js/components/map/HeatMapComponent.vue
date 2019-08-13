@@ -1,11 +1,7 @@
-<template lang="html">
-  <!-- <pre> {{options}} </pre> -->
-</template>
-
 <script>
 import L from 'leaflet'
 
-import responsesService from '../services/responses'
+import responsesService from '../../services/responses'
 
 export default {
   props: [ 'options' ],
@@ -49,6 +45,7 @@ export default {
       }
     })
   },
+  render: h => '',
   methods: {
     latLngsFromResponse(response, posQ, weightQ, defaultWeight) {
       let answer = response.values[posQ].value

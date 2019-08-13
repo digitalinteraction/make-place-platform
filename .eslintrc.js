@@ -9,9 +9,7 @@ module.exports = {
   env: {
     browser: true
   },
-  extends: 'standard',
-  // required to lint *.vue files
-  plugins: [ 'html' ],
+  extends: ['standard', 'plugin:vue/essential'],
   
   // Custom Rules
   'rules': {

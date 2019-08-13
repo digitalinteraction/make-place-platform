@@ -1,8 +1,10 @@
 <template lang="html">
-  <div class="default-map-state">
+  <div class="map-default-view">
     
+    <!-- Show the map controls (if there are any to show) -->
     <div v-show="hasControls" class="controls-wrapper" :class="{ active: showControls }">
       <div class="inner">
+        <!-- A nice header for the section, with a toggle button to show/hide -->
         <div class="header">
           <h3>
             Controls
@@ -14,31 +16,35 @@
             </button>
           </h3>
         </div>
+        
+        <!-- Render each control, pulling from the Vue store -->
         <keep-alive>
           <div class="controls-list">
-            <component v-for="(control, i) in $store.state.controls"
+            <component v-for="(control, index) in $store.state.controls"
               :is="control.type"
               :options="control.options"
-              :key="i">
+              :key="index">
             </component>
           </div>
         </keep-alive>
       </div>
     </div>
     
+    <!-- The map's actions ~ if there are any and they're toggled on (on mobile) -->
     <div v-if="showActions" class="action-list">
-      <span v-for="(a,i) in actions" class="action-holder">
-        <map-action :key="i" :action="a" @chosen="actionChosen"></map-action> <br>
+      <span v-for="(action, index) in actions" :key="index" class="action-holder">
+        <map-action :action="action" @chosen="actionChosen"></map-action>
+        <br>
       </span>
     </div>
     
-    
+    <!-- Show the mobile actions toggler ~ if on mobile and there are actions to toggle-->
     <div v-if="isMobile && actions.length > 0 && !this.showControls">
       <span class="actions-toggle action"
-        :class="[{'toggled': actionsToggled}, toggleActionsClass]"
-        @click="toggleActions">
+        :class="[{toggled: showMobileActions}, toggleActionsClass]"
+        @click="toggleMobileActions">
         
-        <span v-if="actionsToggled">
+        <span v-if="showMobileActions">
           <i class="fa fa-times" aria-hidden="true"></i>
         </span>
         <span v-else>
@@ -48,15 +54,13 @@
       </span>
     </div>
     
+    <!-- An overlay for dynamic fade-ins -->
     <transition name="fade">
-      <div v-if="isMobile && (actionsToggled || showControls)" class="full-overlay"></div>
+      <div v-if="shouldShowOverlay" class="full-overlay"></div>
     </transition>
-    
     
   </div>
 </template>
-
-
 
 <script>
 import MapAction from '../components/MapAction.vue'
@@ -67,44 +71,43 @@ import DropdownFilter from '../components/control/DropdownFilter'
 import SurveyFilter from '../components/control/SurveyFilter'
 
 export default {
-  props: [ 'isMobile' ],
   components: { MapAction, TemporalFilter, TextFilter, DropdownFilter, SurveyFilter },
   data() {
     return {
-      actionsToggled: false,
+      showMobileActions: false,
       showControls: false
     }
   },
   computed: {
     actions() { return this.$store.state.actions },
+    isMobile() { return this.$store.state.isMobile },
     showActions() {
-      if (this.isMobile) return this.actionsToggled
-      return true
+      return this.isMobile ? this.showMobileActions : true
     },
     hasControls() {
       return Object.keys(this.$store.state.controls).length > 0
     },
-    toggleActionsClass() { return this.actionsToggled ? 'red' : 'primary' },
-    toggleActionsTitle() { return this.actionsToggled ? 'Cancel' : '...' }
+    toggleActionsClass() { return this.showMobileActions ? 'red' : 'primary' },
+    toggleActionsTitle() { return this.showMobileActions ? 'Cancel' : '...' },
+    shouldShowOverlay() {
+      return this.isMobile && (this.showMobileActions || this.showControls)
+    }
   },
   methods: {
-    toggleActions() {
-      this.actionsToggled = !this.actionsToggled
+    toggleMobileActions() {
+      this.showMobileActions = !this.showMobileActions
     },
     toggleControls() {
       this.showControls = !this.showControls
     },
     actionChosen() {
-      this.actionsToggled = false
+      this.showMobileActions = false
     }
   }
 }
 </script>
 
-
-
-<style lang="scss">
-
+<style lang="scss" scoped>
 @import 'maps/sass/maps-common.scss';
 
 @keyframes position-action-mobile {
@@ -114,7 +117,7 @@ export default {
 
 $controlsDuration: 0.4s;
 
-.default-map-state {
+.map-default-view {
   
   .controls-wrapper {
     position: absolute;
@@ -259,5 +262,4 @@ $controlsDuration: 0.4s;
   }
   
 }
-
 </style>

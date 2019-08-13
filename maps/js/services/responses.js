@@ -43,7 +43,7 @@ class RequestState {
   
   /** Refilters the responses and resolves the listeners again */
   invalidate(filters) {
-    let filtered = this.responses.filter(response => {
+    const filtered = this.responses.filter(response => {
       return filters.every(f => f(response))
     })
     this.listeners.forEach(l => l.resolve(filtered))
@@ -92,7 +92,7 @@ class ResponsesService {
     if (!this.requests.has(response.surveyId)) return
     
     // Get the state
-    let request = this.requests.get(response.surveyId)
+    const request = this.requests.get(response.surveyId)
     
     // Notify each listener
     request.listeners.forEach(l => {
@@ -119,7 +119,7 @@ class ResponsesService {
   
   /** Cause responses to be refiltered and resolved again */
   invalidate() {
-    let filters = Object.values(this.filters)
+    const filters = Object.values(this.filters)
     this.requests.forEach(request => request.invalidate(filters))
   }
   
@@ -135,7 +135,7 @@ class ResponsesService {
   async tick() {
     
     // Get the pending requests (Map only has a .forEach method)
-    let pending = []
+    const pending = []
     this.requests.forEach(request => {
       if (request.state === 'pending') pending.push(request)
     })
@@ -165,11 +165,11 @@ class ResponsesService {
     try {
       
       // Construct the pluck param (if needed)
-      let params = {}
+      const params = {}
       if (request.fields.length > 0) params['pluck'] = request.fields.join(',')
       
       // Perform the request
-      let res = await axios.get(`/api/survey/${request.surveyId}/responses`, { params })
+      const res = await axios.get(`/api/survey/${request.surveyId}/responses`, { params })
       
       // Add dates to each response
       res.data.forEach(r => {

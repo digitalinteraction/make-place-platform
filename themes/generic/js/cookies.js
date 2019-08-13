@@ -41,7 +41,7 @@ const cookieConsentConfig = {
   }
 }
 
-let cookiePopup = new CookieConsent.Popup(cookieConsentConfig)
+const cookiePopup = new CookieConsent.Popup(cookieConsentConfig)
 document.body.appendChild(cookiePopup.element)
 document.body.appendChild(cookiePopup.revokeBtn)
 

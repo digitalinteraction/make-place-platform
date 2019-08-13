@@ -1,35 +1,32 @@
 <template lang="html">
-  <div class="detail-map-state">
+  <div class="map-modal">
     
-    <!-- The detail popover -->
+    <!-- fade-upwards on first appear -->
     <transition name="fade-up" appear>
-      <div class="map-detail" :class="{minified}">
+      <div class="map-modal-box" :class="{minified}">
         <div class="inner">
           
-          <!-- The title bar -->
           <div class="header-bar">
-            
-            <!-- Title text -->
             <h2 class="title"> {{title}} </h2>
-            
-            <!-- The detail buttons -->
             <div class="buttons">
-              <span class="close-button" @click="close" title="Close"></span>
-              <span class="minify-button" @click="minify" title="Minify"></span>
+              <button
+                class="close-button"
+                @click="onClose"
+                title="Close">
+              </button>
+              <button
+                class="minify-button"
+                @click="onMinify"
+                title="Minify">
+              </button>
             </div>
-            
           </div>
           
-          <!-- Render the detail component -->
-          <div class="content" v-if="detail" :class="detail.type">
-            <component :is="detail.type"
-              :options="detail.options"
-              @change-title="changeTitle">
-            </component>
+          <div class="content">
+            <slot></slot>
           </div>
           
         </div>
-        
       </div>
     </transition>
     
@@ -41,48 +38,35 @@
   </div>
 </template>
 
-
-
 <script>
-import ContentDetail from '../components/detail/ContentDetail.vue'
-import SurveyFormDetail from '../components/detail/SurveyFormDetail.vue'
-import SurveyResponseDetail from '../components/detail/SurveyResponseDetail.vue'
 
+// 
+// A component to render a modal overlay, putting the <slot> inside the modal
+// 
 export default {
-  props: [ 'options' ],
-  components: { ContentDetail, SurveyFormDetail, SurveyResponseDetail },
+  props: {
+    title: { type: String, required: true }
+  },
   data() {
-    return { minified: false, customTitle: null }
-  },
-  computed: {
-    detail() {
-      return this.options.detail
-    },
-    title() { return this.customTitle || this.options.title || 'Loading' }
-  },
-  watch: {
-    options() {
-      this.minified = false
+    return {
+      minified: false
     }
   },
   methods: {
-    close() {
-      this.$store.commit('setMapState', 'DefaultMapState')
-      if (this.options.onClose) this.options.onClose()
+    onClose() {
+      this.$emit('close')
     },
-    minify() { this.minified = !this.minified },
-    changeTitle(newTitle) { this.customTitle = newTitle }
+    onMinify() {
+      this.minified = !this.minified
+    }
   }
 }
 </script>
 
-
-
 <style lang="scss">
-
 @import 'maps/sass/maps-common.scss';
 
-.map-detail {
+.map-modal-box {
   position: absolute;
   top: 0; left: 0; right: 0;
   margin: 48px auto 0px;
@@ -151,6 +135,7 @@ export default {
         float: right;
         transform: scale(1);
         transition: transform 0.3s;
+        border: none;
         &:hover { transform: scale(1.07); cursor: pointer; }
       }
       .close-button {
@@ -164,5 +149,4 @@ export default {
   }
   
 }
-
 </style>

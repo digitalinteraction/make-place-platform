@@ -12,22 +12,19 @@
     <div v-if="page">
       
       <!-- Add map components -->
-      <component v-for="(c,i) in components" :is="c.type" :key="i" :options="c"></component>
+      <component
+        v-for="(component, index) in mapComponents"
+        :is="component.type"
+        :key="index"
+        :options="component">
+      </component>
       
-      
-      <!-- The map's state component -->
-      <keep-alive>
-        <component v-if="currentState"
-          :is="currentState.type"
-          :is-mobile="isMobile"
-          :options="currentState.options">
-        </component>
-      </keep-alive>
-      
+      <!-- Render the router -->
+      <router-view></router-view>
     </div>
     
+    <!-- An element to render the map -->
     <div id="map-base"></div>
-    
   </div>
 </template>
 
@@ -35,18 +32,14 @@
 
 <script>
 import axios from 'axios'
-import SurveyMapComponent from './components/SurveyMapComponent'
-import ContentMapComponent from './components/ContentMapComponent'
-import HeatMapComponent from './components/HeatMapComponent'
+import SurveyMapComponent from './components/map/SurveyMapComponent'
+import ContentMapComponent from './components/map/ContentMapComponent'
+import HeatMapComponent from './components/map/HeatMapComponent'
 
 import TemporalFilterMapComponent from './components/filter/TemporalFilterMapComponent'
 import TextFilterMapComponent from './components/filter/TextFilterMapComponent'
 import DropdownFilterMapComponent from './components/filter/DropdownFilterMapComponent'
 import SurveyFilterMapComponent from './components/filter/SurveyFilterMapComponent'
-
-import DefaultMapState from './state/DefaultMapState'
-import DetailMapState from './state/DetailMapState'
-import PickingMapState from './state/PickingMapState'
 
 import responsesService from './services/responses'
 
@@ -64,22 +57,19 @@ export default {
     TemporalFilterMapComponent,
     TextFilterMapComponent,
     DropdownFilterMapComponent,
-    SurveyFilterMapComponent,
-    DefaultMapState,
-    DetailMapState,
-    PickingMapState
+    SurveyFilterMapComponent
   },
   data() {
     return {
-      isMobile: false,
-      page: null,
       componentConfig: null,
-      components: [],
       fetchingResponses: false
     }
   },
   computed: {
-    currentState() { return this.$store.state.mapState }
+    currentState() { return this.$store.state.mapState },
+    isMobile() { return this.$store.state.isMobile },
+    page() { return this.$store.state.page },
+    mapComponents() { return this.$store.state.mapComponents }
   },
   mounted() {
     this.onResize()
@@ -95,43 +85,45 @@ export default {
   },
   methods: {
     onResize() {
-      this.isMobile = window.outerWidth <= 767
+      this.$store.commit('setIsMobile', window.outerWidth <= 767)
     },
     async loadConfig() {
       try {
         
         // Fetch config
-        let res = await axios.get(`${this.$config.url}/mapConfig`)
-        let config = res.data
-        this.page = config.page
-        this.components = config.components
+        const res = await axios.get(`${this.$config.url}/mapConfig`)
+        // let config = res.data
+        const { page, components } = res.data
+        
+        this.$store.commit('setPage', page)
+        this.$store.commit('setMapComponents', components)
         
         // Create our map
-        let map = L.map('map-base', {
-          attributionControl: config.page.tileset !== 'Google'
+        const map = L.map('map-base', {
+          attributionControl: page.tileset !== 'Google'
         })
         
         
         // Configure the map
         map.zoomControl.setPosition('bottomright')
         map.setView([
-          config.page.startLat, config.page.startLng
-        ], config.page.startZoom)
+          page.startLat, page.startLng
+        ], page.startZoom)
         
         
         // Add tiles based on the config
-        if (this.page.tileset === 'Google') {
+        if (page.tileset === 'Google') {
           L.gridLayer.googleMutant({type: 'roadmap'}).addTo(map)
         }
         else {
           
-          let url = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+          const url = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
           map.addLayer(new L.TileLayer(url))
         }
         
         
         // Setup the clusterer
-        let clusterer = L.markerClusterGroup()
+        const clusterer = L.markerClusterGroup()
         map.addLayer(clusterer)
         
         
