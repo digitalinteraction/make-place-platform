@@ -2,6 +2,11 @@
 The versions of Make Place and what features, bugs and tweaks were made for each.
 
 ## 3.7.0
+- Add CheckboxQuestion and RadioQuestion
+  - Checkbox lets you check multiple options
+  - Radio lets you pick a single value
+
+## 3.7.0
 - Sub-pages on map pages now have hash routes, e.g. '/page/#/view/1234'
   - You can deep link to specific responses / surveys
   - When viewing a response it pans to it
