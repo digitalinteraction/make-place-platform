@@ -35,6 +35,10 @@ silverstripe.log
 *.env
 
 
+# Ignore logs
+logs/*.log
+
+
 
 # Ignore node modules
 node_modules
