@@ -1,8 +1,9 @@
 
-<div >
-  <% loop OptionsArray %>
+<% loop OptionsArray %>
+  <div class="radio">
     <label> 
-    <input class="$Up.Classes" type="radio" id="$value" name="$Up.FieldName" value="$value">
-    $key </label><br>
-  <% end_loop %>
-</div>
+      <input type="radio" id="$value" name="$Up.FieldName" value="$value">
+      $key
+    </label>
+  </div>
+<% end_loop %>
