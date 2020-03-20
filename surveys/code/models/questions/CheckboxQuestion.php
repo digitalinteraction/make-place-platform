@@ -44,25 +44,26 @@ class CheckboxQuestion extends Question {
     }
     
     public function renderResponse($value) {
+        // get the unpacked value
+        $unpacked = $this->unpackValue($value);
         
-        // Get the options array (as values)
-        $options = $this->getRawOptions();
+        // Create a map of non-handlified names
+        $mapped = [];
         
         // Create a filter-er to map each option to a value
         $filter = URLSegmentFilter::create();
         
-        
         // Loop through the options
-        foreach ($options as $option) {
-            
-            // Handle-ify the option to check it against the passed value
-            if ($filter->filter($option) == $value) {
-                return $option;
+        foreach ($this->getRawOptions() as $option) {
+            $slug = $filter->filter($option);
+
+            if (in_array($slug, $unpacked)) {
+                array_push($mapped, $option);
             }
         }
         
-        // If we reached here it wasn't found
-        return null;
+        // Join the matched strings together with commas
+        return implode(", ", $mapped);
     }
     
     public function jsonSerialize() {
@@ -73,4 +74,11 @@ class CheckboxQuestion extends Question {
         ]);
     }
     
+    function packValue($value) {
+        return implode(",". $value);
+    }
+
+    function unpackValue($value) {
+        return explode(",", $value);
+    }
 }
