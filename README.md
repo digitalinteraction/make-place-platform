@@ -52,12 +52,14 @@ We use a CI to continually run tests and build the `latest` version whenever you
 ```bash
 # (optional) If you have changed composer or npm packages run this
 #            and update your Dockerfile to reference the new base
+VERSION=x.y.z
 git tag base-$VERSION
 docker build -f base.Dockerfile -t mkpl/php-platform:base-$VERSION .
 docker push mkpl/php-platform:base-$VERSION
 
 # Build and push image to openlab.ncl.ac.uk/gitlab
 npm version # minor | major | patch | ...
+VERSION=x.y.z
 docker build -t mkpl/php-platform:$VERSION .
 docker push mkpl/php-platform:$VERSION
 
