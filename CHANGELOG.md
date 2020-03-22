@@ -1,7 +1,13 @@
 # Changelog
 The versions of Make Place and what features, bugs and tweaks were made for each.
 
-## 3.7.0
+## 3.8.2
+- Fix crash when submitting a valid CheckboxQuestion
+
+## 3.8.1
+- Fix CheckboxQuestion failing when not answered
+
+## 3.8.0
 - Add CheckboxQuestion and RadioQuestion
   - Checkbox lets you check multiple options
   - Radio lets you pick a single value
