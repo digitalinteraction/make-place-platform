@@ -76,7 +76,7 @@ class CheckboxQuestion extends Question {
     
     function packValue($value) {
         if (is_array($value)) {
-            return implode(",". $value);
+            return implode(",", $value);
         }
         else {
             return $value;
