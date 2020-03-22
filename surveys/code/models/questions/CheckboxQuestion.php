@@ -75,10 +75,19 @@ class CheckboxQuestion extends Question {
     }
     
     function packValue($value) {
-        return implode(",". $value);
+        if (is_array($value)) {
+            return implode(",". $value);
+        }
+        else {
+            return $value;
+        }
     }
 
     function unpackValue($value) {
-        return explode(",", $value);
+        if (is_string($value)) {
+            return explode(",", $value);
+        } else {
+            return $value;
+        }
     }
 }
