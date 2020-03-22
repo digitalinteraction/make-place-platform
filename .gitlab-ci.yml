@@ -1,23 +1,7 @@
  # ...
 
-variables:
-  CONTAINER_BASE_IMAGE: mkpl/php-platform:base-2.6.0
-  DOCKER_DRIVER: overlay2
-
-
-services:
-  - docker:dind
-
-
-stages:
-  - test
-
-
-test:
-  image: $CONTAINER_BASE_IMAGE
-  stage: test
-  tags:
-    - docker
+run-automated-tests:
+  image: mkpl/php-platform:base-2.6.1
   script:
     - cp -r /app/* .
     - mv _config/bootstrap.sh bootstrap.sh && mv _config/cronjobs cronjobs && mv _config/phpunit.xml phpunit.xml
